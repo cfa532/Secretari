@@ -1,0 +1,597 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 56;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		461ADD5B2BD2A0AC00C0DD94 /* SecretariApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 461ADD5A2BD2A0AC00C0DD94 /* SecretariApp.swift */; };
+		461ADD5D2BD2A0AC00C0DD94 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 461ADD5C2BD2A0AC00C0DD94 /* ContentView.swift */; };
+		461ADD5F2BD2A0AC00C0DD94 /* Item.swift in Sources */ = {isa = PBXBuildFile; fileRef = 461ADD5E2BD2A0AC00C0DD94 /* Item.swift */; };
+		461ADD612BD2A0AD00C0DD94 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 461ADD602BD2A0AD00C0DD94 /* Assets.xcassets */; };
+		461ADD642BD2A0AD00C0DD94 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 461ADD632BD2A0AD00C0DD94 /* Preview Assets.xcassets */; };
+		461ADD6E2BD2A0AE00C0DD94 /* SecretariTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 461ADD6D2BD2A0AE00C0DD94 /* SecretariTests.swift */; };
+		461ADD782BD2A0AE00C0DD94 /* SecretariUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 461ADD772BD2A0AE00C0DD94 /* SecretariUITests.swift */; };
+		461ADD7A2BD2A0AE00C0DD94 /* SecretariUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 461ADD792BD2A0AE00C0DD94 /* SecretariUITestsLaunchTests.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		461ADD6A2BD2A0AE00C0DD94 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 461ADD4F2BD2A0AC00C0DD94 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 461ADD562BD2A0AC00C0DD94;
+			remoteInfo = Secretari;
+		};
+		461ADD742BD2A0AE00C0DD94 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 461ADD4F2BD2A0AC00C0DD94 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 461ADD562BD2A0AC00C0DD94;
+			remoteInfo = Secretari;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		461ADD572BD2A0AC00C0DD94 /* Secretari.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Secretari.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		461ADD5A2BD2A0AC00C0DD94 /* SecretariApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecretariApp.swift; sourceTree = "<group>"; };
+		461ADD5C2BD2A0AC00C0DD94 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		461ADD5E2BD2A0AC00C0DD94 /* Item.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Item.swift; sourceTree = "<group>"; };
+		461ADD602BD2A0AD00C0DD94 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		461ADD632BD2A0AD00C0DD94 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		461ADD692BD2A0AE00C0DD94 /* SecretariTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SecretariTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		461ADD6D2BD2A0AE00C0DD94 /* SecretariTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecretariTests.swift; sourceTree = "<group>"; };
+		461ADD732BD2A0AE00C0DD94 /* SecretariUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SecretariUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		461ADD772BD2A0AE00C0DD94 /* SecretariUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecretariUITests.swift; sourceTree = "<group>"; };
+		461ADD792BD2A0AE00C0DD94 /* SecretariUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecretariUITestsLaunchTests.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		461ADD542BD2A0AC00C0DD94 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		461ADD662BD2A0AE00C0DD94 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		461ADD702BD2A0AE00C0DD94 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		461ADD4E2BD2A0AC00C0DD94 = {
+			isa = PBXGroup;
+			children = (
+				461ADD592BD2A0AC00C0DD94 /* Secretari */,
+				461ADD6C2BD2A0AE00C0DD94 /* SecretariTests */,
+				461ADD762BD2A0AE00C0DD94 /* SecretariUITests */,
+				461ADD582BD2A0AC00C0DD94 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		461ADD582BD2A0AC00C0DD94 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				461ADD572BD2A0AC00C0DD94 /* Secretari.app */,
+				461ADD692BD2A0AE00C0DD94 /* SecretariTests.xctest */,
+				461ADD732BD2A0AE00C0DD94 /* SecretariUITests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		461ADD592BD2A0AC00C0DD94 /* Secretari */ = {
+			isa = PBXGroup;
+			children = (
+				461ADD5A2BD2A0AC00C0DD94 /* SecretariApp.swift */,
+				461ADD5C2BD2A0AC00C0DD94 /* ContentView.swift */,
+				461ADD5E2BD2A0AC00C0DD94 /* Item.swift */,
+				461ADD602BD2A0AD00C0DD94 /* Assets.xcassets */,
+				461ADD622BD2A0AD00C0DD94 /* Preview Content */,
+			);
+			path = Secretari;
+			sourceTree = "<group>";
+		};
+		461ADD622BD2A0AD00C0DD94 /* Preview Content */ = {
+			isa = PBXGroup;
+			children = (
+				461ADD632BD2A0AD00C0DD94 /* Preview Assets.xcassets */,
+			);
+			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		461ADD6C2BD2A0AE00C0DD94 /* SecretariTests */ = {
+			isa = PBXGroup;
+			children = (
+				461ADD6D2BD2A0AE00C0DD94 /* SecretariTests.swift */,
+			);
+			path = SecretariTests;
+			sourceTree = "<group>";
+		};
+		461ADD762BD2A0AE00C0DD94 /* SecretariUITests */ = {
+			isa = PBXGroup;
+			children = (
+				461ADD772BD2A0AE00C0DD94 /* SecretariUITests.swift */,
+				461ADD792BD2A0AE00C0DD94 /* SecretariUITestsLaunchTests.swift */,
+			);
+			path = SecretariUITests;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		461ADD562BD2A0AC00C0DD94 /* Secretari */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 461ADD7D2BD2A0AE00C0DD94 /* Build configuration list for PBXNativeTarget "Secretari" */;
+			buildPhases = (
+				461ADD532BD2A0AC00C0DD94 /* Sources */,
+				461ADD542BD2A0AC00C0DD94 /* Frameworks */,
+				461ADD552BD2A0AC00C0DD94 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Secretari;
+			productName = Secretari;
+			productReference = 461ADD572BD2A0AC00C0DD94 /* Secretari.app */;
+			productType = "com.apple.product-type.application";
+		};
+		461ADD682BD2A0AE00C0DD94 /* SecretariTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 461ADD802BD2A0AE00C0DD94 /* Build configuration list for PBXNativeTarget "SecretariTests" */;
+			buildPhases = (
+				461ADD652BD2A0AE00C0DD94 /* Sources */,
+				461ADD662BD2A0AE00C0DD94 /* Frameworks */,
+				461ADD672BD2A0AE00C0DD94 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				461ADD6B2BD2A0AE00C0DD94 /* PBXTargetDependency */,
+			);
+			name = SecretariTests;
+			productName = SecretariTests;
+			productReference = 461ADD692BD2A0AE00C0DD94 /* SecretariTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		461ADD722BD2A0AE00C0DD94 /* SecretariUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 461ADD832BD2A0AE00C0DD94 /* Build configuration list for PBXNativeTarget "SecretariUITests" */;
+			buildPhases = (
+				461ADD6F2BD2A0AE00C0DD94 /* Sources */,
+				461ADD702BD2A0AE00C0DD94 /* Frameworks */,
+				461ADD712BD2A0AE00C0DD94 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				461ADD752BD2A0AE00C0DD94 /* PBXTargetDependency */,
+			);
+			name = SecretariUITests;
+			productName = SecretariUITests;
+			productReference = 461ADD732BD2A0AE00C0DD94 /* SecretariUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		461ADD4F2BD2A0AC00C0DD94 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1530;
+				LastUpgradeCheck = 1530;
+				TargetAttributes = {
+					461ADD562BD2A0AC00C0DD94 = {
+						CreatedOnToolsVersion = 15.3;
+					};
+					461ADD682BD2A0AE00C0DD94 = {
+						CreatedOnToolsVersion = 15.3;
+						TestTargetID = 461ADD562BD2A0AC00C0DD94;
+					};
+					461ADD722BD2A0AE00C0DD94 = {
+						CreatedOnToolsVersion = 15.3;
+						TestTargetID = 461ADD562BD2A0AC00C0DD94;
+					};
+				};
+			};
+			buildConfigurationList = 461ADD522BD2A0AC00C0DD94 /* Build configuration list for PBXProject "Secretari" */;
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 461ADD4E2BD2A0AC00C0DD94;
+			productRefGroup = 461ADD582BD2A0AC00C0DD94 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				461ADD562BD2A0AC00C0DD94 /* Secretari */,
+				461ADD682BD2A0AE00C0DD94 /* SecretariTests */,
+				461ADD722BD2A0AE00C0DD94 /* SecretariUITests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		461ADD552BD2A0AC00C0DD94 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				461ADD642BD2A0AD00C0DD94 /* Preview Assets.xcassets in Resources */,
+				461ADD612BD2A0AD00C0DD94 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		461ADD672BD2A0AE00C0DD94 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		461ADD712BD2A0AE00C0DD94 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		461ADD532BD2A0AC00C0DD94 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				461ADD5D2BD2A0AC00C0DD94 /* ContentView.swift in Sources */,
+				461ADD5F2BD2A0AC00C0DD94 /* Item.swift in Sources */,
+				461ADD5B2BD2A0AC00C0DD94 /* SecretariApp.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		461ADD652BD2A0AE00C0DD94 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				461ADD6E2BD2A0AE00C0DD94 /* SecretariTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		461ADD6F2BD2A0AE00C0DD94 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				461ADD782BD2A0AE00C0DD94 /* SecretariUITests.swift in Sources */,
+				461ADD7A2BD2A0AE00C0DD94 /* SecretariUITestsLaunchTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		461ADD6B2BD2A0AE00C0DD94 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 461ADD562BD2A0AC00C0DD94 /* Secretari */;
+			targetProxy = 461ADD6A2BD2A0AE00C0DD94 /* PBXContainerItemProxy */;
+		};
+		461ADD752BD2A0AE00C0DD94 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 461ADD562BD2A0AC00C0DD94 /* Secretari */;
+			targetProxy = 461ADD742BD2A0AE00C0DD94 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		461ADD7B2BD2A0AE00C0DD94 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.4;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		461ADD7C2BD2A0AE00C0DD94 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.4;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		461ADD7E2BD2A0AE00C0DD94 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"Secretari/Preview Content\"";
+				DEVELOPMENT_TEAM = 96LBXG78A7;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = Leither.uk.Secretari;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		461ADD7F2BD2A0AE00C0DD94 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"Secretari/Preview Content\"";
+				DEVELOPMENT_TEAM = 96LBXG78A7;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = Leither.uk.Secretari;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		461ADD812BD2A0AE00C0DD94 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 96LBXG78A7;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.4;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = Leither.uk.SecretariTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Secretari.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Secretari";
+			};
+			name = Debug;
+		};
+		461ADD822BD2A0AE00C0DD94 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 96LBXG78A7;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.4;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = Leither.uk.SecretariTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Secretari.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Secretari";
+			};
+			name = Release;
+		};
+		461ADD842BD2A0AE00C0DD94 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 96LBXG78A7;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = Leither.uk.SecretariUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = Secretari;
+			};
+			name = Debug;
+		};
+		461ADD852BD2A0AE00C0DD94 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 96LBXG78A7;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = Leither.uk.SecretariUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = Secretari;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		461ADD522BD2A0AC00C0DD94 /* Build configuration list for PBXProject "Secretari" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				461ADD7B2BD2A0AE00C0DD94 /* Debug */,
+				461ADD7C2BD2A0AE00C0DD94 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		461ADD7D2BD2A0AE00C0DD94 /* Build configuration list for PBXNativeTarget "Secretari" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				461ADD7E2BD2A0AE00C0DD94 /* Debug */,
+				461ADD7F2BD2A0AE00C0DD94 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		461ADD802BD2A0AE00C0DD94 /* Build configuration list for PBXNativeTarget "SecretariTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				461ADD812BD2A0AE00C0DD94 /* Debug */,
+				461ADD822BD2A0AE00C0DD94 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		461ADD832BD2A0AE00C0DD94 /* Build configuration list for PBXNativeTarget "SecretariUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				461ADD842BD2A0AE00C0DD94 /* Debug */,
+				461ADD852BD2A0AE00C0DD94 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 461ADD4F2BD2A0AC00C0DD94 /* Project object */;
+}
