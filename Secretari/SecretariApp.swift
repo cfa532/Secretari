@@ -10,8 +10,10 @@ import SwiftData
 
 @main
 struct SecretariApp: App {
+    @State private var errorWrapper: ErrorWrapper?
+
     var sharedModelContainer: ModelContainer = {
-        let schema = Schema([
+        let schema = Schema([AudioRecord.self, AppSettings.self,
             Item.self,
         ])
         let modelConfiguration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: false)
@@ -25,7 +27,16 @@ struct SecretariApp: App {
 
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            TranscriptView(errorWrapper: $errorWrapper)
+                .task {
+                    guard let appSupportDir = FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask).last else { return }
+                    print(appSupportDir)
+                }
+                .sheet(item: $errorWrapper) {
+//                     var records = AudioRecord.sampleData
+                } content: { wrapper in
+                    ErrorView(errorWrapper: wrapper)
+                }
         }
         .modelContainer(sharedModelContainer)
     }

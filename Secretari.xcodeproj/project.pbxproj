@@ -15,6 +15,20 @@
 		461ADD6E2BD2A0AE00C0DD94 /* SecretariTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 461ADD6D2BD2A0AE00C0DD94 /* SecretariTests.swift */; };
 		461ADD782BD2A0AE00C0DD94 /* SecretariUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 461ADD772BD2A0AE00C0DD94 /* SecretariUITests.swift */; };
 		461ADD7A2BD2A0AE00C0DD94 /* SecretariUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 461ADD792BD2A0AE00C0DD94 /* SecretariUITestsLaunchTests.swift */; };
+		461ADD892BD2A11700C0DD94 /* AudioRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = 461ADD882BD2A11700C0DD94 /* AudioRecord.swift */; };
+		461ADD8B2BD2A40500C0DD94 /* ErrorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 461ADD8A2BD2A40500C0DD94 /* ErrorView.swift */; };
+		461ADD8D2BD2A42000C0DD94 /* ErrorWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 461ADD8C2BD2A42000C0DD94 /* ErrorWrapper.swift */; };
+		461ADD8F2BD2A49900C0DD94 /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 461ADD8E2BD2A49900C0DD94 /* Launch Screen.storyboard */; };
+		461ADD912BD2A4F000C0DD94 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 461ADD902BD2A4F000C0DD94 /* SettingsView.swift */; };
+		461ADD932BD2A51300C0DD94 /* AppSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 461ADD922BD2A51300C0DD94 /* AppSettings.swift */; };
+		461ADD992BD2B5E400C0DD94 /* SpeechRecognizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 461ADD982BD2B5E400C0DD94 /* SpeechRecognizer.swift */; };
+		461ADD9B2BD2B5ED00C0DD94 /* Websocket.swift in Sources */ = {isa = PBXBuildFile; fileRef = 461ADD9A2BD2B5ED00C0DD94 /* Websocket.swift */; };
+		461ADD9D2BD2B5F400C0DD94 /* RecorderTimer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 461ADD9C2BD2B5F400C0DD94 /* RecorderTimer.swift */; };
+		461ADD9F2BD2B63C00C0DD94 /* RecorderButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 461ADD9E2BD2B63C00C0DD94 /* RecorderButton.swift */; };
+		461ADDA12BD2B6BD00C0DD94 /* RecognizerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 461ADDA02BD2B6BC00C0DD94 /* RecognizerView.swift */; };
+		461ADDA32BD2B6C100C0DD94 /* StreamingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 461ADDA22BD2B6C100C0DD94 /* StreamingView.swift */; };
+		461ADDA52BD2B6E700C0DD94 /* TranscriptView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 461ADDA42BD2B6E700C0DD94 /* TranscriptView.swift */; };
+		461ADDA72BD2B6EB00C0DD94 /* DetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 461ADDA62BD2B6EB00C0DD94 /* DetailView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -46,6 +60,21 @@
 		461ADD732BD2A0AE00C0DD94 /* SecretariUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SecretariUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		461ADD772BD2A0AE00C0DD94 /* SecretariUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecretariUITests.swift; sourceTree = "<group>"; };
 		461ADD792BD2A0AE00C0DD94 /* SecretariUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecretariUITestsLaunchTests.swift; sourceTree = "<group>"; };
+		461ADD882BD2A11700C0DD94 /* AudioRecord.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AudioRecord.swift; sourceTree = "<group>"; };
+		461ADD8A2BD2A40500C0DD94 /* ErrorView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ErrorView.swift; sourceTree = "<group>"; };
+		461ADD8C2BD2A42000C0DD94 /* ErrorWrapper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ErrorWrapper.swift; sourceTree = "<group>"; };
+		461ADD8E2BD2A49900C0DD94 /* Launch Screen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = "Launch Screen.storyboard"; sourceTree = "<group>"; };
+		461ADD902BD2A4F000C0DD94 /* SettingsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		461ADD922BD2A51300C0DD94 /* AppSettings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppSettings.swift; sourceTree = "<group>"; };
+		461ADD982BD2B5E400C0DD94 /* SpeechRecognizer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SpeechRecognizer.swift; sourceTree = "<group>"; };
+		461ADD9A2BD2B5ED00C0DD94 /* Websocket.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Websocket.swift; sourceTree = "<group>"; };
+		461ADD9C2BD2B5F400C0DD94 /* RecorderTimer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RecorderTimer.swift; sourceTree = "<group>"; };
+		461ADD9E2BD2B63C00C0DD94 /* RecorderButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RecorderButton.swift; sourceTree = "<group>"; };
+		461ADDA02BD2B6BC00C0DD94 /* RecognizerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RecognizerView.swift; sourceTree = "<group>"; };
+		461ADDA22BD2B6C100C0DD94 /* StreamingView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StreamingView.swift; sourceTree = "<group>"; };
+		461ADDA42BD2B6E700C0DD94 /* TranscriptView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TranscriptView.swift; sourceTree = "<group>"; };
+		461ADDA62BD2B6EB00C0DD94 /* DetailView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DetailView.swift; sourceTree = "<group>"; };
+		461ADDA82BD2B96000C0DD94 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -96,8 +125,11 @@
 		461ADD592BD2A0AC00C0DD94 /* Secretari */ = {
 			isa = PBXGroup;
 			children = (
+				461ADD8E2BD2A49900C0DD94 /* Launch Screen.storyboard */,
+				461ADDA82BD2B96000C0DD94 /* Info.plist */,
+				461ADD872BD2A0D600C0DD94 /* View */,
+				461ADD862BD2A0CE00C0DD94 /* Model */,
 				461ADD5A2BD2A0AC00C0DD94 /* SecretariApp.swift */,
-				461ADD5C2BD2A0AC00C0DD94 /* ContentView.swift */,
 				461ADD5E2BD2A0AC00C0DD94 /* Item.swift */,
 				461ADD602BD2A0AD00C0DD94 /* Assets.xcassets */,
 				461ADD622BD2A0AD00C0DD94 /* Preview Content */,
@@ -128,6 +160,34 @@
 				461ADD792BD2A0AE00C0DD94 /* SecretariUITestsLaunchTests.swift */,
 			);
 			path = SecretariUITests;
+			sourceTree = "<group>";
+		};
+		461ADD862BD2A0CE00C0DD94 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				461ADD982BD2B5E400C0DD94 /* SpeechRecognizer.swift */,
+				461ADD9A2BD2B5ED00C0DD94 /* Websocket.swift */,
+				461ADD9C2BD2B5F400C0DD94 /* RecorderTimer.swift */,
+				461ADD922BD2A51300C0DD94 /* AppSettings.swift */,
+				461ADD8C2BD2A42000C0DD94 /* ErrorWrapper.swift */,
+				461ADD882BD2A11700C0DD94 /* AudioRecord.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		461ADD872BD2A0D600C0DD94 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				461ADD5C2BD2A0AC00C0DD94 /* ContentView.swift */,
+				461ADDA42BD2B6E700C0DD94 /* TranscriptView.swift */,
+				461ADD902BD2A4F000C0DD94 /* SettingsView.swift */,
+				461ADD9E2BD2B63C00C0DD94 /* RecorderButton.swift */,
+				461ADDA62BD2B6EB00C0DD94 /* DetailView.swift */,
+				461ADDA22BD2B6C100C0DD94 /* StreamingView.swift */,
+				461ADDA02BD2B6BC00C0DD94 /* RecognizerView.swift */,
+				461ADD8A2BD2A40500C0DD94 /* ErrorView.swift */,
+			);
+			path = View;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -234,6 +294,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				461ADD8F2BD2A49900C0DD94 /* Launch Screen.storyboard in Resources */,
 				461ADD642BD2A0AD00C0DD94 /* Preview Assets.xcassets in Resources */,
 				461ADD612BD2A0AD00C0DD94 /* Assets.xcassets in Resources */,
 			);
@@ -260,9 +321,22 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				461ADD912BD2A4F000C0DD94 /* SettingsView.swift in Sources */,
+				461ADD8D2BD2A42000C0DD94 /* ErrorWrapper.swift in Sources */,
+				461ADD8B2BD2A40500C0DD94 /* ErrorView.swift in Sources */,
+				461ADD9D2BD2B5F400C0DD94 /* RecorderTimer.swift in Sources */,
 				461ADD5D2BD2A0AC00C0DD94 /* ContentView.swift in Sources */,
+				461ADDA12BD2B6BD00C0DD94 /* RecognizerView.swift in Sources */,
+				461ADD9F2BD2B63C00C0DD94 /* RecorderButton.swift in Sources */,
+				461ADD892BD2A11700C0DD94 /* AudioRecord.swift in Sources */,
+				461ADD992BD2B5E400C0DD94 /* SpeechRecognizer.swift in Sources */,
+				461ADDA72BD2B6EB00C0DD94 /* DetailView.swift in Sources */,
 				461ADD5F2BD2A0AC00C0DD94 /* Item.swift in Sources */,
+				461ADDA52BD2B6E700C0DD94 /* TranscriptView.swift in Sources */,
+				461ADD9B2BD2B5ED00C0DD94 /* Websocket.swift in Sources */,
+				461ADD932BD2A51300C0DD94 /* AppSettings.swift in Sources */,
 				461ADD5B2BD2A0AC00C0DD94 /* SecretariApp.swift in Sources */,
+				461ADDA32BD2B6C100C0DD94 /* StreamingView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -424,16 +498,21 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_ASSET_PATHS = "\"Secretari/Preview Content\"";
 				DEVELOPMENT_TEAM = 96LBXG78A7;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = Secretari/Info.plist;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.productivity";
+				INFOPLIST_KEY_NSMicrophoneUsageDescription = "Need Microphone to record user speech";
+				INFOPLIST_KEY_NSSpeechRecognitionUsageDescription = "Need to create transcript of user speech";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UILaunchStoryboardName = "Launch Screen.storyboard";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -453,22 +532,27 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_ASSET_PATHS = "\"Secretari/Preview Content\"";
 				DEVELOPMENT_TEAM = 96LBXG78A7;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = Secretari/Info.plist;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.productivity";
+				INFOPLIST_KEY_NSMicrophoneUsageDescription = "Need Microphone to record user speech";
+				INFOPLIST_KEY_NSSpeechRecognitionUsageDescription = "Need to create transcript of user speech";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UILaunchStoryboardName = "Launch Screen.storyboard";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = Leither.uk.Secretari;
+				PRODUCT_BUNDLE_IDENTIFIER = secretari.leither.uk;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
