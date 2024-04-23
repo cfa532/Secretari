@@ -186,10 +186,7 @@
 				461ADD902BD2A4F000C0DD94 /* SettingsView.swift */,
 				461ADD9E2BD2B63C00C0DD94 /* RecorderButton.swift */,
 				461ADDA62BD2B6EB00C0DD94 /* DetailView.swift */,
-<<<<<<< HEAD
-=======
-				461ADD8E2BD2A49900C0DD94 /* Launch Screen.storyboard */,
->>>>>>> main
+
 				461ADDA22BD2B6C100C0DD94 /* StreamingView.swift */,
 				461ADDA02BD2B6BC00C0DD94 /* RecognizerView.swift */,
 				461ADD8A2BD2A40500C0DD94 /* ErrorView.swift */,
