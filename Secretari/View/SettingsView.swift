@@ -25,34 +25,49 @@ struct SettingsView: View {
         }
     }
     @State private var selectedLocale: RecognizerLocals = RecognizerLocals.Chinese
+    @State private var countDown = 0
+    @State private var opacity = 1.0
+    @State private var timer: Timer?
     
     var body: some View {
-        NavigationStack {
+        NavigationView {
             Form {
-                VStack(alignment: .leading) {
-                    Text("Prompt to AI:")
-                        .font(.headline)
-                    TextEditor(text: $setting.prompt)
-                        .frame(height: 80, alignment: .topLeading)
-                }
-                VStack(alignment: .leading) {
-                    Text("Webservice URL:")
-                        .font(.headline)
-                    TextField("URL", text: $setting.wssURL)
-                }
-                HStack{
-                    Picker("Language to recognize:", selection: $selectedLocale) {
+                Section(header: Text("Parameters")) {
+                    HStack {
+                        Text("Recording DB Level:")
+                        Spacer()
+                        TextField(setting.audioSilentDB, text: $setting.audioSilentDB)
+                            .frame(width: 80)
+                            .foregroundColor(.secondary)
+                            .multilineTextAlignment(.trailing)
+                    }
+                    Picker("Language:", selection: $selectedLocale) {
                         ForEach(RecognizerLocals.allCases, id:\.self) { option in
                             Text(String(describing: option))
                         }
-                    }.font(.headline)
+                    }
                 }
-                HStack {
-                    Text("Audio thresh hold:")
-                        .font(.headline)
-                    TextField("Min Audio Level", text: $setting.audioSilentDB)
+                Section(header: Text("advanced")) {
+                    TextField(setting.prompt, text: $setting.prompt, axis: .vertical)
+                        .lineLimit(2...8)
+                    TextField(setting.wssURL, text: $setting.wssURL)
+                }
+                .opacity(self.opacity)
+                .onTapGesture {
+                    self.countDown += 1
+                    if timer==nil, self.opacity>0 {
+                        timer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: false, block: {  _ in
+                            if self.countDown > 5 {
+                                self.opacity = 1.0
+                                self.countDown = 0
+                                timer?.invalidate()
+                            }
+                        })
+                    }
                 }
             }
+            .navigationTitle("Settings")
+            .navigationBarTitleDisplayMode(.inline)
             .onAppear(perform: {
                 guard !settings.isEmpty else { return }
                 setting = settings[0]
@@ -64,8 +79,6 @@ struct SettingsView: View {
                 settings[0].speechLocale = selectedLocale.rawValue
             })
         }
-        .navigationTitle("Settings")
-        .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             ToolbarItemGroup(placement: .bottomBar) {
                 Button(action: {
