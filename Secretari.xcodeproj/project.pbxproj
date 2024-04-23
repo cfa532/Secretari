@@ -125,7 +125,10 @@
 		461ADD592BD2A0AC00C0DD94 /* Secretari */ = {
 			isa = PBXGroup;
 			children = (
+<<<<<<< HEAD
 				461ADD8E2BD2A49900C0DD94 /* Launch Screen.storyboard */,
+=======
+>>>>>>> main
 				461ADDA82BD2B96000C0DD94 /* Info.plist */,
 				461ADD872BD2A0D600C0DD94 /* View */,
 				461ADD862BD2A0CE00C0DD94 /* Model */,
@@ -183,6 +186,10 @@
 				461ADD902BD2A4F000C0DD94 /* SettingsView.swift */,
 				461ADD9E2BD2B63C00C0DD94 /* RecorderButton.swift */,
 				461ADDA62BD2B6EB00C0DD94 /* DetailView.swift */,
+<<<<<<< HEAD
+=======
+				461ADD8E2BD2A49900C0DD94 /* Launch Screen.storyboard */,
+>>>>>>> main
 				461ADDA22BD2B6C100C0DD94 /* StreamingView.swift */,
 				461ADDA02BD2B6BC00C0DD94 /* RecognizerView.swift */,
 				461ADD8A2BD2A40500C0DD94 /* ErrorView.swift */,

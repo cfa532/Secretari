@@ -33,7 +33,11 @@ struct SecretariApp: App {
                     print(appSupportDir)
                 }
                 .sheet(item: $errorWrapper) {
+<<<<<<< HEAD
 //                     var records = AudioRecord.sampleData
+=======
+                    // store.records = AudioRecord.sampleData
+>>>>>>> main
                 } content: { wrapper in
                     ErrorView(errorWrapper: wrapper)
                 }

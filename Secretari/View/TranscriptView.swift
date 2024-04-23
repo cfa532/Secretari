@@ -59,6 +59,10 @@ struct TranscriptView: View {
                                 .font(.subheadline)
                                 .lineLimit(4)
                         }
+<<<<<<< HEAD
+=======
+//                        Divider()
+>>>>>>> main
                     }
                 }
                 .overlay(content: {
@@ -78,7 +82,11 @@ struct TranscriptView: View {
                             Image(systemName: "gearshape")
                                 .resizable()
                                 .frame(width: 24, height: 24)
+<<<<<<< HEAD
                                 .foregroundColor(.primary)
+=======
+                                .foregroundColor(.black)
+>>>>>>> main
                         }
                     })
                 }
@@ -161,10 +169,18 @@ extension TranscriptView: TimerDelegate {
 }
 
 #Preview {
+<<<<<<< HEAD
     let container = try! ModelContainer(for: AudioRecord.self, AppSettings.self, configurations: ModelConfiguration(isStoredInMemoryOnly: true))
     container.mainContext.insert(AudioRecord.sampleData[0])
     return TranscriptView(errorWrapper: .constant(.emptyError))
         .modelContainer(container)
 //    TranscriptView(errorWrapper: .constant(.emptyError))
 //        .modelContainer(for: [AudioRecord.self, AppSettings.self], inMemory: true)
+=======
+//    let container = try! ModelContainer(for: AudioRecord.self, AppSettings.self, configurations: ModelConfiguration(isStoredInMemoryOnly: true))
+//    return TranscriptView(errorWrapper: .constant(.emptyError))
+//        .modelContainer(container)
+    TranscriptView(errorWrapper: .constant(.emptyError))
+        .modelContainer(for: [AudioRecord.self, AppSettings.self], inMemory: true)
+>>>>>>> main
 }

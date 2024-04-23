@@ -25,6 +25,7 @@ struct SettingsView: View {
         }
     }
     @State private var selectedLocale: RecognizerLocals = RecognizerLocals.Chinese
+<<<<<<< HEAD
     @State private var countDown = 0
     @State private var opacity = 1.0
     @State private var timer: Timer?
@@ -68,6 +69,36 @@ struct SettingsView: View {
             }
             .navigationTitle("Settings")
             .navigationBarTitleDisplayMode(.inline)
+=======
+    
+    var body: some View {
+        NavigationStack {
+            Form {
+                VStack(alignment: .leading) {
+                    Text("Prompt to AI:")
+                        .font(.headline)
+                    TextEditor(text: $setting.prompt)
+                        .frame(height: 80, alignment: .topLeading)
+                }
+                VStack(alignment: .leading) {
+                    Text("Webservice URL:")
+                        .font(.headline)
+                    TextField("URL", text: $setting.wssURL)
+                }
+                HStack{
+                    Picker("Language to recognize:", selection: $selectedLocale) {
+                        ForEach(RecognizerLocals.allCases, id:\.self) { option in
+                            Text(String(describing: option))
+                        }
+                    }.font(.headline)
+                }
+                HStack {
+                    Text("Audio thresh hold:")
+                        .font(.headline)
+                    TextField("Min Audio Level", text: $setting.audioSilentDB)
+                }
+            }
+>>>>>>> main
             .onAppear(perform: {
                 guard !settings.isEmpty else { return }
                 setting = settings[0]
@@ -79,6 +110,11 @@ struct SettingsView: View {
                 settings[0].speechLocale = selectedLocale.rawValue
             })
         }
+<<<<<<< HEAD
+=======
+        .navigationTitle("Settings")
+        .navigationBarTitleDisplayMode(.inline)
+>>>>>>> main
         .toolbar {
             ToolbarItemGroup(placement: .bottomBar) {
                 Button(action: {
