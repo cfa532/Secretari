@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		461ADD5B2BD2A0AC00C0DD94 /* SecretariApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 461ADD5A2BD2A0AC00C0DD94 /* SecretariApp.swift */; };
-		461ADD5D2BD2A0AC00C0DD94 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 461ADD5C2BD2A0AC00C0DD94 /* ContentView.swift */; };
 		461ADD5F2BD2A0AC00C0DD94 /* Item.swift in Sources */ = {isa = PBXBuildFile; fileRef = 461ADD5E2BD2A0AC00C0DD94 /* Item.swift */; };
 		461ADD612BD2A0AD00C0DD94 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 461ADD602BD2A0AD00C0DD94 /* Assets.xcassets */; };
 		461ADD642BD2A0AD00C0DD94 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 461ADD632BD2A0AD00C0DD94 /* Preview Assets.xcassets */; };
@@ -51,7 +50,6 @@
 /* Begin PBXFileReference section */
 		461ADD572BD2A0AC00C0DD94 /* Secretari.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Secretari.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		461ADD5A2BD2A0AC00C0DD94 /* SecretariApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecretariApp.swift; sourceTree = "<group>"; };
-		461ADD5C2BD2A0AC00C0DD94 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		461ADD5E2BD2A0AC00C0DD94 /* Item.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Item.swift; sourceTree = "<group>"; };
 		461ADD602BD2A0AD00C0DD94 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		461ADD632BD2A0AD00C0DD94 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
@@ -178,7 +176,6 @@
 		461ADD872BD2A0D600C0DD94 /* View */ = {
 			isa = PBXGroup;
 			children = (
-				461ADD5C2BD2A0AC00C0DD94 /* ContentView.swift */,
 				461ADDA42BD2B6E700C0DD94 /* TranscriptView.swift */,
 				461ADD902BD2A4F000C0DD94 /* SettingsView.swift */,
 				461ADD9E2BD2B63C00C0DD94 /* RecorderButton.swift */,
@@ -325,7 +322,6 @@
 				461ADD8D2BD2A42000C0DD94 /* ErrorWrapper.swift in Sources */,
 				461ADD8B2BD2A40500C0DD94 /* ErrorView.swift in Sources */,
 				461ADD9D2BD2B5F400C0DD94 /* RecorderTimer.swift in Sources */,
-				461ADD5D2BD2A0AC00C0DD94 /* ContentView.swift in Sources */,
 				461ADDA12BD2B6BD00C0DD94 /* RecognizerView.swift in Sources */,
 				461ADD9F2BD2B63C00C0DD94 /* RecorderButton.swift in Sources */,
 				461ADD892BD2A11700C0DD94 /* AudioRecord.swift in Sources */,
