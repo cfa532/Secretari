@@ -85,6 +85,12 @@ struct TranscriptView: View {
                 .task {
                     let lc = NSLocale.current.language.languageCode?.identifier
                     print(lc!)
+                    
+                    let langCode = Bundle.main.preferredLocalizations[0]
+                    let usLocale = Locale(identifier: "zh_CN")
+                    if let languageName = usLocale.localizedString(forLanguageCode: langCode) {
+                        print(languageName)
+                    }
                     if settings.isEmpty {
                         // first run of the App, settings not stored by SwiftData yet.
                         
