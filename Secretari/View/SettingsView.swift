@@ -86,7 +86,16 @@ struct SettingsView: View {
                     settings[0].speechLocale = AppSettings.defaultSettings.speechLocale
                     settings[0].audioSilentDB = AppSettings.defaultSettings.audioSilentDB
                     settings[0].wssURL = AppSettings.defaultSettings.wssURL
-                    selectedLocale = RecognizerLocals.Chinese
+                    
+                    let lc = NSLocale.current.language.languageCode?.identifier
+                    switch lc {
+                    case "en":
+                        selectedLocale = RecognizerLocals.English
+                    case "ja":
+                        selectedLocale = RecognizerLocals.Japanese
+                    default:
+                        selectedLocale = RecognizerLocals.Chinese
+                    }
                 }) {
                     Text("Reset settings").padding(5)
                 }
