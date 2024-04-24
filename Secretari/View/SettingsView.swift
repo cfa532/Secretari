@@ -24,8 +24,8 @@ struct SettingsView: View {
             }
         }
     }
-    @State private var selectedLocale: RecognizerLocale = AppConstants.defaultSettings.speechLocale
-    @State private var selectedPrompt: String = AppConstants.defaultSettings.prompt[AppConstants.defaultSettings.speechLocale]!
+    @State private var selectedLocale: RecognizerLocale = AppConstants.defaultSettings.selectedLocale
+    @State private var selectedPrompt: String = AppConstants.defaultSettings.prompt[AppConstants.defaultSettings.selectedLocale]!
     @State private var countDown = 0
     @State private var opacity = 1.0
     @State private var timer: Timer?
@@ -52,7 +52,7 @@ struct SettingsView: View {
                     }
                 }
                 Section(header: Text("advanced")) {
-                    TextField("", text: $selectedPrompt, axis: .vertical)
+                    TextField(selectedPrompt, text: $selectedPrompt, axis: .vertical)
                         .lineLimit(2...8)
                     TextField(setting.wssURL, text: $setting.wssURL)
                 }
@@ -77,11 +77,11 @@ struct SettingsView: View {
                 setting = settings[0]
                 //                setting.speechLocale = "zh_CN"
                 //                print("seleted lang", setting.speechLocale)
-                selectedLocale = setting.speechLocale
+                selectedLocale = setting.selectedLocale
                 selectedPrompt = setting.prompt[selectedLocale]!
             })
             .onDisappear(perform: {
-                settings[0].speechLocale = selectedLocale
+                settings[0].selectedLocale = selectedLocale
                 settings[0].prompt[selectedLocale] = selectedPrompt
             })
         }
@@ -89,10 +89,10 @@ struct SettingsView: View {
             ToolbarItemGroup(placement: .bottomBar) {
                 Button(action: {
                     settings[0].prompt = AppConstants.defaultSettings.prompt
-                    settings[0].speechLocale = AppConstants.defaultSettings.speechLocale
+                    settings[0].selectedLocale = AppConstants.defaultSettings.selectedLocale
                     settings[0].audioSilentDB = AppConstants.defaultSettings.audioSilentDB
                     settings[0].wssURL = AppConstants.defaultSettings.wssURL
-                    selectedLocale = settings[0].speechLocale
+                    selectedLocale = settings[0].selectedLocale
                 }) {
                     Text("Reset settings").padding(5)
                 }

@@ -13,21 +13,20 @@ final class Settings {
     var prompt: [RecognizerLocale : String]
     var wssURL: String
     var audioSilentDB: String
-    var speechLocale: RecognizerLocale
+    var selectedLocale: RecognizerLocale
     
     init(prompt: [RecognizerLocale : String], wssURL: String, audioSilentDB: String, speechLocale: RecognizerLocale ) {
         self.prompt = prompt
         self.wssURL = wssURL
         self.audioSilentDB = audioSilentDB
-        self.speechLocale = speechLocale
+        self.selectedLocale = speechLocale
     }
 }
 
 enum RecognizerLocale: String, CaseIterable, Codable {
-    case English = "en_US"
-    case Japanese = "ja_JP"
-    case Chinese = "zh_CN"
-//    case ChineseT = "zh_TW"
+    case English = "en"
+    case Japanese = "ja"
+    case Chinese = "zh"
 
     var id: Self { self }
 }

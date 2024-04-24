@@ -26,7 +26,7 @@ struct TranscriptView: View {
                 ScrollView {
                     ScrollViewReader { proxy in
                         
-                        Label(NSLocalizedString("Recognizing...", comment: "") + Localized.LanguageName(settings[0].speechLocale.rawValue), systemImage: "ear.badge.waveform")
+                        Label(NSLocalizedString("Recognizing...", comment: "") + Localized.LanguageName(settings[0].selectedLocale.rawValue), systemImage: "ear.badge.waveform")
                         let message = speechRecognizer.transcript
                         Text(message)
                             .id(message)
@@ -95,7 +95,7 @@ struct TranscriptView: View {
                     if settings.isEmpty {
                         // first run of the App, settings not stored by SwiftData yet.
                         // get system language code
-                        setting.speechLocale = Localized.systemLanguage()
+                        setting.selectedLocale = Localized.systemLanguage()
                         modelContext.insert(setting)
                         try? modelContext.save()
                     }
@@ -119,7 +119,7 @@ struct TranscriptView: View {
                         return SpeechRecognizer.currentLevel < Float(self.settings[0].audioSilentDB)! ? true : false
                     }
                     Task { @MainActor in
-                        await self.speechRecognizer.setup(locale: settings[0].speechLocale.rawValue)
+                        await self.speechRecognizer.setup(locale: settings[0].selectedLocale.rawValue)
                         speechRecognizer.startTranscribing()
                     }
                 } else {

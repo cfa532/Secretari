@@ -21,13 +21,18 @@ struct Localized {
     
     // language in iPhone settings
     static func systemLanguage() -> RecognizerLocale {
-        switch NSLocale.current.language.languageCode?.identifier {
-        case "zh":
-            return RecognizerLocale.Chinese
-        case "ja":
-            return RecognizerLocale.Japanese
-        default:
+        if let locale = RecognizerLocale(rawValue: String(NSLocale.current.identifier.prefix(2))) { // get 2-letter language code, cn, en, ja...
+            return locale
+        } else {
             return RecognizerLocale.English
         }
+//        switch NSLocale.current.language.languageCode?.identifier {
+//        case "zh":
+//            return RecognizerLocale.Chinese
+//        case "ja":
+//            return RecognizerLocale.Japanese
+//        default:
+//            return RecognizerLocale.English
+//        }
     }
 }
