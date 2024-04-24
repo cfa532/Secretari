@@ -24,7 +24,8 @@ struct SettingsView: View {
             }
         }
     }
-    @State private var selectedLocale: RecognizerLocals = AppConstants.defaultSettings.speechLocale
+    @State private var selectedLocale: RecognizerLocale = AppConstants.defaultSettings.speechLocale
+    @State private var selectedPrompt: String = AppConstants.defaultSettings.prompt[AppConstants.defaultSettings.speechLocale]!
     @State private var countDown = 0
     @State private var opacity = 1.0
     @State private var timer: Timer?
@@ -42,13 +43,16 @@ struct SettingsView: View {
                             .multilineTextAlignment(.trailing)
                     }
                     Picker("Language:", selection: $selectedLocale) {
-                        ForEach(RecognizerLocals.allCases, id:\.self) { option in
+                        ForEach(RecognizerLocale.allCases, id:\.self) { option in
                             Text(String(describing: option))
                         }
                     }
+                    .onChange(of: selectedLocale) {
+                        selectedPrompt = setting.prompt[selectedLocale]!
+                    }
                 }
                 Section(header: Text("advanced")) {
-                    TextField(setting.prompt, text: $setting.prompt, axis: .vertical)
+                    TextField("", text: $selectedPrompt, axis: .vertical)
                         .lineLimit(2...8)
                     TextField(setting.wssURL, text: $setting.wssURL)
                 }
@@ -72,11 +76,13 @@ struct SettingsView: View {
                 guard !settings.isEmpty else { return }
                 setting = settings[0]
                 //                setting.speechLocale = "zh_CN"
-                print(setting.speechLocale)
+                print("seleted lang", setting.speechLocale)
                 selectedLocale = setting.speechLocale
+                selectedPrompt = setting.prompt[selectedLocale]!
             })
             .onDisappear(perform: {
                 settings[0].speechLocale = selectedLocale
+                settings[0].prompt[selectedLocale] = selectedPrompt
             })
         }
         .toolbar {
