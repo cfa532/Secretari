@@ -28,6 +28,9 @@
 		461ADDA32BD2B6C100C0DD94 /* StreamingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 461ADDA22BD2B6C100C0DD94 /* StreamingView.swift */; };
 		461ADDA52BD2B6E700C0DD94 /* TranscriptView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 461ADDA42BD2B6E700C0DD94 /* TranscriptView.swift */; };
 		461ADDA72BD2B6EB00C0DD94 /* DetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 461ADDA62BD2B6EB00C0DD94 /* DetailView.swift */; };
+		46DA71392BD7FB60001A3685 /* NetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46DA71382BD7FB60001A3685 /* NetworkManager.swift */; };
+		46DA713C2BD7FBFB001A3685 /* APError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46DA713A2BD7FBFB001A3685 /* APError.swift */; };
+		46DA713D2BD7FBFB001A3685 /* Alert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46DA713B2BD7FBFB001A3685 /* Alert.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -73,6 +76,9 @@
 		461ADDA42BD2B6E700C0DD94 /* TranscriptView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TranscriptView.swift; sourceTree = "<group>"; };
 		461ADDA62BD2B6EB00C0DD94 /* DetailView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DetailView.swift; sourceTree = "<group>"; };
 		461ADDA82BD2B96000C0DD94 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		46DA71382BD7FB60001A3685 /* NetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkManager.swift; sourceTree = "<group>"; };
+		46DA713A2BD7FBFB001A3685 /* APError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = APError.swift; sourceTree = "<group>"; };
+		46DA713B2BD7FBFB001A3685 /* Alert.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Alert.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -123,6 +129,7 @@
 		461ADD592BD2A0AC00C0DD94 /* Secretari */ = {
 			isa = PBXGroup;
 			children = (
+				46DA71352BD7FB26001A3685 /* Utilities */,
 				461ADD8E2BD2A49900C0DD94 /* Launch Screen.storyboard */,
 				461ADDA82BD2B96000C0DD94 /* Info.plist */,
 				461ADD872BD2A0D600C0DD94 /* View */,
@@ -185,6 +192,24 @@
 				461ADD8A2BD2A40500C0DD94 /* ErrorView.swift */,
 			);
 			path = View;
+			sourceTree = "<group>";
+		};
+		46DA71352BD7FB26001A3685 /* Utilities */ = {
+			isa = PBXGroup;
+			children = (
+				46DA71362BD7FB32001A3685 /* Alerts */,
+				46DA71382BD7FB60001A3685 /* NetworkManager.swift */,
+			);
+			path = Utilities;
+			sourceTree = "<group>";
+		};
+		46DA71362BD7FB32001A3685 /* Alerts */ = {
+			isa = PBXGroup;
+			children = (
+				46DA713B2BD7FBFB001A3685 /* Alert.swift */,
+				46DA713A2BD7FBFB001A3685 /* APError.swift */,
+			);
+			path = Alerts;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -268,11 +293,14 @@
 			};
 			buildConfigurationList = 461ADD522BD2A0AC00C0DD94 /* Build configuration list for PBXProject "Secretari" */;
 			compatibilityVersion = "Xcode 14.0";
-			developmentRegion = en;
+			developmentRegion = "zh-Hans";
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
 				Base,
+				"zh-Hant",
+				ja,
+				"zh-Hans",
 			);
 			mainGroup = 461ADD4E2BD2A0AC00C0DD94;
 			productRefGroup = 461ADD582BD2A0AC00C0DD94 /* Products */;
@@ -318,13 +346,16 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				46DA713D2BD7FBFB001A3685 /* Alert.swift in Sources */,
 				461ADD912BD2A4F000C0DD94 /* SettingsView.swift in Sources */,
 				461ADD8D2BD2A42000C0DD94 /* ErrorWrapper.swift in Sources */,
 				461ADD8B2BD2A40500C0DD94 /* ErrorView.swift in Sources */,
 				461ADD9D2BD2B5F400C0DD94 /* RecorderTimer.swift in Sources */,
+				46DA71392BD7FB60001A3685 /* NetworkManager.swift in Sources */,
 				461ADDA12BD2B6BD00C0DD94 /* RecognizerView.swift in Sources */,
 				461ADD9F2BD2B63C00C0DD94 /* RecorderButton.swift in Sources */,
 				461ADD892BD2A11700C0DD94 /* AudioRecord.swift in Sources */,
+				46DA713C2BD7FBFB001A3685 /* APError.swift in Sources */,
 				461ADD992BD2B5E400C0DD94 /* SpeechRecognizer.swift in Sources */,
 				461ADDA72BD2B6EB00C0DD94 /* DetailView.swift in Sources */,
 				461ADD5F2BD2A0AC00C0DD94 /* Item.swift in Sources */,
@@ -494,7 +525,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 3;
+				CURRENT_PROJECT_VERSION = 4;
 				DEVELOPMENT_ASSET_PATHS = "\"Secretari/Preview Content\"";
 				DEVELOPMENT_TEAM = 96LBXG78A7;
 				ENABLE_PREVIEWS = YES;
@@ -528,7 +559,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 3;
+				CURRENT_PROJECT_VERSION = 4;
 				DEVELOPMENT_ASSET_PATHS = "\"Secretari/Preview Content\"";
 				DEVELOPMENT_TEAM = 96LBXG78A7;
 				ENABLE_PREVIEWS = YES;

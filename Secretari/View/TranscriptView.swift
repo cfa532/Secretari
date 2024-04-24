@@ -14,6 +14,7 @@ struct TranscriptView: View {
     @Query private var settings: [AppSettings]
     
     @State private var isRecording = false
+    @State private var curRecord: AudioRecord?    // create an empty record
     @Binding var errorWrapper: ErrorWrapper?
     @StateObject private var websocket = Websocket()
     @StateObject private var recorderTimer = RecorderTimer()
@@ -83,22 +84,19 @@ struct TranscriptView: View {
                     })
                 }
                 .task {
-                    let lc = NSLocale.current.language.languageCode?.identifier
-                    print(lc!)
-                    
                     let langCode = Bundle.main.preferredLocalizations[0]
                     let usLocale = Locale(identifier: "zh_CN")
                     if let languageName = usLocale.localizedString(forLanguageCode: langCode) {
                         print(languageName)
                     }
+                    let lc = NSLocale.current.language.languageCode?.identifier
+                    let setting = AppSettings.defaultSettings
                     if settings.isEmpty {
                         // first run of the App, settings not stored by SwiftData yet.
-                        
-                        let setting = AppSettings.defaultSettings
                         switch lc {
                         case "en":
                             setting.speechLocale = RecognizerLocals.English.rawValue
-                        case "jp":
+                        case "ja":
                             setting.speechLocale = RecognizerLocals.Japanese.rawValue
                         default:
                             setting.speechLocale = RecognizerLocals.Chinese.rawValue
@@ -106,22 +104,22 @@ struct TranscriptView: View {
                         modelContext.insert(setting)
                         try? modelContext.save()
                     }
+                    print(lc!, setting.speechLocale)
                 }
             }
             
             RecorderButton(isRecording: $isRecording) {
-                if isRecording {
+                if self.isRecording {
                     print("Start timer. Audio db=\(self.settings[0].audioSilentDB)")
+//                    modelContext.insert(self.curRecord)
+                    self.curRecord = AudioRecord()
                     recorderTimer.delegate = self
                     recorderTimer.startTimer() {
                         
-                        // body of isSilent()
+                        // body of isSilent(), updated by frequency 
                         print("audio level=", SpeechRecognizer.currentLevel)
-                        if SpeechRecognizer.currentLevel < Float(self.settings[0].audioSilentDB)! {
-                            return true
-                        } else {
-                            return false
-                        }
+                        self.curRecord?.transcript = speechRecognizer.transcript     // SwiftData of record updated periodically.
+                        return SpeechRecognizer.currentLevel < Float(self.settings[0].audioSilentDB)! ? true : false
                     }
                     Task { @MainActor in
                         await self.speechRecognizer.setup(locale: settings[0].speechLocale)
@@ -135,6 +133,11 @@ struct TranscriptView: View {
             .disabled(websocket.isStreaming)
             .frame(alignment: .bottom)
         }
+        .alert(item: $websocket.alertItem) { alertItem in
+            Alert(title: alertItem.title,
+                  message: alertItem.message,
+                  dismissButton: alertItem.dismissButton)
+        }
     }
 }
 
@@ -143,24 +146,13 @@ extension TranscriptView: TimerDelegate {
     @MainActor func timerStopped() {
         
         // body of action() closure
-        isRecording = false
+        self.isRecording = false
         guard speechRecognizer.transcript != "" else { print("No audio input"); return }
-        
-        let curDate: String = AudioRecord.dateFormatter.string(from: Date())
         Task {
-            if let index = records.firstIndex(where: {curDate == AudioRecord.dateFormatter.string(from: $0.recordDate)}) {
-                // check if today's record exists
-                records[index].transcript +=  speechRecognizer.transcript+"。"
-                websocket.sendToAI(speechRecognizer.transcript, settings: self.settings[0]) { summary in
-                    records[index].summary = summary
-                }
-            } else {
-                let curRecord = AudioRecord(transcript: speechRecognizer.transcript+"。", summary: curDate)
-                // If anything goes wrong wit AI, still have the transcript.
-                modelContext.insert(curRecord)
-                websocket.sendToAI(speechRecognizer.transcript, settings: self.settings[0]) { summary in
-                    curRecord.summary = summary
-                }
+            curRecord?.transcript = speechRecognizer.transcript + "。"
+            modelContext.insert(curRecord!)
+            websocket.sendToAI(speechRecognizer.transcript, settings: self.settings[0]) { summary in
+                curRecord?.summary = summary
             }
         }
     }

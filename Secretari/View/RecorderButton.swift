@@ -37,11 +37,12 @@ struct RecorderButton: View {
     RecorderButton(isRecording: .constant(false), buttonAction: {})
 }
 
-/// a trick to fix the timerinvterval glitch.
+/// a trick to fix the timerinvterval glitch, which doesn't update the text somehow.
 struct TimeCounter: View {
     var body: some View {
         Image(systemName: "mic")
-        let range = Date()...Date().addingTimeInterval(28800)
+        let d = Date()
+        let range = d...d.addingTimeInterval(28800)
         Text(timerInterval: range, countsDown: false, showsHours: true)
     }
 }

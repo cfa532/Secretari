@@ -11,6 +11,7 @@ import Foundation
 class Websocket: NSObject, URLSessionWebSocketDelegate, ObservableObject {
     @Published var isStreaming: Bool = false
     @Published var streamedText: String = ""
+    @Published var alertItem: AlertItem?
     
     private var urlSession: URLSession?
     private var wsUrl: String?
@@ -42,7 +43,7 @@ class Websocket: NSObject, URLSessionWebSocketDelegate, ObservableObject {
             }
         }
     }
-
+    
     func receive(action: @escaping (_: String) -> Void) {
         // expecting {"type": "result", "answer": "summary content"}
         // add a timeout timer
@@ -105,20 +106,21 @@ class Websocket: NSObject, URLSessionWebSocketDelegate, ObservableObject {
             self.streamedText = ""
         }
         wsTask?.cancel(with: .goingAway, reason: nil)
-//        urlSession?.invalidateAndCancel()
+        //        urlSession?.invalidateAndCancel()
     }
 }
 
 extension Websocket {
     @MainActor func sendToAI(_ rawText: String, settings: AppSettings, action: @escaping (_ summary: String)->Void) {
-        let msg = ["input":[
-            "prompt": settings.prompt,
-            "rawtext": rawText],
-                   "parameters":[
-                    "llm": AppConstants.LLM,
-                    "temperature": AppConstants.OpenAITemperature,
-                    "client":"mobile",
-                    "model": AppConstants.OpenAIModel]] as [String : Any]
+        let msg = [
+            "input": [
+                "prompt": settings.prompt,
+                "rawtext": rawText],
+            "parameters": [
+                "llm": AppConstants.LLM,
+                "temperature": AppConstants.OpenAITemperature,
+                "client":"mobile",
+                "model": AppConstants.OpenAIModel]] as [String : Any]
         let jsonData = try! JSONSerialization.data(withJSONObject: msg)
         Task {
             // Convert the Data to String
@@ -126,9 +128,11 @@ extension Websocket {
                 self.wsUrl = settings.wssURL
                 self.wsTask = urlSession!.webSocketTask(with: URL(string: self.wsUrl!)!)
                 self.send(jsonString) { error in
-//                    errorWrapper = ErrorWrapper(error: error, guidance: "Cannot connect to Websocket. Try it later.")
-                    fatalError("Could not send to websocket: \(error)")
+                    //                    errorWrapper = ErrorWrapper(error: error, guidance: "Cannot connect to Websocket. Try it later.")
+                    //                    fatalError("Could not send to websocket: \(error)")
+                    self.alertItem = AlertContext.unableToComplete
                 }
+                guard self.alertItem==nil else {return}
                 self.receive(action: action)
                 self.resume()
             }

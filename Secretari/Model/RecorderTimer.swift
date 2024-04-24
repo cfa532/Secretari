@@ -29,7 +29,7 @@ final class RecorderTimer: ObservableObject {
     }
 
     private weak var timer: Timer?
-    private var frequency: TimeInterval { 1.0 }
+    private var frequency: TimeInterval { AppConstants.RecorderTimerFrequency }
     private var startDate: Date?
     private var silenctTimer: TimeInterval = 0     // num of seconds of no audio input
     

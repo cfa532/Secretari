@@ -20,7 +20,7 @@ struct DetailView: View {
     var record: AudioRecord
     
     var body: some View {
-        VStack (alignment: .leading) {
+        NavigationStack {
             HStack {
                 Label() {
                     Text(AudioRecord.dateFormatter.string(from: record.recordDate))
@@ -95,7 +95,6 @@ struct DetailView: View {
                     Text("Redo summary")
                         .padding(5)
                 }
-//                .border(/*@START_MENU_TOKEN@*/Color.black/*@END_MENU_TOKEN@*/, width: 0.3)
                 .foregroundColor(.black)
                 .background(Color(white: 0.8))
                 .cornerRadius(5.0)
@@ -132,12 +131,17 @@ struct DetailView: View {
                         }) {
                             Image(systemName: "xmark.circle")
                                 .font(.system(size: 20))
-                                .foregroundColor(Color.orange)
+                                .foregroundColor(.primary)
                         }
                     }
                 }
             }
         })
+        .alert(item: $websocket.alertItem) { alertItem in
+            Alert(title: alertItem.title,
+                  message: alertItem.message,
+                  dismissButton: alertItem.dismissButton)
+        }
     }
     
     struct ShareSheet: UIViewControllerRepresentable {

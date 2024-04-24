@@ -14,7 +14,7 @@ final class AudioRecord {
     var transcript: String
     var summary: String
     
-    init(transcript: String, summary: String) {
+    init(transcript: String="", summary: String="") {
         self.recordDate = Date()
         self.transcript = transcript
         self.summary = summary
