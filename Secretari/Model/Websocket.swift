@@ -114,7 +114,7 @@ extension Websocket {
     @MainActor func sendToAI(_ rawText: String, settings: Settings, action: @escaping (_ summary: String)->Void) {
         let msg = [
             "input": [
-                "prompt": settings.prompt,
+                "prompt": settings.prompt[settings.speechLocale],
                 "rawtext": rawText],
             "parameters": [
                 "llm": AppConstants.LLM,
