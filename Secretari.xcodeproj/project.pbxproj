@@ -19,7 +19,6 @@
 		461ADD8D2BD2A42000C0DD94 /* ErrorWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 461ADD8C2BD2A42000C0DD94 /* ErrorWrapper.swift */; };
 		461ADD8F2BD2A49900C0DD94 /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 461ADD8E2BD2A49900C0DD94 /* Launch Screen.storyboard */; };
 		461ADD912BD2A4F000C0DD94 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 461ADD902BD2A4F000C0DD94 /* SettingsView.swift */; };
-		461ADD932BD2A51300C0DD94 /* AppSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 461ADD922BD2A51300C0DD94 /* AppSettings.swift */; };
 		461ADD992BD2B5E400C0DD94 /* SpeechRecognizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 461ADD982BD2B5E400C0DD94 /* SpeechRecognizer.swift */; };
 		461ADD9B2BD2B5ED00C0DD94 /* Websocket.swift in Sources */ = {isa = PBXBuildFile; fileRef = 461ADD9A2BD2B5ED00C0DD94 /* Websocket.swift */; };
 		461ADD9D2BD2B5F400C0DD94 /* RecorderTimer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 461ADD9C2BD2B5F400C0DD94 /* RecorderTimer.swift */; };
@@ -31,6 +30,9 @@
 		46DA71392BD7FB60001A3685 /* NetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46DA71382BD7FB60001A3685 /* NetworkManager.swift */; };
 		46DA713C2BD7FBFB001A3685 /* APError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46DA713A2BD7FBFB001A3685 /* APError.swift */; };
 		46DA713D2BD7FBFB001A3685 /* Alert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46DA713B2BD7FBFB001A3685 /* Alert.swift */; };
+		46DA71412BD8C95C001A3685 /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 46DA71402BD8C95C001A3685 /* Localizable.xcstrings */; };
+		46DA71432BD8D724001A3685 /* Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46DA71422BD8D724001A3685 /* Utilities.swift */; };
+		46DA71452BD8E1F2001A3685 /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46DA71442BD8E1F2001A3685 /* Settings.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -66,7 +68,6 @@
 		461ADD8C2BD2A42000C0DD94 /* ErrorWrapper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ErrorWrapper.swift; sourceTree = "<group>"; };
 		461ADD8E2BD2A49900C0DD94 /* Launch Screen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = "Launch Screen.storyboard"; sourceTree = "<group>"; };
 		461ADD902BD2A4F000C0DD94 /* SettingsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
-		461ADD922BD2A51300C0DD94 /* AppSettings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppSettings.swift; sourceTree = "<group>"; };
 		461ADD982BD2B5E400C0DD94 /* SpeechRecognizer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SpeechRecognizer.swift; sourceTree = "<group>"; };
 		461ADD9A2BD2B5ED00C0DD94 /* Websocket.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Websocket.swift; sourceTree = "<group>"; };
 		461ADD9C2BD2B5F400C0DD94 /* RecorderTimer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RecorderTimer.swift; sourceTree = "<group>"; };
@@ -79,6 +80,9 @@
 		46DA71382BD7FB60001A3685 /* NetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkManager.swift; sourceTree = "<group>"; };
 		46DA713A2BD7FBFB001A3685 /* APError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = APError.swift; sourceTree = "<group>"; };
 		46DA713B2BD7FBFB001A3685 /* Alert.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Alert.swift; sourceTree = "<group>"; };
+		46DA71402BD8C95C001A3685 /* Localizable.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = Localizable.xcstrings; sourceTree = "<group>"; };
+		46DA71422BD8D724001A3685 /* Utilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utilities.swift; sourceTree = "<group>"; };
+		46DA71442BD8E1F2001A3685 /* Settings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Settings.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -173,9 +177,9 @@
 				461ADD982BD2B5E400C0DD94 /* SpeechRecognizer.swift */,
 				461ADD9A2BD2B5ED00C0DD94 /* Websocket.swift */,
 				461ADD9C2BD2B5F400C0DD94 /* RecorderTimer.swift */,
-				461ADD922BD2A51300C0DD94 /* AppSettings.swift */,
 				461ADD8C2BD2A42000C0DD94 /* ErrorWrapper.swift */,
 				461ADD882BD2A11700C0DD94 /* AudioRecord.swift */,
+				46DA71442BD8E1F2001A3685 /* Settings.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -199,6 +203,8 @@
 			children = (
 				46DA71362BD7FB32001A3685 /* Alerts */,
 				46DA71382BD7FB60001A3685 /* NetworkManager.swift */,
+				46DA71402BD8C95C001A3685 /* Localizable.xcstrings */,
+				46DA71422BD8D724001A3685 /* Utilities.swift */,
 			);
 			path = Utilities;
 			sourceTree = "<group>";
@@ -293,7 +299,7 @@
 			};
 			buildConfigurationList = 461ADD522BD2A0AC00C0DD94 /* Build configuration list for PBXProject "Secretari" */;
 			compatibilityVersion = "Xcode 14.0";
-			developmentRegion = "zh-Hans";
+			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
@@ -321,6 +327,7 @@
 			files = (
 				461ADD8F2BD2A49900C0DD94 /* Launch Screen.storyboard in Resources */,
 				461ADD642BD2A0AD00C0DD94 /* Preview Assets.xcassets in Resources */,
+				46DA71412BD8C95C001A3685 /* Localizable.xcstrings in Resources */,
 				461ADD612BD2A0AD00C0DD94 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -359,9 +366,10 @@
 				461ADD992BD2B5E400C0DD94 /* SpeechRecognizer.swift in Sources */,
 				461ADDA72BD2B6EB00C0DD94 /* DetailView.swift in Sources */,
 				461ADD5F2BD2A0AC00C0DD94 /* Item.swift in Sources */,
+				46DA71432BD8D724001A3685 /* Utilities.swift in Sources */,
+				46DA71452BD8E1F2001A3685 /* Settings.swift in Sources */,
 				461ADDA52BD2B6E700C0DD94 /* TranscriptView.swift in Sources */,
 				461ADD9B2BD2B5ED00C0DD94 /* Websocket.swift in Sources */,
-				461ADD932BD2A51300C0DD94 /* AppSettings.swift in Sources */,
 				461ADD5B2BD2A0AC00C0DD94 /* SecretariApp.swift in Sources */,
 				461ADDA32BD2B6C100C0DD94 /* StreamingView.swift in Sources */,
 			);

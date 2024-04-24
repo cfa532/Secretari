@@ -12,7 +12,7 @@ struct DetailView: View {
     @Environment(\.modelContext) private var modelContext
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
 
-    @Query private var settings: [AppSettings]
+    @Query private var settings: [Settings]
     @State private var presentRawText = false
     @StateObject private var websocket = Websocket()
     @State private var isShowingDialog = false
@@ -36,17 +36,17 @@ struct DetailView: View {
                     presentRawText.toggle()
                 }, label: {
                     Text("Transcript>>")
-                        .font(.subheadline) // Makes the button text smaller
-                        .foregroundColor(.secondary) // Changes the color of the button text
+                        .font(.subheadline)
+                        .foregroundColor(.secondary)
                 })
-                //                .padding(.horizontal) // Adds horizontal padding to the button
             }
             .padding(.horizontal) // Adds horizontal padding to the HStack
             
             ScrollView {
                 if self.websocket.isStreaming {
                     ScrollViewReader { proxy in
-                        let message = "Streaming....\n"+self.websocket.streamedText
+                        let message = self.websocket.streamedText
+                        Label(LocalizedStringKey("Streaming from AI..."), systemImage: "brain.head.profile.fill")
                         Text(message)
                             .id(message)
                             .onChange(of: message, {
@@ -155,7 +155,7 @@ struct DetailView: View {
 }
 
 #Preview {
-    let container = try! ModelContainer(for: AudioRecord.self, AppSettings.self, configurations: ModelConfiguration(isStoredInMemoryOnly: true))
-    return DetailView(record: (AudioRecord.sampleData[0]))
+    let container = try! ModelContainer(for: AudioRecord.self, Settings.self, configurations: ModelConfiguration(isStoredInMemoryOnly: true))
+    return DetailView(record: AudioRecord.sampleData[0])
         .modelContainer(container)
 }

@@ -1,0 +1,134 @@
+{
+  "sourceLanguage" : "en",
+  "strings" : {
+    "advanced" : {
+
+    },
+    "An error has occured" : {
+
+    },
+    "Daily Records" : {
+
+    },
+    "Dismiss" : {
+
+    },
+    "Hello, World!" : {
+
+    },
+    "Invalid Email" : {
+
+    },
+    "Invalid Form" : {
+
+    },
+    "Invalid response from the server. Please try again later or contact support." : {
+
+    },
+    "Just do it" : {
+
+    },
+    "Language:" : {
+
+    },
+    "No records" : {
+
+    },
+    "OK" : {
+
+    },
+    "Parameters" : {
+
+    },
+    "Please ensure all fields in the form have been filled out." : {
+
+    },
+    "Please ensure your email is correct." : {
+
+    },
+    "Profile Error" : {
+
+    },
+    "Profile Saved" : {
+
+    },
+    "Push the START button to record your own speech. A summary will be generated automatically after STOP button is pushed." : {
+
+    },
+    "Recognizing" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "認識中。。。"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "识别中。。。"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "识别中。。。"
+          }
+        }
+      }
+    },
+    "Recording DB Level:" : {
+
+    },
+    "Redo summary" : {
+
+    },
+    "Regenerate summary?" : {
+
+    },
+    "Reset settings" : {
+
+    },
+    "Server Error" : {
+
+    },
+    "Settings" : {
+
+    },
+    "Sever Error" : {
+
+    },
+    "Start" : {
+
+    },
+    "Stop" : {
+
+    },
+    "Streaming from AI..." : {
+
+    },
+    "Summary" : {
+
+    },
+    "The data received from the server was invalid. Please contact support." : {
+
+    },
+    "There was an error saving or retrieving your profile." : {
+
+    },
+    "There was an issue connecting to the server. If this persists, please contact support." : {
+
+    },
+    "Transcript>>" : {
+
+    },
+    "Unable to complete your request at this time. Please check your internet connection." : {
+
+    },
+    "Your profile information was successfully saved." : {
+
+    }
+  },
+  "version" : "1.0"
+}

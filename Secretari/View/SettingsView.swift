@@ -11,8 +11,8 @@ import SwiftData
 struct SettingsView: View {
     @Environment(\.modelContext) private var modelContext
     @Environment(\.dismiss) private var dismiss
-    @Query private var settings: [AppSettings]
-    @State private var setting: AppSettings  = AppSettings.defaultSettings {
+    @Query private var settings: [Settings]
+    @State private var setting: Settings  = AppConstants.defaultSettings {
         didSet {
             if let t = Int(setting.audioSilentDB) {
                 if t > -20 { setting.audioSilentDB = "-20" }
@@ -24,7 +24,7 @@ struct SettingsView: View {
             }
         }
     }
-    @State private var selectedLocale: RecognizerLocals = RecognizerLocals.Chinese
+    @State private var selectedLocale: RecognizerLocals = AppConstants.defaultSettings.speechLocale
     @State private var countDown = 0
     @State private var opacity = 1.0
     @State private var timer: Timer?
@@ -73,29 +73,20 @@ struct SettingsView: View {
                 setting = settings[0]
                 //                setting.speechLocale = "zh_CN"
                 print(setting.speechLocale)
-                selectedLocale = RecognizerLocals(rawValue: setting.speechLocale)!
+                selectedLocale = setting.speechLocale
             })
             .onDisappear(perform: {
-                settings[0].speechLocale = selectedLocale.rawValue
+                settings[0].speechLocale = selectedLocale
             })
         }
         .toolbar {
             ToolbarItemGroup(placement: .bottomBar) {
                 Button(action: {
-                    settings[0].prompt = AppSettings.defaultSettings.prompt
-                    settings[0].speechLocale = AppSettings.defaultSettings.speechLocale
-                    settings[0].audioSilentDB = AppSettings.defaultSettings.audioSilentDB
-                    settings[0].wssURL = AppSettings.defaultSettings.wssURL
-                    
-                    let lc = NSLocale.current.language.languageCode?.identifier
-                    switch lc {
-                    case "en":
-                        selectedLocale = RecognizerLocals.English
-                    case "ja":
-                        selectedLocale = RecognizerLocals.Japanese
-                    default:
-                        selectedLocale = RecognizerLocals.Chinese
-                    }
+                    settings[0].prompt = AppConstants.defaultSettings.prompt
+                    settings[0].speechLocale = AppConstants.defaultSettings.speechLocale
+                    settings[0].audioSilentDB = AppConstants.defaultSettings.audioSilentDB
+                    settings[0].wssURL = AppConstants.defaultSettings.wssURL
+                    selectedLocale = settings[0].speechLocale
                 }) {
                     Text("Reset settings").padding(5)
                 }
@@ -109,7 +100,7 @@ struct SettingsView: View {
 }
 
 #Preview {
-    let container = try! ModelContainer(for: AppSettings.self, configurations: ModelConfiguration(isStoredInMemoryOnly: true))
+    let container = try! ModelContainer(for: Settings.self, configurations: ModelConfiguration(isStoredInMemoryOnly: true))
     return SettingsView()
         .modelContainer(container)
 }

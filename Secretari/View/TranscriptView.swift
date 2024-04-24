@@ -11,7 +11,7 @@ import SwiftData
 struct TranscriptView: View {
     @Environment(\.modelContext) private var modelContext
     @Query(sort: \AudioRecord.recordDate, order: .reverse) private var records: [AudioRecord]
-    @Query private var settings: [AppSettings]
+    @Query private var settings: [Settings]
     
     @State private var isRecording = false
     @State private var curRecord: AudioRecord?    // create an empty record
@@ -25,8 +25,9 @@ struct TranscriptView: View {
             if isRecording {
                 ScrollView {
                     ScrollViewReader { proxy in
-                        let t = "Recognizing....in " + String(describing: RecognizerLocals(rawValue: settings[0].speechLocale)!) + "\n"
-                        let message = t + speechRecognizer.transcript
+                        
+                        Label(NSLocalizedString("Recognizing", comment: "") + Localized.LanguageName(settings[0].speechLocale.rawValue), systemImage: "ear.badge.waveform")
+                        let message = speechRecognizer.transcript
                         Text(message)
                             .id(message)
                             .onChange(of: message, {
@@ -39,7 +40,8 @@ struct TranscriptView: View {
             } else if websocket.isStreaming {
                 ScrollView {
                     ScrollViewReader { proxy in
-                        let message = "Streaming from AI...\n" + websocket.streamedText
+                        Label(LocalizedStringKey("Streaming from AI..."), systemImage: "brain.head.profile.fill")
+                        let message = websocket.streamedText
                         Text(message)
                             .id(message)
                             .onChange(of: message, {
@@ -51,7 +53,7 @@ struct TranscriptView: View {
             }
             else {
                 List {
-                    ForEach(records) { item in
+                    ForEach(records, id: \.recordDate) { item in
                         NavigationLink {
                             DetailView(record: item)
                         } label: {
@@ -59,6 +61,11 @@ struct TranscriptView: View {
                             Text(curDate+": "+item.summary)
                                 .font(.subheadline)
                                 .lineLimit(4)
+                        }
+                    }
+                    .onDelete { indexSet in
+                        indexSet.forEach { idx in
+                            modelContext.delete(records[idx])
                         }
                     }
                 }
@@ -84,27 +91,15 @@ struct TranscriptView: View {
                     })
                 }
                 .task {
-                    let langCode = Bundle.main.preferredLocalizations[0]
-                    let usLocale = Locale(identifier: "zh_CN")
-                    if let languageName = usLocale.localizedString(forLanguageCode: langCode) {
-                        print(languageName)
-                    }
-                    let lc = NSLocale.current.language.languageCode?.identifier
-                    let setting = AppSettings.defaultSettings
+                    let setting = AppConstants.defaultSettings
                     if settings.isEmpty {
                         // first run of the App, settings not stored by SwiftData yet.
-                        switch lc {
-                        case "en":
-                            setting.speechLocale = RecognizerLocals.English.rawValue
-                        case "ja":
-                            setting.speechLocale = RecognizerLocals.Japanese.rawValue
-                        default:
-                            setting.speechLocale = RecognizerLocals.Chinese.rawValue
-                        }
+                        // get system language code
+                        setting.speechLocale = Localized.systemLanguage()
                         modelContext.insert(setting)
                         try? modelContext.save()
                     }
-                    print(lc!, setting.speechLocale)
+                    print("App lang:", setting.speechLocale)
                 }
             }
             
@@ -122,7 +117,7 @@ struct TranscriptView: View {
                         return SpeechRecognizer.currentLevel < Float(self.settings[0].audioSilentDB)! ? true : false
                     }
                     Task { @MainActor in
-                        await self.speechRecognizer.setup(locale: settings[0].speechLocale)
+                        await self.speechRecognizer.setup(locale: settings[0].speechLocale.rawValue)
                         speechRecognizer.startTranscribing()
                     }
                 } else {
@@ -159,7 +154,7 @@ extension TranscriptView: TimerDelegate {
 }
 
 #Preview {
-    let container = try! ModelContainer(for: AudioRecord.self, AppSettings.self, configurations: ModelConfiguration(isStoredInMemoryOnly: true))
+    let container = try! ModelContainer(for: AudioRecord.self, Settings.self, configurations: ModelConfiguration(isStoredInMemoryOnly: true))
     container.mainContext.insert(AudioRecord.sampleData[0])
     return TranscriptView(errorWrapper: .constant(.emptyError))
         .modelContainer(container)

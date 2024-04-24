@@ -1,21 +1,21 @@
 //
 //  Settings.swift
-//  SummarySwiftData
+//  Secretari
 //
-//  Created by 超方 on 2024/4/16.
+//  Created by 超方 on 2024/4/24.
 //
 
 import Foundation
 import SwiftData
 
 @Model
-final class AppSettings {
+final class Settings {
     var prompt: String
     var wssURL: String
     var audioSilentDB: String
-    var speechLocale: String
+    var speechLocale: RecognizerLocals
     
-    init(prompt: String, wssURL: String, audioSilentDB: String, speechLocale: String ) {
+    init(prompt: String, wssURL: String, audioSilentDB: String, speechLocale: RecognizerLocals ) {
         self.prompt = prompt
         self.wssURL = wssURL
         self.audioSilentDB = audioSilentDB
@@ -23,16 +23,7 @@ final class AppSettings {
     }
 }
 
-extension AppSettings {
-    static let defaultSettings = AppSettings(prompt: "你是一个智能秘书。提取下述文字中的重要内容，做一份摘要。",
-                                             wssURL: "wss://leither.uk/ws",
-                                             audioSilentDB: "-40",
-                                             speechLocale: RecognizerLocals.Chinese.rawValue
-//                                             speechLocale: Locale.current.identifier
-    )
-}
-
-enum RecognizerLocals: String, CaseIterable, Identifiable {
+enum RecognizerLocals: String, CaseIterable, Identifiable, Codable {
     case English = "en_US"
     case Japanese = "ja_JP"
     case Chinese = "zh_CN"
@@ -49,4 +40,9 @@ final class AppConstants {
     static let OpenAIModel = "gpt-4"
     static let OpenAITemperature = "0.0"
     static let LLM = "openai"
+    static let defaultSettings = Settings(prompt: "你是一个智能秘书。提取下述文字中的重要内容，做一份摘要。",
+                                             wssURL: "wss://leither.uk/ws",
+                                             audioSilentDB: "-40",
+                                             speechLocale: Localized.systemLanguage()
+    )
 }

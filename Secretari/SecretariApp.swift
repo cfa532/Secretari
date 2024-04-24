@@ -13,7 +13,7 @@ struct SecretariApp: App {
     @State private var errorWrapper: ErrorWrapper?
 
     var sharedModelContainer: ModelContainer = {
-        let schema = Schema([AudioRecord.self, AppSettings.self,
+        let schema = Schema([AudioRecord.self, Settings.self,
             Item.self,
         ])
         let modelConfiguration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: false)
