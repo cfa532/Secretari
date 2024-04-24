@@ -76,7 +76,7 @@ struct SettingsView: View {
                 guard !settings.isEmpty else { return }
                 setting = settings[0]
                 //                setting.speechLocale = "zh_CN"
-                print("seleted lang", setting.speechLocale)
+                //                print("seleted lang", setting.speechLocale)
                 selectedLocale = setting.speechLocale
                 selectedPrompt = setting.prompt[selectedLocale]!
             })

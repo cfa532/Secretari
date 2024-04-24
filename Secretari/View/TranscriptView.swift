@@ -99,7 +99,9 @@ struct TranscriptView: View {
                         modelContext.insert(setting)
                         try? modelContext.save()
                     }
-                    print("App lang:", setting.speechLocale)
+                    print("App lang:", UserDefaults.standard.stringArray(forKey: "AppleLanguages")!)
+//                    App lang: Optional(["zh-Hant-TW", "zh-Hans-TW", "ja-TW", "en-TW"])
+                    print("identifier: ", NSLocale.current.identifier)
                 }
             }
             

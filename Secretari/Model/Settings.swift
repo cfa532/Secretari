@@ -27,7 +27,8 @@ enum RecognizerLocale: String, CaseIterable, Codable {
     case English = "en_US"
     case Japanese = "ja_JP"
     case Chinese = "zh_CN"
-    
+//    case ChineseT = "zh_TW"
+
     var id: Self { self }
 }
 
@@ -51,7 +52,7 @@ final class AppConstants {
         case "zh":
             return "你是個智能秘書。 提取下述文字中的重要內容，做一份全面的摘要。"
         case "ja":
-            return "あなたは賢いアシスタントです。 次のスピーチから包括的な要約を作成します。"
+            return "あなたは賢いアシスタントです。 次のスピーチから包括的な要約を作成する。"
         default:
             return "You are a smart assistant. Generate a comprehensive summary from the following speech."
         }
