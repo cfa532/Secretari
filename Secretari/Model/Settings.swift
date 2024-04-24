@@ -25,8 +25,9 @@ final class Settings {
 
 enum RecognizerLocale: String, CaseIterable, Codable {
     case English = "en"
-    case Japanese = "ja"
-    case Chinese = "zh"
+    case 日本語 = "ja"
+    case 中文 = "zh"
+    case Español = "es"
 
     var id: Self { self }
 }
@@ -60,7 +61,8 @@ final class AppConstants {
     
     static let defaultPromot = [
         RecognizerLocale.English: "You are a smart assistant. Generate a comprehensive summary from the following speech.",
-        RecognizerLocale.Chinese: "你是個智能秘書。 提取下述文字中的重要內容，做一份全面的摘要。",
-        RecognizerLocale.Japanese: "あなたは賢いアシスタントです。 次のスピーチから包括的な要約を作成します。"
+        RecognizerLocale.中文: "你是個智能秘書。 提取下述文字中的重要內容，做一份全面的摘要。",
+        RecognizerLocale.日本語: "あなたは賢いアシスタントです。 次のスピーチから包括的な要約を作成します。",
+        RecognizerLocale.Español: "Eres un asistente inteligente. Genere un resumen completo del siguiente discurso.",
     ]
 }

@@ -35,7 +35,7 @@ struct SettingsView: View {
             Form {
                 Section(header: Text("Parameters")) {
                     HStack {
-                        Text("Recording DB Level:")
+                        Text("Min audiable dB")
                         Spacer()
                         TextField(setting.audioSilentDB, text: $setting.audioSilentDB)
                             .frame(width: 80)
@@ -48,7 +48,8 @@ struct SettingsView: View {
                         }
                     }
                     .onChange(of: selectedLocale) {
-                        selectedPrompt = setting.prompt[selectedLocale]!
+                        guard let p = setting.prompt[selectedLocale] else {return}
+                        selectedPrompt = p
                     }
                 }
                 Section(header: Text("advanced")) {

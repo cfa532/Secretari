@@ -307,6 +307,7 @@
 				"zh-Hant",
 				ja,
 				"zh-Hans",
+				"es-419",
 			);
 			mainGroup = 461ADD4E2BD2A0AC00C0DD94;
 			productRefGroup = 461ADD582BD2A0AC00C0DD94 /* Products */;

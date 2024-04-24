@@ -2,7 +2,14 @@
   "sourceLanguage" : "en",
   "strings" : {
     "advanced" : {
-
+      "localizations" : {
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ajustes avanzados"
+          }
+        }
+      }
     },
     "An error has occured" : {
 
@@ -10,25 +17,30 @@
     "Dismiss" : {
 
     },
-    "English" : {
-      "extractionState" : "manual",
+    "First make sure to select the right language for recognition in setting ⚙️ Otherwise the built-in speech recognizer cannot work properly." : {
       "localizations" : {
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Primero asegúrese de seleccionar el idioma correcto para el reconocimiento en la configuración ⚙️ De lo contrario, el reconocedor de voz integrado no podrá funcionar correctamente."
+          }
+        },
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "英語"
+            "value" : "まず、設定 ⚙️ で認識に適切な言語を選択していることを確認してください。そうしないと、内蔵の音声認識機能が正しく動作しません。"
           }
         },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "英文"
+            "value" : "首先请确保在设置⚙️中选择正确的可识别语言，否则内置语音识别器无法正常工作。"
           }
         },
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "英文"
+            "value" : "首先請確保在設定⚙️中選擇正確的可辨識語言，否則內建語音辨識器無法正常運作。"
           }
         }
       }
@@ -47,6 +59,12 @@
     },
     "Just do it" : {
       "localizations" : {
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hazlo"
+          }
+        },
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
@@ -69,6 +87,12 @@
     },
     "Language:" : {
       "localizations" : {
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "lenguaje para reconocer"
+          }
+        },
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
@@ -89,8 +113,48 @@
         }
       }
     },
+    "Min audiable dB" : {
+      "localizations" : {
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "dB audibles mínimos"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "min識別ボリューム"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "最低可识别音量"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "最低可識別音量"
+          }
+        }
+      }
+    },
     "No records" : {
       "localizations" : {
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No Recuerdo"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "記録なし"
+          }
+        },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
@@ -103,7 +167,14 @@
 
     },
     "Parameters" : {
-
+      "localizations" : {
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Parámetros"
+          }
+        }
+      }
     },
     "Please ensure all fields in the form have been filled out." : {
 
@@ -119,6 +190,12 @@
     },
     "Push the START button to record your own speech. A summary will be generated automatically after STOP button is pushed." : {
       "localizations" : {
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Presione el botón INICIO para grabar su propio discurso. Se generará un resumen automáticamente después de presionar el botón DETENER."
+          }
+        },
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
@@ -142,6 +219,12 @@
     "Recognizing..." : {
       "extractionState" : "manual",
       "localizations" : {
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Reconociendo..."
+          }
+        },
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
@@ -162,30 +245,14 @@
         }
       }
     },
-    "Recording DB Level:" : {
-      "localizations" : {
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "識別可最小ボリューム"
-          }
-        },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "最低可识别音量"
-          }
-        },
-        "zh-Hant" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "最低可識別音量"
-          }
-        }
-      }
-    },
     "Records" : {
       "localizations" : {
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Registros"
+          }
+        },
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
@@ -208,6 +275,12 @@
     },
     "Redo summary" : {
       "localizations" : {
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rehacer resumen"
+          }
+        },
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
@@ -230,6 +303,12 @@
     },
     "Regenerate summary?" : {
       "localizations" : {
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rehacer resumen"
+          }
+        },
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
@@ -252,6 +331,18 @@
     },
     "Reset settings" : {
       "localizations" : {
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Reiniciar ajustes"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "リセット"
+          }
+        },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
@@ -271,6 +362,12 @@
     },
     "Settings" : {
       "localizations" : {
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ajustes"
+          }
+        },
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
@@ -295,13 +392,33 @@
 
     },
     "Start" : {
-
+      "localizations" : {
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "INICIO"
+          }
+        }
+      }
     },
     "Stop" : {
-
+      "localizations" : {
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Detener"
+          }
+        }
+      }
     },
     "Streaming from AI..." : {
       "localizations" : {
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Transmitiendo desde IA..."
+          }
+        },
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
@@ -324,6 +441,12 @@
     },
     "Summary" : {
       "localizations" : {
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Resumen"
+          }
+        },
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
@@ -355,6 +478,12 @@
     },
     "Transcript>>" : {
       "localizations" : {
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Transcripción>>"
+          }
+        },
         "ja" : {
           "stringUnit" : {
             "state" : "translated",

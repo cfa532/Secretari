@@ -13,7 +13,7 @@ struct Localized {
         print("langCode=", langCode, identifier)
         let locale = Locale(identifier: langCode)
         if let languageName = locale.localizedString(forLanguageCode: identifier) {
-            print("Localized lang=", languageName)
+            print("Localized name=", languageName)
             return languageName
         }
         return locale.identifier

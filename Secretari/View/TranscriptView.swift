@@ -75,6 +75,10 @@ struct TranscriptView: View {
                             Label("No records", systemImage: "list.bullet.rectangle.portrait")
                         }, description: {
                             Text("Push the START button to record your own speech. A summary will be generated automatically after STOP button is pushed.")
+                            Text("First make sure to select the right language for recognition in setting ⚙️ Otherwise the built-in speech recognizer cannot work properly.")
+//                                .font(.title2)
+                                .foregroundColor(.accentColor)
+                                .fontWeight(.bold)
                         })
                     }
                 })
