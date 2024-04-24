@@ -23,7 +23,7 @@ final class Settings {
     }
 }
 
-enum RecognizerLocals: String, CaseIterable, Identifiable, Codable {
+enum RecognizerLocals: String, CaseIterable, Codable {
     case English = "en_US"
     case Japanese = "ja_JP"
     case Chinese = "zh_CN"
@@ -40,9 +40,21 @@ final class AppConstants {
     static let OpenAIModel = "gpt-4"
     static let OpenAITemperature = "0.0"
     static let LLM = "openai"
-    static let defaultSettings = Settings(prompt: "你是一个智能秘书。提取下述文字中的重要内容，做一份摘要。",
-                                             wssURL: "wss://leither.uk/ws",
-                                             audioSilentDB: "-40",
-                                             speechLocale: Localized.systemLanguage()
+    static let defaultSettings = Settings(prompt: NSLocalizedString("You are a smart assistant. Generate a comprehensive summary from the following speech.", comment: ""),
+                                          wssURL: "wss://leither.uk/ws",
+                                          audioSilentDB: "-40",
+                                          speechLocale: Localized.systemLanguage()
     )
+    
+    static private func localizedPrompt() -> String {
+        switch NSLocale.current.language.languageCode?.identifier {
+        case "zh":
+            return "你是個智能秘書。 提取下述文字中的重要內容，做一份全面的摘要。"
+        case "ja":
+            return "あなたは賢いアシスタントです。 次のスピーチから包括的な要約を作成します。"
+        default:
+            return "You are a smart assistant. Generate a comprehensive summary from the following speech."
+        }
+        
+    }
 }

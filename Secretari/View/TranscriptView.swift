@@ -26,7 +26,7 @@ struct TranscriptView: View {
                 ScrollView {
                     ScrollViewReader { proxy in
                         
-                        Label(NSLocalizedString("Recognizing", comment: "") + Localized.LanguageName(settings[0].speechLocale.rawValue), systemImage: "ear.badge.waveform")
+                        Label(NSLocalizedString("Recognizing...", comment: "") + Localized.LanguageName(settings[0].speechLocale.rawValue), systemImage: "ear.badge.waveform")
                         let message = speechRecognizer.transcript
                         Text(message)
                             .id(message)
@@ -40,7 +40,7 @@ struct TranscriptView: View {
             } else if websocket.isStreaming {
                 ScrollView {
                     ScrollViewReader { proxy in
-                        Label(LocalizedStringKey("Streaming from AI..."), systemImage: "brain.head.profile.fill")
+                        Label(NSLocalizedString("Streaming from AI...", comment: ""), systemImage: "brain.head.profile.fill")
                         let message = websocket.streamedText
                         Text(message)
                             .id(message)
@@ -78,7 +78,7 @@ struct TranscriptView: View {
                         })
                     }
                 })
-                .navigationTitle("Daily Records")
+                .navigationTitle("Records")
                 .navigationBarTitleDisplayMode(.inline)
                 .toolbar {
                     ToolbarItemGroup(placement: .topBarTrailing, content: {
