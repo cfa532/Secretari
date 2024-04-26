@@ -63,6 +63,7 @@ class Websocket: NSObject, URLSessionWebSocketDelegate, ObservableObject {
                                 if let type = dict["type"] as? String {
                                     if type == "result" {
                                         if let answer = dict["answer"] as? String {
+                                            print(answer, dict["tokens"]!, dict["cost"]!)
                                             action(answer)
                                             self.cancel()
                                         }

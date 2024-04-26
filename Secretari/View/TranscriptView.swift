@@ -25,7 +25,6 @@ struct TranscriptView: View {
             if isRecording {
                 ScrollView {
                     ScrollViewReader { proxy in
-                        
                         Label(NSLocalizedString("Recognizing...", comment: "") + Localized.LanguageName(settings[0].selectedLocale.rawValue), systemImage: "ear.badge.waveform")
                         let message = speechRecognizer.transcript
                         Text(message)
@@ -35,6 +34,9 @@ struct TranscriptView: View {
                             })
                             .frame(alignment: .topLeading)
                     }
+                }
+                .task {
+                    speechRecognizer.transcript = ""
                 }
                 .padding()
             } else if websocket.isStreaming {
@@ -76,7 +78,6 @@ struct TranscriptView: View {
                         }, description: {
                             Text("Push the START button to record your own speech. A summary will be generated automatically after STOP button is pushed.")
                             Text("First make sure to select the right language for recognition in setting ⚙️ Otherwise the built-in speech recognizer cannot work properly.")
-//                                .font(.title2)
                                 .foregroundColor(.accentColor)
                                 .fontWeight(.bold)
                         })
@@ -104,7 +105,7 @@ struct TranscriptView: View {
                         try? modelContext.save()
                     }
                     print("App lang:", UserDefaults.standard.stringArray(forKey: "AppleLanguages")!)
-//                    App lang: Optional(["zh-Hant-TW", "zh-Hans-TW", "ja-TW", "en-TW"])
+                    //                    App lang: Optional(["zh-Hant-TW", "zh-Hans-TW", "ja-TW", "en-TW"])
                     print("identifier: ", NSLocale.current.identifier)
                 }
             }
@@ -112,12 +113,11 @@ struct TranscriptView: View {
             RecorderButton(isRecording: $isRecording) {
                 if self.isRecording {
                     print("Start timer. Audio db=\(self.settings[0].audioSilentDB)")
-//                    modelContext.insert(self.curRecord)
                     self.curRecord = AudioRecord()
                     recorderTimer.delegate = self
-                    recorderTimer.startTimer() {
-                        
-                        // body of isSilent(), updated by frequency 
+                    recorderTimer.startTimer()
+                    {
+                        // body of isSilent(), updated by frequency
                         print("audio level=", SpeechRecognizer.currentLevel)
                         self.curRecord?.transcript = speechRecognizer.transcript     // SwiftData of record updated periodically.
                         return SpeechRecognizer.currentLevel < Float(self.settings[0].audioSilentDB)! ? true : false
@@ -127,8 +127,10 @@ struct TranscriptView: View {
                         speechRecognizer.startTranscribing()
                     }
                 } else {
+                    
                     speechRecognizer.stopTranscribing()
                     recorderTimer.stopTimer()
+                    
                 }
             }
             .disabled(websocket.isStreaming)
@@ -164,6 +166,6 @@ extension TranscriptView: TimerDelegate {
     container.mainContext.insert(AudioRecord.sampleData[0])
     return TranscriptView(errorWrapper: .constant(.emptyError))
         .modelContainer(container)
-//    TranscriptView(errorWrapper: .constant(.emptyError))
-//        .modelContainer(for: [AudioRecord.self, AppSettings.self], inMemory: true)
+    //    TranscriptView(errorWrapper: .constant(.emptyError))
+    //        .modelContainer(for: [AudioRecord.self, AppSettings.self], inMemory: true)
 }
