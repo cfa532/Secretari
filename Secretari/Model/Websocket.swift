@@ -25,6 +25,7 @@ class Websocket: NSObject, URLSessionWebSocketDelegate, ObservableObject {
     
     func prepare(_ url: String) {
         self.wssURL = url
+        //        self.wsTask = urlSession!.webSocketTask(with: URL(string: url)!)
         if let activeTask = self.wsTask, activeTask.state == .running {
             // do nothing
         } else  {
@@ -75,6 +76,10 @@ class Websocket: NSObject, URLSessionWebSocketDelegate, ObservableObject {
                                             // send reply from AI to display
                                             action(answer)
                                             self.cancel()
+                                            //                                            Task { @MainActor in
+                                            //                                                self.isStreaming = false
+                                            //                                                self.streamedText = ""
+                                            //                                            }
                                         }
                                     } else {
                                         // should be stream type
@@ -114,7 +119,7 @@ class Websocket: NSObject, URLSessionWebSocketDelegate, ObservableObject {
             self.isStreaming = false
             self.streamedText = ""
         }
-        //        wsTask?.cancel(with: .goingAway, reason: nil)
+        wsTask?.cancel(with: .goingAway, reason: nil)
         //        urlSession?.invalidateAndCancel()
     }
 }
