@@ -58,10 +58,8 @@ class Websocket: NSObject, URLSessionWebSocketDelegate, ObservableObject {
             switch result {
             case .failure(let error):
                 print("WebSocket failure: \(error)")
-                Task { @MainActor in
-                    self.alertItem = AlertContext.invalidResponse
-                    self.alertItem?.message = Text(error.localizedDescription)
-                }
+                self.alertItem = AlertContext.invalidResponse
+                self.alertItem?.message = Text(error.localizedDescription)
                 self.cancel()
             case .success(let message):
                 switch message {
