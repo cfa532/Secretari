@@ -122,7 +122,7 @@ struct TranscriptView: View {
                         self.curRecord?.transcript = speechRecognizer.transcript     // SwiftData of record updated periodically.
                         return SpeechRecognizer.currentLevel < Float(self.settings[0].audioSilentDB)! ? true : false
                     }
-                    Task { @MainActor in
+                    Task { 
                         await self.speechRecognizer.setup(locale: settings[0].selectedLocale.rawValue)
                         speechRecognizer.startTranscribing()
                     }

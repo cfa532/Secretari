@@ -10,10 +10,10 @@ import Foundation
 struct Localized {
     static func LanguageName(_ identifier: String) -> String {  // zh_CN, lang to recognize
         let langCode = Bundle.main.preferredLocalizations[0]    // first langauge supported by iPhone
-        print("langCode=", langCode, identifier)
+//        print("langCode=", langCode, identifier)
         let locale = Locale(identifier: langCode)
         if let languageName = locale.localizedString(forLanguageCode: identifier) {
-            print("Localized name=", languageName)
+//            print("Localized name=", languageName)
             return languageName
         }
         return locale.identifier

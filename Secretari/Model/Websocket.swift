@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import SwiftUI
 
 @MainActor
 class Websocket: NSObject, URLSessionWebSocketDelegate, ObservableObject {
@@ -14,7 +15,7 @@ class Websocket: NSObject, URLSessionWebSocketDelegate, ObservableObject {
     @Published var alertItem: AlertItem?
     
     private var urlSession: URLSession?
-    private var wsUrl: String?
+    private var wssURL: String?
     private var wsTask: URLSessionWebSocketTask?
     
     override init() {
@@ -23,8 +24,13 @@ class Websocket: NSObject, URLSessionWebSocketDelegate, ObservableObject {
     }
     
     func prepare(_ url: String) {
-        self.wsTask = urlSession!.webSocketTask(with: URL(string: url)!)
-        self.wsUrl = url
+        self.wssURL = url
+        if let activeTask = self.wsTask, activeTask.state == .running {
+            // do nothing
+        } else  {
+            self.wsTask?.cancel()
+            self.wsTask = urlSession!.webSocketTask(with: URL(string: url)!)
+        }
     }
     
     nonisolated func urlSession(_ session: URLSession, webSocketTask: URLSessionWebSocketTask, didOpenWithProtocol protocol: String?) {
@@ -48,11 +54,13 @@ class Websocket: NSObject, URLSessionWebSocketDelegate, ObservableObject {
         // expecting {"type": "result", "answer": "summary content"}
         // add a timeout timer
         wsTask?.receive( completionHandler: { result in
-            // once WS begin to receive data
-            
             switch result {
             case .failure(let error):
                 print("WebSocket failure: \(error)")
+                Task { @MainActor in
+                    self.alertItem = AlertContext.invalidResponse
+                    self.alertItem?.message = Text(error.localizedDescription)
+                }
                 self.cancel()
             case .success(let message):
                 switch message {
@@ -64,6 +72,7 @@ class Websocket: NSObject, URLSessionWebSocketDelegate, ObservableObject {
                                     if type == "result" {
                                         if let answer = dict["answer"] as? String {
                                             print(answer, dict["tokens"]!, dict["cost"]!)
+                                            // send reply from AI to display
                                             action(answer)
                                             self.cancel()
                                         }
@@ -79,16 +88,15 @@ class Websocket: NSObject, URLSessionWebSocketDelegate, ObservableObject {
                                 }
                             }
                         } catch {
-                            print("Invalid Json string received.")
-                            self.cancel()
+                            self.alertItem = AlertContext.invalidData
                         }
                     }
                 case .data(let data):
                     print("Received data: \(data)")
                     self.cancel()
                 @unknown default:
-                    print("Unknown data")
                     self.cancel()
+                    self.alertItem = AlertContext.invalidData
                 }
             }
         })
@@ -106,7 +114,7 @@ class Websocket: NSObject, URLSessionWebSocketDelegate, ObservableObject {
             self.isStreaming = false
             self.streamedText = ""
         }
-        wsTask?.cancel(with: .goingAway, reason: nil)
+        //        wsTask?.cancel(with: .goingAway, reason: nil)
         //        urlSession?.invalidateAndCancel()
     }
 }
@@ -123,20 +131,16 @@ extension Websocket {
                 "client":"mobile",
                 "model": AppConstants.OpenAIModel]] as [String : Any]
         let jsonData = try! JSONSerialization.data(withJSONObject: msg)
-        Task {
-            // Convert the Data to String
-            if let jsonString = String(data: jsonData, encoding: .utf8) {
-                self.wsUrl = settings.wssURL
-                self.wsTask = urlSession!.webSocketTask(with: URL(string: self.wsUrl!)!)
-                self.send(jsonString) { error in
-                    //                    errorWrapper = ErrorWrapper(error: error, guidance: "Cannot connect to Websocket. Try it later.")
-                    //                    fatalError("Could not send to websocket: \(error)")
-                    self.alertItem = AlertContext.unableToComplete
-                }
-                guard self.alertItem==nil else {return}
-                self.receive(action: action)
-                self.resume()
+        
+        // Convert the Data to String
+        if let jsonString = String(data: jsonData, encoding: .utf8) {
+            self.prepare(settings.wssURL)
+            self.send(jsonString) { error in
+                self.alertItem = AlertContext.unableToComplete
             }
+            guard self.alertItem==nil else {return}
+            self.receive(action: action)
+            self.resume()
         }
     }
 }

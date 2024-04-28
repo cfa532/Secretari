@@ -21,7 +21,7 @@ final class RecorderTimer: ObservableObject {
         didSet {
             if timerStopped {
                 timer?.invalidate()
-                delegate?.timerStopped()    // send query to Ai
+                delegate?.timerStopped()    // send query to Ai from delegate, which is TranscriptView here.
                 startDate = nil
                 print("Timer stopped")
             }
