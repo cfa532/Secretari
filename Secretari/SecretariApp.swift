@@ -31,6 +31,8 @@ struct SecretariApp: App {
                 .task {
                     guard let appSupportDir = FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask).last else { return }
                     print(appSupportDir)
+                    print("App lang:", UserDefaults.standard.stringArray(forKey: "AppleLanguages")!)
+                    print("identifier: ", NSLocale.current.identifier)
                 }
                 .sheet(item: $errorWrapper) {
 //                     var records = AudioRecord.sampleData     // no need here

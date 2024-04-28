@@ -35,9 +35,6 @@ struct TranscriptView: View {
                             .frame(alignment: .topLeading)
                     }
                 }
-                .task {
-                    speechRecognizer.transcript = ""
-                }
                 .padding()
             } else if websocket.isStreaming {
                 ScrollView {
@@ -96,17 +93,13 @@ struct TranscriptView: View {
                     })
                 }
                 .task {
-                    let setting = AppConstants.defaultSettings
                     if settings.isEmpty {
                         // first run of the App, settings not stored by SwiftData yet.
-                        // get system language code
-                        setting.selectedLocale = Localized.systemLanguage()
-                        modelContext.insert(setting)
+                        // get system language name in user's system language
+                        modelContext.insert(AppConstants.defaultSettings)
                         try? modelContext.save()
+                        // App lang: Optional(["zh-Hant-TW", "zh-Hans-TW", "ja-TW", "en-TW"])
                     }
-                    print("App lang:", UserDefaults.standard.stringArray(forKey: "AppleLanguages")!)
-                    //                    App lang: Optional(["zh-Hant-TW", "zh-Hans-TW", "ja-TW", "en-TW"])
-                    print("identifier: ", NSLocale.current.identifier)
                 }
             }
             
@@ -154,7 +147,8 @@ extension TranscriptView: TimerDelegate {
         Task {
             curRecord?.transcript = speechRecognizer.transcript + "。"
             modelContext.insert(curRecord!)
-            websocket.sendToAI(speechRecognizer.transcript, settings: self.settings[0]) { summary in
+            speechRecognizer.transcript = ""
+            websocket.sendToAI(curRecord!.transcript, settings: self.settings[0]) { summary in
                 curRecord?.summary = summary
             }
         }
