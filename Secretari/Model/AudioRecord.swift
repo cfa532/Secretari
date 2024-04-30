@@ -13,11 +13,13 @@ final class AudioRecord {
     @Attribute(.unique) var recordDate: Date
     var transcript: String
     var summary: String
+    var translation: [Language: String]?
     
     init(transcript: String="", summary: String="") {
         self.recordDate = Date()
         self.transcript = transcript
         self.summary = summary
+//        self.translation
     }
 }
 
@@ -33,4 +35,10 @@ extension AudioRecord {
         formatter.dateFormat = "MM/dd"
         return formatter
     }()
+    
+    enum Language: String, CaseIterable, Codable  {
+        case English = "en"
+        case Filipino = "fil"
+        case Indonesian = "id"
+    }
 }

@@ -17,6 +17,12 @@
     "Dismiss" : {
 
     },
+    "Edit" : {
+
+    },
+    "Editing" : {
+
+    },
     "First make sure to select the right language for recognition in setting ⚙️ Otherwise the built-in speech recognizer cannot work properly." : {
       "localizations" : {
         "es-419" : {
@@ -58,6 +64,7 @@
 
     },
     "Just do it" : {
+      "extractionState" : "stale",
       "localizations" : {
         "es-419" : {
           "stringUnit" : {
@@ -273,7 +280,11 @@
         }
       }
     },
+    "Redo" : {
+
+    },
     "Redo summary" : {
+      "extractionState" : "stale",
       "localizations" : {
         "es-419" : {
           "stringUnit" : {
@@ -302,6 +313,7 @@
       }
     },
     "Regenerate summary?" : {
+      "extractionState" : "stale",
       "localizations" : {
         "es-419" : {
           "stringUnit" : {
@@ -503,6 +515,9 @@
           }
         }
       }
+    },
+    "Translate" : {
+
     },
     "Unable to complete your request at this time. Please check your internet connection." : {
 

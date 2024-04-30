@@ -33,6 +33,8 @@
 		46DA71412BD8C95C001A3685 /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 46DA71402BD8C95C001A3685 /* Localizable.xcstrings */; };
 		46DA71432BD8D724001A3685 /* Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46DA71422BD8D724001A3685 /* Utilities.swift */; };
 		46DA71452BD8E1F2001A3685 /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46DA71442BD8E1F2001A3685 /* Settings.swift */; };
+		46FAC5FE2BDF6C630013B9B5 /* DetailViewBottomBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46FAC5FD2BDF6C630013B9B5 /* DetailViewBottomBar.swift */; };
+		46FAC6012BDFC4DB0013B9B5 /* DetailSummaryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46FAC6002BDFC4DB0013B9B5 /* DetailSummaryView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -83,6 +85,8 @@
 		46DA71402BD8C95C001A3685 /* Localizable.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = Localizable.xcstrings; sourceTree = "<group>"; };
 		46DA71422BD8D724001A3685 /* Utilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utilities.swift; sourceTree = "<group>"; };
 		46DA71442BD8E1F2001A3685 /* Settings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Settings.swift; sourceTree = "<group>"; };
+		46FAC5FD2BDF6C630013B9B5 /* DetailViewBottomBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewBottomBar.swift; sourceTree = "<group>"; };
+		46FAC6002BDFC4DB0013B9B5 /* DetailSummaryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailSummaryView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -133,6 +137,7 @@
 		461ADD592BD2A0AC00C0DD94 /* Secretari */ = {
 			isa = PBXGroup;
 			children = (
+				46FAC5FC2BDF6C2F0013B9B5 /* Components */,
 				46DA71352BD7FB26001A3685 /* Utilities */,
 				461ADD8E2BD2A49900C0DD94 /* Launch Screen.storyboard */,
 				461ADDA82BD2B96000C0DD94 /* Info.plist */,
@@ -187,10 +192,10 @@
 		461ADD872BD2A0D600C0DD94 /* View */ = {
 			isa = PBXGroup;
 			children = (
+				46FAC5FF2BDFC4AC0013B9B5 /* DetailViews */,
 				461ADDA42BD2B6E700C0DD94 /* TranscriptView.swift */,
 				461ADD902BD2A4F000C0DD94 /* SettingsView.swift */,
 				461ADD9E2BD2B63C00C0DD94 /* RecorderButton.swift */,
-				461ADDA62BD2B6EB00C0DD94 /* DetailView.swift */,
 				461ADDA22BD2B6C100C0DD94 /* StreamingView.swift */,
 				461ADDA02BD2B6BC00C0DD94 /* RecognizerView.swift */,
 				461ADD8A2BD2A40500C0DD94 /* ErrorView.swift */,
@@ -216,6 +221,23 @@
 				46DA713A2BD7FBFB001A3685 /* APError.swift */,
 			);
 			path = Alerts;
+			sourceTree = "<group>";
+		};
+		46FAC5FC2BDF6C2F0013B9B5 /* Components */ = {
+			isa = PBXGroup;
+			children = (
+				46FAC5FD2BDF6C630013B9B5 /* DetailViewBottomBar.swift */,
+			);
+			path = Components;
+			sourceTree = "<group>";
+		};
+		46FAC5FF2BDFC4AC0013B9B5 /* DetailViews */ = {
+			isa = PBXGroup;
+			children = (
+				461ADDA62BD2B6EB00C0DD94 /* DetailView.swift */,
+				46FAC6002BDFC4DB0013B9B5 /* DetailSummaryView.swift */,
+			);
+			path = DetailViews;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -362,6 +384,7 @@
 				46DA71392BD7FB60001A3685 /* NetworkManager.swift in Sources */,
 				461ADDA12BD2B6BD00C0DD94 /* RecognizerView.swift in Sources */,
 				461ADD9F2BD2B63C00C0DD94 /* RecorderButton.swift in Sources */,
+				46FAC6012BDFC4DB0013B9B5 /* DetailSummaryView.swift in Sources */,
 				461ADD892BD2A11700C0DD94 /* AudioRecord.swift in Sources */,
 				46DA713C2BD7FBFB001A3685 /* APError.swift in Sources */,
 				461ADD992BD2B5E400C0DD94 /* SpeechRecognizer.swift in Sources */,
@@ -370,6 +393,7 @@
 				46DA71432BD8D724001A3685 /* Utilities.swift in Sources */,
 				46DA71452BD8E1F2001A3685 /* Settings.swift in Sources */,
 				461ADDA52BD2B6E700C0DD94 /* TranscriptView.swift in Sources */,
+				46FAC5FE2BDF6C630013B9B5 /* DetailViewBottomBar.swift in Sources */,
 				461ADD9B2BD2B5ED00C0DD94 /* Websocket.swift in Sources */,
 				461ADD5B2BD2A0AC00C0DD94 /* SecretariApp.swift in Sources */,
 				461ADDA32BD2B6C100C0DD94 /* StreamingView.swift in Sources */,
