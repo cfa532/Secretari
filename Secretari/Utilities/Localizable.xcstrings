@@ -20,7 +20,10 @@
     "Edit" : {
 
     },
-    "Editing" : {
+    "Edit Summary" : {
+
+    },
+    "English" : {
 
     },
     "First make sure to select the right language for recognition in setting ⚙️ Otherwise the built-in speech recognizer cannot work properly." : {
@@ -280,11 +283,7 @@
         }
       }
     },
-    "Redo" : {
-
-    },
     "Redo summary" : {
-      "extractionState" : "stale",
       "localizations" : {
         "es-419" : {
           "stringUnit" : {
@@ -403,6 +402,9 @@
     "Sever Error" : {
 
     },
+    "Share" : {
+
+    },
     "Start" : {
       "localizations" : {
         "es-419" : {
@@ -452,6 +454,7 @@
       }
     },
     "Summary" : {
+      "extractionState" : "stale",
       "localizations" : {
         "es-419" : {
           "stringUnit" : {
@@ -488,7 +491,11 @@
     "There was an issue connecting to the server. If this persists, please contact support." : {
 
     },
+    "Transcript" : {
+
+    },
     "Transcript>>" : {
+      "extractionState" : "stale",
       "localizations" : {
         "es-419" : {
           "stringUnit" : {
@@ -516,7 +523,7 @@
         }
       }
     },
-    "Translate" : {
+    "Translations" : {
 
     },
     "Unable to complete your request at this time. Please check your internet connection." : {
