@@ -6,10 +6,15 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct DetailSummaryView: View {
-    var record: AudioRecord
-    var websocket: Websocket
+    @Environment(\.modelContext) private var modelContext
+    @Query private var settings: [Settings]
+//    @Query(sort: \AudioRecord.recordDate, order: .reverse) var records: [AudioRecord]
+
+    @Binding var record: AudioRecord
+    @StateObject private var websocket = Websocket()
 
     var body: some View {
         NavigationStack {
@@ -25,6 +30,9 @@ struct DetailSummaryView: View {
                             })
                     }
                 } else {
+                    Text(AudioRecord.dateLongFormat.string(from: record.recordDate))
+//                        .frame(maxWidth: .infinity, alignment: .leading)
+                        .padding(3)
                     Text( record.summary )
                         .onTapGesture(perform: {
                             print("Enter Summary view")
@@ -32,6 +40,9 @@ struct DetailSummaryView: View {
                         .contextMenu(ContextMenu(menuItems: {
                             Button(action: {
                                 print("Regenerate summary")
+                                websocket.sendToAI(record.transcript, prompt: settings[0].prompt[settings[0].selectedLocale]!, wssURL: settings[0].wssURL) { summary in
+                                    record.summary = summary
+                                }
                             }, label: {
                                 Label("Redo summary", systemImage: "arrow.triangle.2.circlepath")
                             })
@@ -45,5 +56,5 @@ struct DetailSummaryView: View {
 }
 
 #Preview {
-    DetailSummaryView(record: AudioRecord.sampleData[0], websocket: Websocket())
+    DetailSummaryView(record: .constant(AudioRecord.sampleData[0]))
 }

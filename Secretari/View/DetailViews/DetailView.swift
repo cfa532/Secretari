@@ -10,10 +10,6 @@ import SwiftData
 
 struct DetailView: View {
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
-//    @Environment(\.modelContext) private var modelContext
-//    @Query private var settings: [Settings]
-    
-    @StateObject private var websocket = Websocket()
     @State private var viewMode = DetailViewMode.Summary
     @State private var showPopup = false
     @State var record: AudioRecord
@@ -23,7 +19,7 @@ struct DetailView: View {
     
     var body: some View {
         NavigationStack {
-            DetailSummaryView(record: record, websocket: websocket)
+            DetailSummaryView(record: $record)
         }
         .navigationBarBackButtonHidden(true)
         .navigationTitle("Summary")
