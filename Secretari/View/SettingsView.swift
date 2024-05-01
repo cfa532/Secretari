@@ -60,6 +60,7 @@ struct SettingsView: View {
                 .opacity(self.opacity)
                 .onTapGesture {
                     self.countDown += 1
+                    print(self.countDown)
                     if timer==nil, self.opacity>0 {
                         timer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: false, block: {  _ in
                             if self.countDown > 5 {
@@ -76,10 +77,8 @@ struct SettingsView: View {
             .onAppear(perform: {
                 guard !settings.isEmpty else { return }
                 setting = settings[0]
-                //                setting.speechLocale = "zh_CN"
-                //                print("seleted lang", setting.speechLocale)
                 selectedLocale = setting.selectedLocale
-                selectedPrompt = setting.prompt[selectedLocale]!
+                selectedPrompt = setting.prompt[selectedLocale] ?? AppConstants.defaultPrompt[.English]!
             })
             .onDisappear(perform: {
                 settings[0].selectedLocale = selectedLocale

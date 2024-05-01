@@ -36,6 +36,8 @@
 		46FAC6012BDFC4DB0013B9B5 /* DetailSummaryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46FAC6002BDFC4DB0013B9B5 /* DetailSummaryView.swift */; };
 		46FAC6032BE135B60013B9B5 /* DetailSummaryMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46FAC6022BE135B60013B9B5 /* DetailSummaryMenu.swift */; };
 		46FAC6052BE1428E0013B9B5 /* DetailEditView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46FAC6042BE1428E0013B9B5 /* DetailEditView.swift */; };
+		46FAC6072BE146950013B9B5 /* DetailTranscriptView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46FAC6062BE146950013B9B5 /* DetailTranscriptView.swift */; };
+		46FAC6092BE146A60013B9B5 /* DetailTranslationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46FAC6082BE146A60013B9B5 /* DetailTranslationView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -89,6 +91,8 @@
 		46FAC6002BDFC4DB0013B9B5 /* DetailSummaryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailSummaryView.swift; sourceTree = "<group>"; };
 		46FAC6022BE135B60013B9B5 /* DetailSummaryMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailSummaryMenu.swift; sourceTree = "<group>"; };
 		46FAC6042BE1428E0013B9B5 /* DetailEditView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailEditView.swift; sourceTree = "<group>"; };
+		46FAC6062BE146950013B9B5 /* DetailTranscriptView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailTranscriptView.swift; sourceTree = "<group>"; };
+		46FAC6082BE146A60013B9B5 /* DetailTranslationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailTranslationView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -239,6 +243,8 @@
 				461ADDA62BD2B6EB00C0DD94 /* DetailView.swift */,
 				46FAC6002BDFC4DB0013B9B5 /* DetailSummaryView.swift */,
 				46FAC6042BE1428E0013B9B5 /* DetailEditView.swift */,
+				46FAC6062BE146950013B9B5 /* DetailTranscriptView.swift */,
+				46FAC6082BE146A60013B9B5 /* DetailTranslationView.swift */,
 			);
 			path = DetailViews;
 			sourceTree = "<group>";
@@ -382,6 +388,7 @@
 				46FAC6032BE135B60013B9B5 /* DetailSummaryMenu.swift in Sources */,
 				46DA713D2BD7FBFB001A3685 /* Alert.swift in Sources */,
 				461ADD912BD2A4F000C0DD94 /* SettingsView.swift in Sources */,
+				46FAC6072BE146950013B9B5 /* DetailTranscriptView.swift in Sources */,
 				461ADD8D2BD2A42000C0DD94 /* ErrorWrapper.swift in Sources */,
 				461ADD8B2BD2A40500C0DD94 /* ErrorView.swift in Sources */,
 				461ADD9D2BD2B5F400C0DD94 /* RecorderTimer.swift in Sources */,
@@ -389,6 +396,7 @@
 				461ADDA12BD2B6BD00C0DD94 /* RecognizerView.swift in Sources */,
 				461ADD9F2BD2B63C00C0DD94 /* RecorderButton.swift in Sources */,
 				46FAC6012BDFC4DB0013B9B5 /* DetailSummaryView.swift in Sources */,
+				46FAC6092BE146A60013B9B5 /* DetailTranslationView.swift in Sources */,
 				461ADD892BD2A11700C0DD94 /* AudioRecord.swift in Sources */,
 				46DA713C2BD7FBFB001A3685 /* APError.swift in Sources */,
 				461ADD992BD2B5E400C0DD94 /* SpeechRecognizer.swift in Sources */,

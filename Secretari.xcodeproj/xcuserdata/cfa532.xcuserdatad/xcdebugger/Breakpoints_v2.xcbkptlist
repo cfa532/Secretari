@@ -16,7 +16,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "147"
             endingLineNumber = "147"
-            landmarkName = "sendToAI(_:settings:action:)"
+            landmarkName = "sendToAI(_:prompt:wssURL:action:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

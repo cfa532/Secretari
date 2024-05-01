@@ -123,10 +123,10 @@ class Websocket: NSObject, URLSessionWebSocketDelegate, ObservableObject {
 }
 
 extension Websocket {
-    @MainActor func sendToAI(_ rawText: String, settings: Settings, action: @escaping (_ summary: String)->Void) {
+    @MainActor func sendToAI(_ rawText: String, prompt: String, wssURL: String, action: @escaping (_ summary: String)->Void) {
         let msg = [
             "input": [
-                "prompt": settings.prompt[settings.selectedLocale],
+                "prompt": prompt,
                 "rawtext": rawText],
             "parameters": [
                 "llm": AppConstants.LLM,
@@ -137,7 +137,7 @@ extension Websocket {
         
         // Convert the Data to String
         if let jsonString = String(data: jsonData, encoding: .utf8) {
-            self.prepare(settings.wssURL)
+            self.prepare(wssURL)
             self.send(jsonString) { error in
                 self.alertItem = AlertContext.unableToComplete
             }

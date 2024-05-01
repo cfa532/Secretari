@@ -13,11 +13,21 @@ struct DetailEditView: View {
     var body: some View {
         NavigationStack {
             Form {
-                TextField( record.summary, text: $record.summary )
+                TextField( record.summary, text: $record.summary, axis: .vertical )
+                    .lineLimit(.max)
             }
         }
         .navigationTitle("Edit Summary")
-        .padding() // Adds padding to the VStack
+//        .padding() // Adds padding to the VStack
+        .toolbar {
+            ToolbarItem(placement: .topBarTrailing) {
+                Button {
+                    print("cancel")
+                } label: {
+                    Text("Cancel")
+                }
+            }
+        }
     }
 }
 

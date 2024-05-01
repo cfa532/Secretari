@@ -36,7 +36,7 @@ struct DetailSummaryView: View {
                                 Label("Redo summary", systemImage: "arrow.triangle.2.circlepath")
                             })
                         }))
-                        .padding()
+//                        .padding()
                 }
             }
         }

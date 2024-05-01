@@ -14,6 +14,9 @@
     "An error has occured" : {
 
     },
+    "Cancel" : {
+
+    },
     "Dismiss" : {
 
     },
@@ -55,6 +58,9 @@
       }
     },
     "Hello, World!" : {
+
+    },
+    "Indonesia" : {
 
     },
     "Invalid Email" : {
@@ -368,6 +374,9 @@
         }
       }
     },
+    "Select one of the following languages to translate the Summary" : {
+
+    },
     "Server Error" : {
 
     },
@@ -522,6 +531,9 @@
           }
         }
       }
+    },
+    "Translation" : {
+
     },
     "Translations" : {
 

@@ -41,7 +41,7 @@ final class AppConstants {
     static let OpenAIModel = "gpt-4"
     static let OpenAITemperature = "0.0"
     static let LLM = "openai"
-    static let defaultSettings = Settings(prompt: defaultPromot,
+    static let defaultSettings = Settings(prompt: defaultPrompt,
                                           wssURL: "wss://leither.uk/ws",
                                           audioSilentDB: "-40",
                                           speechLocale: Localized.systemLanguage()
@@ -59,7 +59,7 @@ final class AppConstants {
         
     }
     
-    static let defaultPromot = [
+    static let defaultPrompt = [
         RecognizerLocale.English: "You are a smart assistant. Generate a comprehensive summary from the following speech.",
         RecognizerLocale.中文: "你是個智能秘書。 提取下述文字中的重要內容，做一份全面的摘要。",
         RecognizerLocale.日本語: "あなたは賢いアシスタントです。 次のスピーチから包括的な要約を作成します。",

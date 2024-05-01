@@ -10,8 +10,8 @@ import SwiftData
 
 struct TranscriptView: View {
     @Environment(\.modelContext) private var modelContext
-    @Query(sort: \AudioRecord.recordDate, order: .reverse) private var records: [AudioRecord]
     @Query private var settings: [Settings]
+    @Query(sort: \AudioRecord.recordDate, order: .reverse) var records: [AudioRecord]
     
     @State private var isRecording = false
     @State private var curRecord: AudioRecord?    // create an empty record
@@ -148,7 +148,7 @@ extension TranscriptView: TimerDelegate {
             curRecord?.transcript = speechRecognizer.transcript + "。"
             modelContext.insert(curRecord!)
             speechRecognizer.transcript = ""
-            websocket.sendToAI(curRecord!.transcript, settings: self.settings[0]) { summary in
+            websocket.sendToAI(curRecord!.transcript, prompt: settings[0].prompt[settings[0].selectedLocale]!, wssURL: settings[0].wssURL) { summary in
                 curRecord?.summary = summary
             }
         }
