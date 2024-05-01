@@ -74,10 +74,6 @@ class Websocket: NSObject, URLSessionWebSocketDelegate, ObservableObject {
                                             // send reply from AI to display
                                             action(answer)
                                             self.cancel()
-                                            //                                            Task { @MainActor in
-                                            //                                                self.isStreaming = false
-                                            //                                                self.streamedText = ""
-                                            //                                            }
                                         }
                                     } else {
                                         // should be stream type
@@ -134,6 +130,12 @@ extension Websocket {
                 "client":"mobile",
                 "model": AppConstants.OpenAIModel]] as [String : Any]
         let jsonData = try! JSONSerialization.data(withJSONObject: msg)
+        
+        if rawText.utf8.count < 50 {
+            // rawtext too short. Just reply the original text.
+            action(rawText)
+            return
+        }
         
         // Convert the Data to String
         if let jsonString = String(data: jsonData, encoding: .utf8) {

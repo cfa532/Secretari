@@ -36,6 +36,7 @@ struct TranscriptView: View {
                     }
                 }
                 .padding()
+                .animation(.easeInOut, value: 1)
             } else if websocket.isStreaming {
                 ScrollView {
                     ScrollViewReader { proxy in
@@ -49,6 +50,7 @@ struct TranscriptView: View {
                     }
                 }
                 .padding()
+                .animation(.easeInOut, value: 1)
             }
             else {
                 List {
@@ -88,7 +90,7 @@ struct TranscriptView: View {
                             Image(systemName: "gearshape")
                                 .resizable()
                                 .frame(width: 24, height: 24)
-                                .foregroundColor(.primary)
+                                .foregroundColor(.secondary)
                         }
                     })
                 }

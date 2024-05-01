@@ -29,6 +29,7 @@ struct DetailSummaryView: View {
                                 proxy.scrollTo(message, anchor: .bottom)
                             })
                     }
+                    .animation(.easeInOut, value: 1)
                 } else {
                     Text(AudioRecord.dateLongFormat.string(from: record.recordDate))
 //                        .frame(maxWidth: .infinity, alignment: .leading)

@@ -20,6 +20,7 @@ struct DetailView: View {
     var body: some View {
         NavigationStack {
             DetailSummaryView(record: $record)
+                .animation(.easeInOut, value: 0.5)
         }
         .navigationBarBackButtonHidden(true)
         .navigationTitle("Summary")

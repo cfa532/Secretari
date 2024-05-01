@@ -11,6 +11,12 @@
         }
       }
     },
+    "Alert" : {
+
+    },
+    "All settings will be reset." : {
+
+    },
     "An error has occured" : {
 
     },
@@ -343,7 +349,11 @@
         }
       }
     },
+    "Reset" : {
+
+    },
     "Reset settings" : {
+      "extractionState" : "stale",
       "localizations" : {
         "es-419" : {
           "stringUnit" : {
@@ -538,6 +548,9 @@
 
     },
     "Unable to complete your request at this time. Please check your internet connection." : {
+
+    },
+    "Yes" : {
 
     },
     "You are a smart assistant. Generate a comprehensive summary from the following speech." : {

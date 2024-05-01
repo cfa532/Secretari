@@ -29,6 +29,7 @@ struct SettingsView: View {
     @State private var countDown = 0
     @State private var opacity = 1.0
     @State private var timer: Timer?
+    @State private var showAlert = false
     
     var body: some View {
         NavigationView {
@@ -86,22 +87,23 @@ struct SettingsView: View {
             })
         }
         .toolbar {
-            ToolbarItemGroup(placement: .bottomBar) {
+            ToolbarItem(placement: .topBarTrailing) {
                 Button(action: {
-                    settings[0].prompt = AppConstants.defaultSettings.prompt
-                    settings[0].selectedLocale = AppConstants.defaultSettings.selectedLocale
-                    settings[0].audioSilentDB = AppConstants.defaultSettings.audioSilentDB
-                    settings[0].wssURL = AppConstants.defaultSettings.wssURL
-                    selectedLocale = settings[0].selectedLocale
+                    showAlert = true
                 }) {
-                    Text("Reset settings").padding(5)
+                    Text("Reset")
                 }
-                .foregroundColor(.black)
-                .background(Color(white: 0.8))
-                .cornerRadius(5.0)
-                .shadow(color:.gray, radius: 2, x: 2, y: 2)
             }
         }
+        .alert(isPresented: $showAlert, content: {
+            Alert(title: Text("Alert"), message: Text("All settings will be reset."), primaryButton: .cancel(), secondaryButton: .destructive(Text("Yes"), action: {
+                settings[0].prompt = AppConstants.defaultSettings.prompt
+                settings[0].selectedLocale = AppConstants.defaultSettings.selectedLocale
+                settings[0].audioSilentDB = AppConstants.defaultSettings.audioSilentDB
+                settings[0].wssURL = AppConstants.defaultSettings.wssURL
+                selectedLocale = settings[0].selectedLocale })
+            )}
+        )
     }
 }
 

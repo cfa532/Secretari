@@ -14,7 +14,8 @@ struct DetailTranscriptView: View {
     var body: some View {
         NavigationStack {
             ScrollView {
-                Text(AudioRecord.dateLongFormat.string(from: record.recordDate) + "\n")
+                Text(AudioRecord.dateLongFormat.string(from: record.recordDate))
+                    .padding(3)
                 Text(record.transcript)
             }
         }
