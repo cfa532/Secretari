@@ -85,11 +85,11 @@ struct TranscriptView: View {
                 .navigationTitle("Records")
                 .navigationBarTitleDisplayMode(.inline)
                 .toolbar {
-                    ToolbarItemGroup(placement: .topBarTrailing, content: {
+                    ToolbarItem(placement: .topBarTrailing, content: {
                         NavigationLink(destination: SettingsView()) {
                             Image(systemName: "gearshape")
                                 .resizable()
-                                .frame(width: 24, height: 24)
+                                .frame(width: 20, height: 20)
                                 .foregroundColor(.secondary)
                         }
                     })

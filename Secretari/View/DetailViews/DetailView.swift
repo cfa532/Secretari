@@ -37,7 +37,6 @@ struct DetailView: View {
             ToolbarItem(placement: .topBarTrailing) {
                 Menu(content: {
                     Button {
-                        print("show share meun")
                         showShareSheet = true
                     } label: {
                         Label("Share", systemImage: "square.and.arrow.up")
