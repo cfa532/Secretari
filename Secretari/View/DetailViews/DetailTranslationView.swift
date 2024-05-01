@@ -28,8 +28,8 @@ struct DetailTranslationView: View {
                                 proxy.scrollTo(message, anchor: .bottom)
                             })
                     }
-                } else if let key = record.translation.keys.first {
-                    Text(record.translation[key]!)
+                } else if let ts=record.translation, let key=ts.keys.first {
+                    Text(ts[key]!)
                 } else {
                     ContentUnavailableView(label: {
                         Label("No records", systemImage: "list.bullet.rectangle.portrait")

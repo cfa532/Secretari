@@ -13,13 +13,13 @@ final class AudioRecord {
     @Attribute(.unique) var recordDate: Date
     var transcript: String
     var summary: String
-    var translation: [Language: String]
+    var translation: [Language: String]?
     
     init(transcript: String="", summary: String="") {
         self.recordDate = Date()
         self.transcript = transcript
         self.summary = summary
-        self.translation = [Language: String]()
+//        self.translation = [Language: String]()
     }
 }
 
