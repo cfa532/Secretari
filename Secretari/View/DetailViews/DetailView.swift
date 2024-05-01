@@ -26,7 +26,7 @@ struct DetailView: View {
             DetailSummaryView(record: record, websocket: websocket)
         }
         .navigationBarBackButtonHidden(true)
-        .navigationTitle(AudioRecord.dateLongFormat.string(from: record.recordDate))
+        .navigationTitle("Summary")
         .navigationBarTitleDisplayMode(.inline)
         .toolbar(content: {
             ToolbarItem(placement: .topBarLeading) {

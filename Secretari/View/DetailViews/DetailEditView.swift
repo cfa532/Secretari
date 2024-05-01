@@ -9,22 +9,28 @@ import SwiftUI
 
 struct DetailEditView: View {
     @Binding var record: AudioRecord
-    
+    @State private var temp: String = ""
+    @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
+
     var body: some View {
         NavigationStack {
             Form {
-                TextField( record.summary, text: $record.summary, axis: .vertical )
+                TextField( record.summary, text: $temp, axis: .vertical )
                     .lineLimit(.max)
             }
+            .onAppear(perform: {
+                if temp == "" {
+                    temp = record.summary
+                }
+            })
         }
         .navigationTitle("Edit Summary")
-//        .padding() // Adds padding to the VStack
         .toolbar {
             ToolbarItem(placement: .topBarTrailing) {
                 Button {
-                    print("cancel")
+                    record.summary = temp
                 } label: {
-                    Text("Cancel")
+                    Text("Save")
                 }
             }
         }

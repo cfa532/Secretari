@@ -14,9 +14,6 @@
     "An error has occured" : {
 
     },
-    "Cancel" : {
-
-    },
     "Dismiss" : {
 
     },
@@ -374,6 +371,9 @@
         }
       }
     },
+    "Save" : {
+
+    },
     "Select one of the following languages to translate the Summary" : {
 
     },
@@ -463,7 +463,6 @@
       }
     },
     "Summary" : {
-      "extractionState" : "stale",
       "localizations" : {
         "es-419" : {
           "stringUnit" : {
