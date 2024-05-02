@@ -17,10 +17,34 @@ struct DetailView: View {
     @State private var showShareSheet = false
     @State private var isShowingDialog = false  // for Redo confirm dialog
     
+    @Environment(\.modelContext) private var modelContext
+    @Query private var settings: [Settings]
+    @StateObject private var websocket = Websocket()
+    
     var body: some View {
         NavigationStack {
-            DetailSummaryView(record: $record)
-                .animation(.easeInOut, value: 0.5)
+            ScrollView {
+                if self.websocket.isStreaming {
+                    ScrollViewReader { proxy in
+                        let message = self.websocket.streamedText
+                        Label(NSLocalizedString("Streaming from AI...", comment: ""), systemImage: "brain.head.profile.fill")
+                        Text(message)
+                            .id(message)
+                            .onChange(of: message, {
+                                proxy.scrollTo(message, anchor: .bottom)
+                            })
+                    }
+                    .animation(.easeInOut, value: 1)
+                } else {
+                    Text(AudioRecord.dateLongFormat.string(from: record.recordDate))
+//                        .frame(maxWidth: .infinity, alignment: .leading)
+                        .padding(3)
+                    TextField(record.summary, text: $record.summary, axis: .vertical)
+                        .lineLimit(.max)
+                        .textSelection(.enabled)
+                }
+            }
+            .padding()
         }
         .navigationBarBackButtonHidden(true)
         .navigationTitle("Summary")
@@ -44,11 +68,15 @@ struct DetailView: View {
                     NavigationLink(destination: DetailTranscriptView(record: record)) {
                         Label("Transcript", systemImage: "text.word.spacing")
                     }
-                    NavigationLink(destination: DetailEditView(record: $record)) {
-                        Label("Edit", systemImage: "pencil.line")
-                    }
                     NavigationLink(destination: DetailTranslationView(record: $record)) {
                         Label("Translation", systemImage: "textformat.abc.dottedunderline")
+                    }
+                    Button {
+                        websocket.sendToAI(record.summary, prompt: settings[0].prompt[settings[0].selectedLocale]!, wssURL: settings[0].wssURL) { summary in
+                            record.summary = summary
+                        }
+                    } label: {
+                        Label("Redo Summary", systemImage: "pencil.line")
                     }
                 }, label: {
                     Image(systemName: "ellipsis")

@@ -69,8 +69,10 @@ struct DetailTranslationView: View {
                         .resizable()
                 })
                 .sheet(isPresented: $showShareSheet, content: {
-                    let textToShare = AudioRecord.dateLongFormat.string(from: record.recordDate)+": "+record.summary
-                    ShareSheet(activityItems: [textToShare])
+                    if let ts=record.translation, let key=ts.keys.first {
+                        let textToShare = AudioRecord.dateLongFormat.string(from: record.recordDate) + ": " + ts[key]!
+                        ShareSheet(activityItems: [textToShare])
+                    }
                 })
             }
         })

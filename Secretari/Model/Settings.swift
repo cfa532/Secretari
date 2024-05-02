@@ -50,7 +50,7 @@ final class AppConstants {
     static private func localizedPrompt() -> String {
         switch NSLocale.current.language.languageCode?.identifier {
         case "zh":
-            return "你是個智能秘書。 提取下述文字中的重要內容，做一份全面的摘要。"
+            return "你是個智能秘書。分別列出下述文字中的重要內容。"
         case "ja":
             return "あなたは賢いアシスタントです。 次のスピーチから包括的な要約を作成する。"
         default:

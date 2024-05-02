@@ -43,3 +43,4 @@ struct SecretariApp: App {
         .modelContainer(sharedModelContainer)
     }
 }
+

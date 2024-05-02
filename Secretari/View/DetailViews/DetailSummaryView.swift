@@ -11,10 +11,8 @@ import SwiftData
 struct DetailSummaryView: View {
     @Environment(\.modelContext) private var modelContext
     @Query private var settings: [Settings]
-//    @Query(sort: \AudioRecord.recordDate, order: .reverse) var records: [AudioRecord]
-
-    @Binding var record: AudioRecord
     @StateObject private var websocket = Websocket()
+    @Binding var record: AudioRecord
 
     var body: some View {
         NavigationStack {
@@ -34,11 +32,14 @@ struct DetailSummaryView: View {
                     Text(AudioRecord.dateLongFormat.string(from: record.recordDate))
 //                        .frame(maxWidth: .infinity, alignment: .leading)
                         .padding(3)
-                    Text( record.summary )
-                        .onTapGesture(perform: {
-                            print("Enter Summary view")
-                        })
+                    TextField(record.summary, text: $record.summary, axis: .vertical)
+                        .lineLimit(.max)
+//                        .disabled(true)
+
                         .contextMenu(ContextMenu(menuItems: {
+                            Button("Copy") {
+                              UIPasteboard.general.string = "This text can be selected and copied."
+                            }
                             Button(action: {
                                 print("Regenerate summary")
                                 websocket.sendToAI(record.transcript, prompt: settings[0].prompt[settings[0].selectedLocale]!, wssURL: settings[0].wssURL) { summary in
@@ -48,6 +49,7 @@ struct DetailSummaryView: View {
                                 Label("Redo summary", systemImage: "arrow.triangle.2.circlepath")
                             })
                         }))
+                        .textSelection(.enabled)
 //                        .padding()
                 }
             }

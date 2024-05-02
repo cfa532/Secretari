@@ -65,6 +65,9 @@
         }
       }
     },
+    "Copy" : {
+
+    },
     "Dismiss" : {
       "localizations" : {
         "es-419" : {
@@ -432,7 +435,35 @@
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "重新生成摘要"
+            "value" : "重新生成"
+          }
+        }
+      }
+    },
+    "Redo Summary" : {
+      "localizations" : {
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rehacer resumen"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "概要再生"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "重新生成"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "重新生成"
           }
         }
       }

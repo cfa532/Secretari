@@ -35,7 +35,7 @@ struct DetailTranscriptView: View {
                         .resizable()
                 })
                 .sheet(isPresented: $showShareSheet, content: {
-                    let textToShare = AudioRecord.dateLongFormat.string(from: record.recordDate)+": "+record.summary
+                    let textToShare = AudioRecord.dateLongFormat.string(from: record.recordDate)+": "+record.transcript
                     ShareSheet(activityItems: [textToShare])
                 })
             }
