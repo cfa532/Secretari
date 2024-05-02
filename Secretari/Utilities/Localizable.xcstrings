@@ -65,9 +65,6 @@
         }
       }
     },
-    "Copy" : {
-
-    },
     "Dismiss" : {
       "localizations" : {
         "es-419" : {
@@ -102,34 +99,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "编辑"
-          }
-        },
-        "zh-Hant" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "編輯"
-          }
-        }
-      }
-    },
-    "Edit Summary" : {
-      "localizations" : {
-        "es-419" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Editar resumen"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "概要編集"
-          }
-        },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "编辑摘要"
           }
         },
         "zh-Hant" : {
@@ -412,34 +381,6 @@
         }
       }
     },
-    "Redo summary" : {
-      "localizations" : {
-        "es-419" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Rehacer resumen"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "概要再生"
-          }
-        },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "重新生成"
-          }
-        },
-        "zh-Hant" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "重新生成"
-          }
-        }
-      }
-    },
     "Redo Summary" : {
       "localizations" : {
         "es-419" : {
@@ -492,34 +433,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "重置"
-          }
-        }
-      }
-    },
-    "Save" : {
-      "localizations" : {
-        "es-419" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Ahorrar"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "セーブ"
-          }
-        },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "保存"
-          }
-        },
-        "zh-Hant" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "保存"
           }
         }
       }
