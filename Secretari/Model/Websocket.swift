@@ -120,6 +120,13 @@ class Websocket: NSObject, URLSessionWebSocketDelegate, ObservableObject {
 
 extension Websocket {
     @MainActor func sendToAI(_ rawText: String, prompt: String, wssURL: String, action: @escaping (_ summary: String)->Void) {
+        var prompt = prompt
+        var model = AppConstants.OpenAIModel
+        if rawText.utf8.count < 50 {
+            // rawtext too short. Just reply the original text.
+            prompt = "Add punctuation to the following text and segment it appropriately. "
+            model = "gpt-3.5-turbo"
+        }
         let msg = [
             "input": [
                 "prompt": prompt,
@@ -128,14 +135,9 @@ extension Websocket {
                 "llm": AppConstants.LLM,
                 "temperature": AppConstants.OpenAITemperature,
                 "client":"mobile",
-                "model": AppConstants.OpenAIModel]] as [String : Any]
+                "model": model]] as [String : Any]
+
         let jsonData = try! JSONSerialization.data(withJSONObject: msg)
-        
-        if rawText.utf8.count < 50 {
-            // rawtext too short. Just reply the original text.
-            action(rawText)
-            return
-        }
         
         // Convert the Data to String
         if let jsonString = String(data: jsonData, encoding: .utf8) {

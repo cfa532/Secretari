@@ -19,6 +19,7 @@ struct TranscriptView: View {
     @StateObject private var websocket = Websocket()
     @StateObject private var recorderTimer = RecorderTimer()
     @StateObject private var speechRecognizer = SpeechRecognizer()
+//    @StateObject var userManager: UserManager
     
     var body: some View {
         NavigationStack {

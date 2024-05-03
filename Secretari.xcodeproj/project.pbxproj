@@ -36,6 +36,7 @@
 		46FAC6032BE135B60013B9B5 /* DetailSummaryMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46FAC6022BE135B60013B9B5 /* DetailSummaryMenu.swift */; };
 		46FAC6072BE146950013B9B5 /* DetailTranscriptView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46FAC6062BE146950013B9B5 /* DetailTranscriptView.swift */; };
 		46FAC6092BE146A60013B9B5 /* DetailTranslationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46FAC6082BE146A60013B9B5 /* DetailTranslationView.swift */; };
+		46FAC60B2BE36A8C0013B9B5 /* UserManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46FAC60A2BE36A8C0013B9B5 /* UserManager.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -89,6 +90,7 @@
 		46FAC6022BE135B60013B9B5 /* DetailSummaryMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailSummaryMenu.swift; sourceTree = "<group>"; };
 		46FAC6062BE146950013B9B5 /* DetailTranscriptView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailTranscriptView.swift; sourceTree = "<group>"; };
 		46FAC6082BE146A60013B9B5 /* DetailTranslationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailTranslationView.swift; sourceTree = "<group>"; };
+		46FAC60A2BE36A8C0013B9B5 /* UserManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -212,6 +214,7 @@
 				46DA71382BD7FB60001A3685 /* NetworkManager.swift */,
 				46DA71402BD8C95C001A3685 /* Localizable.xcstrings */,
 				46DA71422BD8D724001A3685 /* Utilities.swift */,
+				46FAC60A2BE36A8C0013B9B5 /* UserManager.swift */,
 			);
 			path = Utilities;
 			sourceTree = "<group>";
@@ -386,6 +389,7 @@
 				461ADD8D2BD2A42000C0DD94 /* ErrorWrapper.swift in Sources */,
 				461ADD8B2BD2A40500C0DD94 /* ErrorView.swift in Sources */,
 				461ADD9D2BD2B5F400C0DD94 /* RecorderTimer.swift in Sources */,
+				46FAC60B2BE36A8C0013B9B5 /* UserManager.swift in Sources */,
 				46DA71392BD7FB60001A3685 /* NetworkManager.swift in Sources */,
 				461ADDA12BD2B6BD00C0DD94 /* RecognizerView.swift in Sources */,
 				461ADD9F2BD2B63C00C0DD94 /* RecorderButton.swift in Sources */,
@@ -562,7 +566,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 7;
+				CURRENT_PROJECT_VERSION = 9;
 				DEVELOPMENT_ASSET_PATHS = "\"Secretari/Preview Content\"";
 				DEVELOPMENT_TEAM = 96LBXG78A7;
 				ENABLE_PREVIEWS = YES;
@@ -596,7 +600,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 7;
+				CURRENT_PROJECT_VERSION = 9;
 				DEVELOPMENT_ASSET_PATHS = "\"Secretari/Preview Content\"";
 				DEVELOPMENT_TEAM = 96LBXG78A7;
 				ENABLE_PREVIEWS = YES;

@@ -38,7 +38,7 @@ final class AppConstants {
     static let MaxRecordSeconds = 28800     // max working hours, 8hrs
     static let NumRecordsInSwiftData = 30   // number of records kept locally by SwiftData
     static let RecorderTimerFrequency = 10.0  // frequency in seconds to run update() of timer.
-    static let OpenAIModel = "gpt-4"
+    static let OpenAIModel = "gpt-4-turbo"
     static let OpenAITemperature = "0.0"
     static let LLM = "openai"
     static let defaultSettings = Settings(prompt: defaultPrompt,
