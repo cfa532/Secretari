@@ -22,9 +22,9 @@ struct TranscriptView: View {
     @StateObject private var recorderTimer = RecorderTimer()
     @StateObject private var speechRecognizer = SpeechRecognizer()
 
-    @State private var selectedLocale: RecognizerLocale?
+    @State private var selectedLocale: RecognizerLocale = AppConstants.defaultSettings.selectedLocale
     @State private var promptType = Settings.PromptType.memo
-    @State private var selectedPrompt: String = AppConstants.defaultSettings.prompt[Settings.PromptType.memo]![AppConstants.defaultSettings.selectedLocale]!
+    @State private var selectedPrompt: String = " "
 
     
     var body: some View {
@@ -40,7 +40,7 @@ struct TranscriptView: View {
                                 }
                             }
                             .onChange(of: selectedLocale) {
-                                settings[0].selectedLocale = selectedLocale!
+                                settings[0].selectedLocale = selectedLocale
                                 speechRecognizer.stopTranscribing()
                                 Task {
                                     await self.speechRecognizer.setup(locale: settings[0].selectedLocale.rawValue)
@@ -48,6 +48,7 @@ struct TranscriptView: View {
                                 }
                             }
                         }
+                        .frame(maxWidth: .infinity)
                         
                         let message = speechRecognizer.transcript
                         Text(message)
@@ -197,7 +198,7 @@ extension TranscriptView: TimerDelegate {
             curRecord?.transcript = speechRecognizer.transcript + "。"
             modelContext.insert(curRecord!)
             speechRecognizer.transcript = ""
-            websocket.sendToAI(curRecord!.transcript, prompt: settings[0].prompt[settings[0].promptType!]![settings[0].selectedLocale]!, wssURL: settings[0].wssURL) { summary in
+            websocket.sendToAI(curRecord!.transcript, prompt: settings[0].prompt[settings[0].promptType]![settings[0].selectedLocale]!, wssURL: settings[0].wssURL) { summary in
                 curRecord?.summary = summary
             }
         }

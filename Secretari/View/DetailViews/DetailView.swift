@@ -10,7 +10,6 @@ import SwiftData
 
 struct DetailView: View {
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
-    @State private var viewMode = DetailViewMode.Summary
     @State private var showPopup = false
     @State var record: AudioRecord
     
@@ -37,7 +36,7 @@ struct DetailView: View {
                     .animation(.easeInOut, value: 1)
                 } else {
                     Text(AudioRecord.dateLongFormat.string(from: record.recordDate))
-//                        .frame(maxWidth: .infinity, alignment: .leading)
+                    //                        .frame(maxWidth: .infinity, alignment: .leading)
                         .padding(3)
                     TextField(record.summary, text: $record.summary, axis: .vertical)
                         .lineLimit(.max)
@@ -52,12 +51,14 @@ struct DetailView: View {
         .toolbar(content: {
             ToolbarItem(placement: .topBarLeading) {
                 Button(action: {
+                    // Dismiss the view
                     self.presentationMode.wrappedValue.dismiss()
                 }, label: {
                     Image(systemName: "decrease.indent")
-                        .resizable()
+                        .resizable() // Might not be necessary for system images
                 })
             }
+            
             ToolbarItem(placement: .topBarTrailing) {
                 Menu(content: {
                     Button {
@@ -65,30 +66,32 @@ struct DetailView: View {
                     } label: {
                         Label("Share", systemImage: "square.and.arrow.up")
                     }
+                    
                     NavigationLink(destination: DetailTranscriptView(record: record)) {
                         Label("Transcript", systemImage: "text.word.spacing")
                     }
+                    
                     NavigationLink(destination: DetailTranslationView(record: $record)) {
                         Label("Translation", systemImage: "textformat.abc.dottedunderline")
                     }
+
                     Button {
-                        let setting = settings[0]
-                        websocket.sendToAI(record.summary, prompt: setting.prompt[setting.promptType!]![setting.selectedLocale]!, wssURL: setting.wssURL) { summary in
+                        websocket.sendToAI(record.summary, prompt: settings[0].prompt[settings[0].promptType]![settings[0].selectedLocale]!, wssURL: settings[0].wssURL) { summary in
                             record.summary = summary
                         }
                     } label: {
                         Label("Redo Summary", systemImage: "pencil.line")
                     }
+                    
                 }, label: {
                     Image(systemName: "ellipsis")
-                        .resizable()
                 })
-                .sheet(isPresented: $showShareSheet, content: {
-                    let textToShare = AudioRecord.dateLongFormat.string(from: record.recordDate)+": "+record.summary
+                .sheet(isPresented: $showShareSheet) {
+                    let textToShare = AudioRecord.dateLongFormat.string(from: record.recordDate) + ": " + record.summary
                     ShareSheet(activityItems: [textToShare])
-                })
+                }
             }
-        })        
+        })
     }
     
     struct ShareSheet: UIViewControllerRepresentable {
@@ -98,15 +101,11 @@ struct DetailView: View {
         }
         func updateUIViewController(_ uiViewController: UIActivityViewController, context: Context) {}
     }
-    
-    enum DetailViewMode {
-        case Summary, Edit, Transcript, Translation
-    }
 }
 
 #Preview {
     DetailView(record: (AudioRecord.sampleData[0]))
-//    let container = try! ModelContainer(for: AudioRecord.self, Settings.self, configurations: ModelConfiguration(isStoredInMemoryOnly: true))
-//    return DetailView(record: AudioRecord.sampleData[0])
-//        .modelContainer(container)
+    //    let container = try! ModelContainer(for: AudioRecord.self, Settings.self, configurations: ModelConfiguration(isStoredInMemoryOnly: true))
+    //    return DetailView(record: AudioRecord.sampleData[0])
+    //        .modelContainer(container)
 }

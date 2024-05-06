@@ -14,17 +14,19 @@ final class Settings {
     var wssURL: String
     var audioSilentDB: String
     var selectedLocale: RecognizerLocale
-    var promptType: PromptType?       // Two type: Summary and Memo. Memo is a list of bulletins.
+    var promptType: PromptType       // Two type: Summary and Memo. Memo is a list of bulletins.
     
-    init(prompt: [PromptType: [RecognizerLocale : String]], wssURL: String, audioSilentDB: String, speechLocale: RecognizerLocale ) {
+    init(prompt: [PromptType: [RecognizerLocale : String]], wssURL: String, audioSilentDB: String, selectedLocale: RecognizerLocale, promptType: PromptType) {
         self.prompt = prompt
         self.wssURL = wssURL
         self.audioSilentDB = audioSilentDB
-        self.selectedLocale = speechLocale
+        self.selectedLocale = selectedLocale
+        self.promptType = promptType
     }
     
     enum PromptType: String, CaseIterable, Codable {
         case summary, memo
+        var id: Self { self }
     }
 }
 
@@ -50,8 +52,8 @@ final class AppConstants {
     static let defaultSettings = Settings(prompt: defaultPrompt,
                                           wssURL: "wss://leither.uk/ws",
                                           audioSilentDB: "-40",
-                                          speechLocale: Localized.systemLanguage()
-    )
+                                          selectedLocale: Localized.systemLanguage(),
+                                          promptType: Settings.PromptType.memo)
     
     static let defaultPrompt = [
         Settings.PromptType.summary: [

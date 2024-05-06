@@ -296,8 +296,15 @@
     "Profile Saved" : {
 
     },
-    "Prompt" : {
-
+    "Prompt Type" : {
+      "localizations" : {
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "摘要類型"
+          }
+        }
+      }
     },
     "Push the START button to record your own speech. A summary will be generated automatically after STOP button is pushed." : {
       "localizations" : {

@@ -24,10 +24,11 @@ struct SettingsView: View {
             }
         }
     }
-    @State private var summaryOn: Bool = true
+    
     @State private var selectedLocale: RecognizerLocale = AppConstants.defaultSettings.selectedLocale
-    @State private var promptType = Settings.PromptType.memo
-    @State private var selectedPrompt: String = AppConstants.defaultSettings.prompt[Settings.PromptType.memo]![AppConstants.defaultSettings.selectedLocale]!
+    @State private var promptType: Settings.PromptType = AppConstants.defaultSettings.promptType
+    @State private var selectedPrompt: String = " "
+    
     @State private var countDown = 0
     @State private var opacity = 1.0
     @State private var timer: Timer?
@@ -45,32 +46,32 @@ struct SettingsView: View {
                             .foregroundColor(.secondary)
                             .multilineTextAlignment(.trailing)
                     }
-                    Picker("Prompt", selection: $promptType) {
+                    
+                    Picker("Prompt Type", selection: $promptType) {
                         ForEach(Settings.PromptType.allCases, id:\.self) { option in
                             Text(String(describing: option))
                         }
                     }
-                    .onChange(of: promptType) {
+                    .onChange(of: promptType, { oldValue, newValue in
+                        print(oldValue, newValue)
                         selectedPrompt = setting.prompt[promptType]![selectedLocale]!
-                        settings[0].promptType = promptType
-                        settings[0].prompt[promptType]![selectedLocale] = selectedPrompt
-                    }
+                    })
+                    
                     Picker("Language:", selection: $selectedLocale) {
                         ForEach(RecognizerLocale.allCases, id:\.self) { option in
                             Text(String(describing: option))
                         }
                     }
                     .onChange(of: selectedLocale) {
-//                        guard let p = setting.prompt[selectedLocale] else {return}
                         selectedPrompt = setting.prompt[promptType]![selectedLocale]!
-                        settings[0].selectedLocale = selectedLocale
-                        settings[0].prompt[promptType]![selectedLocale] = selectedPrompt
                     }
                 }
                 Section(header: Text("advanced")) {
+                    
                     TextField(selectedPrompt, text: $selectedPrompt, axis: .vertical)
                         .lineLimit(2...8)
                     TextField(setting.wssURL, text: $setting.wssURL)
+                    
                 }
                 .opacity(self.opacity)
                 .onTapGesture {
@@ -89,14 +90,19 @@ struct SettingsView: View {
             }
             .navigationTitle("Settings")
             .navigationBarTitleDisplayMode(.inline)
-            .onAppear(perform: {
-                guard !settings.isEmpty else { return }
-                setting = settings[0]
-                selectedLocale = setting.selectedLocale
-                promptType = setting.promptType ?? Settings.PromptType.memo
-                selectedPrompt = setting.prompt[promptType]![selectedLocale]!
-            })
         }
+        .onAppear(perform: {
+            guard !settings.isEmpty else { return }
+            setting = settings[0]
+            selectedLocale = setting.selectedLocale
+            promptType = setting.promptType
+            selectedPrompt = setting.prompt[promptType]![selectedLocale]!
+        })
+        .onDisappear(perform: {
+            settings[0].promptType = promptType
+            settings[0].selectedLocale = selectedLocale
+            settings[0].prompt[promptType]![selectedLocale] = selectedPrompt
+        })
         .toolbar {
             ToolbarItem(placement: .topBarTrailing) {
                 Button(action: {
@@ -112,8 +118,10 @@ struct SettingsView: View {
                 settings[0].selectedLocale = AppConstants.defaultSettings.selectedLocale
                 settings[0].audioSilentDB = AppConstants.defaultSettings.audioSilentDB
                 settings[0].wssURL = AppConstants.defaultSettings.wssURL
-                selectedLocale = settings[0].selectedLocale })
-            )}
+                settings[0].promptType = AppConstants.defaultSettings.promptType
+                selectedLocale = settings[0].selectedLocale
+                promptType = settings[0].promptType
+            }))}
         )
     }
 }
