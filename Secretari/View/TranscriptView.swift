@@ -12,21 +12,46 @@ struct TranscriptView: View {
     @Environment(\.modelContext) private var modelContext
     @Query private var settings: [Settings]
     @Query(sort: \AudioRecord.recordDate, order: .reverse) var records: [AudioRecord]
-    
+    @Environment(\.scenePhase) var scenePhase
+
     @State private var isRecording = false
     @State private var curRecord: AudioRecord?    // create an empty record
     @Binding var errorWrapper: ErrorWrapper?
+    
     @StateObject private var websocket = Websocket()
     @StateObject private var recorderTimer = RecorderTimer()
     @StateObject private var speechRecognizer = SpeechRecognizer()
-//    @StateObject var userManager: UserManager
+
+    @State private var selectedLocale: RecognizerLocale = AppConstants.defaultSettings.selectedLocale
+    @State private var selectedPrompt: String = AppConstants.defaultSettings.prompt[AppConstants.defaultSettings.selectedLocale]!
+
     
     var body: some View {
         NavigationStack {
             if isRecording {
                 ScrollView {
                     ScrollViewReader { proxy in
-                        Label(NSLocalizedString("Recognizing...", comment: "") + Localized.LanguageName(settings[0].selectedLocale.rawValue), systemImage: "ear.badge.waveform")
+                        HStack {
+                            Label("Recognizing", systemImage: "ear.badge.waveform")
+                            Picker("Language:", selection: $selectedLocale) {
+                                ForEach(RecognizerLocale.allCases, id:\.self) { option in
+                                    Text(String(describing: option))
+                                }
+                            }
+                            .onChange(of: selectedLocale) {
+                                guard let p = settings[0].prompt[selectedLocale] else {return}
+                                selectedPrompt = p
+                                settings[0].selectedLocale = selectedLocale
+                                settings[0].prompt[selectedLocale] = selectedPrompt
+                                
+                                speechRecognizer.stopTranscribing()
+                                Task {
+                                    await self.speechRecognizer.setup(locale: settings[0].selectedLocale.rawValue)
+                                    speechRecognizer.startTranscribing()
+                                }
+                            }
+                        }
+                        
                         let message = speechRecognizer.transcript
                         Text(message)
                             .id(message)
@@ -38,6 +63,10 @@ struct TranscriptView: View {
                 }
                 .padding()
                 .animation(.easeInOut, value: 1)
+                .onAppear(perform: {
+                    selectedLocale = settings[0].selectedLocale
+                    selectedPrompt = settings[0].prompt[selectedLocale] ?? AppConstants.defaultPrompt[.English]!
+                })
             } else if websocket.isStreaming {
                 ScrollView {
                     ScrollViewReader { proxy in
@@ -104,6 +133,27 @@ struct TranscriptView: View {
                         // App lang: Optional(["zh-Hant-TW", "zh-Hans-TW", "ja-TW", "en-TW"])
                     }
                 }
+                .onChange(of: scenePhase, { oldPhase, newPhase in
+                    print("scene phase \(newPhase)")
+                    if newPhase == .background {
+                        // add notification to center
+                        let content = UNMutableNotificationContent()
+                        content.title = "SecretAi listening"
+                        content.body = "Background speech recognization in progress."
+                        content.sound = UNNotificationSound.default
+
+                        let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 1, repeats: false)
+                        let uuidString = UUID().uuidString
+                        let request = UNNotificationRequest(identifier: uuidString, content: content, trigger: trigger)
+
+                        let center = UNUserNotificationCenter.current()
+                        center.add(request) { (error) in
+                            if error != nil {
+                                print("Error adding to notification center \(String(describing: error))")
+                            }
+                        }
+                    }
+                })
             }
             
             RecorderButton(isRecording: $isRecording) {

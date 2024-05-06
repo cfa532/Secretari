@@ -221,6 +221,9 @@
         }
       }
     },
+    "Memo" : {
+
+    },
     "Min audiable dB" : {
       "localizations" : {
         "es-419" : {
@@ -324,6 +327,34 @@
         }
       }
     },
+    "Recognizing" : {
+      "localizations" : {
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Reconociendo"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "認識中"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "正在识别"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "正在識別"
+          }
+        }
+      }
+    },
     "Recognizing..." : {
       "extractionState" : "manual",
       "localizations" : {
@@ -336,7 +367,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "認識中。。。"
+            "value" : "認識中"
           }
         },
         "zh-Hans" : {
@@ -598,19 +629,19 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "原文"
+            "value" : "採録"
           }
         },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "原文"
+            "value" : "录音稿"
           }
         },
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "原文"
+            "value" : "錄音稿"
           }
         }
       }

@@ -54,7 +54,7 @@ struct DetailView: View {
                 Button(action: {
                     self.presentationMode.wrappedValue.dismiss()
                 }, label: {
-                    Image(systemName: "list.bullet")
+                    Image(systemName: "decrease.indent")
                         .resizable()
                 })
             }

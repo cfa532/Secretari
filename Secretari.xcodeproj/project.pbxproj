@@ -37,6 +37,7 @@
 		46FAC6072BE146950013B9B5 /* DetailTranscriptView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46FAC6062BE146950013B9B5 /* DetailTranscriptView.swift */; };
 		46FAC6092BE146A60013B9B5 /* DetailTranslationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46FAC6082BE146A60013B9B5 /* DetailTranslationView.swift */; };
 		46FAC60B2BE36A8C0013B9B5 /* UserManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46FAC60A2BE36A8C0013B9B5 /* UserManager.swift */; };
+		46FAC60E2BE7C8AC0013B9B5 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 46FAC60D2BE7C8AB0013B9B5 /* StoreKit.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -91,6 +92,7 @@
 		46FAC6062BE146950013B9B5 /* DetailTranscriptView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailTranscriptView.swift; sourceTree = "<group>"; };
 		46FAC6082BE146A60013B9B5 /* DetailTranslationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailTranslationView.swift; sourceTree = "<group>"; };
 		46FAC60A2BE36A8C0013B9B5 /* UserManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserManager.swift; sourceTree = "<group>"; };
+		46FAC60D2BE7C8AB0013B9B5 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -98,6 +100,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				46FAC60E2BE7C8AC0013B9B5 /* StoreKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -125,6 +128,7 @@
 				461ADD6C2BD2A0AE00C0DD94 /* SecretariTests */,
 				461ADD762BD2A0AE00C0DD94 /* SecretariUITests */,
 				461ADD582BD2A0AC00C0DD94 /* Products */,
+				46FAC60C2BE7C8AB0013B9B5 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -244,6 +248,14 @@
 				46FAC6082BE146A60013B9B5 /* DetailTranslationView.swift */,
 			);
 			path = DetailViews;
+			sourceTree = "<group>";
+		};
+		46FAC60C2BE7C8AB0013B9B5 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				46FAC60D2BE7C8AB0013B9B5 /* StoreKit.framework */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */

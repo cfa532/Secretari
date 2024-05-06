@@ -14,12 +14,17 @@ final class Settings {
     var wssURL: String
     var audioSilentDB: String
     var selectedLocale: RecognizerLocale
+    var outputType: OutputFormat?
     
     init(prompt: [RecognizerLocale : String], wssURL: String, audioSilentDB: String, speechLocale: RecognizerLocale ) {
         self.prompt = prompt
         self.wssURL = wssURL
         self.audioSilentDB = audioSilentDB
         self.selectedLocale = speechLocale
+    }
+
+    enum OutputFormat: String, Codable {
+        case summary, memo
     }
 }
 
@@ -28,6 +33,7 @@ enum RecognizerLocale: String, CaseIterable, Codable {
     case 日本語 = "ja"
     case 中文 = "zh"
     case Español = "es"     // Latin Spanish
+    case Indonesia = "id"
     // fr, sp,
     var id: Self { self }
 }

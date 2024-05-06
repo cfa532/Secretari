@@ -24,6 +24,7 @@ struct SettingsView: View {
             }
         }
     }
+    @State private var summaryOn: Bool = true
     @State private var selectedLocale: RecognizerLocale = AppConstants.defaultSettings.selectedLocale
     @State private var selectedPrompt: String = AppConstants.defaultSettings.prompt[AppConstants.defaultSettings.selectedLocale]!
     @State private var countDown = 0
@@ -52,6 +53,10 @@ struct SettingsView: View {
                         guard let p = setting.prompt[selectedLocale] else {return}
                         selectedPrompt = p
                     }
+                    Toggle(summaryOn ? "Summary" : "Memo", isOn: $summaryOn)
+                        .onChange(of: summaryOn, { oldValue, newValue in
+                            settings[0].outputType = newValue ? .summary : .memo
+                        })
                 }
                 Section(header: Text("advanced")) {
                     TextField(selectedPrompt, text: $selectedPrompt, axis: .vertical)
@@ -80,6 +85,7 @@ struct SettingsView: View {
                 setting = settings[0]
                 selectedLocale = setting.selectedLocale
                 selectedPrompt = setting.prompt[selectedLocale] ?? AppConstants.defaultPrompt[.English]!
+                summaryOn = setting.outputType == .summary ? true : false
             })
             .onDisappear(perform: {
                 settings[0].selectedLocale = selectedLocale
