@@ -22,8 +22,9 @@ struct TranscriptView: View {
     @StateObject private var recorderTimer = RecorderTimer()
     @StateObject private var speechRecognizer = SpeechRecognizer()
 
-    @State private var selectedLocale: RecognizerLocale = AppConstants.defaultSettings.selectedLocale
-    @State private var selectedPrompt: String = AppConstants.defaultSettings.prompt[AppConstants.defaultSettings.selectedLocale]!
+    @State private var selectedLocale: RecognizerLocale?
+    @State private var promptType = Settings.PromptType.memo
+    @State private var selectedPrompt: String = AppConstants.defaultSettings.prompt[Settings.PromptType.memo]![AppConstants.defaultSettings.selectedLocale]!
 
     
     var body: some View {
@@ -39,11 +40,7 @@ struct TranscriptView: View {
                                 }
                             }
                             .onChange(of: selectedLocale) {
-                                guard let p = settings[0].prompt[selectedLocale] else {return}
-                                selectedPrompt = p
-                                settings[0].selectedLocale = selectedLocale
-                                settings[0].prompt[selectedLocale] = selectedPrompt
-                                
+                                settings[0].selectedLocale = selectedLocale!
                                 speechRecognizer.stopTranscribing()
                                 Task {
                                     await self.speechRecognizer.setup(locale: settings[0].selectedLocale.rawValue)
@@ -65,7 +62,6 @@ struct TranscriptView: View {
                 .animation(.easeInOut, value: 1)
                 .onAppear(perform: {
                     selectedLocale = settings[0].selectedLocale
-                    selectedPrompt = settings[0].prompt[selectedLocale] ?? AppConstants.defaultPrompt[.English]!
                 })
             } else if websocket.isStreaming {
                 ScrollView {
@@ -201,7 +197,7 @@ extension TranscriptView: TimerDelegate {
             curRecord?.transcript = speechRecognizer.transcript + "。"
             modelContext.insert(curRecord!)
             speechRecognizer.transcript = ""
-            websocket.sendToAI(curRecord!.transcript, prompt: settings[0].prompt[settings[0].selectedLocale]!, wssURL: settings[0].wssURL) { summary in
+            websocket.sendToAI(curRecord!.transcript, prompt: settings[0].prompt[settings[0].promptType!]![settings[0].selectedLocale]!, wssURL: settings[0].wssURL) { summary in
                 curRecord?.summary = summary
             }
         }

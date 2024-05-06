@@ -72,7 +72,8 @@ struct DetailView: View {
                         Label("Translation", systemImage: "textformat.abc.dottedunderline")
                     }
                     Button {
-                        websocket.sendToAI(record.summary, prompt: settings[0].prompt[settings[0].selectedLocale]!, wssURL: settings[0].wssURL) { summary in
+                        let setting = settings[0]
+                        websocket.sendToAI(record.summary, prompt: setting.prompt[setting.promptType!]![setting.selectedLocale]!, wssURL: setting.wssURL) { summary in
                             record.summary = summary
                         }
                     } label: {

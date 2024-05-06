@@ -221,9 +221,6 @@
         }
       }
     },
-    "Memo" : {
-
-    },
     "Min audiable dB" : {
       "localizations" : {
         "es-419" : {
@@ -297,6 +294,9 @@
 
     },
     "Profile Saved" : {
+
+    },
+    "Prompt" : {
 
     },
     "Push the START button to record your own speech. A summary will be generated automatically after STOP button is pushed." : {

@@ -26,7 +26,8 @@ struct SettingsView: View {
     }
     @State private var summaryOn: Bool = true
     @State private var selectedLocale: RecognizerLocale = AppConstants.defaultSettings.selectedLocale
-    @State private var selectedPrompt: String = AppConstants.defaultSettings.prompt[AppConstants.defaultSettings.selectedLocale]!
+    @State private var promptType = Settings.PromptType.memo
+    @State private var selectedPrompt: String = AppConstants.defaultSettings.prompt[Settings.PromptType.memo]![AppConstants.defaultSettings.selectedLocale]!
     @State private var countDown = 0
     @State private var opacity = 1.0
     @State private var timer: Timer?
@@ -44,19 +45,27 @@ struct SettingsView: View {
                             .foregroundColor(.secondary)
                             .multilineTextAlignment(.trailing)
                     }
+                    Picker("Prompt", selection: $promptType) {
+                        ForEach(Settings.PromptType.allCases, id:\.self) { option in
+                            Text(String(describing: option))
+                        }
+                    }
+                    .onChange(of: promptType) {
+                        selectedPrompt = setting.prompt[promptType]![selectedLocale]!
+                        settings[0].promptType = promptType
+                        settings[0].prompt[promptType]![selectedLocale] = selectedPrompt
+                    }
                     Picker("Language:", selection: $selectedLocale) {
                         ForEach(RecognizerLocale.allCases, id:\.self) { option in
                             Text(String(describing: option))
                         }
                     }
                     .onChange(of: selectedLocale) {
-                        guard let p = setting.prompt[selectedLocale] else {return}
-                        selectedPrompt = p
+//                        guard let p = setting.prompt[selectedLocale] else {return}
+                        selectedPrompt = setting.prompt[promptType]![selectedLocale]!
+                        settings[0].selectedLocale = selectedLocale
+                        settings[0].prompt[promptType]![selectedLocale] = selectedPrompt
                     }
-                    Toggle(summaryOn ? "Summary" : "Memo", isOn: $summaryOn)
-                        .onChange(of: summaryOn, { oldValue, newValue in
-                            settings[0].outputType = newValue ? .summary : .memo
-                        })
                 }
                 Section(header: Text("advanced")) {
                     TextField(selectedPrompt, text: $selectedPrompt, axis: .vertical)
@@ -84,12 +93,8 @@ struct SettingsView: View {
                 guard !settings.isEmpty else { return }
                 setting = settings[0]
                 selectedLocale = setting.selectedLocale
-                selectedPrompt = setting.prompt[selectedLocale] ?? AppConstants.defaultPrompt[.English]!
-                summaryOn = setting.outputType == .summary ? true : false
-            })
-            .onDisappear(perform: {
-                settings[0].selectedLocale = selectedLocale
-                settings[0].prompt[selectedLocale] = selectedPrompt
+                promptType = setting.promptType ?? Settings.PromptType.memo
+                selectedPrompt = setting.prompt[promptType]![selectedLocale]!
             })
         }
         .toolbar {

@@ -10,20 +10,20 @@ import SwiftData
 
 @Model
 final class Settings {
-    var prompt: [RecognizerLocale : String]
+    var prompt: [PromptType: [RecognizerLocale : String]]
     var wssURL: String
     var audioSilentDB: String
     var selectedLocale: RecognizerLocale
-    var outputType: OutputFormat?
+    var promptType: PromptType?       // Two type: Summary and Memo. Memo is a list of bulletins.
     
-    init(prompt: [RecognizerLocale : String], wssURL: String, audioSilentDB: String, speechLocale: RecognizerLocale ) {
+    init(prompt: [PromptType: [RecognizerLocale : String]], wssURL: String, audioSilentDB: String, speechLocale: RecognizerLocale ) {
         self.prompt = prompt
         self.wssURL = wssURL
         self.audioSilentDB = audioSilentDB
         self.selectedLocale = speechLocale
     }
-
-    enum OutputFormat: String, Codable {
+    
+    enum PromptType: String, CaseIterable, Codable {
         case summary, memo
     }
 }
@@ -53,22 +53,21 @@ final class AppConstants {
                                           speechLocale: Localized.systemLanguage()
     )
     
-    static private func localizedPrompt() -> String {
-        switch NSLocale.current.language.languageCode?.identifier {
-        case "zh":
-            return "你是個智能秘書。分別列出下述文字中的重要內容。"
-        case "ja":
-            return "あなたは賢いアシスタントです。 次のスピーチから包括的な要約を作成する。"
-        default:
-            return "You are a smart assistant. Generate a comprehensive summary from the following speech."
-        }
-        
-    }
-    
     static let defaultPrompt = [
-        RecognizerLocale.English: "You are a smart assistant. Generate a comprehensive summary from the following speech.",
-        RecognizerLocale.中文: "你是個智能秘書。 提取下述文字中的重要內容，做一份全面的摘要。",
-        RecognizerLocale.日本語: "あなたは賢いアシスタントです。 次のスピーチから包括的な要約を作成します。",
-        RecognizerLocale.Español: "Eres un asistente inteligente. Genere un resumen completo del siguiente discurso.",
+        Settings.PromptType.summary: [
+            RecognizerLocale.English: "You are a smart assistant. Generate a comprehensive summary from the following speech.",
+            RecognizerLocale.中文: "你是個智能秘書。 提取下述文字中的重要內容，做一份全面的摘要。",
+            RecognizerLocale.日本語: "あなたは賢いアシスタントです。 次のスピーチから包括的な要約を作成します。",
+            RecognizerLocale.Español: "Eres un asistente inteligente. Genere un resumen completo del siguiente discurso.",
+            RecognizerLocale.Indonesia: "Anda adalah asisten yang cerdas. Hasilkan ringkasan komprehensif dari pidato berikut.",
+        ],
+        Settings.PromptType.memo: [
+            RecognizerLocale.English: "You are a smart assistant. Generate a comprehensive summary from the following speech.",
+            RecognizerLocale.中文: "你是個智能秘書。 提取下述文字中的重要內容，做一份全面的备忘录。",
+            RecognizerLocale.日本語: "あなたは賢いアシスタントです。 次のスピーチから包括的な要約を作成します。",
+            RecognizerLocale.Español: "Eres un asistente inteligente. Genere un resumen completo del siguiente discurso.",
+            RecognizerLocale.Indonesia: "Anda adalah asisten yang cerdas. Hasilkan ringkasan komprehensif dari pidato berikut.",
+        ]
     ]
+    
 }
