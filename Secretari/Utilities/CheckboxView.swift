@@ -8,22 +8,23 @@
 import SwiftUI
 
 struct CheckboxView: View {
-    var label: String
+    @Binding var label: String
     @Binding var isChecked: Bool
-
+    
     var body: some View {
         HStack {
             Image(systemName: isChecked ? "checkmark.square" : "square")
                 .onTapGesture {
                     self.isChecked.toggle()
                 }
-            Text(label)
+            TextField(label, text: $label, axis: .vertical)
+                .lineLimit(.max)
         }
         .foregroundColor(.primary) // Use the primary color or customize as needed
-        .font(.system(size: 20)) // Customize the font size as needed
+        .font(.system(size: 18)) // Customize the font size as needed
     }
 }
 
 #Preview {
-    CheckboxView(label: "The line is checked", isChecked: .constant(true))
+    CheckboxView(label: .constant("The line is checked"), isChecked: .constant(true))
 }

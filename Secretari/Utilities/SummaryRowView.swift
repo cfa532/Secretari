@@ -13,24 +13,29 @@ struct SummaryRowView: View {
     
     var body: some View {
         let curDate: String = AudioRecord.dateFormatter.string(from: record.recordDate)
+        let title = curDate + ": "
+        
         // display content based on prompt type
         if promptType == .memo {
             if record.memo.isEmpty {
-                Text(curDate+": " + record.summary)
+                Text(title + record.summary)
                     .font(.subheadline)
                     .lineLimit(4)
             } else {
-                Text(curDate+": " + record.memo[0].title)
+                Text(title + record.memo[0].title)
                     .font(.subheadline)
                     .lineLimit(4)
+                    .onAppear(perform: {
+
+                    })
             }
         } else {
             if record.summary != "" {
-                Text(curDate+": " + record.summary)
+                Text(title + record.summary)
                     .font(.subheadline)
                     .lineLimit(4)
             } else {
-                Text(curDate+": " + record.memo[0].title)
+                Text(title + record.memo[0].title)
                     .font(.subheadline)
                     .lineLimit(4)
             }

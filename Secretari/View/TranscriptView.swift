@@ -13,7 +13,7 @@ struct TranscriptView: View {
     @Query private var settings: [Settings]
     @Query(sort: \AudioRecord.recordDate, order: .reverse) var records: [AudioRecord]
     @Environment(\.scenePhase) var scenePhase
-
+    
     @State private var isRecording = false
     @State private var curRecord: AudioRecord?    // create an empty record
     @Binding var errorWrapper: ErrorWrapper?
@@ -21,11 +21,11 @@ struct TranscriptView: View {
     @StateObject private var websocket = Websocket()
     @StateObject private var recorderTimer = RecorderTimer()
     @StateObject private var speechRecognizer = SpeechRecognizer()
-
+    
     @State private var selectedLocale: RecognizerLocale = AppConstants.defaultSettings.selectedLocale
     @State private var promptType = Settings.PromptType.memo
     @State private var selectedPrompt: String = " "
-
+    
     
     var body: some View {
         NavigationStack {
@@ -135,11 +135,11 @@ struct TranscriptView: View {
                         content.title = "SecretAi listening"
                         content.body = "Background speech recognization in progress."
                         content.sound = UNNotificationSound.default
-
+                        
                         let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 1, repeats: false)
                         let uuidString = UUID().uuidString
                         let request = UNNotificationRequest(identifier: uuidString, content: content, trigger: trigger)
-
+                        
                         let center = UNUserNotificationCenter.current()
                         center.add(request) { (error) in
                             if error != nil {
@@ -162,7 +162,7 @@ struct TranscriptView: View {
                         self.curRecord?.transcript = speechRecognizer.transcript     // SwiftData of record updated periodically.
                         return SpeechRecognizer.currentLevel < Float(self.settings[0].audioSilentDB)! ? true : false
                     }
-                    Task { 
+                    Task {
                         await self.speechRecognizer.setup(locale: settings[0].selectedLocale.rawValue)
                         speechRecognizer.startTranscribing()
                     }
@@ -196,7 +196,35 @@ extension TranscriptView: TimerDelegate {
             modelContext.insert(curRecord!)
             speechRecognizer.transcript = ""
             websocket.sendToAI(curRecord!.transcript, prompt: settings[0].prompt[settings[0].promptType]![settings[0].selectedLocale]!, wssURL: settings[0].wssURL) { summary in
-                curRecord?.summary = summary
+                
+                if settings[0].promptType == .summary {
+                    curRecord?.summary = summary
+                } else {
+                    // AI should return a valid Json string.
+                    guard let data = summary.data(using: .utf8) else {
+                        print("Error converting string to data")
+                        return
+                    }
+                    do {
+                        // Decode the data into an array of dictionaries
+                        if let jsonArray = try JSONSerialization.jsonObject(with: data, options: []) as? [[String: Any]] {
+                            // Process the decoded array here
+                            for item in jsonArray {
+                                if let id = item["id"] as? Int,
+                                   let title = item["title"] as? String,
+                                   let isChecked = item["isChecked"] as? Bool {
+                                    // Access and use the data from each dictionary item
+                                    print("ID: \(id), Title: \(title), isChecked: \(isChecked)")
+                                    curRecord?.memo.append(AudioRecord.MemoJsonData(id: id, title: title, isChecked: isChecked))
+                                }
+                            }
+                        } else {
+                            print("Error decoding JSON")
+                        }
+                    } catch {
+                        print("Error parsing JSON: \(error)")
+                    }
+                }
             }
         }
     }

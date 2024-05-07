@@ -26,7 +26,7 @@ final class AudioRecord {
     
     struct MemoJsonData: Codable, Identifiable {
         @Attribute(.unique) let id: Int
-        let title: String
+        var title: String
         var isChecked: Bool
     }
 }
