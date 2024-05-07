@@ -38,6 +38,9 @@
 		46FAC6092BE146A60013B9B5 /* DetailTranslationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46FAC6082BE146A60013B9B5 /* DetailTranslationView.swift */; };
 		46FAC60B2BE36A8C0013B9B5 /* UserManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46FAC60A2BE36A8C0013B9B5 /* UserManager.swift */; };
 		46FAC60E2BE7C8AC0013B9B5 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 46FAC60D2BE7C8AB0013B9B5 /* StoreKit.framework */; };
+		46FAC6142BEA0CEC0013B9B5 /* DetailBulletinView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46FAC6132BEA0CEC0013B9B5 /* DetailBulletinView.swift */; };
+		46FAC6162BEA29410013B9B5 /* CheckboxView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46FAC6152BEA29410013B9B5 /* CheckboxView.swift */; };
+		46FAC6182BEA2BEC0013B9B5 /* SummaryRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46FAC6172BEA2BEC0013B9B5 /* SummaryRowView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -93,6 +96,9 @@
 		46FAC6082BE146A60013B9B5 /* DetailTranslationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailTranslationView.swift; sourceTree = "<group>"; };
 		46FAC60A2BE36A8C0013B9B5 /* UserManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserManager.swift; sourceTree = "<group>"; };
 		46FAC60D2BE7C8AB0013B9B5 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
+		46FAC6132BEA0CEC0013B9B5 /* DetailBulletinView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailBulletinView.swift; sourceTree = "<group>"; };
+		46FAC6152BEA29410013B9B5 /* CheckboxView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckboxView.swift; sourceTree = "<group>"; };
+		46FAC6172BEA2BEC0013B9B5 /* SummaryRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SummaryRowView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -218,6 +224,8 @@
 				46DA71382BD7FB60001A3685 /* NetworkManager.swift */,
 				46DA71402BD8C95C001A3685 /* Localizable.xcstrings */,
 				46DA71422BD8D724001A3685 /* Utilities.swift */,
+				46FAC6152BEA29410013B9B5 /* CheckboxView.swift */,
+				46FAC6172BEA2BEC0013B9B5 /* SummaryRowView.swift */,
 				46FAC60A2BE36A8C0013B9B5 /* UserManager.swift */,
 			);
 			path = Utilities;
@@ -246,6 +254,7 @@
 				461ADDA62BD2B6EB00C0DD94 /* DetailView.swift */,
 				46FAC6062BE146950013B9B5 /* DetailTranscriptView.swift */,
 				46FAC6082BE146A60013B9B5 /* DetailTranslationView.swift */,
+				46FAC6132BEA0CEC0013B9B5 /* DetailBulletinView.swift */,
 			);
 			path = DetailViews;
 			sourceTree = "<group>";
@@ -399,7 +408,9 @@
 				461ADD912BD2A4F000C0DD94 /* SettingsView.swift in Sources */,
 				46FAC6072BE146950013B9B5 /* DetailTranscriptView.swift in Sources */,
 				461ADD8D2BD2A42000C0DD94 /* ErrorWrapper.swift in Sources */,
+				46FAC6182BEA2BEC0013B9B5 /* SummaryRowView.swift in Sources */,
 				461ADD8B2BD2A40500C0DD94 /* ErrorView.swift in Sources */,
+				46FAC6162BEA29410013B9B5 /* CheckboxView.swift in Sources */,
 				461ADD9D2BD2B5F400C0DD94 /* RecorderTimer.swift in Sources */,
 				46FAC60B2BE36A8C0013B9B5 /* UserManager.swift in Sources */,
 				46DA71392BD7FB60001A3685 /* NetworkManager.swift in Sources */,
@@ -411,6 +422,7 @@
 				461ADD992BD2B5E400C0DD94 /* SpeechRecognizer.swift in Sources */,
 				461ADDA72BD2B6EB00C0DD94 /* DetailView.swift in Sources */,
 				461ADD5F2BD2A0AC00C0DD94 /* Item.swift in Sources */,
+				46FAC6142BEA0CEC0013B9B5 /* DetailBulletinView.swift in Sources */,
 				46DA71432BD8D724001A3685 /* Utilities.swift in Sources */,
 				46DA71452BD8E1F2001A3685 /* Settings.swift in Sources */,
 				461ADDA52BD2B6E700C0DD94 /* TranscriptView.swift in Sources */,

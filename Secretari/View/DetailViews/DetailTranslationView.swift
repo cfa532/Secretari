@@ -28,8 +28,8 @@ struct DetailTranslationView: View {
                                 proxy.scrollTo(message, anchor: .bottom)
                             })
                     }
-                } else if let ts=record.translation, let key=ts.keys.first {
-                    Text(ts[key]!)
+                } else if !record.translation.isEmpty {
+                    Text(record.translation[record.translation.keys.first!]!)
                 } else {
                     ContentUnavailableView(label: {
                         Label("No records", systemImage: "list.bullet.rectangle.portrait")
@@ -69,8 +69,8 @@ struct DetailTranslationView: View {
                         .resizable()
                 })
                 .sheet(isPresented: $showShareSheet, content: {
-                    if let ts=record.translation, let key=ts.keys.first {
-                        let textToShare = AudioRecord.dateLongFormat.string(from: record.recordDate) + ": " + ts[key]!
+                    if !record.translation.isEmpty  {
+                        let textToShare = AudioRecord.dateLongFormat.string(from: record.recordDate) + ": " + record.translation[record.translation.keys.first!]!
                         ShareSheet(activityItems: [textToShare])
                     }
                 })

@@ -65,7 +65,29 @@ final class AppConstants {
         ],
         Settings.PromptType.memo: [
             RecognizerLocale.English: "You are a smart assistant. Generate a comprehensive summary from the following speech.",
-            RecognizerLocale.中文: "你是個智能秘書。 提取下述文字中的重要內容，做一份全面的备忘录。",
+            RecognizerLocale.中文: """
+            你是個智能秘書。 提取下述 rawtext 中的重要內容，做一份全面的备忘录。輸出格式採用下述 JSON 序列。其中 title 是備忘錄的條目內容。
+            [
+              {
+                "id": 1,
+                "title": "Item 1",
+                "isChecked": false
+              },
+              {
+                "id": 2,
+                "title": "Item 2",
+                "isChecked": false
+              },
+              {
+                "id": 3,
+                "title": "Item 3",
+                "isChecked": false
+              }
+            ]
+            
+            rawtext:
+            
+            """,
             RecognizerLocale.日本語: "あなたは賢いアシスタントです。 次のスピーチから包括的な要約を作成します。",
             RecognizerLocale.Español: "Eres un asistente inteligente. Genere un resumen completo del siguiente discurso.",
             RecognizerLocale.Indonesia: "Anda adalah asisten yang cerdas. Hasilkan ringkasan komprehensif dari pidato berikut.",

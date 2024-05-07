@@ -67,11 +67,9 @@ struct SettingsView: View {
                     }
                 }
                 Section(header: Text("advanced")) {
-                    
-                    TextField(selectedPrompt, text: $selectedPrompt, axis: .vertical)
-                        .lineLimit(2...8)
                     TextField(setting.wssURL, text: $setting.wssURL)
-                    
+                    TextField(selectedPrompt, text: $selectedPrompt, axis: .vertical)
+                        .lineLimit(.max)
                 }
                 .opacity(self.opacity)
                 .onTapGesture {
@@ -121,6 +119,7 @@ struct SettingsView: View {
                 settings[0].promptType = AppConstants.defaultSettings.promptType
                 selectedLocale = settings[0].selectedLocale
                 promptType = settings[0].promptType
+                selectedPrompt = settings[0].prompt[promptType]![selectedLocale]!
             }))}
         )
     }

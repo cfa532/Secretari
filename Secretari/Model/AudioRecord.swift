@@ -13,13 +13,21 @@ final class AudioRecord {
     @Attribute(.unique) var recordDate: Date
     var transcript: String
     var summary: String
-    var translation: [Language: String]?
+    var translation: [Language: String]     // array of Language type and corresponding translation
+    var memo: [MemoJsonData]               // array of Json data
     
     init(transcript: String="", summary: String="") {
         self.recordDate = Date()
         self.transcript = transcript
         self.summary = summary
-//        self.translation = [Language: String]()
+        self.translation = [Language: String]()
+        self.memo = [MemoJsonData]()
+    }
+    
+    struct MemoJsonData: Codable, Identifiable {
+        @Attribute(.unique) let id: Int
+        let title: String
+        var isChecked: Bool
     }
 }
 
@@ -38,7 +46,6 @@ extension AudioRecord {
     
     static let dateLongFormat: DateFormatter = {
         let formatter = DateFormatter()
-//        formatter.locale = Locale.current
         formatter.dateFormat = "MM/dd HH:mm"
         return formatter
     }()

@@ -124,7 +124,7 @@ extension Websocket {
         var model = AppConstants.OpenAIModel
         if rawText.utf8.count < 50 {
             // rawtext too short. Just reply the original text.
-            prompt = "Add punctuation to the following text and segment it appropriately. "
+            prompt = "Add punctuation to the following text and segment it properly. "
             model = "gpt-3.5-turbo"
         }
         let msg = [
@@ -137,17 +137,18 @@ extension Websocket {
                 "client":"mobile",
                 "model": model]] as [String : Any]
 
-        let jsonData = try! JSONSerialization.data(withJSONObject: msg)
-        
         // Convert the Data to String
+        let jsonData = try! JSONSerialization.data(withJSONObject: msg)
         if let jsonString = String(data: jsonData, encoding: .utf8) {
+            print(jsonString)
             self.prepare(wssURL)
-            self.send(jsonString) { error in
-                self.alertItem = AlertContext.unableToComplete
+            Task {
+                self.send(jsonString) { error in
+                    self.alertItem = AlertContext.unableToComplete
+                }
+                self.receive(action: action)
+                self.resume()
             }
-            guard self.alertItem==nil else {return}
-            self.receive(action: action)
-            self.resume()
         }
     }
 }

@@ -36,11 +36,14 @@ struct DetailView: View {
                     .animation(.easeInOut, value: 1)
                 } else {
                     Text(AudioRecord.dateLongFormat.string(from: record.recordDate))
-                    //                        .frame(maxWidth: .infinity, alignment: .leading)
                         .padding(3)
-                    TextField(record.summary, text: $record.summary, axis: .vertical)
-                        .lineLimit(.max)
-                        .textSelection(.enabled)
+                    if (settings[0].promptType == .memo) {
+                        DetailBulletinView(record: $record)
+                    } else {
+                        TextField(record.summary, text: $record.summary, axis: .vertical)
+                            .lineLimit(.max)
+                            .textSelection(.enabled)
+                    }
                 }
             }
             .padding()
@@ -76,8 +79,16 @@ struct DetailView: View {
                     }
 
                     Button {
-                        websocket.sendToAI(record.summary, prompt: settings[0].prompt[settings[0].promptType]![settings[0].selectedLocale]!, wssURL: settings[0].wssURL) { summary in
-                            record.summary = summary
+                        print(settings[0].prompt[settings[0].promptType]![settings[0].selectedLocale]!)
+                        Task { @MainActor in
+                            let setting = settings[0]
+                            websocket.sendToAI(record.transcript, prompt: setting.prompt[setting.promptType]![setting.selectedLocale]!, wssURL: setting.wssURL) { summary in
+                                if setting.promptType == .memo {
+                                    record.memo = []
+                                } else {
+                                    record.summary = summary
+                                }
+                            }
                         }
                     } label: {
                         Label("Redo Summary", systemImage: "pencil.line")

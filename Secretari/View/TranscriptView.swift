@@ -85,10 +85,7 @@ struct TranscriptView: View {
                         NavigationLink {
                             DetailView(record: item)
                         } label: {
-                            let curDate: String = AudioRecord.dateFormatter.string(from: item.recordDate)
-                            Text(curDate+": "+item.summary)
-                                .font(.subheadline)
-                                .lineLimit(4)
+                            SummaryRowView(record: item, promptType: settings[0].promptType)
                         }
                     }
                     .onDelete { indexSet in
