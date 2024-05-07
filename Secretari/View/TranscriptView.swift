@@ -39,6 +39,9 @@ struct TranscriptView: View {
                                     Text(String(describing: option))
                                 }
                             }
+                            .onAppear(perform: {
+                                selectedLocale = settings[0].selectedLocale
+                            })
                             .onChange(of: selectedLocale) {
                                 settings[0].selectedLocale = selectedLocale
                                 speechRecognizer.stopTranscribing()
@@ -60,10 +63,6 @@ struct TranscriptView: View {
                     }
                 }
                 .padding()
-                .animation(.easeInOut, value: 1)
-                .onAppear(perform: {
-                    selectedLocale = settings[0].selectedLocale
-                })
             } else if websocket.isStreaming {
                 ScrollView {
                     ScrollViewReader { proxy in
@@ -198,7 +197,7 @@ extension TranscriptView: TimerDelegate {
             websocket.sendToAI(curRecord!.transcript, prompt: settings[0].prompt[settings[0].promptType]![settings[0].selectedLocale]!, wssURL: settings[0].wssURL) { summary in
                 
                 if settings[0].promptType == .summary {
-                    curRecord?.summary = summary
+                    curRecord?.summary[selectedLocale] = summary
                 } else {
                     // AI should return a valid Json string.
                     guard let data = summary.data(using: .utf8) else {
@@ -215,7 +214,7 @@ extension TranscriptView: TimerDelegate {
                                    let isChecked = item["isChecked"] as? Bool {
                                     // Access and use the data from each dictionary item
                                     print("ID: \(id), Title: \(title), isChecked: \(isChecked)")
-                                    curRecord?.memo.append(AudioRecord.MemoJsonData(id: id, title: title, isChecked: isChecked))
+                                    curRecord?.memo.append(AudioRecord.MemoJsonData(id: id, title: [selectedLocale :title], isChecked: isChecked))
                                 }
                             }
                         } else {

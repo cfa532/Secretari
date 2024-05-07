@@ -16,10 +16,10 @@ struct DetailBulletinView: View {
                 HStack {
                     CheckboxView(
                         label: Binding(
-                            get: {item.title},
+                            get: {item.title[record.locale]!},
                             set: { newValue in
                                 if let index = record.memo.firstIndex(where: {$0.id == item.id}) {
-                                    record.memo[index].title = newValue
+                                    record.memo[index].title[record.locale] = newValue
                                 }
                             }),
                         isChecked: Binding(

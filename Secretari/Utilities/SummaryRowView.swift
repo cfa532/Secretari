@@ -18,11 +18,12 @@ struct SummaryRowView: View {
         // display content based on prompt type
         if promptType == .memo {
             if record.memo.isEmpty {
-                Text(title + record.summary)
+                Text(title + (record.summary[record.locale] ?? "No summary"))
                     .font(.subheadline)
                     .lineLimit(4)
             } else {
-                Text(title + record.memo[0].title)
+                let memo = record.memo[0]
+                Text(title + memo.title[record.locale]!)
                     .font(.subheadline)
                     .lineLimit(4)
                     .onAppear(perform: {
@@ -30,12 +31,13 @@ struct SummaryRowView: View {
                     })
             }
         } else {
-            if record.summary != "" {
-                Text(title + record.summary)
+            // prompt type is Summary
+            if record.summary.isEmpty {
+                Text(title + record.memo[0].title[record.locale]!)
                     .font(.subheadline)
                     .lineLimit(4)
             } else {
-                Text(title + record.memo[0].title)
+                Text(title + record.summary[record.locale]!)
                     .font(.subheadline)
                     .lineLimit(4)
             }

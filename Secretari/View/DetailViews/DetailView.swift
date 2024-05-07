@@ -20,6 +20,8 @@ struct DetailView: View {
     @Query private var settings: [Settings]
     @StateObject private var websocket = Websocket()
     
+    private let selectedLocale: RecognizerLocale = AppConstants.defaultSettings.selectedLocale
+    
     var body: some View {
         NavigationStack {
             ScrollView {
@@ -40,9 +42,10 @@ struct DetailView: View {
                     if (settings[0].promptType == .memo) {
                         DetailBulletinView(record: $record)
                     } else {
-                        TextField(record.summary, text: $record.summary, axis: .vertical)
-                            .lineLimit(.max)
-                            .textSelection(.enabled)
+                        Text(record.summary[record.locale]!)
+//                        TextField(record.summary[record.locale]!, text: $record.summary[record.locale], axis: .vertical)
+//                            .lineLimit(.max)
+//                            .textSelection(.enabled)
                     }
                 }
             }
@@ -86,7 +89,7 @@ struct DetailView: View {
                                 if setting.promptType == .memo {
                                     record.memo = []
                                 } else {
-                                    record.summary = summary
+                                    record.summary[record.locale] = summary
                                 }
                             }
                         }
@@ -98,7 +101,7 @@ struct DetailView: View {
                     Image(systemName: "ellipsis")
                 })
                 .sheet(isPresented: $showShareSheet) {
-                    let textToShare = AudioRecord.dateLongFormat.string(from: record.recordDate) + ": " + record.summary
+                    let textToShare = AudioRecord.dateLongFormat.string(from: record.recordDate) + ": " + record.summary[record.locale]!
                     ShareSheet(activityItems: [textToShare])
                 }
             }

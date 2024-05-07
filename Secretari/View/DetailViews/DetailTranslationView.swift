@@ -28,24 +28,45 @@ struct DetailTranslationView: View {
                                 proxy.scrollTo(message, anchor: .bottom)
                             })
                     }
-                } else if !record.translation.isEmpty {
-                    Text(record.translation[record.translation.keys.first!]!)
+//                } else if !record.translation.isEmpty {
+//                    Text(record.translation[record.translation.keys.first!]!)
                 } else {
                     ContentUnavailableView(label: {
                         Label("No records", systemImage: "list.bullet.rectangle.portrait")
                     }, description: {
                         Text("Select one of the following languages to translate the Summary")
                         Button("English") {
-                            let prompt = "translate the following text into English. "
-                            websocket.sendToAI(record.summary, prompt: prompt, wssURL: settings[0].wssURL) { translation in
-                                record.translation = [.English: translation]
-                                try? modelContext.save()
+                            if settings[0].promptType == .summary {
+                                let prompt = "translate the following text into English. "
+                                websocket.sendToAI(record.summary[record.locale]!, prompt: prompt, wssURL: settings[0].wssURL) { translation in
+                                    record.summary[RecognizerLocale.English] = translation
+                                    try? modelContext.save()
+                                }
+                            } else {
+                                let prompt = "The following text is a valid JSON string. Translate the title of each JSON object into English and return the JSON string of the same format. "
+                                do {
+                                    // Convert the JSON object to Data
+                                    let jsonData = try JSONSerialization.data(withJSONObject: record.memo, options: [])
+
+                                    // Convert the JSON Data to a String
+                                    if let jsonString = String(data: jsonData, encoding: .utf8) {
+                                        print(jsonString)
+                                        websocket.sendToAI(jsonString, prompt: prompt, wssURL: settings[0].wssURL) { translation in
+//                                            record.summary[RecognizerLocale.English] = translation
+                                            try? modelContext.save()
+                                        }
+                                    } else {
+                                        print("Failed to convert data to string.")
+                                    }
+                                } catch {
+                                    print("Error converting JSON object to Data:", error)
+                                }
                             }
                         }
                         Button("Indonesia") {
                             let prompt = "terjemahkan teks berikut ke dalam bahasa Indonesia. "
-                            websocket.sendToAI(record.summary, prompt: prompt, wssURL: settings[0].wssURL) { translation in
-                                record.translation = [.Indonesia: translation]
+                            websocket.sendToAI(record.summary[record.locale]!, prompt: prompt, wssURL: settings[0].wssURL) { translation in
+//                                record.translation = [.Indonesia: translation]
                                 try? modelContext.save()
                             }
                         }
@@ -69,8 +90,8 @@ struct DetailTranslationView: View {
                         .resizable()
                 })
                 .sheet(isPresented: $showShareSheet, content: {
-                    if !record.translation.isEmpty  {
-                        let textToShare = AudioRecord.dateLongFormat.string(from: record.recordDate) + ": " + record.translation[record.translation.keys.first!]!
+                    if !record.summary.isEmpty  {
+                        let textToShare = AudioRecord.dateLongFormat.string(from: record.recordDate) + ": "
                         ShareSheet(activityItems: [textToShare])
                     }
                 })
