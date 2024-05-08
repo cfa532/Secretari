@@ -41,6 +41,7 @@
 		46FAC6142BEA0CEC0013B9B5 /* DetailBulletinView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46FAC6132BEA0CEC0013B9B5 /* DetailBulletinView.swift */; };
 		46FAC6162BEA29410013B9B5 /* CheckboxView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46FAC6152BEA29410013B9B5 /* CheckboxView.swift */; };
 		46FAC6182BEA2BEC0013B9B5 /* SummaryRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46FAC6172BEA2BEC0013B9B5 /* SummaryRowView.swift */; };
+		46FAC61A2BEB2DEF0013B9B5 /* LocalePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46FAC6192BEB2DEF0013B9B5 /* LocalePicker.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -99,6 +100,7 @@
 		46FAC6132BEA0CEC0013B9B5 /* DetailBulletinView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailBulletinView.swift; sourceTree = "<group>"; };
 		46FAC6152BEA29410013B9B5 /* CheckboxView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckboxView.swift; sourceTree = "<group>"; };
 		46FAC6172BEA2BEC0013B9B5 /* SummaryRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SummaryRowView.swift; sourceTree = "<group>"; };
+		46FAC6192BEB2DEF0013B9B5 /* LocalePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalePicker.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -227,6 +229,7 @@
 				46FAC6152BEA29410013B9B5 /* CheckboxView.swift */,
 				46FAC6172BEA2BEC0013B9B5 /* SummaryRowView.swift */,
 				46FAC60A2BE36A8C0013B9B5 /* UserManager.swift */,
+				46FAC6192BEB2DEF0013B9B5 /* LocalePicker.swift */,
 			);
 			path = Utilities;
 			sourceTree = "<group>";
@@ -414,6 +417,7 @@
 				461ADD9D2BD2B5F400C0DD94 /* RecorderTimer.swift in Sources */,
 				46FAC60B2BE36A8C0013B9B5 /* UserManager.swift in Sources */,
 				46DA71392BD7FB60001A3685 /* NetworkManager.swift in Sources */,
+				46FAC61A2BEB2DEF0013B9B5 /* LocalePicker.swift in Sources */,
 				461ADDA12BD2B6BD00C0DD94 /* RecognizerView.swift in Sources */,
 				461ADD9F2BD2B63C00C0DD94 /* RecorderButton.swift in Sources */,
 				46FAC6092BE146A60013B9B5 /* DetailTranslationView.swift in Sources */,

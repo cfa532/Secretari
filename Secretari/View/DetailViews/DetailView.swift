@@ -10,7 +10,6 @@ import SwiftData
 
 struct DetailView: View {
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
-    @State private var showPopup = false
     @State var record: AudioRecord
     
     @State private var showShareSheet = false
@@ -37,22 +36,31 @@ struct DetailView: View {
                     }
                     .animation(.easeInOut, value: 1)
                 } else {
-                    Text(AudioRecord.dateLongFormat.string(from: record.recordDate))
-                        .padding(3)
+                    HStack {
+                        Text(AudioRecord.dateLongFormat.string(from: record.recordDate))
+                        Spacer()
+                        LocalePicker(promptType: settings[0].promptType, record: $record)
+                    }
+                    .padding(3)
+
                     if (settings[0].promptType == .memo) {
-                        if record.memo.isEmpty {
-                            Text(record.summary[record.locale] ?? "No summary")
-                        } else {
+                        if !record.memo.isEmpty {
                             DetailBulletinView(record: $record)
+                        } else {
+                            Text(record.summary[record.locale] ?? "No summary")
                         }
                     } else {
-                        if record.summary.isEmpty {
-                            DetailBulletinView(record: $record)
+                        if !record.summary.isEmpty {
+                            TextField(record.summary[record.locale]!,
+                                      text: Binding(
+                                        get: {record.summary[record.locale]!},
+                                        set: {newValue in
+                                            record.summary[record.locale] = newValue
+                                        }), axis: .vertical)
+                            .lineLimit(.max)
+                            .textSelection(.enabled)
                         } else {
-                            Text(record.summary[record.locale] ?? "No summary")
-    //                        TextField(record.summary[record.locale]!, text: $record.summary[record.locale], axis: .vertical)
-    //                            .lineLimit(.max)
-    //                            .textSelection(.enabled)
+                            DetailBulletinView(record: $record)
                         }
                     }
                 }
@@ -88,14 +96,37 @@ struct DetailView: View {
                     NavigationLink(destination: DetailTranslationView(record: $record)) {
                         Label("Translation", systemImage: "textformat.abc.dottedunderline")
                     }
-
+                    
                     Button {
+                        // regenerate summary of recording
                         print(settings[0].prompt[settings[0].promptType]![settings[0].selectedLocale]!)
                         Task { @MainActor in
                             let setting = settings[0]
                             websocket.sendToAI(record.transcript, prompt: setting.prompt[setting.promptType]![setting.selectedLocale]!, wssURL: setting.wssURL) { summary in
                                 if setting.promptType == .memo {
-                                    record.memo = []
+                                    guard let data = summary.data(using: .utf8) else {
+                                        print("Error converting string to data")
+                                        return
+                                    }
+                                    do {
+                                        // Decode the data into an array of dictionaries
+                                        if let jsonArray = try JSONSerialization.jsonObject(with: data, options: []) as? [[String: Any]] {
+                                            record.memo = [AudioRecord.MemoJsonData]()
+                                            for item in jsonArray {
+                                                if let id = item["id"] as? Int,
+                                                   let title = item["title"] as? String,
+                                                   let isChecked = item["isChecked"] as? Bool {
+                                                    // Access and use the data from each dictionary item
+                                                    print("ID: \(id), Title: \(title), isChecked: \(isChecked)")
+                                                    record.memo.append(AudioRecord.MemoJsonData(id: id, title: [selectedLocale:title], isChecked: isChecked))
+                                                }
+                                            }
+                                        } else {
+                                            print("Error decoding JSON")
+                                        }
+                                    } catch {
+                                        print("Error parsing JSON: \(error)")
+                                    }
                                 } else {
                                     record.summary[record.locale] = summary
                                 }

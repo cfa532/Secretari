@@ -12,7 +12,7 @@ struct SummaryRowView: View {
     var promptType: Settings.PromptType
     
     var body: some View {
-        var title = AudioRecord.dateFormatter.string(from: record.recordDate) + ": "
+        let title = AudioRecord.dateFormatter.string(from: record.recordDate) + ": "
         
         VStack {
             // display content based on prompt type
