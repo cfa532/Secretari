@@ -12,36 +12,41 @@ struct SummaryRowView: View {
     var promptType: Settings.PromptType
     
     var body: some View {
-        let curDate: String = AudioRecord.dateFormatter.string(from: record.recordDate)
-        let title = curDate + ": "
+        var title = AudioRecord.dateFormatter.string(from: record.recordDate) + ": "
         
-        // display content based on prompt type
-        if promptType == .memo {
-            if record.memo.isEmpty {
-                Text(title + (record.summary[record.locale] ?? "No summary"))
-                    .font(.subheadline)
-                    .lineLimit(4)
+        VStack {
+            // display content based on prompt type
+            if promptType == .memo {
+                if record.memo.isEmpty {
+                    Text(title + (record.summary[record.locale] ?? "No summary"))
+                        .font(.subheadline)
+                        .lineLimit(4)
+                } else {
+                    Text(title + concateMemo())
+                        .font(.subheadline)
+                        .lineLimit(4)
+                }
             } else {
-                let memo = record.memo[0]
-                Text(title + memo.title[record.locale]!)
-                    .font(.subheadline)
-                    .lineLimit(4)
-                    .onAppear(perform: {
-
-                    })
-            }
-        } else {
-            // prompt type is Summary
-            if record.summary.isEmpty {
-                Text(title + record.memo[0].title[record.locale]!)
-                    .font(.subheadline)
-                    .lineLimit(4)
-            } else {
-                Text(title + record.summary[record.locale]!)
-                    .font(.subheadline)
-                    .lineLimit(4)
+                // prompt type is Summary
+                if record.summary.isEmpty {
+                    Text(title + concateMemo())
+                        .font(.subheadline)
+                        .lineLimit(4)
+                } else {
+                    Text(title + record.summary[record.locale]!)
+                        .font(.subheadline)
+                        .lineLimit(4)
+                }
             }
         }
+    }
+    
+    func concateMemo()->String {
+        var title = ""
+        for item in record.memo {
+            title.append((item.isChecked ? "☑" : "☐") + item.title[record.locale]! + " ")
+        }
+        return title // Remove trailing whitespace
     }
 }
 

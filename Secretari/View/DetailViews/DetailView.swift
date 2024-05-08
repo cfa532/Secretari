@@ -40,12 +40,20 @@ struct DetailView: View {
                     Text(AudioRecord.dateLongFormat.string(from: record.recordDate))
                         .padding(3)
                     if (settings[0].promptType == .memo) {
-                        DetailBulletinView(record: $record)
+                        if record.memo.isEmpty {
+                            Text(record.summary[record.locale] ?? "No summary")
+                        } else {
+                            DetailBulletinView(record: $record)
+                        }
                     } else {
-                        Text(record.summary[record.locale]!)
-//                        TextField(record.summary[record.locale]!, text: $record.summary[record.locale], axis: .vertical)
-//                            .lineLimit(.max)
-//                            .textSelection(.enabled)
+                        if record.summary.isEmpty {
+                            DetailBulletinView(record: $record)
+                        } else {
+                            Text(record.summary[record.locale] ?? "No summary")
+    //                        TextField(record.summary[record.locale]!, text: $record.summary[record.locale], axis: .vertical)
+    //                            .lineLimit(.max)
+    //                            .textSelection(.enabled)
+                        }
                     }
                 }
             }

@@ -21,7 +21,7 @@ final class AudioRecord {
         self.recordDate = Date()
         self.transcript = transcript
         self.locale = AppConstants.defaultSettings.selectedLocale
-        self.summary = summary
+        self.summary = [RecognizerLocale: String]()
         self.memo = [MemoJsonData]()
     }
     

@@ -192,11 +192,13 @@ extension TranscriptView: TimerDelegate {
         guard speechRecognizer.transcript != "" else { print("No audio input"); return }
         Task {
             curRecord?.transcript = speechRecognizer.transcript + "。"
+            curRecord?.locale = selectedLocale
             modelContext.insert(curRecord!)
             speechRecognizer.transcript = ""
-            websocket.sendToAI(curRecord!.transcript, prompt: settings[0].prompt[settings[0].promptType]![settings[0].selectedLocale]!, wssURL: settings[0].wssURL) { summary in
+            let setting = settings[0]
+            websocket.sendToAI(curRecord!.transcript, prompt: setting.prompt[setting.promptType]![selectedLocale]!, wssURL: setting.wssURL) { summary in
                 
-                if settings[0].promptType == .summary {
+                if setting.promptType == .summary {
                     curRecord?.summary[selectedLocale] = summary
                 } else {
                     // AI should return a valid Json string.
@@ -214,7 +216,7 @@ extension TranscriptView: TimerDelegate {
                                    let isChecked = item["isChecked"] as? Bool {
                                     // Access and use the data from each dictionary item
                                     print("ID: \(id), Title: \(title), isChecked: \(isChecked)")
-                                    curRecord?.memo.append(AudioRecord.MemoJsonData(id: id, title: [selectedLocale :title], isChecked: isChecked))
+                                    curRecord?.memo.append(AudioRecord.MemoJsonData(id: id, title: [selectedLocale:title], isChecked: isChecked))
                                 }
                             }
                         } else {
