@@ -18,14 +18,14 @@ final class AudioRecord {
     var summary: [RecognizerLocale: String]
     var memo: [MemoJsonData]               // array of Json data
     
-    init(transcript: String="", summary: [RecognizerLocale: String]=[RecognizerLocale: String]()) {
+    init(transcript:String="", summary: [RecognizerLocale:String]=[RecognizerLocale:String]() ) {
         self.recordDate = Date()
         self.transcript = transcript
         self.locale = AppConstants.defaultSettings.selectedLocale
-        self.summary = [RecognizerLocale: String]()
+        self.summary = summary
         self.memo = [MemoJsonData]()
     }
-
+    
     func upateFromAI(promptType: Settings.PromptType, summary: String) {
         if promptType == .summary {
             self.summary[self.locale] = summary
@@ -38,23 +38,18 @@ final class AudioRecord {
             do {
                 // Decode the data into an array of dictionaries
                 if let jsonArray = try JSONSerialization.jsonObject(with: data, options: []) as? [[String: Any]] {
-
-//                    self.memo = [AudioRecord.MemoJsonData]()      // clear memo which is a dict
+                    
+                    //                    self.memo = [AudioRecord.MemoJsonData]()      // clear memo which is a dict
                     for item in jsonArray {
                         if let id = item["id"] as? Int,
                            let title = item["title"] as? String,
                            let isChecked = item["isChecked"] as? Bool {
-                            // Access and use the data from each dictionary item
-//                            self.memo.append(AudioRecord.MemoJsonData(id: id, title: [self.locale :title], isChecked: isChecked))
 
-                            if self.memo.isEmpty {
-                                self.memo.append(AudioRecord.MemoJsonData(id: id, title: [self.locale :title], isChecked: isChecked))
+                            if let i = self.memo.firstIndex(where: { $0.id == id }) {
+                                //  print("ID: \(t?.id), Title: \(t?.title), isChecked: \(t?.isChecked)")
+                                self.memo[i].title[self.locale] = title
                             } else {
-                                var i = self.memo.firstIndex { m in
-                                    m.id == id
-                                }
-//                                print("ID: \(t?.id), Title: \(t?.title), isChecked: \(t?.isChecked)")
-                                self.memo[i!].title[self.locale] = title
+                                self.memo.append(AudioRecord.MemoJsonData(id: id, title: [self.locale :title], isChecked: isChecked))
                             }
                         }
                     }

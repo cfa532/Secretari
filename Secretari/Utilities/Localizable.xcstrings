@@ -1,6 +1,9 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
+    "" : {
+
+    },
     " " : {
 
     },
@@ -478,7 +481,7 @@
         }
       }
     },
-    "Select one of the following languages to translate the Summary" : {
+    "Select one of the following languages to translate the Summary. If summary exists, it will be overwritten." : {
 
     },
     "Server Error" : {

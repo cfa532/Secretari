@@ -116,8 +116,7 @@ struct DetailView: View {
                     Image(systemName: "ellipsis")
                 })
                 .sheet(isPresented: $showShareSheet) {
-                    let textToShare = AudioRecord.dateLongFormat.string(from: record.recordDate) + ": " + record.summary[record.locale]!
-                    ShareSheet(activityItems: [textToShare])
+                    ShareSheet(activityItems: [textToShare()])
                 }
             }
         })
@@ -129,6 +128,26 @@ struct DetailView: View {
             return UIActivityViewController(activityItems: activityItems, applicationActivities: nil)
         }
         func updateUIViewController(_ uiViewController: UIActivityViewController, context: Context) {}
+    }
+    
+    private func textToShare()->String {
+        var textToShare = AudioRecord.dateLongFormat.string(from: record.recordDate) + ":\n"
+        if settings[0].promptType == .memo {
+            if !record.memo.isEmpty {
+                for m in record.memo {
+                    if let t = m.title[record.locale] {
+                        textToShare.append((m.isChecked ? "☑" : "☐") + t + "\n")
+                    }
+                }
+            }
+        } else {
+            if !record.summary.isEmpty {
+                if let t = record.summary[record.locale] {
+                    textToShare += t
+                }
+            }
+        }
+        return textToShare
     }
 }
 
