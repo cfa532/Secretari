@@ -16,7 +16,7 @@ struct DetailBulletinView: View {
                 HStack {
                     CheckboxView(
                         label: Binding(
-                            get: {item.title[record.locale]!},
+                            get: {item.title[record.locale] ?? "No record"},
                             set: { newValue in
                                 if let index = record.memo.firstIndex(where: {$0.id == item.id}) {
                                     record.memo[index].title[record.locale] = newValue

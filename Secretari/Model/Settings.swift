@@ -58,7 +58,7 @@ final class AppConstants {
     static let defaultPrompt = [
         Settings.PromptType.summary: [
             RecognizerLocale.English: "You are a smart assistant. Generate a comprehensive summary from the following speech.",
-            RecognizerLocale.中文: "你是個智能秘書。 提取下述文字中的重要內容，做一份全面的摘要。",
+            RecognizerLocale.中文: "你是個智能秘書。 提取下述文字中的重要內容，做一份全面的摘要。适当分段，并改正明显错误。",
             RecognizerLocale.日本語: "あなたは賢いアシスタントです。 次のスピーチから包括的な要約を作成します。",
             RecognizerLocale.Español: "Eres un asistente inteligente. Genere un resumen completo del siguiente discurso.",
             RecognizerLocale.Indonesia: "Anda adalah asisten yang cerdas. Hasilkan ringkasan komprehensif dari pidato berikut.",

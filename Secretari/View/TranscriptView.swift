@@ -9,24 +9,20 @@ import SwiftUI
 import SwiftData
 
 struct TranscriptView: View {
+    @Environment(\.scenePhase) var scenePhase
     @Environment(\.modelContext) private var modelContext
     @Query private var settings: [Settings]
     @Query(sort: \AudioRecord.recordDate, order: .reverse) var records: [AudioRecord]
-    @Environment(\.scenePhase) var scenePhase
     
     @State private var isRecording = false
-    @State private var curRecord: AudioRecord?    // create an empty record
+    @State private var curRecord: AudioRecord?    // create an empty new audio record
+    @State private var selectedLocale: RecognizerLocale = AppConstants.defaultSettings.selectedLocale
     @Binding var errorWrapper: ErrorWrapper?
     
     @StateObject private var websocket = Websocket()
     @StateObject private var recorderTimer = RecorderTimer()
     @StateObject private var speechRecognizer = SpeechRecognizer()
-    
-    @State private var selectedLocale: RecognizerLocale = AppConstants.defaultSettings.selectedLocale
-    @State private var promptType = Settings.PromptType.memo
-    @State private var selectedPrompt: String = " "
-    
-    
+        
     var body: some View {
         NavigationStack {
             if isRecording {
@@ -156,7 +152,7 @@ struct TranscriptView: View {
                     recorderTimer.delegate = self
                     recorderTimer.startTimer()
                     {
-                        // body of isSilent(), updated by frequency
+                        // body of isSilent(), updated by frequency per 10s
                         print("audio level=", SpeechRecognizer.currentLevel)
                         self.curRecord?.transcript = speechRecognizer.transcript     // SwiftData of record updated periodically.
                         return SpeechRecognizer.currentLevel < Float(self.settings[0].audioSilentDB)! ? true : false
@@ -192,40 +188,12 @@ extension TranscriptView: TimerDelegate {
         guard speechRecognizer.transcript != "" else { print("No audio input"); return }
         Task {
             curRecord?.transcript = speechRecognizer.transcript + "。"
-            curRecord?.locale = selectedLocale
             modelContext.insert(curRecord!)
             speechRecognizer.transcript = ""
             let setting = settings[0]
             websocket.sendToAI(curRecord!.transcript, prompt: setting.prompt[setting.promptType]![selectedLocale]!, wssURL: setting.wssURL) { summary in
-                
-                if setting.promptType == .summary {
-                    curRecord?.summary[selectedLocale] = summary
-                } else {
-                    // AI should return a valid Json string.
-                    guard let data = summary.data(using: .utf8) else {
-                        print("Error converting string to data")
-                        return
-                    }
-                    do {
-                        // Decode the data into an array of dictionaries
-                        if let jsonArray = try JSONSerialization.jsonObject(with: data, options: []) as? [[String: Any]] {
-                            // Process the decoded array here
-                            for item in jsonArray {
-                                if let id = item["id"] as? Int,
-                                   let title = item["title"] as? String,
-                                   let isChecked = item["isChecked"] as? Bool {
-                                    // Access and use the data from each dictionary item
-                                    print("ID: \(id), Title: \(title), isChecked: \(isChecked)")
-                                    curRecord?.memo.append(AudioRecord.MemoJsonData(id: id, title: [selectedLocale:title], isChecked: isChecked))
-                                }
-                            }
-                        } else {
-                            print("Error decoding JSON")
-                        }
-                    } catch {
-                        print("Error parsing JSON: \(error)")
-                    }
-                }
+                curRecord?.locale = selectedLocale
+                curRecord?.upateFromAI(promptType: settings[0].promptType, summary: summary)
             }
         }
     }

@@ -51,9 +51,9 @@ struct DetailView: View {
                         }
                     } else {
                         if !record.summary.isEmpty {
-                            TextField(record.summary[record.locale]!,
+                            TextField(record.summary[record.locale] ?? "No summary",
                                       text: Binding(
-                                        get: {record.summary[record.locale]!},
+                                        get: {record.summary[record.locale] ?? "No summary"},
                                         set: {newValue in
                                             record.summary[record.locale] = newValue
                                         }), axis: .vertical)
@@ -103,33 +103,9 @@ struct DetailView: View {
                         Task { @MainActor in
                             let setting = settings[0]
                             websocket.sendToAI(record.transcript, prompt: setting.prompt[setting.promptType]![setting.selectedLocale]!, wssURL: setting.wssURL) { summary in
-                                if setting.promptType == .memo {
-                                    guard let data = summary.data(using: .utf8) else {
-                                        print("Error converting string to data")
-                                        return
-                                    }
-                                    do {
-                                        // Decode the data into an array of dictionaries
-                                        if let jsonArray = try JSONSerialization.jsonObject(with: data, options: []) as? [[String: Any]] {
-                                            record.memo = [AudioRecord.MemoJsonData]()
-                                            for item in jsonArray {
-                                                if let id = item["id"] as? Int,
-                                                   let title = item["title"] as? String,
-                                                   let isChecked = item["isChecked"] as? Bool {
-                                                    // Access and use the data from each dictionary item
-                                                    print("ID: \(id), Title: \(title), isChecked: \(isChecked)")
-                                                    record.memo.append(AudioRecord.MemoJsonData(id: id, title: [selectedLocale:title], isChecked: isChecked))
-                                                }
-                                            }
-                                        } else {
-                                            print("Error decoding JSON")
-                                        }
-                                    } catch {
-                                        print("Error parsing JSON: \(error)")
-                                    }
-                                } else {
-                                    record.summary[record.locale] = summary
-                                }
+                                
+                                record.locale = selectedLocale      // update current locale of the record
+                                record.upateFromAI(promptType: setting.promptType, summary: summary)
                             }
                         }
                     } label: {
