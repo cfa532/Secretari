@@ -24,7 +24,7 @@ struct DetailView: View {
     @StateObject private var websocket = Websocket()
     @StateObject private var speechRecognizer = SpeechRecognizer()
     @StateObject private var recorderTimer = RecorderTimer()
-    @State private var curRecord: AudioRecord?    // create an empty new audio record
+//    @State private var curRecord: AudioRecord?    // create an empty new audio record
     
     var body: some View {
         NavigationStack {
@@ -62,23 +62,39 @@ struct DetailView: View {
                     }
                 }
                 .padding()
+                .onAppear(perform: {
+                    print("Start timer. Audio db=\(self.settings[0].audioSilentDB)")
+//                    self.curRecord = AudioRecord()
+                    recorderTimer.delegate = self
+                    recorderTimer.startTimer()
+                    {
+                        // body of isSilent(), updated by frequency per 10s
+                        print("audio level=", SpeechRecognizer.currentLevel)
+                        self.record.transcript = speechRecognizer.transcript     // SwiftData of record updated periodically.
+                        return SpeechRecognizer.currentLevel < Float(self.settings[0].audioSilentDB)! ? true : false
+                    }
+                    Task {
+                        await self.speechRecognizer.setup(locale: settings[0].selectedLocale.rawValue)
+                        speechRecognizer.startTranscribing()
+                    }
+                })
 //                Spacer()
                 RecorderButton(isRecording: $isRecording) {
                     if self.isRecording {
-                        print("Start timer. Audio db=\(self.settings[0].audioSilentDB)")
-                        self.curRecord = AudioRecord()
-                        recorderTimer.delegate = self
-                        recorderTimer.startTimer()
-                        {
-                            // body of isSilent(), updated by frequency per 10s
-                            print("audio level=", SpeechRecognizer.currentLevel)
-                            self.curRecord?.transcript = speechRecognizer.transcript     // SwiftData of record updated periodically.
-                            return SpeechRecognizer.currentLevel < Float(self.settings[0].audioSilentDB)! ? true : false
-                        }
-                        Task {
-                            await self.speechRecognizer.setup(locale: settings[0].selectedLocale.rawValue)
-                            speechRecognizer.startTranscribing()
-                        }
+//                        print("Start timer. Audio db=\(self.settings[0].audioSilentDB)")
+//                        self.record = AudioRecord()
+//                        recorderTimer.delegate = self
+//                        recorderTimer.startTimer()
+//                        {
+//                            // body of isSilent(), updated by frequency per 10s
+//                            print("audio level=", SpeechRecognizer.currentLevel)
+//                            self.curRecord?.transcript = speechRecognizer.transcript     // SwiftData of record updated periodically.
+//                            return SpeechRecognizer.currentLevel < Float(self.settings[0].audioSilentDB)! ? true : false
+//                        }
+//                        Task {
+//                            await self.speechRecognizer.setup(locale: settings[0].selectedLocale.rawValue)
+//                            speechRecognizer.startTranscribing()
+//                        }
                     } else {
                         speechRecognizer.stopTranscribing()
                         recorderTimer.stopTimer()
@@ -147,6 +163,7 @@ struct DetailView: View {
                     Image(systemName: "decrease.indent")
                         .resizable() // Might not be necessary for system images
                 })
+                .disabled(isRecording)
             }
             
             ToolbarItem(placement: .topBarTrailing) {
@@ -186,6 +203,7 @@ struct DetailView: View {
                 .sheet(isPresented: $showShareSheet) {
                     ShareSheet(activityItems: [textToShare()])
                 }
+                .disabled(isRecording)
             }
         })
         .alert(item: $websocket.alertItem) { alertItem in
@@ -230,13 +248,13 @@ extension DetailView: TimerDelegate {
         self.isRecording = false
         guard speechRecognizer.transcript != "" else { print("No audio input"); return }
         Task {
-            curRecord?.transcript = speechRecognizer.transcript + "。"
-            modelContext.insert(curRecord!)
+            record.transcript = speechRecognizer.transcript + "。"
+            modelContext.insert(record)
             speechRecognizer.transcript = ""
             let setting = settings[0]
-            websocket.sendToAI(curRecord!.transcript, prompt: setting.prompt[setting.promptType]![selectedLocale]!, wssURL: setting.wssURL) { summary in
-                curRecord?.locale = selectedLocale
-                curRecord?.upateFromAI(promptType: settings[0].promptType, summary: summary)
+            websocket.sendToAI(record.transcript, prompt: setting.prompt[setting.promptType]![selectedLocale]!, wssURL: setting.wssURL) { summary in
+                record.locale = selectedLocale
+                record.upateFromAI(promptType: settings[0].promptType, summary: summary)
             }
         }
     }

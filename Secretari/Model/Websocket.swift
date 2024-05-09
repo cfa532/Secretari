@@ -124,7 +124,7 @@ extension Websocket {
         var model = AppConstants.OpenAIModel
         if rawText.utf8.count < 50 {
             // rawtext too short. Just reply the original text.
-            prompt = "Add punctuation to the following text and segment it properly. "
+//            prompt = "Add punctuation to the following text and segment it properly. "
             model = "gpt-3.5-turbo"
         }
         let msg = [
