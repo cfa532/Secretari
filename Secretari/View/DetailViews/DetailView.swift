@@ -227,7 +227,7 @@ struct DetailView: View {
             if !record.memo.isEmpty {
                 for m in record.memo {
                     if let t = m.title[record.locale] {
-                        textToShare.append((m.isChecked ? "☑" : "☐") + t + "\n")
+                        textToShare.append((m.isChecked ? "☑ " : "☐ ") + t + "\n")
                     }
                 }
             }

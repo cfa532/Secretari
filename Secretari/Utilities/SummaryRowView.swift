@@ -19,22 +19,18 @@ struct SummaryRowView: View {
             if promptType == .memo {
                 if !record.memo.isEmpty {
                     Text(title + concateMemo())
-//                        .font(.subheadline)
                         .lineLimit(4)
                 } else {
-                    Text(title + (record.summary[record.locale] ?? "No summary"))
-//                        .font(.subheadline)
+                    Text(title + (record.summary[record.locale] ?? "No summary."))
                         .lineLimit(4)
                 }
             } else {
                 // prompt type is Summary
                 if !record.summary.isEmpty {
-                    Text(title + (record.summary[record.locale] ?? "No summary"))
-//                        .font(.subheadline)
+                    Text(title + (record.summary[record.locale] ?? "No summary."))
                         .lineLimit(4)
                 } else {
                     Text(title + concateMemo())
-//                        .font(.subheadline)
                         .lineLimit(4)
                 }
             }
@@ -44,7 +40,7 @@ struct SummaryRowView: View {
     func concateMemo()->String {
         var title = ""
         for item in record.memo {
-            title.append((item.isChecked ? "☑" : "☐") + (item.title[record.locale] ?? ": No record") + " ")
+            title.append((item.isChecked ? "☑ " : "☐ ") + (item.title[record.locale] ?? ": No record.") + " ")
         }
         return title // Remove trailing whitespace
     }
