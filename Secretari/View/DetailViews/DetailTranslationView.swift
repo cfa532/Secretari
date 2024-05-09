@@ -12,7 +12,7 @@ struct DetailTranslationView: View {
     @Binding var record: AudioRecord
     @Environment(\.modelContext) private var modelContext
     @Query private var settings: [Settings]
-    @StateObject private var websocket = Websocket()
+    @StateObject var websocket: Websocket
     @State private var showShareSheet = false
     @Environment(\.dismiss) var dismiss
     
@@ -84,7 +84,7 @@ struct DetailTranslationView: View {
         }
     }
     
-    private func translateSummary(locale: RecognizerLocale, record: AudioRecord, prompt: String) {
+    @MainActor private func translateSummary(locale: RecognizerLocale, record: AudioRecord, prompt: String) {
         if let summary = record.summary[record.locale] {
             websocket.sendToAI(summary, prompt: prompt, wssURL: settings[0].wssURL) { translation in
                 record.locale = locale
@@ -100,7 +100,7 @@ struct DetailTranslationView: View {
         }
     }
     
-    private func translateMemo(locale: RecognizerLocale, record: AudioRecord, prompt: String) {
+    @MainActor private func translateMemo(locale: RecognizerLocale, record: AudioRecord, prompt: String) {
         do {
             var arr:[Any] = [Any]()
             if !record.memo.isEmpty {
@@ -156,5 +156,5 @@ struct DetailTranslationView: View {
 }
 
 #Preview {
-    DetailTranslationView(record: .constant(AudioRecord.sampleData[0]))
+    DetailTranslationView(record: .constant(AudioRecord.sampleData[0]), websocket: Websocket())
 }

@@ -178,7 +178,7 @@ struct DetailView: View {
                         Label("Transcript", systemImage: "text.word.spacing")
                     }
                     
-                    NavigationLink(destination: DetailTranslationView(record: $record)) {
+                    NavigationLink(destination: DetailTranslationView(record: $record, websocket: websocket)) {
                         Label("Translation", systemImage: "textformat.abc.dottedunderline")
                     }
                     
