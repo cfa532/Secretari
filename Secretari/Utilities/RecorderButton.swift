@@ -9,13 +9,13 @@ import SwiftUI
 
 struct RecorderButton: View {
     @Binding var isRecording: Bool
-    let buttonAction: ()->Void
+    let action: ()->Void
     
     var body: some View {
         HStack {
             Button(action: {
                 isRecording.toggle()
-                buttonAction()
+                action()
             }, label: {
                 Text(self.isRecording ? "Stop":"Start")
                     .padding(24)
@@ -34,7 +34,7 @@ struct RecorderButton: View {
 
 #Preview {
     //    RoundButton(image: Image(systemName: "stop.circle"))
-    RecorderButton(isRecording: .constant(false), buttonAction: {})
+    RecorderButton(isRecording: .constant(false), action: {})
 }
 
 /// a trick to fix the timerinvterval glitch, which doesn't update the text somehow.

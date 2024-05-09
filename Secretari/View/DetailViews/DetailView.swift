@@ -9,40 +9,107 @@ import SwiftUI
 import SwiftData
 
 struct DetailView: View {
-    @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
+    @Environment(\.scenePhase) var scenePhase
+    @Environment(\.modelContext) private var modelContext
+    @Query private var settings: [Settings]
+    @Environment(\.dismiss) var dismiss
+    
     @State var record: AudioRecord
+    @Binding var isRecording: Bool
+    @State private var selectedLocale: RecognizerLocale = AppConstants.defaultSettings.selectedLocale
     
     @State private var showShareSheet = false
     @State private var isShowingDialog = false  // for Redo confirm dialog
     
-    @Environment(\.modelContext) private var modelContext
-    @Query private var settings: [Settings]
     @StateObject private var websocket = Websocket()
-    
-    private let selectedLocale: RecognizerLocale = AppConstants.defaultSettings.selectedLocale
+    @StateObject private var speechRecognizer = SpeechRecognizer()
+    @StateObject private var recorderTimer = RecorderTimer()
+    @State private var curRecord: AudioRecord?    // create an empty new audio record
     
     var body: some View {
         NavigationStack {
-            ScrollView {
-                if self.websocket.isStreaming {
+            if self.isRecording {
+                ScrollView {
                     ScrollViewReader { proxy in
-                        let message = self.websocket.streamedText
+                        HStack {
+                            Label("Recognizing", systemImage: "ear.badge.waveform")
+                            Picker("Language:", selection: $selectedLocale) {
+                                ForEach(RecognizerLocale.allCases, id:\.self) { option in
+                                    Text(String(describing: option))
+                                }
+                            }
+                            .onAppear(perform: {
+                                selectedLocale = settings[0].selectedLocale
+                            })
+                            .onChange(of: selectedLocale) {
+                                settings[0].selectedLocale = selectedLocale
+                                speechRecognizer.stopTranscribing()
+                                Task {
+                                    await self.speechRecognizer.setup(locale: settings[0].selectedLocale.rawValue)
+                                    speechRecognizer.startTranscribing()
+                                }
+                            }
+                        }
+                        .frame(maxWidth: .infinity)
+                        
+                        let message = speechRecognizer.transcript
+                        Text(message)
+                            .id(message)
+                            .onChange(of: message, {
+                                proxy.scrollTo(message, anchor: .bottom)
+                            })
+                            .frame(alignment: .topLeading)
+                    }
+                }
+                .padding()
+//                Spacer()
+                RecorderButton(isRecording: $isRecording) {
+                    if self.isRecording {
+                        print("Start timer. Audio db=\(self.settings[0].audioSilentDB)")
+                        self.curRecord = AudioRecord()
+                        recorderTimer.delegate = self
+                        recorderTimer.startTimer()
+                        {
+                            // body of isSilent(), updated by frequency per 10s
+                            print("audio level=", SpeechRecognizer.currentLevel)
+                            self.curRecord?.transcript = speechRecognizer.transcript     // SwiftData of record updated periodically.
+                            return SpeechRecognizer.currentLevel < Float(self.settings[0].audioSilentDB)! ? true : false
+                        }
+                        Task {
+                            await self.speechRecognizer.setup(locale: settings[0].selectedLocale.rawValue)
+                            speechRecognizer.startTranscribing()
+                        }
+                    } else {
+                        speechRecognizer.stopTranscribing()
+                        recorderTimer.stopTimer()
+                    }
+                }
+                .disabled(websocket.isStreaming)
+                .frame(alignment: .bottom)
+                
+            } else if websocket.isStreaming {
+                ScrollView {
+                    ScrollViewReader { proxy in
                         Label(NSLocalizedString("Streaming from AI...", comment: ""), systemImage: "brain.head.profile.fill")
+                        let message = websocket.streamedText
                         Text(message)
                             .id(message)
                             .onChange(of: message, {
                                 proxy.scrollTo(message, anchor: .bottom)
                             })
                     }
-                    .animation(.easeInOut, value: 1)
-                } else {
+                }
+                .padding()
+                Spacer()
+            } else {
+                ScrollView {
                     HStack {
                         Text(AudioRecord.dateLongFormat.string(from: record.recordDate))
                         Spacer()
                         LocalePicker(promptType: settings[0].promptType, record: $record)
                     }
                     .padding(3)
-
+                    
                     if (settings[0].promptType == .memo) {
                         if !record.memo.isEmpty {
                             DetailBulletinView(record: $record)
@@ -64,9 +131,10 @@ struct DetailView: View {
                         }
                     }
                 }
+                .padding()
             }
-            .padding()
         }
+
         .navigationBarBackButtonHidden(true)
         .navigationTitle("Summary")
         .navigationBarTitleDisplayMode(.inline)
@@ -74,7 +142,7 @@ struct DetailView: View {
             ToolbarItem(placement: .topBarLeading) {
                 Button(action: {
                     // Dismiss the view
-                    self.presentationMode.wrappedValue.dismiss()
+                    dismiss()
                 }, label: {
                     Image(systemName: "decrease.indent")
                         .resizable() // Might not be necessary for system images
@@ -120,6 +188,11 @@ struct DetailView: View {
                 }
             }
         })
+        .alert(item: $websocket.alertItem) { alertItem in
+            Alert(title: alertItem.title,
+                  message: alertItem.message,
+                  dismissButton: alertItem.dismissButton)
+        }
     }
     
     struct ShareSheet: UIViewControllerRepresentable {
@@ -151,8 +224,26 @@ struct DetailView: View {
     }
 }
 
+extension DetailView: TimerDelegate {
+    @MainActor func timerStopped() {
+        // body of action() closure
+        self.isRecording = false
+        guard speechRecognizer.transcript != "" else { print("No audio input"); return }
+        Task {
+            curRecord?.transcript = speechRecognizer.transcript + "。"
+            modelContext.insert(curRecord!)
+            speechRecognizer.transcript = ""
+            let setting = settings[0]
+            websocket.sendToAI(curRecord!.transcript, prompt: setting.prompt[setting.promptType]![selectedLocale]!, wssURL: setting.wssURL) { summary in
+                curRecord?.locale = selectedLocale
+                curRecord?.upateFromAI(promptType: settings[0].promptType, summary: summary)
+            }
+        }
+    }
+}
+
 #Preview {
-    DetailView(record: (AudioRecord.sampleData[0]))
+    DetailView(record: AudioRecord.sampleData[0], isRecording: .constant(false))
     //    let container = try! ModelContainer(for: AudioRecord.self, Settings.self, configurations: ModelConfiguration(isStoredInMemoryOnly: true))
     //    return DetailView(record: AudioRecord.sampleData[0])
     //        .modelContainer(container)

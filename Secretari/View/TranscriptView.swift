@@ -13,188 +13,106 @@ struct TranscriptView: View {
     @Environment(\.modelContext) private var modelContext
     @Query private var settings: [Settings]
     @Query(sort: \AudioRecord.recordDate, order: .reverse) var records: [AudioRecord]
-    
-    @State private var isRecording = false
-    @State private var curRecord: AudioRecord?    // create an empty new audio record
-    @State private var selectedLocale: RecognizerLocale = AppConstants.defaultSettings.selectedLocale
     @Binding var errorWrapper: ErrorWrapper?
     
-    @StateObject private var websocket = Websocket()
-    @StateObject private var recorderTimer = RecorderTimer()
-    @StateObject private var speechRecognizer = SpeechRecognizer()
-        
+    @State private var isRecording = false
+    @State private var showDetailView = false
+    
+    //    @State private var curRecord: AudioRecord?    // create an empty new audio record
+    //    @State private var selectedLocale: RecognizerLocale = AppConstants.defaultSettings.selectedLocale
+    //    @State var showDetailView = false
+    
+    //    @StateObject private var websocket = Websocket()
+    //    @StateObject private var recorderTimer = RecorderTimer()
+    //    @StateObject private var speechRecognizer = SpeechRecognizer()
+    
     var body: some View {
         NavigationStack {
-            if isRecording {
-                ScrollView {
-                    ScrollViewReader { proxy in
-                        HStack {
-                            Label("Recognizing", systemImage: "ear.badge.waveform")
-                            Picker("Language:", selection: $selectedLocale) {
-                                ForEach(RecognizerLocale.allCases, id:\.self) { option in
-                                    Text(String(describing: option))
-                                }
-                            }
-                            .onAppear(perform: {
-                                selectedLocale = settings[0].selectedLocale
-                            })
-                            .onChange(of: selectedLocale) {
-                                settings[0].selectedLocale = selectedLocale
-                                speechRecognizer.stopTranscribing()
-                                Task {
-                                    await self.speechRecognizer.setup(locale: settings[0].selectedLocale.rawValue)
-                                    speechRecognizer.startTranscribing()
-                                }
-                            }
-                        }
-                        .frame(maxWidth: .infinity)
-                        
-                        let message = speechRecognizer.transcript
-                        Text(message)
-                            .id(message)
-                            .onChange(of: message, {
-                                proxy.scrollTo(message, anchor: .bottom)
-                            })
-                            .frame(alignment: .topLeading)
+            List {
+                ForEach(records, id: \.recordDate) { item in
+                    NavigationLink {
+                        DetailView(record: item, isRecording: .constant(false))
+                    } label: {
+                        SummaryRowView(record: item, promptType: settings[0].promptType)
                     }
                 }
-                .padding()
-            } else if websocket.isStreaming {
-                ScrollView {
-                    ScrollViewReader { proxy in
-                        Label(NSLocalizedString("Streaming from AI...", comment: ""), systemImage: "brain.head.profile.fill")
-                        let message = websocket.streamedText
-                        Text(message)
-                            .id(message)
-                            .onChange(of: message, {
-                                proxy.scrollTo(message, anchor: .bottom)
-                            })
+                .onDelete { indexSet in
+                    indexSet.forEach { idx in
+                        modelContext.delete(records[idx])
                     }
                 }
-                .padding()
-                .animation(.easeInOut, value: 1)
             }
-            else {
-                List {
-                    ForEach(records, id: \.recordDate) { item in
-                        NavigationLink {
-                            DetailView(record: item)
-                        } label: {
-                            SummaryRowView(record: item, promptType: settings[0].promptType)
-                        }
-                    }
-                    .onDelete { indexSet in
-                        indexSet.forEach { idx in
-                            modelContext.delete(records[idx])
-                        }
-                    }
-                }
-                .overlay(content: {
-                    if records.isEmpty {
-                        ContentUnavailableView(label: {
-                            Label("No records", systemImage: "list.bullet.rectangle.portrait")
-                        }, description: {
-                            Text("Push the START button to record your own speech. A summary will be generated automatically after STOP button is pushed.")
-                            Text("First make sure to select the right language for recognition in setting ⚙️ Otherwise the built-in speech recognizer cannot work properly.")
-                                .foregroundColor(.accentColor)
-                                .fontWeight(.bold)
-                        })
-                    }
-                })
-                .navigationTitle("Records")
-                .navigationBarTitleDisplayMode(.inline)
-                .toolbar {
-                    ToolbarItem(placement: .topBarTrailing, content: {
-                        NavigationLink(destination: SettingsView()) {
-                            Image(systemName: "gearshape")
-                                .resizable()
-                                .frame(width: 20, height: 20)
-                                .foregroundColor(.secondary)
-                        }
+            .overlay(content: {
+                if records.isEmpty {
+                    ContentUnavailableView(label: {
+                        Label("No records", systemImage: "list.bullet.rectangle.portrait")
+                    }, description: {
+                        Text("Push the START button to record your own speech. A summary will be generated automatically after STOP button is pushed.")
+                        Text("First make sure to select the right language for recognition in setting ⚙️ Otherwise the built-in speech recognizer cannot work properly.")
+                            .foregroundColor(.accentColor)
+                            .fontWeight(.bold)
                     })
                 }
-                .task {
-                    if settings.isEmpty {
-                        // first run of the App, settings not stored by SwiftData yet.
-                        // get system language name in user's system language
-                        modelContext.insert(AppConstants.defaultSettings)
-                        try? modelContext.save()
-                        // App lang: Optional(["zh-Hant-TW", "zh-Hans-TW", "ja-TW", "en-TW"])
-                    }
-                }
-                .onChange(of: scenePhase, { oldPhase, newPhase in
-                    print("scene phase \(newPhase)")
-                    if newPhase == .background {
-                        // add notification to center
-                        let content = UNMutableNotificationContent()
-                        content.title = "SecretAi listening"
-                        content.body = "Background speech recognization in progress."
-                        content.sound = UNNotificationSound.default
-                        
-                        let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 1, repeats: false)
-                        let uuidString = UUID().uuidString
-                        let request = UNNotificationRequest(identifier: uuidString, content: content, trigger: trigger)
-                        
-                        let center = UNUserNotificationCenter.current()
-                        center.add(request) { (error) in
-                            if error != nil {
-                                print("Error adding to notification center \(String(describing: error))")
-                            }
-                        }
+            })
+            .navigationTitle("Records")
+            .navigationBarTitleDisplayMode(.inline)
+            .navigationDestination(isPresented: $showDetailView, destination: {
+                DetailView(record: AudioRecord(), isRecording: $isRecording)
+            })
+            .toolbar {
+                ToolbarItem(placement: .topBarTrailing, content: {
+                    NavigationLink(destination: SettingsView()) {
+                        Image(systemName: "gearshape")
+                            .resizable()
+                            .frame(width: 20, height: 20)
+                            .foregroundColor(.primary)
+                            .opacity(0.8)
                     }
                 })
             }
-            
-            RecorderButton(isRecording: $isRecording) {
-                if self.isRecording {
-                    print("Start timer. Audio db=\(self.settings[0].audioSilentDB)")
-                    self.curRecord = AudioRecord()
-                    recorderTimer.delegate = self
-                    recorderTimer.startTimer()
-                    {
-                        // body of isSilent(), updated by frequency per 10s
-                        print("audio level=", SpeechRecognizer.currentLevel)
-                        self.curRecord?.transcript = speechRecognizer.transcript     // SwiftData of record updated periodically.
-                        return SpeechRecognizer.currentLevel < Float(self.settings[0].audioSilentDB)! ? true : false
-                    }
-                    Task {
-                        await self.speechRecognizer.setup(locale: settings[0].selectedLocale.rawValue)
-                        speechRecognizer.startTranscribing()
-                    }
-                } else {
-                    
-                    speechRecognizer.stopTranscribing()
-                    recorderTimer.stopTimer()
-                    
+            .task {
+                if settings.isEmpty {
+                    // first run of the App, settings not stored by SwiftData yet.
+                    // get system language name in user's system language
+                    modelContext.insert(AppConstants.defaultSettings)
+                    try? modelContext.save()
+                    // App lang: Optional(["zh-Hant-TW", "zh-Hans-TW", "ja-TW", "en-TW"])
                 }
             }
-            .disabled(websocket.isStreaming)
-            .frame(alignment: .bottom)
-        }
-        .alert(item: $websocket.alertItem) { alertItem in
-            Alert(title: alertItem.title,
-                  message: alertItem.message,
-                  dismissButton: alertItem.dismissButton)
-        }
-    }
-}
-
-extension TranscriptView: TimerDelegate {
-    
-    @MainActor func timerStopped() {
-        
-        // body of action() closure
-        self.isRecording = false
-        guard speechRecognizer.transcript != "" else { print("No audio input"); return }
-        Task {
-            curRecord?.transcript = speechRecognizer.transcript + "。"
-            modelContext.insert(curRecord!)
-            speechRecognizer.transcript = ""
-            let setting = settings[0]
-            websocket.sendToAI(curRecord!.transcript, prompt: setting.prompt[setting.promptType]![selectedLocale]!, wssURL: setting.wssURL) { summary in
-                curRecord?.locale = selectedLocale
-                curRecord?.upateFromAI(promptType: settings[0].promptType, summary: summary)
-            }
+            .onChange(of: scenePhase, { oldPhase, newPhase in
+                print("scene phase \(newPhase)")
+                if newPhase == .background {
+                    // add notification to center
+                    let content = UNMutableNotificationContent()
+                    content.title = "SecretAi listening"
+                    content.body = "Background speech recognization in progress."
+                    content.sound = UNNotificationSound.default
+                    
+                    let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 1, repeats: false)
+                    let uuidString = UUID().uuidString
+                    let request = UNNotificationRequest(identifier: uuidString, content: content, trigger: trigger)
+                    
+                    let center = UNUserNotificationCenter.current()
+                    center.add(request) { (error) in
+                        if error != nil {
+                            print("Error adding to notification center \(String(describing: error))")
+                        }
+                    }
+                }
+            })
+            
+            Button(action: {
+                self.isRecording = true
+                self.showDetailView = true        // active navigation link to detail view
+            }, label: {
+                Text("Start")
+                    .padding(24)
+                    .font(.title)
+                    .background(Color.white)
+                    .foregroundColor(.red)
+                    .clipShape(Circle())
+                    .shadow(radius: 5)
+            })
         }
     }
 }
