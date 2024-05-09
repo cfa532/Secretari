@@ -50,4 +50,13 @@ struct AlertContext {
     static let invalidUserData  = AlertItem(title: Text("Profile Error"),
                                             message: Text("There was an error saving or retrieving your profile."),
                                             dismissButton: .default(Text("OK")))
+    
+    //MARK: - Translation Alerts
+    static let emptyMemo    = AlertItem(title: Text("Content Error"),
+                                                message: Text("No memo to translate. Please change the prompt type to Memo in Settings and try again."),
+                                                dismissButton: .default(Text("OK")))
+
+    static let emptySummary    = AlertItem(title: Text("Content Error"),
+                                                message: Text("No summary to translate. Please change the prompt type to Summary in Settings and try again."),
+                                                dismissButton: .default(Text("OK")))
 }

@@ -16,6 +16,8 @@ struct DetailTranslationView: View {
     @State private var showShareSheet = false
     @Environment(\.dismiss) var dismiss
     
+    @State private var alertItem: AlertItem?
+    
     var body: some View {
         NavigationStack {
             ScrollView {
@@ -75,6 +77,11 @@ struct DetailTranslationView: View {
                 })
             }
         })
+        .alert(item: self.$alertItem) { alertItem in
+            Alert(title: alertItem.title,
+                  message: alertItem.message,
+                  dismissButton: alertItem.dismissButton)
+        }
     }
     
     private func translateSummary(locale: RecognizerLocale, record: AudioRecord, prompt: String) {
@@ -88,19 +95,24 @@ struct DetailTranslationView: View {
                 }
             }
         } else {
-            print("No summary to translate.")
+//            print("No summary to translate.")
+            self.alertItem = AlertContext.emptySummary
         }
     }
     
     private func translateMemo(locale: RecognizerLocale, record: AudioRecord, prompt: String) {
         do {
             var arr:[Any] = [Any]()
-            for m in record.memo {
-                arr.append(["id":m.id, "title": String(describing: m.title[record.locale]!), "isChecked":m.isChecked])
-            }
-            if arr.isEmpty {
-                print("No record to translate")
-                return
+            if !record.memo.isEmpty {
+                for m in record.memo {
+                    arr.append(["id":m.id, "title": String(describing: m.title[record.locale]!), "isChecked":m.isChecked])
+                }
+            } else {
+                // no memo for the record, create one from its summary
+//                arr.append(["id":1, "title": record.summary[record.locale]!, "isChecked": false])
+                print("No memo to print")
+                self.alertItem = AlertContext.emptyMemo
+                
             }
             let jsonData = try JSONSerialization.data(withJSONObject: arr, options: [])
             if let jsonString = String(data: jsonData, encoding: .utf8) {

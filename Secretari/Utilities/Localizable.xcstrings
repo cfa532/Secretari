@@ -71,6 +71,9 @@
         }
       }
     },
+    "Content Error" : {
+
+    },
     "Dismiss" : {
       "localizations" : {
         "es-419" : {
@@ -255,6 +258,9 @@
         }
       }
     },
+    "No memo to translate. Please change the prompt type to Memo in Settings and try again." : {
+
+    },
     "No records" : {
       "localizations" : {
         "es-419" : {
@@ -276,6 +282,9 @@
           }
         }
       }
+    },
+    "No summary to translate. Please change the prompt type to Summary in Settings and try again." : {
+
     },
     "OK" : {
 
