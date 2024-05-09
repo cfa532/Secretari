@@ -130,13 +130,13 @@ struct DetailView: View {
                         if !record.memo.isEmpty {
                             DetailBulletinView(record: $record)
                         } else {
-                            Text(record.summary[record.locale] ?? "No summary")
+                            Text(record.summary[record.locale] ?? "No summary. Try to regenerate summary")
                         }
                     } else {
                         if !record.summary.isEmpty {
-                            TextField(record.summary[record.locale] ?? "No summary",
+                            TextField(record.summary[record.locale] ?? "No summary. Try to regenerate summary",
                                       text: Binding(
-                                        get: {record.summary[record.locale] ?? "No summary"},
+                                        get: {record.summary[record.locale] ?? "No summary. Try to regenerate summary"},
                                         set: {newValue in
                                             record.summary[record.locale] = newValue
                                         }), axis: .vertical)
@@ -246,7 +246,7 @@ extension DetailView: TimerDelegate {
     @MainActor func timerStopped() {
         // body of action() closure
         self.isRecording = false
-        guard speechRecognizer.transcript != "" else { print("No audio input"); return }
+        guard speechRecognizer.transcript != "" else { print("No audio input"); dismiss(); return }
         Task {
             record.transcript = speechRecognizer.transcript + "。"
             modelContext.insert(record)
