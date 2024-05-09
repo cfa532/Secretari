@@ -133,13 +133,16 @@ struct DetailTranslationView: View {
                         }
                     } catch let error {
                         print("Invalid regex: \(error.localizedDescription)")
+                        self.alertItem = AlertContext.invalidJSON
                     }
                 }
             } else {
                 print("Failed to convert data to string.")
+                self.alertItem = AlertContext.invalidJSON
             }
         } catch {
             print("Error converting JSON object to Data:", error)
+            self.alertItem = AlertContext.invalidJSON
         }
     }
     

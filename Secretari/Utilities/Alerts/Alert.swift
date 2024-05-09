@@ -25,7 +25,7 @@ struct AlertContext {
                                             message: Text("Invalid response from the server. Please try again later or contact support."),
                                             dismissButton: .default(Text("OK")))
     
-    static let invalidURL       = AlertItem(title: Text("Sever Error"),
+    static let invalidURL       = AlertItem(title: Text("Server Error"),
                                             message: Text("There was an issue connecting to the server. If this persists, please contact support."),
                                             dismissButton: .default(Text("OK")))
     
@@ -59,4 +59,9 @@ struct AlertContext {
     static let emptySummary    = AlertItem(title: Text("Content Error"),
                                                 message: Text("No summary to translate. Please change the prompt type to Summary in Settings and try again."),
                                                 dismissButton: .default(Text("OK")))
+    
+    //Mark: - Invalid JSON Alerts
+    static let invalidJSON  = AlertItem(title: Text("Invalid JSON"),
+                                        message: Text("Invalid JSON data from AI. Try again later."),
+                                        dismissButton: .default(Text("OK")))
 }

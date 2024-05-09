@@ -72,7 +72,20 @@
       }
     },
     "Content Error" : {
-
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "内容缺失"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "內容無效"
+          }
+        }
+      }
     },
     "Dismiss" : {
       "localizations" : {
@@ -199,6 +212,62 @@
     "Invalid Form" : {
 
     },
+    "Invalid JSON" : {
+      "localizations" : {
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Datos JSON no válidos"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "無効な JSON データ"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "JSON 格式错误"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "無效的 JSON"
+          }
+        }
+      }
+    },
+    "Invalid JSON data from AI. Try again later." : {
+      "localizations" : {
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Datos JSON no válidos de AI. Vuelve a intentarlo más tarde."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "AI からの無効な JSON データ。 あとでもう一度試してみてください。"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "AI 数据格式无效，请稍后再试。"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "來自 AI 的 JSON 格式無效。 請稍後再試。"
+          }
+        }
+      }
+    },
     "Invalid response from the server. Please try again later or contact support." : {
 
     },
@@ -213,13 +282,13 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "認識される言語"
+            "value" : "認識出来言語"
           }
         },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "识别语言"
+            "value" : "可识别语言"
           }
         },
         "zh-Hant" : {
@@ -259,7 +328,32 @@
       }
     },
     "No memo to translate. Please change the prompt type to Memo in Settings and try again." : {
-
+      "localizations" : {
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No hay notas para traducir. Cambie el tipo de mensaje a Memo en Configuración y vuelva a intentarlo."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "翻訳するメモはありません。 設定でプロンプトの種類をmemoに変更して、もう一度お試しください。"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "没有可翻译的memo。 请在“设置”中将提示类型更改为“memo”，然后重新生成。"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "沒有可翻譯的memo。 請在“設定”中將提示類型變更為“memo”，然後重新生成。"
+          }
+        }
+      }
     },
     "No records" : {
       "localizations" : {
@@ -284,7 +378,32 @@
       }
     },
     "No summary to translate. Please change the prompt type to Summary in Settings and try again." : {
-
+      "localizations" : {
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No hay resumen para traducir. Cambie el tipo de mensaje a Resumen en Configuración y vuelva a intentarlo."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "翻訳する要約はありません。 設定でプロンプトの種類をsummaryに変更して、もう一度お試しください。"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "没有可翻译的summary。 请在“设置”中将提示类型更改为“summary”，然后重新生成。"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "沒有可翻譯的summary。 請在“設定”中將提示類型變更為“summary”，然後重新生成。"
+          }
+        }
+      }
     },
     "OK" : {
 
@@ -313,10 +432,28 @@
     },
     "Prompt Type" : {
       "localizations" : {
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tipo de mensaje"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "プロンプト種類"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "提示语类型"
+          }
+        },
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "摘要類型"
+            "value" : "提示語類型"
           }
         }
       }
@@ -401,7 +538,7 @@
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "识别中。。。"
+            "value" : "識別中。。。"
           }
         }
       }
@@ -457,7 +594,7 @@
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "重新生成"
+            "value" : "重新生成摘要"
           }
         }
       }
@@ -491,7 +628,32 @@
       }
     },
     "Select one of the following languages to translate the Summary. If summary exists, it will be overwritten." : {
-
+      "localizations" : {
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Seleccione uno de los siguientes idiomas para traducir el Resumen. Si existe un resumen, se sobrescribirá."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "概要を翻訳するには、次の言語のいずれかを選択します。 概要が存在する場合は上書きされます。"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "选择以下语言之一来翻译摘要。 如果摘要已存在，它将被覆盖。"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "選擇以下語言之一來翻譯摘要。 如果已存在，它將被覆蓋。"
+          }
+        }
+      }
     },
     "Server Error" : {
 
@@ -523,9 +685,6 @@
           }
         }
       }
-    },
-    "Sever Error" : {
-
     },
     "Share" : {
       "localizations" : {
@@ -725,7 +884,20 @@
       }
     },
     "Unable to complete your request at this time. Please check your internet connection." : {
-
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "目前无法完成您的请求，请检查互联网连接。"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "目前無法完成您的請求。 請檢查網路連線。"
+          }
+        }
+      }
     },
     "Yes" : {
       "localizations" : {
@@ -758,6 +930,12 @@
     "You are a smart assistant. Generate a comprehensive summary from the following speech." : {
       "extractionState" : "manual",
       "localizations" : {
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Eres un asistente inteligente. Genere un resumen completo del siguiente discurso."
+          }
+        },
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
