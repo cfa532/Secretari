@@ -26,16 +26,16 @@ final class AudioRecord {
         self.memo = [MemoJsonData]()
     }
     
-    func upateFromAI(promptType: Settings.PromptType, summary: String) {
+    func resultFromAI(promptType: Settings.PromptType, summary: String) {
         if promptType == .summary {
             self.summary[self.locale] = summary
         } else {
-            // AI should return a valid Json string.
-            guard let data = summary.data(using: .utf8) else {
-                print("Error converting string to data")
-                return
-            }
             do {
+                let jsonString = try Utility.getAIJson(aiJson: summary)
+                guard let data = jsonString.data(using: .utf8) else {
+                    print("Error converting string to data")
+                    return
+                }
                 // Decode the data into an array of dictionaries
                 if let jsonArray = try JSONSerialization.jsonObject(with: data, options: []) as? [[String: Any]] {
                     

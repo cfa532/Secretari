@@ -52,7 +52,7 @@ final class AppConstants {
     static let defaultSettings = Settings(prompt: defaultPrompt,
                                           wssURL: "wss://leither.uk/ws",
                                           audioSilentDB: "-40",
-                                          selectedLocale: Localized.systemLanguage(),
+                                          selectedLocale: Utility.systemLanguage(),
                                           promptType: Settings.PromptType.memo)
     
     static let defaultPrompt = [

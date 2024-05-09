@@ -190,7 +190,7 @@ struct DetailView: View {
                             websocket.sendToAI(record.transcript, prompt: setting.prompt[setting.promptType]![setting.selectedLocale]!, wssURL: setting.wssURL) { summary in
                                 
                                 record.locale = selectedLocale      // update current locale of the record
-                                record.upateFromAI(promptType: setting.promptType, summary: summary)
+                                record.resultFromAI(promptType: setting.promptType, summary: summary)
                             }
                         }
                     } label: {
@@ -254,7 +254,7 @@ extension DetailView: TimerDelegate {
             let setting = settings[0]
             websocket.sendToAI(record.transcript, prompt: setting.prompt[setting.promptType]![selectedLocale]!, wssURL: setting.wssURL) { summary in
                 record.locale = selectedLocale
-                record.upateFromAI(promptType: settings[0].promptType, summary: summary)
+                record.resultFromAI(promptType: settings[0].promptType, summary: summary)
             }
         }
     }

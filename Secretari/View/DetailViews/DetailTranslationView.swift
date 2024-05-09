@@ -120,13 +120,13 @@ struct DetailTranslationView: View {
                 websocket.sendToAI(jsonString, prompt: prompt, wssURL: settings[0].wssURL) { translation in
                     do {
                         // extract valie JSON string from AI reply. Get text between [ ]
-                        let regex = try NSRegularExpression(pattern: "\\[(.*?)\\]", options: [])
-                        let nsString = translation as NSString
-                        let results = regex.matches(in: translation, options: [], range: NSRange(location: 0, length: nsString.length))
-                        let r = results.map{ nsString.substring(with: $0.range(at: 1)) }
+//                        let regex = try NSRegularExpression(pattern: "\\[(.*?)\\]", options: [])
+//                        let nsString = translation as NSString
+//                        let results = regex.matches(in: translation, options: [], range: NSRange(location: 0, length: nsString.length))
+//                        let r = results.map{ nsString.substring(with: $0.range(at: 1)) }
                         
                         record.locale = locale
-                        record.upateFromAI(promptType: settings[0].promptType, summary: "["+r[0]+"]")
+                        record.resultFromAI(promptType: settings[0].promptType, summary: try Utility.getAIJson(aiJson: translation))
                         try? modelContext.save()
                         Task {
                             dismiss()
