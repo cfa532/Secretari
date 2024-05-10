@@ -17,14 +17,7 @@ struct TranscriptView: View {
     
     @State private var isRecording = false
     @State private var showDetailView = false
-    
-    //    @State private var curRecord: AudioRecord?    // create an empty new audio record
-    //    @State private var selectedLocale: RecognizerLocale = AppConstants.defaultSettings.selectedLocale
-    //    @State var showDetailView = false
-    
-    //    @StateObject private var websocket = Websocket()
-    //    @StateObject private var recorderTimer = RecorderTimer()
-    //    @StateObject private var speechRecognizer = SpeechRecognizer()
+    @State private var showSettings = false
     
     var body: some View {
         NavigationStack {
@@ -59,14 +52,23 @@ struct TranscriptView: View {
             .navigationDestination(isPresented: $showDetailView, destination: {
                 DetailView(record: AudioRecord(), isRecording: $isRecording)
             })
+            .navigationDestination(isPresented: $showSettings, destination: {
+                SettingsView()
+            })
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing, content: {
                     NavigationLink(destination: SettingsView()) {
+                        // navigationLink does not work becuase tappablePadding interfered with onTap()
+                        // showSettings=true triggered navigation destination.
+                        // keep navigationLnik because it change image color when tapped.
                         Image(systemName: "gearshape")
                             .resizable()
                             .frame(width: 20, height: 20)
                             .foregroundColor(.primary)
                             .opacity(0.8)
+                            .tappablePadding(EdgeInsets(top: 12, leading: 12, bottom: 12, trailing: 12)) {
+                                self.showSettings = true
+                            }
                     }
                 })
             }
