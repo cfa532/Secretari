@@ -18,12 +18,8 @@ class Websocket: NSObject, URLSessionWebSocketDelegate, ObservableObject {
     private var wssURL: String?
     private var wsTask: URLSessionWebSocketTask?
     
-    override init() {
-        super.init()
+    func configure(_ url: String) {
         self.urlSession = URLSession(configuration: .default, delegate: self, delegateQueue: OperationQueue())
-    }
-    
-    func prepare(_ url: String) {
         self.wssURL = url
         //        self.wsTask = urlSession!.webSocketTask(with: URL(string: url)!)
         if let activeTask = self.wsTask, activeTask.state == .running {
@@ -134,7 +130,7 @@ extension Websocket {
         let jsonData = try! JSONSerialization.data(withJSONObject: msg)
         if let jsonString = String(data: jsonData, encoding: .utf8) {
             print(jsonString)
-            self.prepare(wssURL)
+            self.configure(wssURL)
             Task {
                 self.send(jsonString) { error in
                     self.alertItem = AlertContext.unableToComplete

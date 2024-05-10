@@ -9,7 +9,7 @@ import Foundation
 
 struct Utility {
     static func LanguageName(_ identifier: String) -> String {  // zh_CN, lang to recognize
-        let langCode = Bundle.main.preferredLocalizations[0]    // first langauge supported by iPhone
+        let langCode = Bundle.main.preferredLocalizations.first ?? "en"    // first langauge supported by iPhone
 //        print("langCode=", langCode, identifier)
         let locale = Locale(identifier: langCode)
         if let languageName = locale.localizedString(forLanguageCode: identifier) {
@@ -42,6 +42,9 @@ struct Utility {
         let nsString = str as NSString
         let results = regex.matches(in: str, options: [], range: NSRange(location: 0, length: nsString.length))
         let r = results.map{ nsString.substring(with: $0.range(at: 1)) }
-        return "[" + r[0] + "]"
+        if let str = r.first {
+            return "[" + str + "]"
+        }
+        return "[Invalid JSON data]"
     }
 }

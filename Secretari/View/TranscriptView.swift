@@ -33,7 +33,7 @@ struct TranscriptView: View {
                     NavigationLink {
                         DetailView(record: item, isRecording: .constant(false))
                     } label: {
-                        SummaryRowView(record: item, promptType: settings[0].promptType)
+                        SummaryRowView(record: item, promptType: settings.first?.promptType ?? .memo)
                     }
                 }
                 .onDelete { indexSet in

@@ -90,16 +90,16 @@ struct SettingsView: View {
             .navigationBarTitleDisplayMode(.inline)
         }
         .onAppear(perform: {
-            guard !settings.isEmpty else { return }
-            setting = settings[0]
+            guard let setting = settings.first else { return }
             selectedLocale = setting.selectedLocale
             promptType = setting.promptType
             selectedPrompt = setting.prompt[promptType]![selectedLocale]!
         })
         .onDisappear(perform: {
-            settings[0].promptType = promptType
-            settings[0].selectedLocale = selectedLocale
-            settings[0].prompt[promptType]![selectedLocale] = selectedPrompt
+            guard let setting = settings.first else { return }
+            setting.promptType = promptType
+            setting.selectedLocale = selectedLocale
+            setting.prompt[promptType]![selectedLocale] = selectedPrompt
         })
         .toolbar {
             ToolbarItem(placement: .topBarTrailing) {
@@ -112,14 +112,15 @@ struct SettingsView: View {
         }
         .alert(isPresented: $showAlert, content: {
             Alert(title: Text("Alert"), message: Text("All settings will be reset."), primaryButton: .cancel(), secondaryButton: .destructive(Text("Yes"), action: {
-                settings[0].prompt = AppConstants.defaultSettings.prompt
-                settings[0].selectedLocale = AppConstants.defaultSettings.selectedLocale
-                settings[0].audioSilentDB = AppConstants.defaultSettings.audioSilentDB
-                settings[0].wssURL = AppConstants.defaultSettings.wssURL
-                settings[0].promptType = AppConstants.defaultSettings.promptType
-                selectedLocale = settings[0].selectedLocale
-                promptType = settings[0].promptType
-                selectedPrompt = settings[0].prompt[promptType]![selectedLocale]!
+                guard let setting = settings.first else { return }
+                setting.prompt = AppConstants.defaultSettings.prompt
+                setting.selectedLocale = AppConstants.defaultSettings.selectedLocale
+                setting.audioSilentDB = AppConstants.defaultSettings.audioSilentDB
+                setting.wssURL = AppConstants.defaultSettings.wssURL
+                setting.promptType = AppConstants.defaultSettings.promptType
+                selectedLocale = setting.selectedLocale
+                promptType = setting.promptType
+                selectedPrompt = setting.prompt[promptType]![selectedLocale]!
             }))}
         )
     }

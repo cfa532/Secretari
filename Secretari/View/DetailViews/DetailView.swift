@@ -39,13 +39,14 @@ struct DetailView: View {
                                 }
                             }
                             .onAppear(perform: {
-                                selectedLocale = settings[0].selectedLocale
+                                guard settings.first != nil else {return}
+                                selectedLocale = settings.first!.selectedLocale
                             })
                             .onChange(of: selectedLocale) {
-                                settings[0].selectedLocale = selectedLocale
+                                settings.first?.selectedLocale = selectedLocale
                                 speechRecognizer.stopTranscribing()
                                 Task {
-                                    await self.speechRecognizer.setup(locale: settings[0].selectedLocale.rawValue)
+                                    await self.speechRecognizer.setup(locale: settings.first?.selectedLocale.rawValue ?? "en")
                                     speechRecognizer.startTranscribing()
                                 }
                             }
@@ -63,7 +64,7 @@ struct DetailView: View {
                 }
                 .padding()
                 .onAppear(perform: {
-                    print("Start timer. Audio db=\(self.settings[0].audioSilentDB)")
+                    print("Start timer. Audio db=\(String(describing: self.settings.first?.audioSilentDB))")
 //                    self.curRecord = AudioRecord()
                     recorderTimer.delegate = self
                     recorderTimer.startTimer()
@@ -71,10 +72,11 @@ struct DetailView: View {
                         // body of isSilent(), updated by frequency per 10s
                         print("audio level=", SpeechRecognizer.currentLevel)
                         self.record.transcript = speechRecognizer.transcript     // SwiftData of record updated periodically.
-                        return SpeechRecognizer.currentLevel < Float(self.settings[0].audioSilentDB)! ? true : false
+                        guard self.settings.first != nil else { return true }
+                        return SpeechRecognizer.currentLevel < Float(self.settings.first!.audioSilentDB)! ? true : false
                     }
                     Task {
-                        await self.speechRecognizer.setup(locale: settings[0].selectedLocale.rawValue)
+                        await self.speechRecognizer.setup(locale: settings.first!.selectedLocale.rawValue)
                         speechRecognizer.startTranscribing()
                     }
                 })
@@ -122,11 +124,11 @@ struct DetailView: View {
                     HStack {
                         Text(AudioRecord.dateLongFormat.string(from: record.recordDate))
                         Spacer()
-                        LocalePicker(promptType: settings[0].promptType, record: $record)
+                        LocalePicker(promptType: Settings.PromptType(rawValue: (settings.first?.promptType)!.rawValue) ?? .memo, record: $record)
                     }
                     .padding(3)
                     
-                    if (settings[0].promptType == .memo) {
+                    if (settings.first?.promptType == .memo) {
                         if !record.memo.isEmpty {
                             DetailBulletinView(record: $record)
                         } else {
@@ -184,13 +186,13 @@ struct DetailView: View {
                     
                     Button {
                         // regenerate summary of recording
-                        print(settings[0].prompt[settings[0].promptType]![settings[0].selectedLocale]!)
                         Task { @MainActor in
-                            let setting = settings[0]
-                            websocket.sendToAI(record.transcript, prompt: setting.prompt[setting.promptType]![setting.selectedLocale]!, wssURL: setting.wssURL) { summary in
-                                
-                                record.locale = selectedLocale      // update current locale of the record
-                                record.resultFromAI(promptType: setting.promptType, summary: summary)
+                            if let setting = settings.first {
+                                websocket.sendToAI(record.transcript, prompt: setting.prompt[setting.promptType]![setting.selectedLocale]!, wssURL: setting.wssURL) { summary in
+                                    
+                                    record.locale = selectedLocale      // update current locale of the record
+                                    record.resultFromAI(promptType: setting.promptType, summary: summary)
+                                }
                             }
                         }
                     } label: {
@@ -223,7 +225,7 @@ struct DetailView: View {
     
     private func textToShare()->String {
         var textToShare = AudioRecord.dateLongFormat.string(from: record.recordDate) + ":\n"
-        if settings[0].promptType == .memo {
+        if settings.first?.promptType == .memo {
             if !record.memo.isEmpty {
                 for m in record.memo {
                     if let t = m.title[record.locale] {
@@ -251,17 +253,18 @@ extension DetailView: TimerDelegate {
             record.transcript = speechRecognizer.transcript + "。"
             modelContext.insert(record)
             speechRecognizer.transcript = ""
-            let setting = settings[0]
-            websocket.sendToAI(record.transcript, prompt: setting.prompt[setting.promptType]![selectedLocale]!, wssURL: setting.wssURL) { summary in
-                record.locale = selectedLocale
-                record.resultFromAI(promptType: settings[0].promptType, summary: summary)
+            if let setting = settings.first {
+                websocket.sendToAI(record.transcript, prompt: setting.prompt[setting.promptType]![selectedLocale]!, wssURL: setting.wssURL) { summary in
+                    record.locale = selectedLocale
+                    record.resultFromAI(promptType: settings.first?.promptType ?? .memo, summary: summary)
+                }
             }
         }
     }
 }
 
 #Preview {
-    DetailView(record: AudioRecord.sampleData[0], isRecording: .constant(false))
+    DetailView(record: AudioRecord.sampleData[0], isRecording: .constant(true))
     //    let container = try! ModelContainer(for: AudioRecord.self, Settings.self, configurations: ModelConfiguration(isStoredInMemoryOnly: true))
     //    return DetailView(record: AudioRecord.sampleData[0])
     //        .modelContainer(container)
