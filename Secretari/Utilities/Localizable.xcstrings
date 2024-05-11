@@ -71,22 +71,6 @@
         }
       }
     },
-    "Content Error" : {
-      "localizations" : {
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "内容缺失"
-          }
-        },
-        "zh-Hant" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "內容無效"
-          }
-        }
-      }
-    },
     "Dismiss" : {
       "localizations" : {
         "es-419" : {
@@ -180,9 +164,6 @@
           }
         }
       }
-    },
-    "Hello, World!" : {
-
     },
     "Indonesia" : {
       "localizations" : {
@@ -299,6 +280,9 @@
         }
       }
     },
+    "Memo Missing" : {
+
+    },
     "Min audiable dB" : {
       "localizations" : {
         "es-419" : {
@@ -327,30 +311,30 @@
         }
       }
     },
-    "No memo to translate. Please change the prompt type to Memo in Settings and try again." : {
+    "No memo to translate. Please generate the Memo content first using Summarize in ... menu." : {
       "localizations" : {
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "No hay notas para traducir. Cambie el tipo de mensaje a Memo en Configuración y vuelva a intentarlo."
+            "value" : "No hay notas para traducir. Primero genere el contenido de la nota usando el menú Resumir en...."
           }
         },
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "翻訳するメモはありません。 設定でプロンプトの種類をmemoに変更して、もう一度お試しください。"
+            "value" : "翻訳するmemoはありません。 まず [...] メニューの要約を使用してmemoを生成してください。"
           }
         },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "没有可翻译的memo。 请在“设置”中将提示类型更改为“memo”，然后重新生成。"
+            "value" : "没有可翻译的memo。 请首先使用 ... 中的摘要菜单生成memo内容。"
           }
         },
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "沒有可翻譯的memo。 請在“設定”中將提示類型變更為“memo”，然後重新生成。"
+            "value" : "沒有可翻譯的memo。 請先使用 ... 中的摘要選單產生memo內容"
           }
         }
       }
@@ -377,30 +361,24 @@
         }
       }
     },
-    "No summary to translate. Please change the prompt type to Summary in Settings and try again." : {
+    "No summary to translate. Please generate the Summary content first using Summarize in ... menu." : {
       "localizations" : {
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "No hay resumen para traducir. Cambie el tipo de mensaje a Resumen en Configuración y vuelva a intentarlo."
+            "value" : "No hay resumen para traducir. Primero genere el contenido del resumen usando el menú Resumir en...."
           }
         },
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "翻訳する要約はありません。 設定でプロンプトの種類をsummaryに変更して、もう一度お試しください。"
+            "value" : "翻訳するsummaryはありません。 まず [...] メニューの要約を使用してsummaryを生成してください。"
           }
         },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "没有可翻译的summary。 请在“设置”中将提示类型更改为“summary”，然后重新生成。"
-          }
-        },
-        "zh-Hant" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "沒有可翻譯的summary。 請在“設定”中將提示類型變更為“summary”，然後重新生成。"
+            "value" : "没有可翻译的summary。 请首先使用 ... 中的摘要菜单生成summary内容。"
           }
         }
       }
@@ -572,6 +550,7 @@
       }
     },
     "Redo Summary" : {
+      "extractionState" : "stale",
       "localizations" : {
         "es-419" : {
           "stringUnit" : {
@@ -598,6 +577,9 @@
           }
         }
       }
+    },
+    "Regenerate summary from transcript. Existing content will be overwritten." : {
+
     },
     "Reset" : {
       "localizations" : {
@@ -762,6 +744,9 @@
         }
       }
     },
+    "Summarize" : {
+
+    },
     "Summary" : {
       "localizations" : {
         "es-419" : {
@@ -789,6 +774,9 @@
           }
         }
       }
+    },
+    "Summary Missing" : {
+
     },
     "The data received from the server was invalid. Please contact support." : {
 
@@ -885,6 +873,18 @@
     },
     "Unable to complete your request at this time. Please check your internet connection." : {
       "localizations" : {
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No se puede completar su solicitud en este momento. Por favor revise su conexion a internet."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "現時点ではリクエストを完了できません。 インターネット接続を確認してください。"
+          }
+        },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",

@@ -9,7 +9,7 @@ import Foundation
 import SwiftData
 
 @Model
-final class Settings {
+final class Settings :ObservableObject {
     var prompt: [PromptType: [RecognizerLocale : String]]
     var wssURL: String
     var audioSilentDB: String

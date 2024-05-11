@@ -23,11 +23,10 @@
 		461ADD9B2BD2B5ED00C0DD94 /* Websocket.swift in Sources */ = {isa = PBXBuildFile; fileRef = 461ADD9A2BD2B5ED00C0DD94 /* Websocket.swift */; };
 		461ADD9D2BD2B5F400C0DD94 /* RecorderTimer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 461ADD9C2BD2B5F400C0DD94 /* RecorderTimer.swift */; };
 		461ADD9F2BD2B63C00C0DD94 /* RecorderButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 461ADD9E2BD2B63C00C0DD94 /* RecorderButton.swift */; };
-		461ADDA12BD2B6BD00C0DD94 /* RecognizerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 461ADDA02BD2B6BC00C0DD94 /* RecognizerView.swift */; };
-		461ADDA32BD2B6C100C0DD94 /* StreamingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 461ADDA22BD2B6C100C0DD94 /* StreamingView.swift */; };
 		461ADDA52BD2B6E700C0DD94 /* TranscriptView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 461ADDA42BD2B6E700C0DD94 /* TranscriptView.swift */; };
 		461ADDA72BD2B6EB00C0DD94 /* DetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 461ADDA62BD2B6EB00C0DD94 /* DetailView.swift */; };
 		468B0B662BEDB83900C6D2FF /* TappablePadding.swift in Sources */ = {isa = PBXBuildFile; fileRef = 468B0B652BEDB83900C6D2FF /* TappablePadding.swift */; };
+		468B0B6A2BEF29EE00C6D2FF /* IdentifierManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 468B0B692BEF29EE00C6D2FF /* IdentifierManager.swift */; };
 		46DA71392BD7FB60001A3685 /* NetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46DA71382BD7FB60001A3685 /* NetworkManager.swift */; };
 		46DA713C2BD7FBFB001A3685 /* APError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46DA713A2BD7FBFB001A3685 /* APError.swift */; };
 		46DA713D2BD7FBFB001A3685 /* Alert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46DA713B2BD7FBFB001A3685 /* Alert.swift */; };
@@ -82,12 +81,11 @@
 		461ADD9A2BD2B5ED00C0DD94 /* Websocket.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Websocket.swift; sourceTree = "<group>"; };
 		461ADD9C2BD2B5F400C0DD94 /* RecorderTimer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RecorderTimer.swift; sourceTree = "<group>"; };
 		461ADD9E2BD2B63C00C0DD94 /* RecorderButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RecorderButton.swift; sourceTree = "<group>"; };
-		461ADDA02BD2B6BC00C0DD94 /* RecognizerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RecognizerView.swift; sourceTree = "<group>"; };
-		461ADDA22BD2B6C100C0DD94 /* StreamingView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StreamingView.swift; sourceTree = "<group>"; };
 		461ADDA42BD2B6E700C0DD94 /* TranscriptView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TranscriptView.swift; sourceTree = "<group>"; };
 		461ADDA62BD2B6EB00C0DD94 /* DetailView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DetailView.swift; sourceTree = "<group>"; };
 		461ADDA82BD2B96000C0DD94 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		468B0B652BEDB83900C6D2FF /* TappablePadding.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TappablePadding.swift; sourceTree = "<group>"; };
+		468B0B692BEF29EE00C6D2FF /* IdentifierManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IdentifierManager.swift; sourceTree = "<group>"; };
 		46DA71382BD7FB60001A3685 /* NetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkManager.swift; sourceTree = "<group>"; };
 		46DA713A2BD7FBFB001A3685 /* APError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = APError.swift; sourceTree = "<group>"; };
 		46DA713B2BD7FBFB001A3685 /* Alert.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Alert.swift; sourceTree = "<group>"; };
@@ -213,8 +211,6 @@
 				46FAC5FF2BDFC4AC0013B9B5 /* DetailViews */,
 				461ADDA42BD2B6E700C0DD94 /* TranscriptView.swift */,
 				461ADD902BD2A4F000C0DD94 /* SettingsView.swift */,
-				461ADDA22BD2B6C100C0DD94 /* StreamingView.swift */,
-				461ADDA02BD2B6BC00C0DD94 /* RecognizerView.swift */,
 				461ADD8A2BD2A40500C0DD94 /* ErrorView.swift */,
 			);
 			path = View;
@@ -233,6 +229,7 @@
 				461ADD9E2BD2B63C00C0DD94 /* RecorderButton.swift */,
 				46FAC6192BEB2DEF0013B9B5 /* LocalePicker.swift */,
 				468B0B652BEDB83900C6D2FF /* TappablePadding.swift */,
+				468B0B692BEF29EE00C6D2FF /* IdentifierManager.swift */,
 			);
 			path = Utilities;
 			sourceTree = "<group>";
@@ -422,7 +419,6 @@
 				46FAC60B2BE36A8C0013B9B5 /* UserManager.swift in Sources */,
 				46DA71392BD7FB60001A3685 /* NetworkManager.swift in Sources */,
 				46FAC61A2BEB2DEF0013B9B5 /* LocalePicker.swift in Sources */,
-				461ADDA12BD2B6BD00C0DD94 /* RecognizerView.swift in Sources */,
 				461ADD9F2BD2B63C00C0DD94 /* RecorderButton.swift in Sources */,
 				46FAC6092BE146A60013B9B5 /* DetailTranslationView.swift in Sources */,
 				461ADD892BD2A11700C0DD94 /* AudioRecord.swift in Sources */,
@@ -434,9 +430,9 @@
 				46DA71432BD8D724001A3685 /* Utilities.swift in Sources */,
 				46DA71452BD8E1F2001A3685 /* Settings.swift in Sources */,
 				461ADDA52BD2B6E700C0DD94 /* TranscriptView.swift in Sources */,
+				468B0B6A2BEF29EE00C6D2FF /* IdentifierManager.swift in Sources */,
 				461ADD9B2BD2B5ED00C0DD94 /* Websocket.swift in Sources */,
 				461ADD5B2BD2A0AC00C0DD94 /* SecretariApp.swift in Sources */,
-				461ADDA32BD2B6C100C0DD94 /* StreamingView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

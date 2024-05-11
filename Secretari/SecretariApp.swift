@@ -11,20 +11,21 @@ import SwiftData
 @main
 struct SecretariApp: App {
     @State private var errorWrapper: ErrorWrapper?
+    @StateObject private var identifierManager = IdentifierManager()
 
     var sharedModelContainer: ModelContainer = {
         let schema = Schema([AudioRecord.self, Settings.self,
-            Item.self,
-        ])
+                             Item.self,
+                            ])
         let modelConfiguration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: false)
-
+        
         do {
             return try ModelContainer(for: schema, configurations: [modelConfiguration])
         } catch {
             fatalError("Could not create ModelContainer: \(error)")
         }
     }()
-
+    
     var body: some Scene {
         WindowGroup {
             TranscriptView(errorWrapper: $errorWrapper)
@@ -35,11 +36,15 @@ struct SecretariApp: App {
                     print("identifier: ", NSLocale.current.identifier)
                 }
                 .sheet(item: $errorWrapper) {
-//                     var records = AudioRecord.sampleData     // no need here
+                    //                     var records = AudioRecord.sampleData     // no need here
                 } content: { wrapper in
                     ErrorView(errorWrapper: wrapper)
                 }
+                .onAppear {
+                    identifierManager.setupIdentifier()
+                }
         }
+        .environment(identifierManager)
         .modelContainer(sharedModelContainer)
     }
 }

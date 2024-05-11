@@ -11,10 +11,11 @@ import SwiftData
 struct TranscriptView: View {
     @Environment(\.scenePhase) var scenePhase
     @Environment(\.modelContext) private var modelContext
-    @Query private var settings: [Settings]
     @Query(sort: \AudioRecord.recordDate, order: .reverse) var records: [AudioRecord]
+    @Query private var settingsInSwiftData: [Settings]
     @Binding var errorWrapper: ErrorWrapper?
     
+    @State private var settings: Settings = AppConstants.defaultSettings
     @State private var isRecording = false
     @State private var showDetailView = false
     @State private var showSettings = false
@@ -25,8 +26,9 @@ struct TranscriptView: View {
                 ForEach(records, id: \.recordDate) { item in
                     NavigationLink {
                         DetailView(record: item, isRecording: .constant(false))
+                            .environment(settings)
                     } label: {
-                        SummaryRowView(record: item, promptType: settings.first?.promptType ?? .memo)
+                        SummaryRowView(record: item, promptType: settings.promptType)
                     }
                 }
                 .onDelete { indexSet in
@@ -72,15 +74,6 @@ struct TranscriptView: View {
                     }
                 })
             }
-            .task {
-                if settings.isEmpty {
-                    // first run of the App, settings not stored by SwiftData yet.
-                    // get system language name in user's system language
-                    modelContext.insert(AppConstants.defaultSettings)
-                    try? modelContext.save()
-                    // App lang: Optional(["zh-Hant-TW", "zh-Hans-TW", "ja-TW", "en-TW"])
-                }
-            }
             .onChange(of: scenePhase, { oldPhase, newPhase in
                 print("scene phase \(newPhase)")
                 if newPhase == .background {
@@ -115,6 +108,18 @@ struct TranscriptView: View {
                     .clipShape(Circle())
                     .shadow(radius: 5)
             })
+        }
+        .onAppear {
+            if let s = settingsInSwiftData.first {
+                self.settings = s
+            } else {
+                // first run of the App, settings not stored by SwiftData yet.
+                // the following line cannot run in App file, where Settings object has not been recognizable by context model
+                print("Settings inited in model context")
+                modelContext.insert(AppConstants.defaultSettings)
+                try? modelContext.save()
+                // App lang: Optional(["zh-Hant-TW", "zh-Hans-TW", "ja-TW", "en-TW"])
+            }
         }
     }
 }

@@ -52,12 +52,12 @@ struct AlertContext {
                                             dismissButton: .default(Text("OK")))
     
     //MARK: - Translation Alerts
-    static let emptyMemo    = AlertItem(title: Text("Content Error"),
-                                                message: Text("No memo to translate. Please change the prompt type to Memo in Settings and try again."),
+    static let emptyMemo    = AlertItem(title: Text("Memo Missing"),
+                                                message: Text("No memo to translate. Please generate the Memo content first using Summarize in ... menu."),
                                                 dismissButton: .default(Text("OK")))
 
-    static let emptySummary    = AlertItem(title: Text("Content Error"),
-                                                message: Text("No summary to translate. Please change the prompt type to Summary in Settings and try again."),
+    static let emptySummary    = AlertItem(title: Text("Summary Missing"),
+                                                message: Text("No summary to translate. Please generate the Summary content first using Summarize in ... menu."),
                                                 dismissButton: .default(Text("OK")))
     
     //Mark: - Invalid JSON Alerts

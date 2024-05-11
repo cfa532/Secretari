@@ -11,20 +11,18 @@ import SwiftData
 struct DetailView: View {
     @Environment(\.scenePhase) var scenePhase
     @Environment(\.modelContext) private var modelContext
-    @Query private var settings: [Settings]
+    @EnvironmentObject private var settings: Settings
     @Environment(\.dismiss) var dismiss
     
     @State var record: AudioRecord
     @Binding var isRecording: Bool
-    @State private var selectedLocale: RecognizerLocale = AppConstants.defaultSettings.selectedLocale
     
     @State private var showShareSheet = false
-    @State private var isShowingDialog = false  // for Redo confirm dialog
+    @State private var showRedoAlert = false  // for Redo confirm dialog
     
     @StateObject private var websocket = Websocket()
     @StateObject private var speechRecognizer = SpeechRecognizer()
     @StateObject private var recorderTimer = RecorderTimer()
-//    @State private var curRecord: AudioRecord?    // create an empty new audio record
     
     var body: some View {
         NavigationStack {
@@ -33,20 +31,15 @@ struct DetailView: View {
                     ScrollViewReader { proxy in
                         HStack {
                             Label("Recognizing", systemImage: "ear.badge.waveform")
-                            Picker("Language:", selection: $selectedLocale) {
+                            Picker("Language:", selection: $settings.selectedLocale) {
                                 ForEach(RecognizerLocale.allCases, id:\.self) { option in
                                     Text(String(describing: option))
                                 }
                             }
-                            .onAppear(perform: {
-                                guard settings.first != nil else {return}
-                                selectedLocale = settings.first!.selectedLocale
-                            })
-                            .onChange(of: selectedLocale) {
-                                settings.first?.selectedLocale = selectedLocale
+                            .onChange(of: settings.selectedLocale) {
                                 speechRecognizer.stopTranscribing()
                                 Task {
-                                    await self.speechRecognizer.setup(locale: settings.first?.selectedLocale.rawValue ?? "en")
+                                    await self.speechRecognizer.setup(locale: settings.selectedLocale.rawValue)
                                     speechRecognizer.startTranscribing()
                                 }
                             }
@@ -64,19 +57,17 @@ struct DetailView: View {
                 }
                 .padding()
                 .onAppear(perform: {
-                    print("Start timer. Audio db=\(String(describing: self.settings.first?.audioSilentDB))")
-//                    self.curRecord = AudioRecord()
+                    print("Start timer. Audio db=\(String(describing: self.settings.audioSilentDB))")
                     recorderTimer.delegate = self
                     recorderTimer.startTimer()
                     {
                         // body of isSilent(), updated by frequency per 10s
                         print("audio level=", SpeechRecognizer.currentLevel)
                         self.record.transcript = speechRecognizer.transcript     // SwiftData of record updated periodically.
-                        guard self.settings.first != nil else { return true }
-                        return SpeechRecognizer.currentLevel < Float(self.settings.first!.audioSilentDB)! ? true : false
+                        return SpeechRecognizer.currentLevel < Float(self.settings.audioSilentDB)! ? true : false
                     }
                     Task {
-                        await self.speechRecognizer.setup(locale: settings.first!.selectedLocale.rawValue)
+                        await self.speechRecognizer.setup(locale: settings.selectedLocale.rawValue)
                         speechRecognizer.startTranscribing()
                     }
                 })
@@ -124,11 +115,11 @@ struct DetailView: View {
                     HStack {
                         Text(AudioRecord.dateLongFormat.string(from: record.recordDate))
                         Spacer()
-                        LocalePicker(promptType: Settings.PromptType(rawValue: (settings.first?.promptType)!.rawValue) ?? .memo, record: $record)
+                        LocalePicker(promptType: settings.promptType, record: $record)
                     }
                     .padding(3)
                     
-                    if (settings.first?.promptType == .memo) {
+                    if (settings.promptType == .memo) {
                         if !record.memo.isEmpty {
                             DetailBulletinView(record: $record)
                         } else {
@@ -160,10 +151,13 @@ struct DetailView: View {
             ToolbarItem(placement: .topBarLeading) {
                 Button(action: {
                     // Dismiss the view
-                    dismiss()
+//                    dismiss()
                 }, label: {
                     Image(systemName: "decrease.indent")
                         .resizable() // Might not be necessary for system images
+                        .tappablePadding(EdgeInsets(top: 12, leading: 12, bottom: 12, trailing: 12)) {
+                            dismiss()
+                        }
                 })
                 .disabled(isRecording)
             }
@@ -186,21 +180,23 @@ struct DetailView: View {
                     
                     Button {
                         // regenerate summary of recording
-                        Task { @MainActor in
-                            if let setting = settings.first {
-                                websocket.sendToAI(record.transcript, prompt: setting.prompt[setting.promptType]![setting.selectedLocale]!, wssURL: setting.wssURL) { summary in
-                                    
-                                    record.locale = selectedLocale      // update current locale of the record
-                                    record.resultFromAI(promptType: setting.promptType, summary: summary)
-                                }
-                            }
-                        }
+                        self.showRedoAlert = true
                     } label: {
-                        Label("Redo Summary", systemImage: "pencil.line")
+                        Label("Summarize", systemImage: "pencil.line")
                     }
-                    
                 }, label: {
                     Image(systemName: "ellipsis")
+                })
+                .alert(isPresented: $showRedoAlert, content: {
+                    Alert(title: Text("Alert"), message: Text("Regenerate summary from transcript. Existing content will be overwritten."), primaryButton: .cancel(), secondaryButton: .destructive(Text("Yes"), action: {
+                        Task { @MainActor in
+                            websocket.sendToAI(record.transcript, prompt: settings.prompt[settings.promptType]![settings.selectedLocale]!, wssURL: settings.wssURL) { summary in
+                                
+                                record.locale = settings.selectedLocale      // update current locale of the record
+                                record.resultFromAI(promptType: settings.promptType, summary: summary)
+                            }
+                        }
+                    }))
                 })
                 .sheet(isPresented: $showShareSheet) {
                     ShareSheet(activityItems: [textToShare()])
@@ -225,7 +221,7 @@ struct DetailView: View {
     
     private func textToShare()->String {
         var textToShare = AudioRecord.dateLongFormat.string(from: record.recordDate) + ":\n"
-        if settings.first?.promptType == .memo {
+        if settings.promptType == .memo {
             if !record.memo.isEmpty {
                 for m in record.memo {
                     if let t = m.title[record.locale] {
@@ -253,11 +249,9 @@ extension DetailView: TimerDelegate {
             record.transcript = speechRecognizer.transcript + "。"
             modelContext.insert(record)
             speechRecognizer.transcript = ""
-            if let setting = settings.first {
-                websocket.sendToAI(record.transcript, prompt: setting.prompt[setting.promptType]![selectedLocale]!, wssURL: setting.wssURL) { summary in
-                    record.locale = selectedLocale
-                    record.resultFromAI(promptType: settings.first?.promptType ?? .memo, summary: summary)
-                }
+            websocket.sendToAI(record.transcript, prompt: settings.prompt[settings.promptType]![settings.selectedLocale]!, wssURL: settings.wssURL) { summary in
+                record.locale = settings.selectedLocale
+                record.resultFromAI(promptType: settings.promptType, summary: summary)
             }
         }
     }

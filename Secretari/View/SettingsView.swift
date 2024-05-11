@@ -10,7 +10,6 @@ import SwiftData
 
 struct SettingsView: View {
     @Environment(\.modelContext) private var modelContext
-    @Environment(\.dismiss) private var dismiss
     @Query private var settings: [Settings]
     @State private var setting: Settings  = AppConstants.defaultSettings {
         didSet {
