@@ -9,8 +9,6 @@ import SwiftUI
 import SwiftData
 
 struct SettingsView: View {
-//    @Environment(\.modelContext) private var modelContext
-//    @Query private var settings: [Settings]
     @EnvironmentObject private var settings: Settings
     @State private var selectedPrompt = ""
     @State private var countDown = 0
