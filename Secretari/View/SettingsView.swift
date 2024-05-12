@@ -9,25 +9,10 @@ import SwiftUI
 import SwiftData
 
 struct SettingsView: View {
-    @Environment(\.modelContext) private var modelContext
-    @Query private var settings: [Settings]
-    @State private var setting: Settings  = AppConstants.defaultSettings {
-        didSet {
-            if let t = Int(setting.audioSilentDB) {
-                if t > -20 { setting.audioSilentDB = "-20" }
-                else if t < -80 {
-                    setting.audioSilentDB = "-80"
-                }
-            } else {
-                setting.audioSilentDB = "-40"
-            }
-        }
-    }
-    
-    @State private var selectedLocale: RecognizerLocale = AppConstants.defaultSettings.selectedLocale
-    @State private var promptType: Settings.PromptType = AppConstants.defaultSettings.promptType
-    @State private var selectedPrompt: String = " "
-    
+//    @Environment(\.modelContext) private var modelContext
+//    @Query private var settings: [Settings]
+    @EnvironmentObject private var settings: Settings
+    @State private var selectedPrompt = ""
     @State private var countDown = 0
     @State private var opacity = 1.0
     @State private var timer: Timer?
@@ -38,38 +23,50 @@ struct SettingsView: View {
             Form {
                 Section(header: Text("Parameters")) {
                     HStack {
-                        Text("Min audiable dB")
+                        Text("Min Audible (dB)")
                         Spacer()
-                        TextField(setting.audioSilentDB, text: $setting.audioSilentDB)
+                        TextField(settings.audioSilentDB, text: $settings.audioSilentDB)
                             .frame(width: 80)
                             .foregroundColor(.secondary)
                             .multilineTextAlignment(.trailing)
                     }
                     
-                    Picker("Prompt Type", selection: $promptType) {
+                    Picker("Prompt Type", selection: $settings.promptType) {
                         ForEach(Settings.PromptType.allCases, id:\.self) { option in
                             Text(String(describing: option))
                         }
                     }
-                    .onChange(of: promptType, { oldValue, newValue in
-                        print(oldValue, newValue)
-                        selectedPrompt = setting.prompt[promptType]![selectedLocale]!
-                    })
-                    
-                    Picker("Language:", selection: $selectedLocale) {
+                    .onChange(of: settings.promptType) { oldValue, newValue in
+                        selectedPrompt = settings.prompt[settings.promptType]![settings.selectedLocale]!
+                    }
+                    Picker("Language:", selection: $settings.selectedLocale) {
                         ForEach(RecognizerLocale.allCases, id:\.self) { option in
                             Text(String(describing: option))
                         }
                     }
-                    .onChange(of: selectedLocale) {
-                        selectedPrompt = setting.prompt[promptType]![selectedLocale]!
+                    .onChange(of: settings.selectedLocale) { oldValue, newValue in
+                        selectedPrompt = settings.prompt[settings.promptType]![settings.selectedLocale]!
                     }
                 }
                 Section(header: Text("advanced")) {
-                    TextField(setting.wssURL, text: $setting.wssURL)
+                    TextField(settings.wssURL, text: $settings.wssURL)
                     TextField(selectedPrompt, text: $selectedPrompt, axis: .vertical)
                         .lineLimit(.max)
                 }
+                .onAppear(perform: {
+                    selectedPrompt = settings.prompt[settings.promptType]![settings.selectedLocale]!
+                })
+                .onDisappear(perform: {
+                    settings.prompt[settings.promptType]![settings.selectedLocale] = selectedPrompt
+                    if let t = Double(settings.audioSilentDB) {
+                        if t > -20 { settings.audioSilentDB = "-20" }
+                        else if t < -80 {
+                            settings.audioSilentDB = "-80"
+                        }
+                    } else {
+                        settings.audioSilentDB = "-40"
+                    }
+                })
                 .opacity(self.opacity)
                 .onTapGesture {
                     self.countDown += 1
@@ -88,18 +85,6 @@ struct SettingsView: View {
             .navigationTitle("Settings")
             .navigationBarTitleDisplayMode(.inline)
         }
-        .onAppear(perform: {
-            guard let setting = settings.first else { return }
-            selectedLocale = setting.selectedLocale
-            promptType = setting.promptType
-            selectedPrompt = setting.prompt[promptType]![selectedLocale]!
-        })
-        .onDisappear(perform: {
-            guard let setting = settings.first else { return }
-            setting.promptType = promptType
-            setting.selectedLocale = selectedLocale
-            setting.prompt[promptType]![selectedLocale] = selectedPrompt
-        })
         .toolbar {
             ToolbarItem(placement: .topBarTrailing) {
                 Button(action: {
@@ -111,15 +96,14 @@ struct SettingsView: View {
         }
         .alert(isPresented: $showAlert, content: {
             Alert(title: Text("Alert"), message: Text("All settings will be reset."), primaryButton: .cancel(), secondaryButton: .destructive(Text("Yes"), action: {
-                guard let setting = settings.first else { return }
-                setting.prompt = AppConstants.defaultSettings.prompt
-                setting.selectedLocale = AppConstants.defaultSettings.selectedLocale
-                setting.audioSilentDB = AppConstants.defaultSettings.audioSilentDB
-                setting.wssURL = AppConstants.defaultSettings.wssURL
-                setting.promptType = AppConstants.defaultSettings.promptType
-                selectedLocale = setting.selectedLocale
-                promptType = setting.promptType
-                selectedPrompt = setting.prompt[promptType]![selectedLocale]!
+
+                settings.prompt = AppConstants.defaultSettings.prompt
+                settings.selectedLocale = AppConstants.defaultSettings.selectedLocale
+                settings.audioSilentDB = AppConstants.defaultSettings.audioSilentDB
+                settings.wssURL = AppConstants.defaultSettings.wssURL
+                settings.promptType = AppConstants.defaultSettings.promptType
+                settings.llmModel = AppConstants.defaultSettings.llmModel
+                settings.llmParams = AppConstants.defaultSettings.llmParams
             }))}
         )
     }

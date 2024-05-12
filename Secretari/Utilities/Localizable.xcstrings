@@ -284,6 +284,7 @@
 
     },
     "Min audiable dB" : {
+      "extractionState" : "stale",
       "localizations" : {
         "es-419" : {
           "stringUnit" : {
@@ -310,6 +311,9 @@
           }
         }
       }
+    },
+    "Min Audible (dB)" : {
+
     },
     "No memo to translate. Please generate the Memo content first using Summarize in ... menu." : {
       "localizations" : {

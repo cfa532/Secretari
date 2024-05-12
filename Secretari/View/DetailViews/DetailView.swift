@@ -11,8 +11,8 @@ import SwiftData
 struct DetailView: View {
     @Environment(\.scenePhase) var scenePhase
     @Environment(\.modelContext) private var modelContext
-    @EnvironmentObject private var settings: Settings
     @Environment(\.dismiss) var dismiss
+    @EnvironmentObject private var settings: Settings
     
     @State var record: AudioRecord
     @Binding var isRecording: Bool
@@ -71,23 +71,23 @@ struct DetailView: View {
                         speechRecognizer.startTranscribing()
                     }
                 })
-//                Spacer()
+                //                Spacer()
                 RecorderButton(isRecording: $isRecording) {
                     if self.isRecording {
-//                        print("Start timer. Audio db=\(self.settings[0].audioSilentDB)")
-//                        self.record = AudioRecord()
-//                        recorderTimer.delegate = self
-//                        recorderTimer.startTimer()
-//                        {
-//                            // body of isSilent(), updated by frequency per 10s
-//                            print("audio level=", SpeechRecognizer.currentLevel)
-//                            self.curRecord?.transcript = speechRecognizer.transcript     // SwiftData of record updated periodically.
-//                            return SpeechRecognizer.currentLevel < Float(self.settings[0].audioSilentDB)! ? true : false
-//                        }
-//                        Task {
-//                            await self.speechRecognizer.setup(locale: settings[0].selectedLocale.rawValue)
-//                            speechRecognizer.startTranscribing()
-//                        }
+                        //                        print("Start timer. Audio db=\(self.settings[0].audioSilentDB)")
+                        //                        self.record = AudioRecord()
+                        //                        recorderTimer.delegate = self
+                        //                        recorderTimer.startTimer()
+                        //                        {
+                        //                            // body of isSilent(), updated by frequency per 10s
+                        //                            print("audio level=", SpeechRecognizer.currentLevel)
+                        //                            self.curRecord?.transcript = speechRecognizer.transcript     // SwiftData of record updated periodically.
+                        //                            return SpeechRecognizer.currentLevel < Float(self.settings[0].audioSilentDB)! ? true : false
+                        //                        }
+                        //                        Task {
+                        //                            await self.speechRecognizer.setup(locale: settings[0].selectedLocale.rawValue)
+                        //                            speechRecognizer.startTranscribing()
+                        //                        }
                     } else {
                         speechRecognizer.stopTranscribing()
                         recorderTimer.stopTimer()
@@ -143,7 +143,7 @@ struct DetailView: View {
                 .padding()
             }
         }
-
+        
         .navigationBarBackButtonHidden(true)
         .navigationTitle("Summary")
         .navigationBarTitleDisplayMode(.inline)
@@ -151,7 +151,7 @@ struct DetailView: View {
             ToolbarItem(placement: .topBarLeading) {
                 Button(action: {
                     // Dismiss the view
-//                    dismiss()
+                    //                    dismiss()
                 }, label: {
                     Image(systemName: "decrease.indent")
                         .resizable() // Might not be necessary for system images
@@ -174,7 +174,10 @@ struct DetailView: View {
                         Label("Transcript", systemImage: "text.word.spacing")
                     }
                     
-                    NavigationLink(destination: DetailTranslationView(record: $record, websocket: websocket)) {
+                    NavigationLink(destination:
+                                    DetailTranslationView(record: $record, websocket: websocket)
+                        .environment(settings)
+                    ) {
                         Label("Translation", systemImage: "textformat.abc.dottedunderline")
                     }
                     
@@ -190,7 +193,7 @@ struct DetailView: View {
                 .alert(isPresented: $showRedoAlert, content: {
                     Alert(title: Text("Alert"), message: Text("Regenerate summary from transcript. Existing content will be overwritten."), primaryButton: .cancel(), secondaryButton: .destructive(Text("Yes"), action: {
                         Task { @MainActor in
-                            websocket.sendToAI(record.transcript, prompt: settings.prompt[settings.promptType]![settings.selectedLocale]!, wssURL: settings.wssURL) { summary in
+                            websocket.sendToAI(record.transcript, settings: settings) { summary in
                                 
                                 record.locale = settings.selectedLocale      // update current locale of the record
                                 record.resultFromAI(promptType: settings.promptType, summary: summary)
@@ -249,7 +252,7 @@ extension DetailView: TimerDelegate {
             record.transcript = speechRecognizer.transcript + "。"
             modelContext.insert(record)
             speechRecognizer.transcript = ""
-            websocket.sendToAI(record.transcript, prompt: settings.prompt[settings.promptType]![settings.selectedLocale]!, wssURL: settings.wssURL) { summary in
+            websocket.sendToAI(record.transcript, settings: settings) { summary in
                 record.locale = settings.selectedLocale
                 record.resultFromAI(promptType: settings.promptType, summary: summary)
             }

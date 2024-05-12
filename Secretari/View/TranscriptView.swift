@@ -56,6 +56,7 @@ struct TranscriptView: View {
             })
             .navigationDestination(isPresented: $showSettings, destination: {
                 SettingsView()
+                    .environment(settings)
             })
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing, content: {
@@ -114,7 +115,7 @@ struct TranscriptView: View {
                 self.settings = s
             } else {
                 // first run of the App, settings not stored by SwiftData yet.
-                // the following line cannot run in App file, where Settings object has not been recognizable by context model
+                // the following line cannot run in App file, where Settings tyep cannot be recognized by context model
                 print("Settings inited in model context")
                 modelContext.insert(AppConstants.defaultSettings)
                 try? modelContext.save()

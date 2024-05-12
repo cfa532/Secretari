@@ -30,6 +30,7 @@ struct SecretariApp: App {
         WindowGroup {
             TranscriptView(errorWrapper: $errorWrapper)
                 .task {
+                    identifierManager.setupIdentifier()
                     guard let appSupportDir = FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask).last else { return }
                     print(appSupportDir)
                     print("App lang:", UserDefaults.standard.stringArray(forKey: "AppleLanguages")!)
@@ -40,8 +41,13 @@ struct SecretariApp: App {
                 } content: { wrapper in
                     ErrorView(errorWrapper: wrapper)
                 }
-                .onAppear {
-                    identifierManager.setupIdentifier()
+                .task {
+                    let appUpdated = AppVersionManager.shared.checkIfAppUpdated()
+                    if appUpdated {
+                        print("App is running for the first time after an update")
+                    } else {
+                        print("This is not the first run after an update")
+                    }
                 }
         }
         .environment(identifierManager)

@@ -35,6 +35,12 @@ struct Utility {
 //            return RecognizerLocale.English
 //        }
     }
+    static func printDict(obj: Dictionary<String, Any>) {
+        print(obj.description)
+        for(key, value) in obj {
+            print("\(key) = \(value)")
+        }
+    }
     
     static func getAIJson(aiJson: String) throws ->String {
         let regex = try NSRegularExpression(pattern: "\\[(.*?)\\]", options: [])

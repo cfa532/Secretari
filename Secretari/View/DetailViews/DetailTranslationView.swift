@@ -11,10 +11,11 @@ import SwiftData
 struct DetailTranslationView: View {
     @Binding var record: AudioRecord
     @Environment(\.modelContext) private var modelContext
-    @Query private var settings: [Settings]
+//    @Query private var settings: [Settings]
     @StateObject var websocket: Websocket
     @State private var showShareSheet = false
     @Environment(\.dismiss) var dismiss
+    @EnvironmentObject private var settings: Settings
     
     @State private var alertItem: AlertItem?
     
@@ -37,14 +38,14 @@ struct DetailTranslationView: View {
                     }, description: {
                         Text("Select one of the following languages to translate the Summary. If summary exists, it will be overwritten.")
                         Button("English") {
-                            if settings.first?.promptType == .memo {
+                            if settings.promptType == .memo {
                                 translateMemo(locale: .English, record: record, prompt: "The following text is a valid JSON string. Translate the title of each JSON object into English. Only return a pure JSON string in the same format. ")
                             } else {
                                 translateSummary(locale: .English, record: record, prompt: "translate the following text into English. ")
                             }
                         }
                         Button("Indonesia") {
-                            if settings.first?.promptType == .memo {
+                            if settings.promptType == .memo {
                                 translateMemo(locale: .Indonesia, record: record, prompt: "Teks berikut adalah string JSON yang valid. Terjemahkan judul setiap objek JSON ke dalam bahasa Indonesia. Hanya kembalikan string JSON murni dalam format yang sama. ")
                             } else {
                                 translateSummary(locale: .Indonesia, record: record, prompt: "terjemahkan teks berikut ke dalam bahasa Indonesia. ")
@@ -86,7 +87,7 @@ struct DetailTranslationView: View {
     
     @MainActor private func translateSummary(locale: RecognizerLocale, record: AudioRecord, prompt: String) {
         if let summary = record.summary[record.locale] {
-            websocket.sendToAI(summary, prompt: prompt, wssURL: settings.first?.wssURL ?? AppConstants.defaultSettings.wssURL) { translation in
+            websocket.sendToAI(summary, settings: settings) { translation in
                 record.locale = locale
                 record.summary[locale] = translation
                 try? modelContext.save()
@@ -117,7 +118,7 @@ struct DetailTranslationView: View {
             let jsonData = try JSONSerialization.data(withJSONObject: arr, options: [])
             if let jsonString = String(data: jsonData, encoding: .utf8) {
                 
-                websocket.sendToAI(jsonString, prompt: prompt, wssURL: settings.first?.wssURL ?? AppConstants.defaultSettings.wssURL) { translation in
+                websocket.sendToAI(jsonString, settings: settings) { translation in
                     do {
                         // extract valie JSON string from AI reply. Get text between [ ]
 //                        let regex = try NSRegularExpression(pattern: "\\[(.*?)\\]", options: [])
@@ -126,7 +127,7 @@ struct DetailTranslationView: View {
 //                        let r = results.map{ nsString.substring(with: $0.range(at: 1)) }
                         
                         record.locale = locale
-                        record.resultFromAI(promptType: settings.first?.promptType ?? .memo, summary: try Utility.getAIJson(aiJson: translation))
+                        record.resultFromAI(promptType: settings.promptType, summary: try Utility.getAIJson(aiJson: translation))
                         try? modelContext.save()
                         Task {
                             dismiss()

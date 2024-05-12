@@ -14,7 +14,8 @@ class Websocket: NSObject, ObservableObject, URLSessionWebSocketDelegate {
     @Published var streamedText: String = ""
     @Published var alertItem: AlertItem?
     @EnvironmentObject private var identifierManager: IdentifierManager
-    
+    @EnvironmentObject private var settings: Settings
+
     private var urlSession: URLSession?
     private var wssURL: String?
     private var wsTask: URLSessionWebSocketTask?
@@ -147,22 +148,29 @@ class Websocket: NSObject, ObservableObject, URLSessionWebSocketDelegate {
 }
 
 extension Websocket {
-    @MainActor func sendToAI(_ rawText: String, prompt: String, wssURL: String, action: @escaping (_ summary: String)->Void) {
+    
+    // Might need to temporarily revise settings' value.
+    @MainActor func sendToAI(_ rawText: String, settings: Settings, action: @escaping (_ summary: String)->Void) {
+        let prompt = settings.prompt[settings.promptType]![settings.selectedLocale]
+        
+        guard settings.llmParams != nil, settings.llmParams![settings.llmModel!] != nil else { print("Empty LLM parameters"); return }
+        let llmParams = settings.llmParams![settings.llmModel!]
+        Utility.printDict(obj: llmParams!)
         let msg = [
             "input": [
                 "prompt": prompt,
                 "rawtext": rawText],
             "parameters": [
-                "llm": AppConstants.LLM,
-                "temperature": AppConstants.OpenAITemperature,
+                "llm": llmParams!["llm"],
+                "temperature": llmParams!["temperature"],
                 "client":"mobile",
-                "model": AppConstants.OpenAIModel]] as [String : Any]
-        
+                "model": settings.llmModel!.rawValue
+            ]] as [String : Any]
         // Convert the Data to String
         let jsonData = try! JSONSerialization.data(withJSONObject: msg)
         if let jsonString = String(data: jsonData, encoding: .utf8) {
             print("Websocket sending: ", jsonString)
-            self.configure(wssURL)
+            self.configure(settings.wssURL)
             Task {
                 self.send(jsonString) { error in
                     self.alertItem = AlertContext.unableToComplete
