@@ -7,6 +7,7 @@
 
 import SwiftUI
 
+// set the Locles used in the Picker view
 struct LocalePicker: View {
     var promptType: Settings.PromptType
     @Binding var record: AudioRecord

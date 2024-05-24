@@ -11,17 +11,17 @@ import SwiftData
 @Model
 final class Settings :ObservableObject {
     var prompt: [PromptType: [RecognizerLocale : String]]
-    var wssURL: String
+    var serverURL: String
     var audioSilentDB: String
     var selectedLocale: RecognizerLocale
     var promptType: PromptType       // Two type: Summary and Memo. Memo is a list of bulletins.
     var llmModel: LLMModel?
     var llmParams: [LLMModel :Dictionary<String, String>]?  // dict that match llm model with respective parameters, which is also a dict.
     
-    init(prompt: [PromptType: [RecognizerLocale :String]], wssURL: String, audioSilentDB: String, selectedLocale: RecognizerLocale, promptType: PromptType,
+    init(prompt: [PromptType: [RecognizerLocale :String]], serverURL: String, audioSilentDB: String, selectedLocale: RecognizerLocale, promptType: PromptType,
          llmModel: LLMModel?, llmParams: [LLMModel :Dictionary<String, String>]?) {
         self.prompt = prompt
-        self.wssURL = wssURL
+        self.serverURL = serverURL
         self.audioSilentDB = audioSilentDB
         self.selectedLocale = selectedLocale
         self.promptType = promptType
@@ -49,7 +49,7 @@ enum LLM: String, Codable, CaseIterable {
     case OpenAI = "openai"
     case Gemini = "gemini"
 }
-enum LLMModel: String, Codable, CaseIterable {
+enum LLMModel: String, Codable, CaseIterable, CodingKey {
     case GPT_3 = "gpt-3.5"
     case GPT_4 = "gpt-4"
     case GPT_4_Turbo = "gpt-4-turbo"
@@ -61,11 +61,11 @@ final class AppConstants {
     static let MaxRecordSeconds = 28800     // max working hours, 8hrs
     static let NumRecordsInSwiftData = 30   // number of records kept locally by SwiftData
     static let RecorderTimerFrequency = 10.0  // frequency in seconds to run update() of timer.
-    static let OpenAIModel = LLMModel.GPT_4_Turbo
-    static let OpenAITemperature = "0.0"
-    static let LLM = "openai"
+
+    static let DefaultTokenCount = [LLMModel.GPT_3 : UInt(0), LLMModel.GPT_4_Turbo :UInt(0)]
+    static let DefaultPassword = "zaq12WSX"
     static let defaultSettings = Settings(prompt: defaultPrompt,
-                                          wssURL: "wss://leither.uk/ws",
+                                          serverURL: "leither.uk/secretari",
                                           audioSilentDB: "-40",
                                           selectedLocale: Utility.systemLanguage(),
                                           promptType: Settings.PromptType.memo,

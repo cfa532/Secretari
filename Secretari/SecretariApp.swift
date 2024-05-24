@@ -12,6 +12,9 @@ import SwiftData
 struct SecretariApp: App {
     @State private var errorWrapper: ErrorWrapper?
     @StateObject private var identifierManager = IdentifierManager()
+    @StateObject private var webScoket = Websocket()
+    @StateObject private var userManager = UserManager()
+    @StateObject private var keychainManager = KeychainManager()
 
     var sharedModelContainer: ModelContainer = {
         let schema = Schema([AudioRecord.self, Settings.self,
@@ -35,13 +38,20 @@ struct SecretariApp: App {
                     print(appSupportDir)
                     print("App lang:", UserDefaults.standard.stringArray(forKey: "AppleLanguages")!)
                     print("identifier: ", NSLocale.current.identifier)
-                }
-                .sheet(item: $errorWrapper) {
-                    //                     var records = AudioRecord.sampleData     // no need here
-                } content: { wrapper in
-                    ErrorView(errorWrapper: wrapper)
-                }
-                .task {
+                    
+                    // extract user account from keychain
+                    let identifier = identifierManager.getDeviceIdentifier()
+                    if let user = keychainManager.getUser(account: identifier) {
+                        userManager.currentUser = user          // local user infor will be updated with each fetchToken() call
+                    } else {
+                        userManager.createUser(id: identifier)
+                        keychainManager.saveUser(user: userManager.currentUser!, account: identifier)
+                        // create user account on server only when user actually send request
+                    }
+                    
+                    // check the subscription status of the user on server. Async mode.
+                    
+
                     let appUpdated = AppVersionManager.shared.checkIfAppUpdated()
                     if appUpdated {
                         print("App is running for the first time after an update")
@@ -49,8 +59,14 @@ struct SecretariApp: App {
                         print("This is not the first run after an update")
                     }
                 }
+                .sheet(item: $errorWrapper) {
+                    //                     var records = AudioRecord.sampleData     // no need here
+                } content: { wrapper in
+                    ErrorView(errorWrapper: wrapper)
+                }
         }
-        .environment(identifierManager)
+        .environment(webScoket)
+        .environment(userManager)
         .modelContainer(sharedModelContainer)
     }
 }

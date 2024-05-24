@@ -7,6 +7,8 @@
 
 import SwiftUI
 
+// expend the touchable area of a icon. Make it easier to tap.
+
 struct TappablePadding: ViewModifier {
   let insets: EdgeInsets
   let onTap: () -> Void
@@ -34,8 +36,8 @@ extension EdgeInsets {
   }
 }
 
-//#Preview {
-//    TappablePadding(insets: EdgeInsets()) {
-//        return Void()
-//    }
-//}
+#Preview {
+    TappablePadding(insets: EdgeInsets(top: 10, leading: 10, bottom: 10, trailing: 10)) {
+        return Void()
+    } as! any View
+}

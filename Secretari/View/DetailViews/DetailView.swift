@@ -13,14 +13,14 @@ struct DetailView: View {
     @Environment(\.modelContext) private var modelContext
     @Environment(\.dismiss) var dismiss
     @EnvironmentObject private var settings: Settings
-    
+    @StateObject private var websocket = Websocket()
+
     @State var record: AudioRecord
     @Binding var isRecording: Bool
     
     @State private var showShareSheet = false
     @State private var showRedoAlert = false  // for Redo confirm dialog
     
-    @StateObject private var websocket = Websocket()
     @StateObject private var speechRecognizer = SpeechRecognizer()
     @StateObject private var recorderTimer = RecorderTimer()
     
@@ -262,6 +262,7 @@ extension DetailView: TimerDelegate {
 
 #Preview {
     DetailView(record: AudioRecord.sampleData[0], isRecording: .constant(true))
+        .environment(AppConstants.defaultSettings)
     //    let container = try! ModelContainer(for: AudioRecord.self, Settings.self, configurations: ModelConfiguration(isStoredInMemoryOnly: true))
     //    return DetailView(record: AudioRecord.sampleData[0])
     //        .modelContainer(container)

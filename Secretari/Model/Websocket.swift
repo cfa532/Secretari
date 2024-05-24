@@ -9,56 +9,92 @@ import Foundation
 import SwiftUI
 
 @MainActor
-class Websocket: NSObject, ObservableObject, URLSessionWebSocketDelegate {
+class Websocket: NSObject, ObservableObject, URLSessionWebSocketDelegate, Observable {
     @Published var isStreaming: Bool = false
     @Published var streamedText: String = ""
     @Published var alertItem: AlertItem?
-    @EnvironmentObject private var identifierManager: IdentifierManager
+//    @EnvironmentObject private var identifierManager: IdentifierManager
     @EnvironmentObject private var settings: Settings
-
+    @EnvironmentObject private var userManager: UserManager
+    
+    @State private var tokenManager = TokenManager()
+    @Published var tokenCount: [LLMModel :UInt] = AppConstants.DefaultTokenCount
+    
     private var urlSession: URLSession?
-    private var wssURL: String?
+    private var serverURL: String?
     private var wsTask: URLSessionWebSocketTask?
     
+    override init() {
+        super.init()
+        self.urlSession = URLSession(configuration: .default, delegate: self, delegateQueue: OperationQueue())
+    }
+    
     func configure(_ url: String) {
-        var request = URLRequest(url: URL(string: "http://127.0.0.1")!)
-        if self.wssURL == nil {
-            self.wssURL = url
-            request = URLRequest(url: URL(string: self.wssURL!)!)
-            request.httpMethod = "GET"
-            request.addValue("application/json", forHTTPHeaderField: "Content-Type")
-            request.addValue("Bearer access token", forHTTPHeaderField: "Authorization")
-            request.cachePolicy = .reloadIgnoringLocalCacheData
-            request.timeoutInterval = 5.0
-            self.urlSession = URLSession(configuration: .default, delegate: self, delegateQueue: OperationQueue())
+        
+        self.serverURL = url       // different request has different end point.
+        
+        if let token=self.tokenManager.loadToken(), !tokenManager.isTokenExpired(token: token) {
+            // valid token
+            setRequestHeader()
+        } else {
+            fetchToken() { token, tokenCount in
+                guard token != nil else {
+                    print("Empty token from server.")
+                    self.alertItem = AlertContext.invalidData
+                    return
+                }
+                self.tokenManager.saveToken(token: token!)
+                self.setRequestHeader()
+            }
         }
+    }
+    
+    func setRequestHeader() {
+        var request = URLRequest(url: URL(string: self.serverURL!)!)
+        request.httpMethod = "POST"
+        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.addValue("Bearer " + self.tokenManager.loadToken()!, forHTTPHeaderField: "Authorization")
+        request.cachePolicy = .reloadIgnoringLocalCacheData
+        request.timeoutInterval = 5.0
 
         if let activeTask = self.wsTask, activeTask.state == .running {
             // do nothing
         } else  {
             // cancel hanging wsTask if any
             self.wsTask?.cancel()
-//            self.wsTask = urlSession?.webSocketTask(with: URL(string: self.wssURL!)!)
+//            self.wsTask = urlSession?.webSocketTask(with: URL(string: self.serverURL!)!)
             self.wsTask = urlSession?.webSocketTask(with: request)
         }
     }
 
-    func fetchToken(username: String, password: String="zaq12WSX", completion: @escaping (String?) -> Void) {
-        var identifier = self.identifierManager.getDeviceIdentifier()
-        var request = URLRequest(url: URL(string: self.wssURL!)!)
+    @MainActor func fetchToken(completion: @escaping (String?, [String:UInt]?) -> Void) {
+        
+        var request = URLRequest(url: URL(string: "https://"+self.serverURL!+"/token")!)   // should be https://ip/api/token
+        
         request.httpMethod = "POST"
-        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
-        let body: [String: Any] = ["username": username, "password": password]
+//        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.addValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")   // required by FastAPI
+        
+        guard var user = userManager.currentUser else { print("No current User"); return }
+        let body: [String: Any] = ["username": user.username, "password": user.password, "cliend_id": user.id]
         request.httpBody = try? JSONSerialization.data(withJSONObject: body)
         
         let task = URLSession.shared.dataTask(with: request) { data, response, error in
             guard let data = data, error == nil else {
-                completion(nil)
+                completion(nil, nil)
                 return
             }
             let json = try? JSONSerialization.jsonObject(with: data) as? [String: Any]
             let token = json?["token"] as? String
-            completion(token)
+            let tokenCount = json?["tokenCount"] as? [String: UInt]
+
+            // update local token count dataa
+            for key in tokenCount!.keys {
+                Task { @MainActor in
+                    user.tokens[LLMModel(rawValue: key)!] = tokenCount![key]
+                }
+            }
+            completion(token, tokenCount)
         }
         task.resume()
     }
@@ -151,11 +187,12 @@ extension Websocket {
     
     // Might need to temporarily revise settings' value.
     @MainActor func sendToAI(_ rawText: String, settings: Settings, action: @escaping (_ summary: String)->Void) {
-        let prompt = settings.prompt[settings.promptType]![settings.selectedLocale]
-        
+        // pass in settings as parameter instead of using local global copy, so the settings can be modified for special case before hand.
         guard settings.llmParams != nil, settings.llmParams![settings.llmModel!] != nil else { print("Empty LLM parameters"); return }
         let llmParams = settings.llmParams![settings.llmModel!]
+        let prompt = settings.prompt[settings.promptType]![settings.selectedLocale]
         Utility.printDict(obj: llmParams!)
+
         let msg = [
             "input": [
                 "prompt": prompt,
@@ -166,11 +203,13 @@ extension Websocket {
                 "client":"mobile",
                 "model": settings.llmModel!.rawValue
             ]] as [String : Any]
+        
         // Convert the Data to String
         let jsonData = try! JSONSerialization.data(withJSONObject: msg)
         if let jsonString = String(data: jsonData, encoding: .utf8) {
             print("Websocket sending: ", jsonString)
-            self.configure(settings.wssURL)
+            
+            self.configure(settings.serverURL)
             Task {
                 self.send(jsonString) { error in
                     self.alertItem = AlertContext.unableToComplete
@@ -179,5 +218,9 @@ extension Websocket {
                 self.resume()
             }
         }
+    }
+    
+    func createUser(user: User) {
+        // send user iden
     }
 }

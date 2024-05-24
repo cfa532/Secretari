@@ -47,7 +47,7 @@ struct SettingsView: View {
                     }
                 }
                 Section(header: Text("advanced")) {
-                    TextField(settings.wssURL, text: $settings.wssURL)
+                    TextField(settings.serverURL, text: $settings.serverURL)
                     TextField(selectedPrompt, text: $selectedPrompt, axis: .vertical)
                         .lineLimit(.max)
                 }
@@ -98,7 +98,7 @@ struct SettingsView: View {
                 settings.prompt = AppConstants.defaultSettings.prompt
                 settings.selectedLocale = AppConstants.defaultSettings.selectedLocale
                 settings.audioSilentDB = AppConstants.defaultSettings.audioSilentDB
-                settings.wssURL = AppConstants.defaultSettings.wssURL
+                settings.serverURL = AppConstants.defaultSettings.serverURL
                 settings.promptType = AppConstants.defaultSettings.promptType
                 settings.llmModel = AppConstants.defaultSettings.llmModel
                 settings.llmParams = AppConstants.defaultSettings.llmParams
@@ -111,4 +111,5 @@ struct SettingsView: View {
     let container = try! ModelContainer(for: Settings.self, configurations: ModelConfiguration(isStoredInMemoryOnly: true))
     return SettingsView()
         .modelContainer(container)
+        .environment(AppConstants.defaultSettings)
 }
