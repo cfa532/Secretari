@@ -10,7 +10,9 @@ import Security
 
 class KeychainManager {
     static let shared = KeychainManager()
-
+    private init() {
+    }
+    
     func save<T: Codable>(data: T, for key: String) -> Bool {
         guard let encodedData = encode(data) else {
             print("Failed to encode data")

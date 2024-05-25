@@ -186,7 +186,7 @@ class Websocket: NSObject, ObservableObject, URLSessionWebSocketDelegate, Observ
 
 extension Websocket {
     // http calls for user account management
-    func registerUser(_ user: User, completion: @escaping (User?) -> Void) {
+    func registerUser(_ user: User, completion: @escaping ([String: Any]?) -> Void) {
         // send to register endpoint
         var request = URLRequest(url: URL(string: "https://"+self.serverURL+"/users/register")!)   // should be https://ip/secretari/users/register
         request.httpMethod = "POST"
@@ -201,8 +201,7 @@ extension Websocket {
                 return
             }
             let json = try? JSONSerialization.jsonObject(with: data) as? [String: Any]
-            let user = json?["user"] as? User
-            completion(user)
+            completion(json)
         }
         task.resume()
     }
@@ -217,7 +216,6 @@ extension Websocket {
         request.httpMethod = "POST"
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")
         
-//        guard let user = userManager.currentUser else { print("No current User"); return }
         let body: [String: String] = ["username": user.username, "password": user.password]
         request.httpBody = try? JSONSerialization.data(withJSONObject: body)
         
@@ -227,14 +225,13 @@ extension Websocket {
                 return
             }
             let json = try? JSONSerialization.jsonObject(with: data) as? [String: Any]
-//            let user = json?["user"] as? User
             completion(json)
         }
         task.resume()
     }
     
     // fetch login token and updated user information from server
-    @MainActor func fetchToken(_ user: User, completion: @escaping (String?, User?) -> Void) {
+    @MainActor func fetchToken(_ user: User, completion: @escaping ([String: Any]?) -> Void) {
         var request = URLRequest(url: URL(string: "https://"+self.serverURL + "/token")!)   // should be https://ip/secretari/token
         request.httpMethod = "POST"
         //        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
@@ -245,14 +242,11 @@ extension Websocket {
         
         let task = URLSession.shared.dataTask(with: request) { data, response, error in
             guard let data = data, error == nil else {
-                completion(nil, nil)
+                completion(nil)
                 return
             }
             let json = try? JSONSerialization.jsonObject(with: data) as? [String: Any]
-            let token = json?["token"] as? String
-            let user = json?["user"] as? User
-
-            completion(token, user)
+            completion(json)
         }
         task.resume()
     }}

@@ -11,7 +11,7 @@ import SwiftUI
 @MainActor
 class UserManager: ObservableObject, Observable {
     @Published var currentUser: User?
-    private let keychainManager = KeychainManager()
+    private let keychainManager = KeychainManager.shared
     
     static let shared = UserManager()
     private init() {
@@ -53,11 +53,11 @@ class UserManager: ObservableObject, Observable {
                     if let mid = user.mid {
                         print("mid", mid)
                     }
-                }
-                if !self.keychainManager.save(data: self.currentUser, for: "currentUser") {
-                    print("Failed to save user in Keychain.", self.currentUser as Any)
-                } else {
-                    print("Temp account created OK", self.currentUser as Any)
+                    if !self.keychainManager.save(data: self.currentUser, for: "currentUser") {
+                        print("Failed to save user in Keychain.", self.currentUser as Any)
+                    } else {
+                        print("Temp account created OK", self.currentUser as Any)
+                    }
                 }
             }
         }
@@ -66,9 +66,9 @@ class UserManager: ObservableObject, Observable {
     func register() {
         // register a user at sever when subscribe.
         let webSocket = Websocket.shared
-        webSocket.registerUser(currentUser!) { user in
+        webSocket.registerUser(currentUser!) { dict in
             Task {
-                self.currentUser = user
+                //                self.currentUser = user
             }
         }
     }
