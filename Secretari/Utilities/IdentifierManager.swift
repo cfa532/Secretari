@@ -11,15 +11,16 @@ import Security
 class IdentifierManager: ObservableObject, Observable {
     private let firstLaunchKey = "HasLaunchedBefore"
     
-    func setupIdentifier() {
+    func setupIdentifier() -> Bool? {
         let isFirstLaunch = !UserDefaults.standard.bool(forKey: firstLaunchKey)
         if isFirstLaunch {
-            let identifier = getDeviceIdentifier()
+            let identifier = getDeviceIdentifier()      // make sure the identiifier is more than 20 chars long, to distinguish fromm real username.
             storeIdentifierInKeychain(identifier)
             UserDefaults.standard.set(true, forKey: firstLaunchKey)
             UserDefaults.standard.synchronize()
             print("Device identifier", identifier)
         }
+        return isFirstLaunch
     }
     
     private func storeIdentifierInKeychain(_ identifier: String) {
@@ -35,7 +36,7 @@ class IdentifierManager: ObservableObject, Observable {
         return UIDevice.current.identifierForVendor?.uuidString ?? UUID().uuidString
     }
     
-    func retrieveIdentifierFromKeychain() -> String? {
+    private func retrieveIdentifierFromKeychain() -> String? {
         let query: [String: Any] = [
             kSecClass as String: kSecClassGenericPassword,
             kSecAttrAccount as String: "userIdentifier",

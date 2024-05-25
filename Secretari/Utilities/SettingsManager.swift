@@ -1,11 +1,55 @@
 //
-//  Settings.swift
+//  SettingsManager.swift
 //  Secretari
 //
-//  Created by 超方 on 2024/4/24.
+//  Created by 超方 on 2024/5/25.
 //
 
 import Foundation
+
+class SettingsManager {
+    static let shared = SettingsManager()
+    private let defaults = UserDefaults.standard
+    private let settingsKey = "UserSettings"
+    
+    // Sample JSON dictionary
+     let DefaultSettings: [String: Any] = [
+        "prompt": AppConstants.defaultPrompt,
+        "serverURL": "localhost:8000/secretari",
+        "audioSilentDB": "-40",
+        "selectedLocale": Utility.systemLanguage(),
+        "promptType": Settings.PromptType.memo,
+        "llmModel": LLMModel.GPT_4_Turbo,
+        "llmParams": [LLMModel.GPT_4_Turbo : ["llm":"openai", "temperature":"0.0"]]    ]
+    
+    private init() {}
+    
+    // Function to save dictionary to UserDefaults
+    func saveSettings(settings: [String: Any]) {
+        do {
+            let jsonData = try JSONSerialization.data(withJSONObject: settings, options: [])
+            defaults.set(jsonData, forKey: settingsKey)
+            print("Settings saved to UserDefaults")
+        } catch {
+            print("Error serializing settings to JSON: \(error)")
+        }
+    }
+    
+    // Function to load settings from UserDefaults
+    func loadSettings() -> [String: Any] {
+        if let jsonData = defaults.data(forKey: settingsKey) {
+            do {
+                if let settings = try JSONSerialization.jsonObject(with: jsonData, options: []) as? [String: Any] {
+                    return settings
+                }
+            } catch {
+                print("Error deserializing JSON from UserDefaults: \(error)")
+            }
+        }
+        return DefaultSettings
+    }
+}
+
 import SwiftData
 
 @Model
@@ -65,7 +109,7 @@ final class AppConstants {
     static let DefaultTokenCount = [LLMModel.GPT_3 : UInt(0), LLMModel.GPT_4_Turbo :UInt(0)]
     static let DefaultPassword = "zaq12WSX"
     static let defaultSettings = Settings(prompt: defaultPrompt,
-                                          serverURL: "leither.uk/secretari",
+                                          serverURL: "localhost:8000/secretari",
                                           audioSilentDB: "-40",
                                           selectedLocale: Utility.systemLanguage(),
                                           promptType: Settings.PromptType.memo,

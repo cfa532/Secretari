@@ -12,19 +12,20 @@ struct DetailTranslationView: View {
     @Binding var record: AudioRecord
     @Environment(\.modelContext) private var modelContext
 //    @Query private var settings: [Settings]
-    @StateObject var websocket: Websocket
+
     @State private var showShareSheet = false
     @Environment(\.dismiss) var dismiss
     @EnvironmentObject private var settings: Settings
     
     @State private var alertItem: AlertItem?
-    
+    private let websocket = Websocket.shared
+
     var body: some View {
         NavigationStack {
             ScrollView {
                 if websocket.isStreaming {
                     ScrollViewReader { proxy in
-                        let message = self.websocket.streamedText
+                        let message = websocket.streamedText
                         Label(NSLocalizedString("Streaming from AI...", comment: ""), systemImage: "brain.head.profile.fill")
                         Text(message)
                             .id(message)
@@ -157,5 +158,5 @@ struct DetailTranslationView: View {
 }
 
 #Preview {
-    DetailTranslationView(record: .constant(AudioRecord.sampleData[0]), websocket: Websocket())
+    DetailTranslationView(record: .constant(AudioRecord.sampleData[0]))
 }

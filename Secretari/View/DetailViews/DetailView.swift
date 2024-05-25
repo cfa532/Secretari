@@ -13,7 +13,6 @@ struct DetailView: View {
     @Environment(\.modelContext) private var modelContext
     @Environment(\.dismiss) var dismiss
     @EnvironmentObject private var settings: Settings
-    @StateObject private var websocket = Websocket()
 
     @State var record: AudioRecord
     @Binding var isRecording: Bool
@@ -23,6 +22,8 @@ struct DetailView: View {
     
     @StateObject private var speechRecognizer = SpeechRecognizer()
     @StateObject private var recorderTimer = RecorderTimer()
+    
+    @State var websocket = Websocket.shared
     
     var body: some View {
         NavigationStack {
@@ -175,7 +176,7 @@ struct DetailView: View {
                     }
                     
                     NavigationLink(destination:
-                                    DetailTranslationView(record: $record, websocket: websocket)
+                                    DetailTranslationView(record: $record)
                         .environment(settings)
                     ) {
                         Label("Translation", systemImage: "textformat.abc.dottedunderline")
@@ -267,3 +268,4 @@ extension DetailView: TimerDelegate {
     //    return DetailView(record: AudioRecord.sampleData[0])
     //        .modelContainer(container)
 }
+ 

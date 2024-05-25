@@ -53,4 +53,17 @@ struct Utility {
         }
         return "[Invalid JSON data]"
     }
+    
+    // Utility function to convert dictionary keys from String to LLMModel
+    static func convertDictionaryKeys<T>(from original: [String: T]) -> [LLMModel: T] {
+        var convertedDict = [LLMModel: T]()
+        for (key, value) in original {
+            if let enumKey = LLMModel(rawValue: key) {
+                convertedDict[enumKey] = value
+            } else {
+                print("Warning: Unrecognized key \(key). It will be ignored.")
+            }
+        }
+        return convertedDict
+    }
 }

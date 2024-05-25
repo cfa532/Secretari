@@ -13,90 +13,48 @@ class Websocket: NSObject, ObservableObject, URLSessionWebSocketDelegate, Observ
     @Published var isStreaming: Bool = false
     @Published var streamedText: String = ""
     @Published var alertItem: AlertItem?
-//    @EnvironmentObject private var identifierManager: IdentifierManager
-    @EnvironmentObject private var settings: Settings
-    @EnvironmentObject private var userManager: UserManager
+//    @EnvironmentObject private var settings: Settings
+    //    @EnvironmentObject private var identifierManager: IdentifierManager
+//    @EnvironmentObject private var userManager: UserManager
     
-    @State private var tokenManager = TokenManager()
-    @Published var tokenCount: [LLMModel :UInt] = AppConstants.DefaultTokenCount
-    
+    private var tokenManager = TokenManager()
     private var urlSession: URLSession?
-    private var serverURL: String?
+    private var serverURL: String = AppConstants.defaultSettings.serverURL
     private var wsTask: URLSessionWebSocketTask?
     
-    override init() {
+    static let shared = Websocket()
+    
+    private override init() {
         super.init()
         self.urlSession = URLSession(configuration: .default, delegate: self, delegateQueue: OperationQueue())
+        self.serverURL = SettingsManager.shared.loadSettings()["serverURL"] as! String      // dead sure it is a string
     }
     
     func configure(_ url: String) {
-        
-        self.serverURL = url       // different request has different end point.
-        
+//        self.serverURL = url       // different request has different end point.
         if let token=self.tokenManager.loadToken(), !tokenManager.isTokenExpired(token: token) {
             // valid token
             setRequestHeader()
         } else {
-            fetchToken() { token, tokenCount in
-                guard token != nil else {
-                    print("Empty token from server.")
-                    self.alertItem = AlertContext.invalidData
-                    return
-                }
-                self.tokenManager.saveToken(token: token!)
-                self.setRequestHeader()
-            }
+//            fetchToken() { token, tokenCount in
+//                guard token != nil else {
+//                    print("Empty token from server.")
+//                    self.alertItem = AlertContext.invalidData
+//                    return
+//                }
+//                self.tokenManager.saveToken(token: token!)
+//                self.setRequestHeader()
+//            }
         }
     }
     
     func setRequestHeader() {
-        var request = URLRequest(url: URL(string: self.serverURL!)!)
+        var request = URLRequest(url: URL(string: self.serverURL)!)
         request.httpMethod = "POST"
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")
         request.addValue("Bearer " + self.tokenManager.loadToken()!, forHTTPHeaderField: "Authorization")
         request.cachePolicy = .reloadIgnoringLocalCacheData
         request.timeoutInterval = 5.0
-
-        if let activeTask = self.wsTask, activeTask.state == .running {
-            // do nothing
-        } else  {
-            // cancel hanging wsTask if any
-            self.wsTask?.cancel()
-//            self.wsTask = urlSession?.webSocketTask(with: URL(string: self.serverURL!)!)
-            self.wsTask = urlSession?.webSocketTask(with: request)
-        }
-    }
-
-    @MainActor func fetchToken(completion: @escaping (String?, [String:UInt]?) -> Void) {
-        
-        var request = URLRequest(url: URL(string: "https://"+self.serverURL!+"/token")!)   // should be https://ip/api/token
-        
-        request.httpMethod = "POST"
-//        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
-        request.addValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")   // required by FastAPI
-        
-        guard var user = userManager.currentUser else { print("No current User"); return }
-        let body: [String: Any] = ["username": user.username, "password": user.password, "cliend_id": user.id]
-        request.httpBody = try? JSONSerialization.data(withJSONObject: body)
-        
-        let task = URLSession.shared.dataTask(with: request) { data, response, error in
-            guard let data = data, error == nil else {
-                completion(nil, nil)
-                return
-            }
-            let json = try? JSONSerialization.jsonObject(with: data) as? [String: Any]
-            let token = json?["token"] as? String
-            let tokenCount = json?["tokenCount"] as? [String: UInt]
-
-            // update local token count dataa
-            for key in tokenCount!.keys {
-                Task { @MainActor in
-                    user.tokens[LLMModel(rawValue: key)!] = tokenCount![key]
-                }
-            }
-            completion(token, tokenCount)
-        }
-        task.resume()
     }
     
     nonisolated func urlSession(_ session: URLSession, webSocketTask: URLSessionWebSocketTask, didOpenWithProtocol protocol: String?) {
@@ -181,9 +139,6 @@ class Websocket: NSObject, ObservableObject, URLSessionWebSocketDelegate, Observ
         wsTask?.cancel(with: .goingAway, reason: nil)
         //        urlSession?.invalidateAndCancel()
     }
-}
-
-extension Websocket {
     
     // Might need to temporarily revise settings' value.
     @MainActor func sendToAI(_ rawText: String, settings: Settings, action: @escaping (_ summary: String)->Void) {
@@ -209,7 +164,14 @@ extension Websocket {
         if let jsonString = String(data: jsonData, encoding: .utf8) {
             print("Websocket sending: ", jsonString)
             
-            self.configure(settings.serverURL)
+            if let activeTask = self.wsTask, activeTask.state == .running {
+                // do nothing
+            } else  {
+                // cancel hanging wsTask if any
+                self.wsTask?.cancel()
+                self.wsTask = urlSession?.webSocketTask(with: URL(string: "ws://" + self.serverURL + "/ws/")!)
+            }
+
             Task {
                 self.send(jsonString) { error in
                     self.alertItem = AlertContext.unableToComplete
@@ -224,3 +186,76 @@ extension Websocket {
         // send user iden
     }
 }
+
+extension Websocket {
+    // http calls for user account management
+    func registerUser(_ user: User, completion: @escaping (User?) -> Void) {
+        // send to register endpoint
+        var request = URLRequest(url: URL(string: "https://"+self.serverURL+"/users/register")!)   // should be https://ip/secretari/users/register
+        request.httpMethod = "POST"
+        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+        
+        let body: [String: String] = ["username": user.username, "password": user.password ?? "", ]
+        request.httpBody = try? JSONSerialization.data(withJSONObject: body)
+        
+        let task = URLSession.shared.dataTask(with: request) { data, response, error in
+            guard let data = data, error == nil else {
+                completion(nil)
+                return
+            }
+            let json = try? JSONSerialization.jsonObject(with: data) as? [String: Any]
+            let user = json?["user"] as? User
+            completion(user)
+        }
+        task.resume()
+    }
+    
+    func updateUser(_ user: User) {
+        // update
+    }
+    
+    // create a temp user record on server
+    func createTempUser(_ user: User, completion: @escaping ([String: Any]?) -> Void) {
+        var request = URLRequest(url: URL(string: "http://"+self.serverURL + "/users/temp")!)   // should be https://ip/secretari/users/temp
+        request.httpMethod = "POST"
+        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+        
+//        guard let user = userManager.currentUser else { print("No current User"); return }
+        let body: [String: String] = ["username": user.username, "password": user.password ?? ""]
+        request.httpBody = try? JSONSerialization.data(withJSONObject: body)
+        
+        let task = URLSession.shared.dataTask(with: request) { data, response, error in
+            guard let data = data, error == nil else {
+                completion(nil)
+                return
+            }
+            let json = try? JSONSerialization.jsonObject(with: data) as? [String: Any]
+//            let user = json?["user"] as? User
+            completion(json)
+        }
+        task.resume()
+    }
+    
+    // fetch login token and updated user information from server
+    @MainActor func fetchToken(_ user: User, completion: @escaping (String?, User?) -> Void) {
+        var request = URLRequest(url: URL(string: "https://"+self.serverURL + "/token")!)   // should be https://ip/secretari/token
+        request.httpMethod = "POST"
+        //        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.addValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")   // required by FastAPI
+        
+        let body: [String: String] = ["username": user.username, "password": user.password ?? ""]
+        request.httpBody = try? JSONSerialization.data(withJSONObject: body)
+        
+        let task = URLSession.shared.dataTask(with: request) { data, response, error in
+            guard let data = data, error == nil else {
+                completion(nil, nil)
+                return
+            }
+            let json = try? JSONSerialization.jsonObject(with: data) as? [String: Any]
+            let token = json?["token"] as? String
+            let user = json?["user"] as? User
+
+            completion(token, user)
+        }
+        task.resume()
+    }}

@@ -9,17 +9,21 @@ import SwiftUI
 import SwiftData
 
 struct TranscriptView: View {
-    @Environment(\.scenePhase) var scenePhase
     @Environment(\.modelContext) private var modelContext
     @Query(sort: \AudioRecord.recordDate, order: .reverse) var records: [AudioRecord]
     @Query private var settingsInSwiftData: [Settings]
     @Binding var errorWrapper: ErrorWrapper?
     
     @State private var settings: Settings = AppConstants.defaultSettings
+    
     @State private var isRecording = false
     @State private var showDetailView = false
     @State private var showSettings = false
     
+    @StateObject private var identifierManager = IdentifierManager()
+    @EnvironmentObject private var userManager: UserManager
+    @EnvironmentObject private var webSocket: Websocket
+
     var body: some View {
         NavigationStack {
             List {
@@ -75,27 +79,6 @@ struct TranscriptView: View {
                     }
                 })
             }
-            .onChange(of: scenePhase, { oldPhase, newPhase in
-                print("scene phase \(newPhase)")
-                if newPhase == .background {
-                    // add notification to center
-                    let content = UNMutableNotificationContent()
-                    content.title = "SecretAi listening"
-                    content.body = "Background speech recognization in progress."
-                    content.sound = UNNotificationSound.default
-                    
-                    let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 1, repeats: false)
-                    let uuidString = UUID().uuidString
-                    let request = UNNotificationRequest(identifier: uuidString, content: content, trigger: trigger)
-                    
-                    let center = UNUserNotificationCenter.current()
-                    center.add(request) { (error) in
-                        if error != nil {
-                            print("Error adding to notification center \(String(describing: error))")
-                        }
-                    }
-                }
-            })
             
             Button(action: {
                 self.isRecording = true
