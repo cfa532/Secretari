@@ -12,9 +12,6 @@ import SwiftData
 struct SecretariApp: App {
     @Environment(\.scenePhase) var scenePhase
     @State private var errorWrapper: ErrorWrapper?
-    @StateObject private var identifierManager = IdentifierManager()
-    private let userManager = UserManager.shared
-    private var keychainManager = KeychainManager.shared
 
     var sharedModelContainer: ModelContainer = {
         let schema = Schema([AudioRecord.self, Settings.self,
@@ -32,7 +29,7 @@ struct SecretariApp: App {
     var body: some Scene {
         WindowGroup {
             TranscriptView(errorWrapper: $errorWrapper)
-                .onAppear() {
+                .task {
                     guard let appSupportDir = FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask).last else { return }
                     print(appSupportDir)
                     print("App lang:", UserDefaults.standard.stringArray(forKey: "AppleLanguages")!)
@@ -42,7 +39,8 @@ struct SecretariApp: App {
 //                    if let bundleID = Bundle.main.bundleIdentifier {
 //                        UserDefaults.standard.removePersistentDomain(forName: bundleID)
 //                    }
-                    
+                    let userManager = UserManager.shared
+                    let identifierManager = IdentifierManager()
                     // check if this the first time of running. Assign an Id to user if not.
                     if identifierManager.setupIdentifier() {
                         // setup an anonymous account
@@ -51,6 +49,7 @@ struct SecretariApp: App {
                         userManager.createTempUser(identifier)
                     } else {
                         print("This is not the first run after launch")
+                        let keychainManager = KeychainManager.shared
                         if let user = keychainManager.retrieve(for: "currentUser", type: User.self) {
                             userManager.currentUser = user          // local user infor will be updated with each fetchToken() call
                             print("CurrentUser from keychain", userManager.currentUser! as User)
@@ -75,8 +74,8 @@ struct SecretariApp: App {
                     ErrorView(errorWrapper: wrapper)
                 }
         }
-        .environment(userManager)
-        .environment(identifierManager)
+//        .environment(userManager)
+//        .environment(identifierManager)
         .modelContainer(sharedModelContainer)
         
         .onChange(of: scenePhase, { oldPhase, newPhase in
