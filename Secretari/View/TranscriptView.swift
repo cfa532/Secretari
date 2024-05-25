@@ -20,7 +20,6 @@ struct TranscriptView: View {
     @State private var showDetailView = false
     @State private var showSettings = false
     
-    @StateObject private var identifierManager = IdentifierManager()
     @EnvironmentObject private var userManager: UserManager
     @EnvironmentObject private var webSocket: Websocket
 

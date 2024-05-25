@@ -13,9 +13,6 @@ class Websocket: NSObject, ObservableObject, URLSessionWebSocketDelegate, Observ
     @Published var isStreaming: Bool = false
     @Published var streamedText: String = ""
     @Published var alertItem: AlertItem?
-//    @EnvironmentObject private var settings: Settings
-    //    @EnvironmentObject private var identifierManager: IdentifierManager
-//    @EnvironmentObject private var userManager: UserManager
     
     private var tokenManager = TokenManager()
     private var urlSession: URLSession?
@@ -195,7 +192,7 @@ extension Websocket {
         request.httpMethod = "POST"
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")
         
-        let body: [String: String] = ["username": user.username, "password": user.password ?? "", ]
+        let body: [String: String] = ["username": user.username, "password": user.password]
         request.httpBody = try? JSONSerialization.data(withJSONObject: body)
         
         let task = URLSession.shared.dataTask(with: request) { data, response, error in
@@ -221,7 +218,7 @@ extension Websocket {
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")
         
 //        guard let user = userManager.currentUser else { print("No current User"); return }
-        let body: [String: String] = ["username": user.username, "password": user.password ?? ""]
+        let body: [String: String] = ["username": user.username, "password": user.password]
         request.httpBody = try? JSONSerialization.data(withJSONObject: body)
         
         let task = URLSession.shared.dataTask(with: request) { data, response, error in
@@ -243,7 +240,7 @@ extension Websocket {
         //        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
         request.addValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")   // required by FastAPI
         
-        let body: [String: String] = ["username": user.username, "password": user.password ?? ""]
+        let body: [String: String] = ["username": user.username, "password": user.password]
         request.httpBody = try? JSONSerialization.data(withJSONObject: body)
         
         let task = URLSession.shared.dataTask(with: request) { data, response, error in

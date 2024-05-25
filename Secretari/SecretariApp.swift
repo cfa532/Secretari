@@ -13,8 +13,8 @@ struct SecretariApp: App {
     @Environment(\.scenePhase) var scenePhase
     @State private var errorWrapper: ErrorWrapper?
     @StateObject private var identifierManager = IdentifierManager()
-    @StateObject private var userManager = UserManager()
-    @StateObject private var keychainManager = KeychainManager()
+    private let userManager = UserManager.shared
+    private var keychainManager = KeychainManager.shared
 
     var sharedModelContainer: ModelContainer = {
         let schema = Schema([AudioRecord.self, Settings.self,
@@ -32,41 +32,41 @@ struct SecretariApp: App {
     var body: some Scene {
         WindowGroup {
             TranscriptView(errorWrapper: $errorWrapper)
-                .task {                    
+                .onAppear {
                     guard let appSupportDir = FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask).last else { return }
                     print(appSupportDir)
                     print("App lang:", UserDefaults.standard.stringArray(forKey: "AppleLanguages")!)
                     print("identifier: ", NSLocale.current.identifier)
  
                     // clear UserDefaults data
-//                    if let bundleID = Bundle.main.bundleIdentifier {
-//                        UserDefaults.standard.removePersistentDomain(forName: bundleID)
-//                    }
+                    if let bundleID = Bundle.main.bundleIdentifier {
+                        UserDefaults.standard.removePersistentDomain(forName: bundleID)
+                    }
                     
                     // check if this the first time of running. Assign an Id to user if not.
-                    if identifierManager.setupIdentifier()==true, let identifier = identifierManager.retrieveIdentifierFromKeychain() {
+                    if identifierManager.setupIdentifier() {
                         // setup an anonymous account
-                        print("Init with temp user account, id=", identifier)
+                        let identifier = identifierManager.retrieveIdentifierFromKeychain() ?? UUID().uuidString
+                        print("First run after launch. Init temp user account, id=", identifier)
+                        
                         userManager.createTempUser(identifier)
+                    } else {
+                        print("This is not the first run after launch")
+                        if let user = keychainManager.retrieve(for: "currentUser", type: User.self) {
+                            userManager.currentUser = user          // local user infor will be updated with each fetchToken() call
+                        } else {
+                            // create user account on server only when user actually send request
+                        }
                     }
 
-                    // extract user account from keychain
-                    let identifier = identifierManager.getDeviceIdentifier()
-                    if let user = keychainManager.getUser(account: "currentUser") {
-                        userManager.currentUser = user          // local user infor will be updated with each fetchToken() call
-                    } else {
-                        keychainManager.saveUser(user: userManager.currentUser!, account: identifier)
-                        // create user account on server only when user actually send request
-                    }
                     // check the subscription status of the user on server. Async mode.
                     
-
                     let appUpdated = AppVersionManager.shared.checkIfAppUpdated()
                     if appUpdated {
                         print("App is running for the first time after an update")
                     } else {
                         print("This is not the first run after an update")
-                    }
+                        fatalError("Could not retrieve user account.")                    }
                 }
                 .sheet(item: $errorWrapper) {
                     //                     var records = AudioRecord.sampleData     // no need here

@@ -6,39 +6,56 @@
 //
 
 import Foundation
+import Security
 
-class KeychainManager :ObservableObject {
-    func saveUser(user: User, account: String) {
-        do {
-            let jsonData = try JSONEncoder().encode(user)
-            let query: [String: Any] = [
-                kSecClass as String: kSecClassGenericPassword,
-                kSecAttrAccount as String: account,
-                kSecValueData as String: jsonData
-            ]
-            SecItemAdd(query as CFDictionary, nil)
-        } catch {
-            print("Error encoding User: \(error)")
+class KeychainManager {
+    static let shared = KeychainManager()
+
+    func save<T: Codable>(data: T, for key: String) -> Bool {
+        guard let encodedData = encode(data) else {
+            print("Failed to encode data")
+            return false
         }
+        let query = [
+            kSecClass as String: kSecClassGenericPassword,
+            kSecAttrAccount as String: key,
+            kSecValueData as String: encodedData
+        ] as [String: Any]
+
+        SecItemDelete(query as CFDictionary) // Remove any existing item with the same key
+        let status = SecItemAdd(query as CFDictionary, nil)
+        return status == errSecSuccess
     }
 
-    func getUser(account: String) -> User? {
-        let query: [String: Any] = [
+    func retrieve<T: Codable>(for key: String, type: T.Type) -> T? {
+        let query = [
             kSecClass as String: kSecClassGenericPassword,
-            kSecAttrAccount as String: account,
+            kSecAttrAccount as String: key,
             kSecReturnData as String: kCFBooleanTrue!,
             kSecMatchLimit as String: kSecMatchLimitOne
-        ]
+        ] as [String: Any]
+
         var item: AnyObject?
         let status = SecItemCopyMatching(query as CFDictionary, &item)
-        if status == noErr, let data = item as? Data {
-            do {
-                let user = try JSONDecoder().decode(User.self, from: data)
-                return user
-            } catch {
-                print("Error decoding User from JSON: \(error)")
-            }
-        }
-        return nil
+        guard status == errSecSuccess, let data = item as? Data else { return nil }
+        return decode(data: data, type: type)
+    }
+
+    func delete(for key: String) -> Bool {
+        let query = [
+            kSecClass as String: kSecClassGenericPassword,
+            kSecAttrAccount as String: key
+        ] as [String: Any]
+
+        let status = SecItemDelete(query as CFDictionary)
+        return status == errSecSuccess
+    }
+
+    private func encode<T: Codable>(_ value: T) -> Data? {
+        return try? JSONEncoder().encode(value)
+    }
+
+    private func decode<T: Codable>(data: Data, type: T.Type) -> T? {
+        return try? JSONDecoder().decode(type, from: data)
     }
 }

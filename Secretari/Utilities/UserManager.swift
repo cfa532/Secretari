@@ -8,51 +8,68 @@
 import Foundation
 import SwiftUI
 
+@MainActor
 class UserManager: ObservableObject, Observable {
-    @MainActor @Published var currentUser: User?
-//    @EnvironmentObject var webSocket: Websocket
-    @EnvironmentObject var identityManager: IdentifierManager
+    @Published var currentUser: User?
     private let keychainManager = KeychainManager()
-//    private let websocket: Websocket
-
-//    init(websocket: Websocket) {
-//        self.websocket = web
-//    }
+    
+    static let shared = UserManager()
+    private init() {
+        
+    }
+    //    init(websocket: Websocket) {
+    //        self.websocket = web
+    //    }
     
     func createTempUser(_ id: String) {
         // When someone starts to use the app without registration. Give it an identify.
         // Enforce registration only when user wants to subscribe.
         let webSocket = Websocket.shared
-        currentUser = User(username: id, password: "zaq1^WSX")
-        print(currentUser!)
-        webSocket.createTempUser(currentUser!) { dict in
-            guard let dict = dict, let currentUser = self.currentUser else {
-                print("Cannot get user from websocket or currentUser is nil")
-                return
+        Task { @MainActor in
+            currentUser = User(username: id, password: "zaq1^WSX")
+            print("Current", currentUser!)
+            
+            webSocket.createTempUser(self.currentUser!) { dict in
+                guard let dict = dict else {
+                    print("Cannot get user from websocket or currentUser is nil")
+                    return
+                }
+                var user = self.currentUser!
+                if let tokenCountData = dict["token_count"] as? [String: UInt] {
+                    user.token_count = Utility.convertDictionaryKeys(from: tokenCountData)
+                }
+                if let tokenUsageData = dict["token_usage"] as? [String: Float] {
+                    user.token_usage = Utility.convertDictionaryKeys(from: tokenUsageData)
+                }
+                if let currentUsageData = dict["current_usage"] as? [String: Float] {
+                    user.current_usage = Utility.convertDictionaryKeys(from: currentUsageData)
+                }
+                // save User information to keychain
+                if let mid = dict["mid"] as? String {
+                    user.mid = mid
+                }
+                Task { @MainActor in
+                    self.currentUser = user
+                    if let mid = user.mid {
+                        print("mid", mid)
+                    }
+                }
+                if !self.keychainManager.save(data: self.currentUser, for: "currentUser") {
+                    print("Failed to save user in Keychain.", self.currentUser as Any)
+                } else {
+                    print("Temp account created OK", self.currentUser as Any)
+                }
             }
-            var user = currentUser
-            if let tokenCountData = dict["token_count"] as? [String: UInt] {
-                user.token_count = Utility.convertDictionaryKeys(from: tokenCountData)
-            }
-            if let tokenUsageData = dict["token_usage"] as? [String: Float] {
-                user.token_usage = Utility.convertDictionaryKeys(from: tokenUsageData)
-            }
-            if let currentUsageData = dict["current_usage"] as? [String: Float] {
-                user.current_usage = Utility.convertDictionaryKeys(from: currentUsageData)
-            }
-            // save User information to keychain
-            if let mid = dict["mid"] as? String {
-                user.mid = mid
-            }
-            self.keychainManager.saveUser(user: user, account: "currentUser")
         }
     }
     
     func register() {
         // register a user at sever when subscribe.
         let webSocket = Websocket.shared
-        webSocket.registerUser(self.currentUser!) { user in
-            self.currentUser = user
+        webSocket.registerUser(currentUser!) { user in
+            Task {
+                self.currentUser = user
+            }
         }
     }
     
@@ -63,16 +80,16 @@ class UserManager: ObservableObject, Observable {
     }
     
     func updateSubscriptionStatus(isSubscribed: Bool) {
-        guard var user = currentUser else { return }
+        guard var user = self.currentUser else { return }
         user.subscription = isSubscribed
-        currentUser = user
+        self.currentUser = user
     }
 }
 
 struct User :Codable {
-//    let id: String // Unique identifier for the user
+    //    let id: String // Unique identifier for the user
     var username: String
-    var password: String?
+    var password: String
     var mid: String?
     var token_count: [LLMModel: UInt]?     // gotten from server, kept locally
     var token_usage: [LLMModel: Float]?
@@ -82,7 +99,7 @@ struct User :Codable {
     var given_name: String?
     var email: String?
     var template: [LLM: [String: String]]?
-
+    
     enum CodingKeys: String, CodingKey {
         case username, mid, token_count, token_usage, current_usage, subscription, password, family_name, given_name, email, template
     }
