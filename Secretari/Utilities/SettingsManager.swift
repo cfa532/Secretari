@@ -12,16 +12,6 @@ class SettingsManager {
     private let defaults = UserDefaults.standard
     private let settingsKey = "UserSettings"
     
-    // Sample JSON dictionary
-    let DefaultSettings: [String: Any] = [
-        "prompt": AppConstants.defaultPrompt,
-        "serverURL": "localhost:8000/secretari",
-        "audioSilentDB": "-40",
-        "selectedLocale": Utility.systemLanguage(),
-        "promptType": Settings.PromptType.memo,
-        "llmModel": LLMModel.GPT_4_Turbo,
-        "llmParams": [LLMModel.GPT_4_Turbo : ["llm":"openai", "temperature":"0.0"]]    ]
-    
     private var settings: Settings {
         didSet {
             saveSettings()
@@ -52,7 +42,7 @@ class SettingsManager {
 import SwiftData
 
 //@Model
-final class Settings :ObservableObject, Codable {
+struct Settings :Codable {
     var prompt: [PromptType: [RecognizerLocale : String]]
     var serverURL: String
     var audioSilentDB: String
@@ -61,42 +51,10 @@ final class Settings :ObservableObject, Codable {
     var llmModel: LLMModel?
     var llmParams: [LLMModel :Dictionary<String, String>]?  // dict that match llm model with respective parameters, which is also a dict.
     
-    init(prompt: [PromptType: [RecognizerLocale :String]], serverURL: String, audioSilentDB: String, selectedLocale: RecognizerLocale, promptType: PromptType,
-         llmModel: LLMModel?, llmParams: [LLMModel :Dictionary<String, String>]?) {
-        self.prompt = prompt
-        self.serverURL = serverURL
-        self.audioSilentDB = audioSilentDB
-        self.selectedLocale = selectedLocale
-        self.promptType = promptType
-        self.llmModel = llmModel
-        self.llmParams = llmParams
-    }
     enum CodingKeys: String, CodingKey {
         case prompt, serverURL, audioSilentDB, selectedLocale, promptType, llmModel, llmParams
     }
-
-    required init(from decoder: Decoder) throws {
-        let container = try decoder.container(keyedBy: CodingKeys.self)
-        prompt = try container.decode([PromptType: [RecognizerLocale: String]].self, forKey: .prompt)
-        serverURL = try container.decode(String.self, forKey: .serverURL)
-        audioSilentDB = try container.decode(String.self, forKey: .audioSilentDB)
-        selectedLocale = try container.decode(RecognizerLocale.self, forKey: .selectedLocale)
-        promptType = try container.decode(PromptType.self, forKey: .promptType)
-        llmModel = try container.decodeIfPresent(LLMModel.self, forKey: .llmModel)
-        llmParams = try container.decodeIfPresent([LLMModel: Dictionary<String, String>].self, forKey: .llmParams)
-    }
-
-    func encode(to encoder: Encoder) throws {
-        var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encode(prompt, forKey: .prompt)
-        try container.encode(serverURL, forKey: .serverURL)
-        try container.encode(audioSilentDB, forKey: .audioSilentDB)
-        try container.encode(selectedLocale, forKey: .selectedLocale)
-        try container.encode(promptType, forKey: .promptType)
-        try container.encode(llmModel, forKey: .llmModel)
-        try container.encode(llmParams, forKey: .llmParams)
-    }
-    
+   
     enum PromptType: String, CaseIterable, Codable {
         case summary, memo
         var id: Self { self }
@@ -117,7 +75,7 @@ enum LLM: String, Codable, CaseIterable {
     case OpenAI = "openai"
     case Gemini = "gemini"
 }
-enum LLMModel: String, Codable, CaseIterable, CodingKey {
+enum LLMModel: String, Codable, CaseIterable {
     case GPT_3 = "gpt-3.5"
     case GPT_4 = "gpt-4"
     case GPT_4_Turbo = "gpt-4-turbo"

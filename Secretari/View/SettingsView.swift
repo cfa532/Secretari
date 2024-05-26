@@ -16,7 +16,7 @@ struct SettingsView: View {
     @State private var showAlert = false
     @State private var changed = false
     
-    @StateObject private var settings: Settings = SettingsManager.shared.getSettings()
+    @Binding var settings: Settings
     
     var body: some View {
         NavigationView {
@@ -42,6 +42,7 @@ struct SettingsView: View {
                         }
                     }
                     .onChange(of: settings.promptType) { oldValue, newValue in
+                        print(oldValue, newValue)
                         selectedPrompt = settings.prompt[settings.promptType]![settings.selectedLocale]!
                         changed = true
                     }
@@ -52,7 +53,10 @@ struct SettingsView: View {
                     }
                     .onChange(of: settings.selectedLocale) { oldValue, newValue in
                         selectedPrompt = settings.prompt[settings.promptType]![settings.selectedLocale]!
-                        changed = true
+                        if (oldValue != newValue) {
+                            print(oldValue, newValue)
+                            changed = true
+                        }
                     }
                 }
                 Section(header: Text("advanced")) {
@@ -71,8 +75,8 @@ struct SettingsView: View {
                         }
                 }
                 .onAppear(perform: {
-                    print(settings.selectedLocale)
                     selectedPrompt = settings.prompt[settings.promptType]![settings.selectedLocale]!
+                    print(settings)
                 })
                 .onDisappear(perform: {
                     if (changed) {
@@ -88,6 +92,7 @@ struct SettingsView: View {
                         SettingsManager.shared.updateSettings(settings)
                         changed = false
                     }
+                    print(settings)
                 })
                 .opacity(self.opacity)
                 .onTapGesture {
@@ -132,5 +137,5 @@ struct SettingsView: View {
 }
 
 #Preview {
-    return SettingsView()
+    return SettingsView(settings: .constant(AppConstants.defaultSettings))
 }

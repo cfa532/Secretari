@@ -20,8 +20,7 @@ struct ContentView: View {
     @Query(sort: \AudioRecord.recordDate, order: .reverse) var records: [AudioRecord]
     @Binding var errorWrapper: ErrorWrapper?
     
-    @State private var settings: Settings = AppConstants.defaultSettings
-    
+    @State private var settings: Settings = SettingsManager.shared.getSettings()
     @State private var isRecording = false
     @State private var showDetailView = false
     @State private var showSettings = false
@@ -34,7 +33,7 @@ struct ContentView: View {
             List {
                 ForEach(records, id: \.recordDate) { item in
                     NavigationLink {
-                        DetailView(isRecording: .constant(false), record: item)
+                        DetailView(isRecording: .constant(false), record: item, settings: $settings)
                     } label: {
                         SummaryRowView(record: item, promptType: settings.promptType)
                     }
@@ -60,14 +59,14 @@ struct ContentView: View {
             .navigationTitle("Records")
             .navigationBarTitleDisplayMode(.inline)
             .navigationDestination(isPresented: $showDetailView, destination: {
-                DetailView(isRecording: $isRecording, record: AudioRecord())
+                DetailView(isRecording: $isRecording, record: AudioRecord(), settings: $settings)
             })
             .navigationDestination(isPresented: $showSettings, destination: {
-                SettingsView()
+                SettingsView(settings: $settings)
             })
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing, content: {
-                    NavigationLink(destination: SettingsView()) {
+                    NavigationLink(destination: SettingsView(settings: $settings)) {
                         // navigationLink does not work becuase tappablePadding interfered with onTap()
                         // showSettings=true triggered navigation destination.
                         // keep navigationLnik because it change image color when tapped.

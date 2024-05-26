@@ -12,14 +12,15 @@ struct DetailView: View {
     @Environment(\.scenePhase) var scenePhase
     @Environment(\.modelContext) private var modelContext
     @Environment(\.dismiss) var dismiss
-    @Binding var isRecording: Bool
     
+    @Binding var isRecording: Bool
     @State var record: AudioRecord
+    @Binding var settings: Settings
+
     @State private var showShareSheet = false
     @State private var showRedoAlert = false  // for Redo confirm dialog
-    
+
     @StateObject private var websocket = Websocket.shared
-    @StateObject private var settings = SettingsManager.shared.getSettings()
     @StateObject private var speechRecognizer = SpeechRecognizer()
     @StateObject private var recorderTimer = RecorderTimer()
         
@@ -36,6 +37,7 @@ struct DetailView: View {
                                 }
                             }
                             .onChange(of: settings.selectedLocale) {
+                                SettingsManager.shared.updateSettings(settings)
                                 speechRecognizer.stopTranscribing()
                                 Task {
                                     await self.speechRecognizer.setup(locale: settings.selectedLocale.rawValue)
@@ -259,7 +261,7 @@ extension DetailView: TimerDelegate {
 }
 
 #Preview {
-    DetailView(isRecording: .constant(true), record: AudioRecord.sampleData[0])
+    DetailView(isRecording: .constant(true), record: AudioRecord.sampleData[0], settings: .constant(AppConstants.defaultSettings))
     //    let container = try! ModelContainer(for: AudioRecord.self, Settings.self, configurations: ModelConfiguration(isStoredInMemoryOnly: true))
     //    return DetailView(record: AudioRecord.sampleData[0])
     //        .modelContainer(container)
