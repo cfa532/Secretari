@@ -24,7 +24,7 @@ class Websocket: NSObject, ObservableObject, URLSessionWebSocketDelegate, Observ
     private override init() {
         super.init()
         self.urlSession = URLSession(configuration: .default, delegate: self, delegateQueue: OperationQueue())
-        self.serverURL = SettingsManager.shared.loadSettings()["serverURL"] as! String      // dead sure it is a string
+        self.serverURL = SettingsManager.shared.getSettings().serverURL      // dead sure it is a string
     }
     
     func configure(_ url: String) {

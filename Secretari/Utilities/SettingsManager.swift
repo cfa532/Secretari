@@ -13,7 +13,7 @@ class SettingsManager {
     private let settingsKey = "UserSettings"
     
     // Sample JSON dictionary
-     let DefaultSettings: [String: Any] = [
+    let DefaultSettings: [String: Any] = [
         "prompt": AppConstants.defaultPrompt,
         "serverURL": "localhost:8000/secretari",
         "audioSilentDB": "-40",
@@ -22,38 +22,37 @@ class SettingsManager {
         "llmModel": LLMModel.GPT_4_Turbo,
         "llmParams": [LLMModel.GPT_4_Turbo : ["llm":"openai", "temperature":"0.0"]]    ]
     
-    private init() {}
-    
-    // Function to save dictionary to UserDefaults
-    func saveSettings(settings: [String: Any]) {
-        do {
-            let jsonData = try JSONSerialization.data(withJSONObject: settings, options: [])
-            defaults.set(jsonData, forKey: settingsKey)
-            print("Settings saved to UserDefaults")
-        } catch {
-            print("Error serializing settings to JSON: \(error)")
+    private var settings: Settings {
+        didSet {
+            saveSettings()
         }
     }
-    
-    // Function to load settings from UserDefaults
-    func loadSettings() -> [String: Any] {
-        if let jsonData = defaults.data(forKey: settingsKey) {
-            do {
-                if let settings = try JSONSerialization.jsonObject(with: jsonData, options: []) as? [String: Any] {
-                    return settings
-                }
-            } catch {
-                print("Error deserializing JSON from UserDefaults: \(error)")
-            }
-        }
-        return DefaultSettings
+
+    init() {
+        settings = UserDefaultsManager.shared.get(Settings.self, forKey: "appSettings") ?? AppConstants.defaultSettings
+    }
+
+    func getSettings() -> Settings {
+        return settings
+    }
+
+    func updateSettings(_ newSettings: Settings) {
+        settings = newSettings
+    }
+
+    private func saveSettings() {
+        UserDefaultsManager.shared.set(settings, forKey: "appSettings")
+    }
+
+    private func loadSettings() -> Settings? {
+        UserDefaultsManager.shared.get(Settings.self, forKey: "appSettings")
     }
 }
 
 import SwiftData
 
-@Model
-final class Settings :ObservableObject {
+//@Model
+final class Settings :ObservableObject, Codable {
     var prompt: [PromptType: [RecognizerLocale : String]]
     var serverURL: String
     var audioSilentDB: String
@@ -71,6 +70,31 @@ final class Settings :ObservableObject {
         self.promptType = promptType
         self.llmModel = llmModel
         self.llmParams = llmParams
+    }
+    enum CodingKeys: String, CodingKey {
+        case prompt, serverURL, audioSilentDB, selectedLocale, promptType, llmModel, llmParams
+    }
+
+    required init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        prompt = try container.decode([PromptType: [RecognizerLocale: String]].self, forKey: .prompt)
+        serverURL = try container.decode(String.self, forKey: .serverURL)
+        audioSilentDB = try container.decode(String.self, forKey: .audioSilentDB)
+        selectedLocale = try container.decode(RecognizerLocale.self, forKey: .selectedLocale)
+        promptType = try container.decode(PromptType.self, forKey: .promptType)
+        llmModel = try container.decodeIfPresent(LLMModel.self, forKey: .llmModel)
+        llmParams = try container.decodeIfPresent([LLMModel: Dictionary<String, String>].self, forKey: .llmParams)
+    }
+
+    func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(prompt, forKey: .prompt)
+        try container.encode(serverURL, forKey: .serverURL)
+        try container.encode(audioSilentDB, forKey: .audioSilentDB)
+        try container.encode(selectedLocale, forKey: .selectedLocale)
+        try container.encode(promptType, forKey: .promptType)
+        try container.encode(llmModel, forKey: .llmModel)
+        try container.encode(llmParams, forKey: .llmParams)
     }
     
     enum PromptType: String, CaseIterable, Codable {

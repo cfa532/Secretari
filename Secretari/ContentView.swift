@@ -1,5 +1,12 @@
 //
 //  ContentView.swift
+//  Secretari
+//
+//  Created by 超方 on 2024/5/26.
+//
+
+//
+//  ContentView.swift
 //  SummarySwiftData
 //
 //  Created by 超方 on 2024/4/5.
@@ -8,10 +15,9 @@
 import SwiftUI
 import SwiftData
 
-struct TranscriptView: View {
+struct ContentView: View {
     @Environment(\.modelContext) private var modelContext
     @Query(sort: \AudioRecord.recordDate, order: .reverse) var records: [AudioRecord]
-    @Query private var settingsInSwiftData: [Settings]
     @Binding var errorWrapper: ErrorWrapper?
     
     @State private var settings: Settings = AppConstants.defaultSettings
@@ -29,7 +35,6 @@ struct TranscriptView: View {
                 ForEach(records, id: \.recordDate) { item in
                     NavigationLink {
                         DetailView(record: item, isRecording: .constant(false))
-                            .environment(settings)
                     } label: {
                         SummaryRowView(record: item, promptType: settings.promptType)
                     }
@@ -59,7 +64,6 @@ struct TranscriptView: View {
             })
             .navigationDestination(isPresented: $showSettings, destination: {
                 SettingsView()
-                    .environment(settings)
             })
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing, content: {
@@ -93,24 +97,14 @@ struct TranscriptView: View {
             })
         }
         .onAppear {
-            if let s = settingsInSwiftData.first {
-                self.settings = s
-            } else {
-                // first run of the App, settings not stored by SwiftData yet.
-                // the following line cannot run in App file, where Settings type cannot be recognized by context model
-                print("Settings inited in model context")
-                modelContext.insert(AppConstants.defaultSettings)
-                try? modelContext.save()
-                // App lang: Optional(["zh-Hant-TW", "zh-Hans-TW", "ja-TW", "en-TW"])
-            }
         }
     }
 }
 
 #Preview {
-    let container = try! ModelContainer(for: AudioRecord.self, Settings.self, configurations: ModelConfiguration(isStoredInMemoryOnly: true))
+    let container = try! ModelContainer(for: AudioRecord.self, configurations: ModelConfiguration(isStoredInMemoryOnly: true))
     container.mainContext.insert(AudioRecord.sampleData[0])
-    return TranscriptView(errorWrapper: .constant(.emptyError))
+    return ContentView(errorWrapper: .constant(.emptyError))
         .modelContainer(container)
     //    TranscriptView(errorWrapper: .constant(.emptyError))
     //        .modelContainer(for: [AudioRecord.self, AppSettings.self], inMemory: true)

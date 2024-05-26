@@ -12,7 +12,6 @@ struct DetailView: View {
     @Environment(\.scenePhase) var scenePhase
     @Environment(\.modelContext) private var modelContext
     @Environment(\.dismiss) var dismiss
-    @EnvironmentObject private var settings: Settings
 
     @State var record: AudioRecord
     @Binding var isRecording: Bool
@@ -24,6 +23,7 @@ struct DetailView: View {
     @StateObject private var recorderTimer = RecorderTimer()
     
     @State var websocket = Websocket.shared
+    @State var settings = SettingsManager.shared.getSettings()
     
     var body: some View {
         NavigationStack {
@@ -149,19 +149,19 @@ struct DetailView: View {
         .navigationTitle("Summary")
         .navigationBarTitleDisplayMode(.inline)
         .toolbar(content: {
-            ToolbarItem(placement: .topBarLeading) {
-                Button(action: {
-                    // Dismiss the view
-                    //                    dismiss()
-                }, label: {
-                    Image(systemName: "decrease.indent")
-                        .resizable() // Might not be necessary for system images
-                        .tappablePadding(EdgeInsets(top: 12, leading: 12, bottom: 12, trailing: 12)) {
-                            dismiss()
-                        }
-                })
-                .disabled(isRecording)
-            }
+//            ToolbarItem(placement: .topBarLeading) {
+//                Button(action: {
+//                    // Dismiss the view
+//                    //                    dismiss()
+//                }, label: {
+//                    Image(systemName: "decrease.indent")
+//                        .resizable() // Might not be necessary for system images
+//                        .tappablePadding(EdgeInsets(top: 12, leading: 12, bottom: 12, trailing: 12)) {
+//                            dismiss()
+//                        }
+//                })
+//                .disabled(isRecording)
+//            }
             
             ToolbarItem(placement: .topBarTrailing) {
                 Menu(content: {
@@ -177,7 +177,6 @@ struct DetailView: View {
                     
                     NavigationLink(destination:
                                     DetailTranslationView(record: $record)
-                        .environment(settings)
                     ) {
                         Label("Translation", systemImage: "textformat.abc.dottedunderline")
                     }
@@ -263,7 +262,6 @@ extension DetailView: TimerDelegate {
 
 #Preview {
     DetailView(record: AudioRecord.sampleData[0], isRecording: .constant(true))
-        .environment(AppConstants.defaultSettings)
     //    let container = try! ModelContainer(for: AudioRecord.self, Settings.self, configurations: ModelConfiguration(isStoredInMemoryOnly: true))
     //    return DetailView(record: AudioRecord.sampleData[0])
     //        .modelContainer(container)

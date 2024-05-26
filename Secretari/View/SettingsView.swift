@@ -108,8 +108,5 @@ struct SettingsView: View {
 }
 
 #Preview {
-    let container = try! ModelContainer(for: Settings.self, configurations: ModelConfiguration(isStoredInMemoryOnly: true))
     return SettingsView()
-        .modelContainer(container)
-        .environment(AppConstants.defaultSettings)
 }
