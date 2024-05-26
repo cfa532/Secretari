@@ -12,15 +12,14 @@ struct DetailView: View {
     @Environment(\.scenePhase) var scenePhase
     @Environment(\.modelContext) private var modelContext
     @Environment(\.dismiss) var dismiss
-
     @Binding var isRecording: Bool
+    
     @State var record: AudioRecord
-
     @State private var showShareSheet = false
     @State private var showRedoAlert = false  // for Redo confirm dialog
-    @State private var websocket = Websocket.shared
-    @State private var settings = SettingsManager.shared.getSettings()
-
+    
+    @StateObject private var websocket = Websocket.shared
+    @StateObject private var settings = SettingsManager.shared.getSettings()
     @StateObject private var speechRecognizer = SpeechRecognizer()
     @StateObject private var recorderTimer = RecorderTimer()
         
@@ -148,19 +147,19 @@ struct DetailView: View {
         .navigationTitle("Summary")
         .navigationBarTitleDisplayMode(.inline)
         .toolbar(content: {
-//            ToolbarItem(placement: .topBarLeading) {
-//                Button(action: {
-//                    // Dismiss the view
-//                    //                    dismiss()
-//                }, label: {
-//                    Image(systemName: "decrease.indent")
-//                        .resizable() // Might not be necessary for system images
-//                        .tappablePadding(EdgeInsets(top: 12, leading: 12, bottom: 12, trailing: 12)) {
-//                            dismiss()
-//                        }
-//                })
-//                .disabled(isRecording)
-//            }
+            ToolbarItem(placement: .topBarLeading) {
+                Button(action: {
+                    // Dismiss the view
+                    //                    dismiss()
+                }, label: {
+                    Image(systemName: "decrease.indent")
+                        .resizable() // Might not be necessary for system images
+                        .tappablePadding(EdgeInsets(top: 12, leading: 12, bottom: 12, trailing: 12)) {
+                            dismiss()
+                        }
+                })
+                .disabled(isRecording)
+            }
             
             ToolbarItem(placement: .topBarTrailing) {
                 Menu(content: {

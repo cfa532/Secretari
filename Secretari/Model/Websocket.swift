@@ -139,13 +139,13 @@ class Websocket: NSObject, ObservableObject, URLSessionWebSocketDelegate, Observ
     
     // Might need to temporarily revise settings' value.
     @MainActor func sendToAI(_ rawText: String, action: @escaping (_ summary: String)->Void) {
-        // pass in settings as parameter instead of using local global copy, so the settings can be modified for special case before hand.
         guard settings.llmParams != nil, settings.llmParams![settings.llmModel!] != nil else { print("Empty LLM parameters"); return }
         let llmParams = settings.llmParams![settings.llmModel!]
         let prompt = settings.prompt[settings.promptType]![settings.selectedLocale]
         Utility.printDict(obj: llmParams!)
-
+        let user = UserManager.shared.currentUser
         let msg = [
+            "user": user!.username,
             "input": [
                 "prompt": prompt,
                 "rawtext": rawText],
@@ -184,8 +184,9 @@ class Websocket: NSObject, ObservableObject, URLSessionWebSocketDelegate, Observ
     }
 }
 
+
+// http calls for user account management
 extension Websocket {
-    // http calls for user account management
     func registerUser(_ user: User, completion: @escaping ([String: Any]?) -> Void) {
         // send to register endpoint
         var request = URLRequest(url: URL(string: "https://"+self.settings.serverURL+"/users/register")!)   // should be https://ip/secretari/users/register

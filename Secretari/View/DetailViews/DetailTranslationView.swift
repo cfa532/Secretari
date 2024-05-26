@@ -15,9 +15,9 @@ struct DetailTranslationView: View {
 
     @State private var alertItem: AlertItem?
     @State private var showShareSheet = false
-    @State private var websocket = Websocket.shared
     
-    private let settings: Settings = SettingsManager.shared.getSettings()
+    @StateObject private var websocket = Websocket.shared
+    @StateObject private var settings: Settings = SettingsManager.shared.getSettings()
 
     var body: some View {
         NavigationStack {
