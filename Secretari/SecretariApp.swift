@@ -15,11 +15,8 @@ struct SecretariApp: App {
     @State private var errorWrapper: ErrorWrapper?
     
     var sharedModelContainer: ModelContainer = {
-        let schema = Schema([AudioRecord.self, /*Settings.self,*/
-                             Item.self,
-                            ])
+        let schema = Schema([AudioRecord.self, /*Settings.self,*/ Item.self])
         let modelConfiguration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: false)
-        
         do {
             return try ModelContainer(for: schema, configurations: [modelConfiguration])
         } catch {
@@ -30,27 +27,19 @@ struct SecretariApp: App {
     var body: some Scene {
         WindowGroup {
             ContentView(errorWrapper: $errorWrapper)
-                .onAppear(perform: {
-//                    if let setting = settings.first {
-//                        self.setting = setting
-//                    } else {
-//                        modelContext.insert(AppConstants.defaultSettings)
-//                        self.setting = AppConstants.defaultSettings
-//                    }
-                })
                 .task {
                     guard let appSupportDir = FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask).last else { return }
                     print(appSupportDir)
                     print("App lang:", UserDefaults.standard.stringArray(forKey: "AppleLanguages")!)
                     print("identifier: ", NSLocale.current.identifier)
- 
+                    
                     // clear UserDefaults data
-//                    if let bundleID = Bundle.main.bundleIdentifier {
-//                        UserDefaults.standard.removePersistentDomain(forName: bundleID)
-//                    }
+                    //                    if let bundleID = Bundle.main.bundleIdentifier {
+                    //                        UserDefaults.standard.removePersistentDomain(forName: bundleID)
+                    //                    }
                     let userManager = UserManager.shared
                     let identifierManager = IdentifierManager()
-                
+                    
                     // check if this the first time of running. Assign an Id to user if not.
                     if identifierManager.setupIdentifier() {
                         // setup an anonymous account
@@ -68,7 +57,7 @@ struct SecretariApp: App {
                             fatalError("Could not retrieve user account.")
                         }
                     }
-
+                    
                     // check the subscription status of the user on server. Async mode.
                     
                     let appUpdated = AppVersionManager.shared.checkIfAppUpdated()
@@ -84,9 +73,9 @@ struct SecretariApp: App {
                     ErrorView(errorWrapper: wrapper)
                 }
         }
-//        .environment(userManager)
-//        .environment(identifierManager)
-//        .environment(setting)
+        //        .environment(userManager)
+        //        .environment(identifierManager)
+        //        .environment(setting)
         .modelContainer(sharedModelContainer)
         
         .onChange(of: scenePhase, { oldPhase, newPhase in

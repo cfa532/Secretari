@@ -14,7 +14,9 @@ struct SettingsView: View {
     @State private var opacity = 1.0
     @State private var timer: Timer?
     @State private var showAlert = false
-    @State private var settings: Settings = SettingsManager.shared.getSettings()
+    @State private var changed = false
+    
+    @StateObject private var settings: Settings = SettingsManager.shared.getSettings()
     
     var body: some View {
         NavigationView {
@@ -27,6 +29,11 @@ struct SettingsView: View {
                             .frame(width: 80)
                             .foregroundColor(.secondary)
                             .multilineTextAlignment(.trailing)
+                            .onChange(of: settings.audioSilentDB) { oldValue, newValue in
+                                if (oldValue != newValue) {
+                                    changed = true
+                                }
+                            }
                     }
                     
                     Picker("Prompt Type", selection: $settings.promptType) {
@@ -36,6 +43,7 @@ struct SettingsView: View {
                     }
                     .onChange(of: settings.promptType) { oldValue, newValue in
                         selectedPrompt = settings.prompt[settings.promptType]![settings.selectedLocale]!
+                        changed = true
                     }
                     Picker("Language:", selection: $settings.selectedLocale) {
                         ForEach(RecognizerLocale.allCases, id:\.self) { option in
@@ -44,25 +52,41 @@ struct SettingsView: View {
                     }
                     .onChange(of: settings.selectedLocale) { oldValue, newValue in
                         selectedPrompt = settings.prompt[settings.promptType]![settings.selectedLocale]!
+                        changed = true
                     }
                 }
                 Section(header: Text("advanced")) {
                     TextField(settings.serverURL, text: $settings.serverURL)
+                        .onChange(of: settings.serverURL) { oldValue, newValue in
+                            if (oldValue != newValue) {
+                                changed = true
+                            }
+                        }
                     TextField(selectedPrompt, text: $selectedPrompt, axis: .vertical)
                         .lineLimit(.max)
+                        .onChange(of: selectedPrompt) { oldValue, newValue in
+                            if (oldValue != newValue) {
+                                changed = true
+                            }
+                        }
                 }
                 .onAppear(perform: {
+                    print(settings.selectedLocale)
                     selectedPrompt = settings.prompt[settings.promptType]![settings.selectedLocale]!
                 })
                 .onDisappear(perform: {
-                    settings.prompt[settings.promptType]![settings.selectedLocale] = selectedPrompt
-                    if let t = Double(settings.audioSilentDB) {
-                        if t > -20 { settings.audioSilentDB = "-20" }
-                        else if t < -80 {
-                            settings.audioSilentDB = "-80"
+                    if (changed) {
+                        settings.prompt[settings.promptType]![settings.selectedLocale] = selectedPrompt
+                        if let t = Double(settings.audioSilentDB) {
+                            if t > -20 { settings.audioSilentDB = "-20" }
+                            else if t < -80 {
+                                settings.audioSilentDB = "-80"
+                            }
+                        } else {
+                            settings.audioSilentDB = "-40"
                         }
-                    } else {
-                        settings.audioSilentDB = "-40"
+                        SettingsManager.shared.updateSettings(settings)
+                        changed = false
                     }
                 })
                 .opacity(self.opacity)
