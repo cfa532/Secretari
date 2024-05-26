@@ -13,18 +13,17 @@ struct DetailView: View {
     @Environment(\.modelContext) private var modelContext
     @Environment(\.dismiss) var dismiss
 
-    @State var record: AudioRecord
     @Binding var isRecording: Bool
-    
+    @State var record: AudioRecord
+
     @State private var showShareSheet = false
     @State private var showRedoAlert = false  // for Redo confirm dialog
-    
+    @State private var websocket = Websocket.shared
+    @State private var settings = SettingsManager.shared.getSettings()
+
     @StateObject private var speechRecognizer = SpeechRecognizer()
     @StateObject private var recorderTimer = RecorderTimer()
-    
-    @State var websocket = Websocket.shared
-    @State var settings = SettingsManager.shared.getSettings()
-    
+        
     var body: some View {
         NavigationStack {
             if self.isRecording {
@@ -176,7 +175,7 @@ struct DetailView: View {
                     }
                     
                     NavigationLink(destination:
-                                    DetailTranslationView(record: $record)
+                            DetailTranslationView(record: $record)
                     ) {
                         Label("Translation", systemImage: "textformat.abc.dottedunderline")
                     }
@@ -193,7 +192,7 @@ struct DetailView: View {
                 .alert(isPresented: $showRedoAlert, content: {
                     Alert(title: Text("Alert"), message: Text("Regenerate summary from transcript. Existing content will be overwritten."), primaryButton: .cancel(), secondaryButton: .destructive(Text("Yes"), action: {
                         Task { @MainActor in
-                            websocket.sendToAI(record.transcript, settings: settings) { summary in
+                            websocket.sendToAI(record.transcript) { summary in
                                 
                                 record.locale = settings.selectedLocale      // update current locale of the record
                                 record.resultFromAI(promptType: settings.promptType, summary: summary)
@@ -252,7 +251,7 @@ extension DetailView: TimerDelegate {
             record.transcript = speechRecognizer.transcript + "。"
             modelContext.insert(record)
             speechRecognizer.transcript = ""
-            websocket.sendToAI(record.transcript, settings: settings) { summary in
+            websocket.sendToAI(record.transcript) { summary in
                 record.locale = settings.selectedLocale
                 record.resultFromAI(promptType: settings.promptType, summary: summary)
             }
@@ -261,7 +260,7 @@ extension DetailView: TimerDelegate {
 }
 
 #Preview {
-    DetailView(record: AudioRecord.sampleData[0], isRecording: .constant(true))
+    DetailView(isRecording: .constant(true), record: AudioRecord.sampleData[0])
     //    let container = try! ModelContainer(for: AudioRecord.self, Settings.self, configurations: ModelConfiguration(isStoredInMemoryOnly: true))
     //    return DetailView(record: AudioRecord.sampleData[0])
     //        .modelContainer(container)

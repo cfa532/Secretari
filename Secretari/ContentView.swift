@@ -34,7 +34,7 @@ struct ContentView: View {
             List {
                 ForEach(records, id: \.recordDate) { item in
                     NavigationLink {
-                        DetailView(record: item, isRecording: .constant(false))
+                        DetailView(isRecording: .constant(false), record: item)
                     } label: {
                         SummaryRowView(record: item, promptType: settings.promptType)
                     }
@@ -60,7 +60,7 @@ struct ContentView: View {
             .navigationTitle("Records")
             .navigationBarTitleDisplayMode(.inline)
             .navigationDestination(isPresented: $showDetailView, destination: {
-                DetailView(record: AudioRecord(), isRecording: $isRecording)
+                DetailView(isRecording: $isRecording, record: AudioRecord())
             })
             .navigationDestination(isPresented: $showSettings, destination: {
                 SettingsView()

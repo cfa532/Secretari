@@ -11,14 +11,13 @@ import SwiftData
 struct DetailTranslationView: View {
     @Binding var record: AudioRecord
     @Environment(\.modelContext) private var modelContext
-//    @Query private var settings: [Settings]
-
-    @State private var showShareSheet = false
     @Environment(\.dismiss) var dismiss
-    @EnvironmentObject private var settings: Settings
-    
+
     @State private var alertItem: AlertItem?
-    private let websocket = Websocket.shared
+    @State private var showShareSheet = false
+    @State private var websocket = Websocket.shared
+    
+    private let settings: Settings = SettingsManager.shared.getSettings()
 
     var body: some View {
         NavigationStack {
@@ -88,7 +87,7 @@ struct DetailTranslationView: View {
     
     @MainActor private func translateSummary(locale: RecognizerLocale, record: AudioRecord, prompt: String) {
         if let summary = record.summary[record.locale] {
-            websocket.sendToAI(summary, settings: settings) { translation in
+            websocket.sendToAI(summary) { translation in
                 record.locale = locale
                 record.summary[locale] = translation
                 try? modelContext.save()
@@ -119,7 +118,7 @@ struct DetailTranslationView: View {
             let jsonData = try JSONSerialization.data(withJSONObject: arr, options: [])
             if let jsonString = String(data: jsonData, encoding: .utf8) {
                 
-                websocket.sendToAI(jsonString, settings: settings) { translation in
+                websocket.sendToAI(jsonString) { translation in
                     do {
                         // extract valie JSON string from AI reply. Get text between [ ]
 //                        let regex = try NSRegularExpression(pattern: "\\[(.*?)\\]", options: [])

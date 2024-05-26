@@ -9,12 +9,12 @@ import SwiftUI
 import SwiftData
 
 struct SettingsView: View {
-    @EnvironmentObject private var settings: Settings
     @State private var selectedPrompt = ""
     @State private var countDown = 0
     @State private var opacity = 1.0
     @State private var timer: Timer?
     @State private var showAlert = false
+    @State private var settings: Settings = SettingsManager.shared.getSettings()
     
     var body: some View {
         NavigationView {

@@ -8,7 +8,7 @@
 import Foundation
 import SwiftUI
 
-@MainActor
+//@MainActor
 class Websocket: NSObject, ObservableObject, URLSessionWebSocketDelegate, Observable {
     @Published var isStreaming: Bool = false
     @Published var streamedText: String = ""
@@ -16,7 +16,7 @@ class Websocket: NSObject, ObservableObject, URLSessionWebSocketDelegate, Observ
     
     private var tokenManager = TokenManager()
     private var urlSession: URLSession?
-    private var serverURL: String = AppConstants.defaultSettings.serverURL
+    private var settings = SettingsManager.shared.getSettings()
     private var wsTask: URLSessionWebSocketTask?
     
     static let shared = Websocket()
@@ -24,7 +24,7 @@ class Websocket: NSObject, ObservableObject, URLSessionWebSocketDelegate, Observ
     private override init() {
         super.init()
         self.urlSession = URLSession(configuration: .default, delegate: self, delegateQueue: OperationQueue())
-        self.serverURL = SettingsManager.shared.getSettings().serverURL      // dead sure it is a string
+//        self.serverURL = SettingsManager.shared.getSettings().serverURL      // dead sure it is a string
     }
     
     func configure(_ url: String) {
@@ -46,7 +46,7 @@ class Websocket: NSObject, ObservableObject, URLSessionWebSocketDelegate, Observ
     }
     
     func setRequestHeader() {
-        var request = URLRequest(url: URL(string: self.serverURL)!)
+        var request = URLRequest(url: URL(string: self.settings.serverURL)!)
         request.httpMethod = "POST"
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")
         request.addValue("Bearer " + self.tokenManager.loadToken()!, forHTTPHeaderField: "Authorization")
@@ -138,7 +138,7 @@ class Websocket: NSObject, ObservableObject, URLSessionWebSocketDelegate, Observ
     }
     
     // Might need to temporarily revise settings' value.
-    @MainActor func sendToAI(_ rawText: String, settings: Settings, action: @escaping (_ summary: String)->Void) {
+    @MainActor func sendToAI(_ rawText: String, action: @escaping (_ summary: String)->Void) {
         // pass in settings as parameter instead of using local global copy, so the settings can be modified for special case before hand.
         guard settings.llmParams != nil, settings.llmParams![settings.llmModel!] != nil else { print("Empty LLM parameters"); return }
         let llmParams = settings.llmParams![settings.llmModel!]
@@ -166,7 +166,7 @@ class Websocket: NSObject, ObservableObject, URLSessionWebSocketDelegate, Observ
             } else  {
                 // cancel hanging wsTask if any
                 self.wsTask?.cancel()
-                self.wsTask = urlSession?.webSocketTask(with: URL(string: "ws://" + self.serverURL + "/ws/")!)
+                self.wsTask = urlSession?.webSocketTask(with: URL(string: "ws://" + self.settings.serverURL + "/ws/")!)
             }
 
             Task {
@@ -188,7 +188,7 @@ extension Websocket {
     // http calls for user account management
     func registerUser(_ user: User, completion: @escaping ([String: Any]?) -> Void) {
         // send to register endpoint
-        var request = URLRequest(url: URL(string: "https://"+self.serverURL+"/users/register")!)   // should be https://ip/secretari/users/register
+        var request = URLRequest(url: URL(string: "https://"+self.settings.serverURL+"/users/register")!)   // should be https://ip/secretari/users/register
         request.httpMethod = "POST"
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")
         
@@ -212,7 +212,7 @@ extension Websocket {
     
     // create a temp user record on server
     func createTempUser(_ user: User, completion: @escaping ([String: Any]?) -> Void) {
-        var request = URLRequest(url: URL(string: "http://"+self.serverURL + "/users/temp")!)   // should be https://ip/secretari/users/temp
+        var request = URLRequest(url: URL(string: "http://"+self.settings.serverURL + "/users/temp")!)   // should be https://ip/secretari/users/temp
         request.httpMethod = "POST"
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")
         
@@ -232,7 +232,7 @@ extension Websocket {
     
     // fetch login token and updated user information from server
     @MainActor func fetchToken(_ user: User, completion: @escaping ([String: Any]?) -> Void) {
-        var request = URLRequest(url: URL(string: "https://"+self.serverURL + "/token")!)   // should be https://ip/secretari/token
+        var request = URLRequest(url: URL(string: "https://"+self.settings.serverURL + "/token")!)   // should be https://ip/secretari/token
         request.httpMethod = "POST"
         //        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
         request.addValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")   // required by FastAPI
