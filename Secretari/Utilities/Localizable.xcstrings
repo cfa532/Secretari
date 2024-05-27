@@ -10,6 +10,9 @@
     "*" : {
 
     },
+    "********" : {
+
+    },
     "advanced" : {
       "localizations" : {
         "es-419" : {
@@ -77,6 +80,12 @@
         }
       }
     },
+    "Change Password" : {
+
+    },
+    "Confirm Password" : {
+
+    },
     "Dismiss" : {
       "localizations" : {
         "es-419" : {
@@ -122,6 +131,9 @@
         }
       }
     },
+    "Email" : {
+
+    },
     "email:" : {
 
     },
@@ -146,6 +158,12 @@
           }
         }
       }
+    },
+    "Failed to create temporary account. Please try again later." : {
+
+    },
+    "Family Name" : {
+
     },
     "Family name:" : {
 
@@ -177,6 +195,9 @@
           }
         }
       }
+    },
+    "Given Name" : {
+
     },
     "Given name:" : {
 
@@ -299,6 +320,9 @@
         }
       }
     },
+    "Login" : {
+
+    },
     "Memo Missing" : {
 
     },
@@ -332,6 +356,9 @@
       }
     },
     "Min Audible (dB)" : {
+
+    },
+    "New Password" : {
 
     },
     "No memo to translate. Please generate the Memo content first using Summarize in ... menu." : {
@@ -420,6 +447,9 @@
       }
     },
     "Password:" : {
+
+    },
+    "Personal Information" : {
 
     },
     "Please ensure all fields in the form have been filled out." : {
@@ -931,6 +961,15 @@
           }
         }
       }
+    },
+    "Update" : {
+
+    },
+    "Update Profile" : {
+
+    },
+    "Username" : {
+
     },
     "Username and password are required. Please make sure to input the same password twice." : {
 

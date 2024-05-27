@@ -134,8 +134,12 @@ struct ContentView: View {
         if let user=UserManager.shared.currentUser, user.username.count > 20 {
             // a temp default account with system generated name
             return "Register"
+        } else {
+            if userManager.loginStatus == .signedIn {
+                return "Account"
+            }
+            return "Login"
         }
-        return "Login"
     }
 }
 

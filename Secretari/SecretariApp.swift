@@ -40,6 +40,7 @@ struct SecretariApp: App {
                     
                     let userManager = UserManager.shared
                     let identifierManager = IdentifierManager()
+                    userManager.userToken = TokenManager.shared.loadToken()
                     
                     // check if this the first time of running. Assign an Id to user if not.
                     if identifierManager.setupIdentifier() {

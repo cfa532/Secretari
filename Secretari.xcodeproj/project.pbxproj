@@ -28,7 +28,11 @@
 		4623C6E82C018F67006CB3D1 /* SettingsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4623C6E72C018F67006CB3D1 /* SettingsManager.swift */; };
 		4623C6EA2C023378006CB3D1 /* UserDefaultsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4623C6E92C023378006CB3D1 /* UserDefaultsManager.swift */; };
 		4623C6EC2C02B689006CB3D1 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4623C6EB2C02B689006CB3D1 /* ContentView.swift */; };
-		4623C6EE2C030BA6006CB3D1 /* AccountView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4623C6ED2C030BA6006CB3D1 /* AccountView.swift */; };
+		4623C6EE2C030BA6006CB3D1 /* RegistrationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4623C6ED2C030BA6006CB3D1 /* RegistrationView.swift */; };
+		4623C6F02C046AEE006CB3D1 /* AccountView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4623C6EF2C046AEE006CB3D1 /* AccountView.swift */; };
+		4623C6F22C04700E006CB3D1 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4623C6F12C04700E006CB3D1 /* LoginView.swift */; };
+		4623C6F42C0471E3006CB3D1 /* UpdateAccountView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4623C6F32C0471E3006CB3D1 /* UpdateAccountView.swift */; };
+		4623C6F62C0478C1006CB3D1 /* TokenManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4623C6F52C0478C1006CB3D1 /* TokenManager.swift */; };
 		468B0B662BEDB83900C6D2FF /* TappablePadding.swift in Sources */ = {isa = PBXBuildFile; fileRef = 468B0B652BEDB83900C6D2FF /* TappablePadding.swift */; };
 		468B0B6A2BEF29EE00C6D2FF /* IdentifierManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 468B0B692BEF29EE00C6D2FF /* IdentifierManager.swift */; };
 		46DA71392BD7FB60001A3685 /* NetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46DA71382BD7FB60001A3685 /* NetworkManager.swift */; };
@@ -89,7 +93,11 @@
 		4623C6E72C018F67006CB3D1 /* SettingsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsManager.swift; sourceTree = "<group>"; };
 		4623C6E92C023378006CB3D1 /* UserDefaultsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaultsManager.swift; sourceTree = "<group>"; };
 		4623C6EB2C02B689006CB3D1 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
-		4623C6ED2C030BA6006CB3D1 /* AccountView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountView.swift; sourceTree = "<group>"; };
+		4623C6ED2C030BA6006CB3D1 /* RegistrationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegistrationView.swift; sourceTree = "<group>"; };
+		4623C6EF2C046AEE006CB3D1 /* AccountView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountView.swift; sourceTree = "<group>"; };
+		4623C6F12C04700E006CB3D1 /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
+		4623C6F32C0471E3006CB3D1 /* UpdateAccountView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateAccountView.swift; sourceTree = "<group>"; };
+		4623C6F52C0478C1006CB3D1 /* TokenManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenManager.swift; sourceTree = "<group>"; };
 		468B0B652BEDB83900C6D2FF /* TappablePadding.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TappablePadding.swift; sourceTree = "<group>"; };
 		468B0B692BEF29EE00C6D2FF /* IdentifierManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IdentifierManager.swift; sourceTree = "<group>"; };
 		46DA71382BD7FB60001A3685 /* NetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkManager.swift; sourceTree = "<group>"; };
@@ -215,7 +223,10 @@
 				46FAC5FF2BDFC4AC0013B9B5 /* DetailViews */,
 				461ADD902BD2A4F000C0DD94 /* SettingsView.swift */,
 				461ADD8A2BD2A40500C0DD94 /* ErrorView.swift */,
-				4623C6ED2C030BA6006CB3D1 /* AccountView.swift */,
+				4623C6ED2C030BA6006CB3D1 /* RegistrationView.swift */,
+				4623C6EF2C046AEE006CB3D1 /* AccountView.swift */,
+				4623C6F12C04700E006CB3D1 /* LoginView.swift */,
+				4623C6F32C0471E3006CB3D1 /* UpdateAccountView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -233,6 +244,7 @@
 				4623C6E52C00F396006CB3D1 /* KeychainManager.swift */,
 				4623C6E72C018F67006CB3D1 /* SettingsManager.swift */,
 				4623C6E92C023378006CB3D1 /* UserDefaultsManager.swift */,
+				4623C6F52C0478C1006CB3D1 /* TokenManager.swift */,
 			);
 			path = Utilities;
 			sourceTree = "<group>";
@@ -418,7 +430,7 @@
 				468B0B662BEDB83900C6D2FF /* TappablePadding.swift in Sources */,
 				461ADD8D2BD2A42000C0DD94 /* ErrorWrapper.swift in Sources */,
 				46FAC6182BEA2BEC0013B9B5 /* SummaryRowView.swift in Sources */,
-				4623C6EE2C030BA6006CB3D1 /* AccountView.swift in Sources */,
+				4623C6EE2C030BA6006CB3D1 /* RegistrationView.swift in Sources */,
 				461ADD8B2BD2A40500C0DD94 /* ErrorView.swift in Sources */,
 				46FAC6162BEA29410013B9B5 /* CheckboxView.swift in Sources */,
 				461ADD9D2BD2B5F400C0DD94 /* RecorderTimer.swift in Sources */,
@@ -434,11 +446,15 @@
 				461ADD992BD2B5E400C0DD94 /* SpeechRecognizer.swift in Sources */,
 				461ADDA72BD2B6EB00C0DD94 /* DetailView.swift in Sources */,
 				461ADD5F2BD2A0AC00C0DD94 /* Item.swift in Sources */,
+				4623C6F62C0478C1006CB3D1 /* TokenManager.swift in Sources */,
+				4623C6F22C04700E006CB3D1 /* LoginView.swift in Sources */,
 				46FAC6142BEA0CEC0013B9B5 /* DetailBulletinView.swift in Sources */,
 				46DA71432BD8D724001A3685 /* Utilities.swift in Sources */,
+				4623C6F02C046AEE006CB3D1 /* AccountView.swift in Sources */,
 				4623C6E82C018F67006CB3D1 /* SettingsManager.swift in Sources */,
 				468B0B6A2BEF29EE00C6D2FF /* IdentifierManager.swift in Sources */,
 				4623C6EC2C02B689006CB3D1 /* ContentView.swift in Sources */,
+				4623C6F42C0471E3006CB3D1 /* UpdateAccountView.swift in Sources */,
 				461ADD9B2BD2B5ED00C0DD94 /* Websocket.swift in Sources */,
 				461ADD5B2BD2A0AC00C0DD94 /* SecretariApp.swift in Sources */,
 			);

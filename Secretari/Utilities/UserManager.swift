@@ -13,15 +13,21 @@ class UserManager: ObservableObject, Observable {
     @Published var currentUser: User?
     @Published var showAlert: Bool = false
     @Published var alertItem: AlertItem?
-    
+    @Published var loginStatus: StatusLogin = .unregistered     // login status of the current user
+    var userToken: String? {
+        didSet {
+            if userToken != nil {
+                loginStatus = .signedIn
+            }
+        }
+    }
     private let keychainManager = KeychainManager.shared
     static let shared = UserManager()
-    private init() {
-        
+    private init() {}
+
+    enum StatusLogin {
+        case signedIn, signedOut, unregistered
     }
-    //    init(websocket: Websocket) {
-    //        self.websocket = web
-    //    }
     
     func createTempUser(_ id: String) {
         // When someone starts to use the app without registration. Give it an identify.
@@ -31,11 +37,12 @@ class UserManager: ObservableObject, Observable {
             currentUser = User(username: id, password: "zaq1^WSX")
             print("Current", currentUser!)
             
-            webSocket.createTempUser(currentUser!) { dict in
+            webSocket.createTempUser(currentUser!) { dict, statusCode in
                 Task { @MainActor in
                     guard let dict = dict, self.currentUser != nil else {
-                        print("Failed to save user in Keychain.", self.currentUser as Any)
+                        print("Failed to create temp user account.", self.currentUser as Any)
                         self.alertItem = AlertContext.unableToComplete
+                        self.alertItem?.message = Text("Failed to create temporary account. Please try again later.")
                         self.showAlert = true
                         return
                     }
@@ -59,7 +66,7 @@ class UserManager: ObservableObject, Observable {
                     guard let dict = dict, self.currentUser != nil, statusCode != .failure  else {
                         print("Failed to register.", self.currentUser as Any)
                         // restore current user to original value, pop an alert and stay at registration page
-//                        UserManager.shared.currentUser = self.keychainManager.retrieve(for: "currentUser", type: User.self)
+                        UserManager.shared.currentUser = self.keychainManager.retrieve(for: "currentUser", type: User.self)
                         self.alertItem = AlertContext.unableToComplete
                         self.alertItem?.message = Text("The username is taken. Please try again.")
                         self.showAlert = true
@@ -67,8 +74,12 @@ class UserManager: ObservableObject, Observable {
                     }
                     // update account with token usage data from WS server
                     self.currentUser = Utility.convertDictionaryToUser(from: dict, user: self.currentUser!)
+                    
                     if self.keychainManager.save(data: self.currentUser, for: "currentUser") {
-                        print("Registration data received:", self.currentUser as Any)
+                        print("Registration data received OK:", self.currentUser as Any)
+                        
+                        // the registration succesed. Go to login page.
+                        self.loginStatus = .signedOut
                     }
                 }
             }

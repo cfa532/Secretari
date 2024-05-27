@@ -14,7 +14,7 @@ class Websocket: NSObject, ObservableObject, URLSessionWebSocketDelegate, Observ
     @Published var streamedText: String = ""
     @Published var alertItem: AlertItem?
     
-    private var tokenManager = TokenManager()
+    private var tokenManager = TokenManager.shared
     private var urlSession: URLSession?
     private var settings = SettingsManager.shared.getSettings()
     private var wsTask: URLSessionWebSocketTask?
@@ -209,7 +209,7 @@ extension Websocket {
         request.httpMethod = "POST"
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")
         
-        let body: [String: Any] = ["username": user.username, "password": user.password, "family_name": user.family_name ?? "", "given_name": user.given_name ?? "", "email": user.email ?? "", "mid": user.mid ?? "", "subscription": user.subscription ?? false]
+        let body: [String: Any] = ["username": user.username, "password": user.password, "family_name": user.family_name ?? "", "given_name": user.given_name ?? "", "email": user.email ?? "", "mid": user.mid ?? "", "subscription": user.subscription]
         request.httpBody = try? JSONSerialization.data(withJSONObject: body)
         
         let task = URLSession.shared.dataTask(with: request) { data, response, error in
@@ -220,7 +220,6 @@ extension Websocket {
             if let httpResponse = response as? HTTPURLResponse {
                 if httpResponse.statusCode >= 400 {
                     completion(nil, .failure)
-                    self.alertItem = AlertContext.unableToComplete
                 } else {
                     let json = try? JSONSerialization.jsonObject(with: data) as? [String: Any]
                     completion(json, .created)
@@ -235,7 +234,7 @@ extension Websocket {
     }
     
     // create a temp user record on server
-    func createTempUser(_ user: User, completion: @escaping ([String: Any]?) -> Void) {
+    func createTempUser(_ user: User, completion: @escaping ([String: Any]?, HTTPStatusCode?) -> Void) {
         var request = URLRequest(url: URL(string: "http://"+self.settings.serverURL + "/users/temp")!)   // should be https://ip/secretari/users/temp
         request.httpMethod = "POST"
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")
@@ -245,17 +244,23 @@ extension Websocket {
         
         let task = URLSession.shared.dataTask(with: request) { data, response, error in
             guard let data = data, error == nil else {
-                completion(nil)
+                completion(nil, nil)
                 return
             }
-            let json = try? JSONSerialization.jsonObject(with: data) as? [String: Any]
-            completion(json)
+            if let httpResponse = response as? HTTPURLResponse {
+                if httpResponse.statusCode >= 400 {
+                    completion(nil, .failure)
+                } else {
+                    let json = try? JSONSerialization.jsonObject(with: data) as? [String: Any]
+                    completion(json, .created)
+                }
+            }
         }
         task.resume()
     }
     
     // fetch login token and updated user information from server
-    @MainActor func fetchToken(_ user: User, completion: @escaping ([String: Any]?) -> Void) {
+    @MainActor func fetchToken(_ user: User, completion: @escaping ([String: Any]?, HTTPStatusCode?) -> Void) {
         var request = URLRequest(url: URL(string: "http://"+self.settings.serverURL + "/token")!)   // should be https://ip/secretari/token
         request.httpMethod = "POST"
         //        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
@@ -266,11 +271,17 @@ extension Websocket {
         
         let task = URLSession.shared.dataTask(with: request) { data, response, error in
             guard let data = data, error == nil else {
-                completion(nil)
+                completion(nil, nil)
                 return
             }
-            let json = try? JSONSerialization.jsonObject(with: data) as? [String: Any]
-            completion(json)
+            if let httpResponse = response as? HTTPURLResponse {
+                if httpResponse.statusCode >= 400 {
+                    completion(nil, .failure)
+                } else {
+                    let json = try? JSONSerialization.jsonObject(with: data) as? [String: Any]
+                    completion(json, .created)
+                }
+            }
         }
         task.resume()
     }}
