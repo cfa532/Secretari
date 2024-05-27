@@ -10,8 +10,9 @@ import SwiftUI
 struct AccountView: View {
     @State private var user: User = UserManager.shared.currentUser ?? User(username: "", password: "")
     @State private var passwd: String = ""
-    @State private var showAlert: Bool = false
-    
+    @State private var showAlert = false
+    @StateObject private var userManager = UserManager.shared
+
     var body: some View {
         NavigationStack {
             Form {
@@ -35,7 +36,7 @@ struct AccountView: View {
                                 Text("*").foregroundStyle(.red)
                                 Spacer()
                             }
-                            SecureField(user.password, text: $user.password)
+                            TextField("", text: $user.password)
                                 .foregroundColor(.secondary)
                                 .background(Color.gray.opacity(0.15))
                         }
@@ -47,7 +48,7 @@ struct AccountView: View {
                                 Text("*").foregroundStyle(.red)
                                 Spacer()
                             }
-                            SecureField("", text: $passwd)
+                            TextField("", text: $passwd)
                                 .foregroundColor(.secondary)
                                 .background(Color.gray.opacity(0.15))
                         }
@@ -88,13 +89,15 @@ struct AccountView: View {
                         if user.username.count>0, user.password.count>0, user.password==passwd {
                             
                             // prepare currentUser for save to keychain. If it fails, restore currentUser.
-                            UserManager.shared.currentUser?.username = user.username
-                            UserManager.shared.currentUser?.password = user.password
-                            UserManager.shared.currentUser?.family_name = user.family_name
-                            UserManager.shared.currentUser?.given_name = user.given_name
-                            UserManager.shared.currentUser?.email = user.email
-                            UserManager.shared.register(user)
+                            userManager.currentUser?.username = user.username
+                            userManager.currentUser?.password = user.password
+                            userManager.currentUser?.family_name = user.family_name
+                            userManager.currentUser?.given_name = user.given_name
+                            userManager.currentUser?.email = user.email
+                            
+                            userManager.register(user)
                         } else {
+                            print(user.username, user.password, passwd)
                             showAlert = true
                         }
                     }, label: {
@@ -115,6 +118,9 @@ struct AccountView: View {
                 }
                 print(UserManager.shared.currentUser as Any)
             })
+            .alert(isPresented: $userManager.showAlert) {
+                Alert(title: userManager.alertItem?.title ?? Text("Alert"), message: userManager.alertItem?.message, dismissButton: userManager.alertItem?.dismissButton)
+            }
         }
     }
 }

@@ -11,8 +11,10 @@ import SwiftUI
 //@MainActor
 class UserManager: ObservableObject, Observable {
     @Published var currentUser: User?
-    private let keychainManager = KeychainManager.shared
+    @Published var showAlert: Bool = false
+    @Published var alertItem: AlertItem?
     
+    private let keychainManager = KeychainManager.shared
     static let shared = UserManager()
     private init() {
         
@@ -29,17 +31,18 @@ class UserManager: ObservableObject, Observable {
             currentUser = User(username: id, password: "zaq1^WSX")
             print("Current", currentUser!)
             
-            webSocket.createTempUser(self.currentUser!) { dict in
+            webSocket.createTempUser(currentUser!) { dict in
                 Task { @MainActor in
                     guard let dict = dict, self.currentUser != nil else {
-                        print("Cannot get user from websocket or currentUser is nil")
+                        print("Failed to save user in Keychain.", self.currentUser as Any)
+                        self.alertItem = AlertContext.unableToComplete
+                        self.showAlert = true
                         return
                     }
+                    // update temp user with account data recieved from server.
                     self.currentUser = Utility.convertDictionaryToUser(from: dict, user: self.currentUser!)
                     
                     if !self.keychainManager.save(data: self.currentUser, for: "currentUser") {
-                        print("Failed to save user in Keychain.", self.currentUser as Any)
-                    } else {
                         print("Temp account created OK", self.currentUser as Any)
                     }
                 }
@@ -51,17 +54,20 @@ class UserManager: ObservableObject, Observable {
         // register a user at sever when subscribe.
         let webSocket = Websocket.shared
         Task { @MainActor in
-            webSocket.registerUser(user) { dict in
+            webSocket.registerUser(user) { dict, statusCode in
                 Task { @MainActor in
-                    guard let dict = dict, self.currentUser != nil else {
+                    guard let dict = dict, self.currentUser != nil, statusCode != .failure  else {
                         print("Failed to register.", self.currentUser as Any)
                         // restore current user to original value, pop an alert and stay at registration page
-                        UserManager.shared.currentUser = self.keychainManager.retrieve(for: "currentUser", type: User.self)
+//                        UserManager.shared.currentUser = self.keychainManager.retrieve(for: "currentUser", type: User.self)
+                        self.alertItem = AlertContext.unableToComplete
+                        self.alertItem?.message = Text("The username is taken. Please try again.")
+                        self.showAlert = true
                         return
                     }
                     // update account with token usage data from WS server
                     self.currentUser = Utility.convertDictionaryToUser(from: dict, user: self.currentUser!)
-                    if !self.keychainManager.save(data: self.currentUser, for: "currentUser") {
+                    if self.keychainManager.save(data: self.currentUser, for: "currentUser") {
                         print("Registration data received:", self.currentUser as Any)
                     }
                 }

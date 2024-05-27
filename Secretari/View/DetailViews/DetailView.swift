@@ -255,10 +255,6 @@ extension DetailView: TimerDelegate {
             websocket.sendToAI(record.transcript) { result in
                 record.locale = settings.selectedLocale
                 record.resultFromAI(promptType: settings.promptType, summary: result)
-                
-                // a User is send back with updated token usage and cost. Update currentUser with it
-//                let user = result["user"] as! User
-//                print(user)
             }
         }
     }

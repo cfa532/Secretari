@@ -192,10 +192,18 @@ class Websocket: NSObject, ObservableObject, URLSessionWebSocketDelegate, Observ
     }
 }
 
+enum HTTPStatusCode: Int {
+  case success = 200
+  case created = 201
+  case accepted = 202
+  case noContent = 204
+    case failure = 400
+  // ... Add other common codes as needed
+}
 
 // http calls for user account management
 extension Websocket {
-    func registerUser(_ user: User, completion: @escaping ([String: Any]?) -> Void) {
+    func registerUser(_ user: User, completion: @escaping ([String: Any]?, HTTPStatusCode?) -> Void) {
         // send to register endpoint
         var request = URLRequest(url: URL(string: "http://"+self.settings.serverURL+"/users/register")!)   // should be https://ip/secretari/users/register
         request.httpMethod = "POST"
@@ -206,11 +214,18 @@ extension Websocket {
         
         let task = URLSession.shared.dataTask(with: request) { data, response, error in
             guard let data = data, error == nil else {
-                completion(nil)
+                completion(nil, nil)
                 return
             }
-            let json = try? JSONSerialization.jsonObject(with: data) as? [String: Any]
-            completion(json)
+            if let httpResponse = response as? HTTPURLResponse {
+                if httpResponse.statusCode >= 400 {
+                    completion(nil, .failure)
+                    self.alertItem = AlertContext.unableToComplete
+                } else {
+                    let json = try? JSONSerialization.jsonObject(with: data) as? [String: Any]
+                    completion(json, .created)
+                }
+            }
         }
         task.resume()
     }
