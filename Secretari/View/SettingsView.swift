@@ -19,7 +19,7 @@ struct SettingsView: View {
     @Binding var settings: Settings
     
     var body: some View {
-        NavigationView {
+        NavigationStack {
             Form {
                 Section(header: Text("Parameters")) {
                     HStack {

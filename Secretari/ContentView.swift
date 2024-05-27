@@ -25,8 +25,7 @@ struct ContentView: View {
     @State private var showDetailView = false
     @State private var showSettings = false
     
-    @EnvironmentObject private var userManager: UserManager
-    @EnvironmentObject private var webSocket: Websocket
+    private let userManager = UserManager.shared
 
     var body: some View {
         NavigationStack {
@@ -62,24 +61,56 @@ struct ContentView: View {
                 DetailView(isRecording: $isRecording, record: AudioRecord(), settings: $settings)
             })
             .navigationDestination(isPresented: $showSettings, destination: {
+                // navigate to settingsView is triggered by tapping button with enlarged tappable area.
                 SettingsView(settings: $settings)
             })
             .toolbar {
-                ToolbarItem(placement: .topBarTrailing, content: {
-                    NavigationLink(destination: SettingsView(settings: $settings)) {
-                        // navigationLink does not work becuase tappablePadding interfered with onTap()
-                        // showSettings=true triggered navigation destination.
-                        // keep navigationLnik because it change image color when tapped.
-                        Image(systemName: "gearshape")
+                ToolbarItem(placement: .topBarTrailing) {
+                    Menu {
+                        NavigationLink(destination: SettingsView(settings: $settings)) {
+                            Label("Settings", systemImage: "gearshape")
+                        }
+                        NavigationLink {
+                            AccountView()
+                        } label: {
+                            Label(
+                                title: { Text(loginMenuBar()) },
+                                icon: { Image(systemName: "square.and.pencil") }
+                            )
+                        }
+
+                        
+//                        NavigationLink(destination: AccountView) {
+//                            Label(title: {
+//                                userManager.currentUser?.username.count > 20 ? "Login" : "Register"
+//                            }, icon: {
+//                                "pencil.and.scribble")
+//                            }
+//                        }
+                    } label: {
+                        Image(systemName: "person.crop.circle")
                             .resizable()
-                            .frame(width: 20, height: 20)
+                            .frame(width: 24, height: 24)
                             .foregroundColor(.primary)
-                            .opacity(0.8)
-                            .tappablePadding(EdgeInsets(top: 12, leading: 12, bottom: 12, trailing: 12)) {
-                                self.showSettings = true
-                            }
+                            .opacity(0.7)
                     }
-                })
+
+                }
+//                ToolbarItem(placement: .topBarTrailing, content: {
+//                    NavigationLink(destination: SettingsView(settings: $settings)) {
+//                        // navigationLink does not work becuase tappablePadding interfered with onTap()
+//                        // showSettings=true triggered navigation destination.
+//                        // keep navigationLnik because it change image color when tapped.
+//                        Image(systemName: "person.fill.turn.down")
+//                            .resizable()
+//                            .frame(width: 20, height: 20)
+//                            .foregroundColor(.primary)
+//                            .opacity(0.8)
+//                            .tappablePadding(EdgeInsets(top: 12, leading: 12, bottom: 12, trailing: 12)) {
+//                                self.showSettings = true
+//                            }
+//                    }
+//                })
             }
             
             Button(action: {
@@ -97,6 +128,14 @@ struct ContentView: View {
         }
         .onAppear {
         }
+    }
+    
+    private func loginMenuBar() -> String {
+        if let user=UserManager.shared.currentUser, user.username.count > 20 {
+            // a temp default account with system generated name
+            return "Register"
+        }
+        return "Login"
     }
 }
 

@@ -7,6 +7,9 @@
     " " : {
 
     },
+    "*" : {
+
+    },
     "advanced" : {
       "localizations" : {
         "es-419" : {
@@ -16,6 +19,9 @@
           }
         }
       }
+    },
+    "again:" : {
+
     },
     "Alert" : {
       "localizations" : {
@@ -116,6 +122,9 @@
         }
       }
     },
+    "email:" : {
+
+    },
     "English" : {
       "localizations" : {
         "ja" : {
@@ -137,6 +146,9 @@
           }
         }
       }
+    },
+    "Family name:" : {
+
     },
     "First make sure to select the right language for recognition in setting ⚙️ Otherwise the built-in speech recognizer cannot work properly." : {
       "localizations" : {
@@ -166,6 +178,9 @@
         }
       }
     },
+    "Given name:" : {
+
+    },
     "Indonesia" : {
       "localizations" : {
         "ja" : {
@@ -187,6 +202,9 @@
           }
         }
       }
+    },
+    "Information" : {
+
     },
     "Invalid Email" : {
 
@@ -401,6 +419,9 @@
         }
       }
     },
+    "Password:" : {
+
+    },
     "Please ensure all fields in the form have been filled out." : {
 
     },
@@ -584,6 +605,9 @@
       }
     },
     "Regenerate summary from transcript. Existing content will be overwritten." : {
+
+    },
+    "Register" : {
 
     },
     "Reset" : {
@@ -904,6 +928,12 @@
           }
         }
       }
+    },
+    "Username and password are required. Please make sure to input the same password twice." : {
+
+    },
+    "Username:" : {
+
     },
     "Yes" : {
       "localizations" : {

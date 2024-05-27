@@ -86,9 +86,9 @@ struct DetailTranslationView: View {
     
     @MainActor private func translateSummary(locale: RecognizerLocale, record: AudioRecord, prompt: String) {
         if let summary = record.summary[record.locale] {
-            websocket.sendToAI(summary) { translation in
+            websocket.sendToAI(summary) { result in
                 record.locale = locale
-                record.summary[locale] = translation
+                record.summary[locale] = result
                 try? modelContext.save()
                 Task {
                     dismiss()
@@ -117,7 +117,7 @@ struct DetailTranslationView: View {
             let jsonData = try JSONSerialization.data(withJSONObject: arr, options: [])
             if let jsonString = String(data: jsonData, encoding: .utf8) {
                 
-                websocket.sendToAI(jsonString) { translation in
+                websocket.sendToAI(jsonString) { result in
                     do {
                         // extract valie JSON string from AI reply. Get text between [ ]
 //                        let regex = try NSRegularExpression(pattern: "\\[(.*?)\\]", options: [])
@@ -126,7 +126,7 @@ struct DetailTranslationView: View {
 //                        let r = results.map{ nsString.substring(with: $0.range(at: 1)) }
                         
                         record.locale = locale
-                        record.resultFromAI(promptType: settings.promptType, summary: try Utility.getAIJson(aiJson: translation))
+                        record.resultFromAI(promptType: settings.promptType, summary: try Utility.getAIJson(aiJson: result))
                         try? modelContext.save()
                         Task {
                             dismiss()

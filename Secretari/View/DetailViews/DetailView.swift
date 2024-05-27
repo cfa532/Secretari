@@ -193,10 +193,10 @@ struct DetailView: View {
                 .alert(isPresented: $showRedoAlert, content: {
                     Alert(title: Text("Alert"), message: Text("Regenerate summary from transcript. Existing content will be overwritten."), primaryButton: .cancel(), secondaryButton: .destructive(Text("Yes"), action: {
                         Task { @MainActor in
-                            websocket.sendToAI(record.transcript) { summary in
+                            websocket.sendToAI(record.transcript) { result in
                                 
                                 record.locale = settings.selectedLocale      // update current locale of the record
-                                record.resultFromAI(promptType: settings.promptType, summary: summary)
+                                record.resultFromAI(promptType: settings.promptType, summary: result)
                             }
                         }
                     }))
@@ -252,9 +252,13 @@ extension DetailView: TimerDelegate {
             record.transcript = speechRecognizer.transcript + "。"
             modelContext.insert(record)
             speechRecognizer.transcript = ""
-            websocket.sendToAI(record.transcript) { summary in
+            websocket.sendToAI(record.transcript) { result in
                 record.locale = settings.selectedLocale
-                record.resultFromAI(promptType: settings.promptType, summary: summary)
+                record.resultFromAI(promptType: settings.promptType, summary: result)
+                
+                // a User is send back with updated token usage and cost. Update currentUser with it
+//                let user = result["user"] as! User
+//                print(user)
             }
         }
     }

@@ -33,10 +33,11 @@ struct SecretariApp: App {
                     print("App lang:", UserDefaults.standard.stringArray(forKey: "AppleLanguages")!)
                     print("identifier: ", NSLocale.current.identifier)
                     
-                    // clear UserDefaults data
-                    //                    if let bundleID = Bundle.main.bundleIdentifier {
-                    //                        UserDefaults.standard.removePersistentDomain(forName: bundleID)
-                    //                    }
+//                     clear UserDefaults data
+//                                        if let bundleID = Bundle.main.bundleIdentifier {
+//                                            UserDefaults.standard.removePersistentDomain(forName: bundleID)
+//                                        }
+                    
                     let userManager = UserManager.shared
                     let identifierManager = IdentifierManager()
                     

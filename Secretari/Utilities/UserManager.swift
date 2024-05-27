@@ -8,7 +8,7 @@
 import Foundation
 import SwiftUI
 
-@MainActor
+//@MainActor
 class UserManager: ObservableObject, Observable {
     @Published var currentUser: User?
     private let keychainManager = KeychainManager.shared
@@ -30,29 +30,13 @@ class UserManager: ObservableObject, Observable {
             print("Current", currentUser!)
             
             webSocket.createTempUser(self.currentUser!) { dict in
-                guard let dict = dict else {
-                    print("Cannot get user from websocket or currentUser is nil")
-                    return
-                }
-                var user = self.currentUser!
-                if let tokenCountData = dict["token_count"] as? [String: UInt] {
-                    user.token_count = Utility.convertDictionaryKeys(from: tokenCountData)
-                }
-                if let tokenUsageData = dict["token_usage"] as? [String: Float] {
-                    user.token_usage = Utility.convertDictionaryKeys(from: tokenUsageData)
-                }
-                if let currentUsageData = dict["current_usage"] as? [String: Float] {
-                    user.current_usage = Utility.convertDictionaryKeys(from: currentUsageData)
-                }
-                // save User information to keychain
-                if let mid = dict["mid"] as? String {
-                    user.mid = mid
-                }
                 Task { @MainActor in
-                    self.currentUser = user
-                    if let mid = user.mid {
-                        print("mid", mid)
+                    guard let dict = dict, self.currentUser != nil else {
+                        print("Cannot get user from websocket or currentUser is nil")
+                        return
                     }
+                    self.currentUser = Utility.convertDictionaryToUser(from: dict, user: self.currentUser!)
+                    
                     if !self.keychainManager.save(data: self.currentUser, for: "currentUser") {
                         print("Failed to save user in Keychain.", self.currentUser as Any)
                     } else {
@@ -63,12 +47,24 @@ class UserManager: ObservableObject, Observable {
         }
     }
     
-    func register() {
+    func register(_ user: User) {
         // register a user at sever when subscribe.
         let webSocket = Websocket.shared
-        webSocket.registerUser(currentUser!) { dict in
-            Task {
-                //                self.currentUser = user
+        Task { @MainActor in
+            webSocket.registerUser(user) { dict in
+                Task { @MainActor in
+                    guard let dict = dict, self.currentUser != nil else {
+                        print("Failed to register.", self.currentUser as Any)
+                        // restore current user to original value, pop an alert and stay at registration page
+                        UserManager.shared.currentUser = self.keychainManager.retrieve(for: "currentUser", type: User.self)
+                        return
+                    }
+                    // update account with token usage data from WS server
+                    self.currentUser = Utility.convertDictionaryToUser(from: dict, user: self.currentUser!)
+                    if !self.keychainManager.save(data: self.currentUser, for: "currentUser") {
+                        print("Registration data received:", self.currentUser as Any)
+                    }
+                }
             }
         }
     }
@@ -92,8 +88,8 @@ struct User :Codable {
     var password: String
     var mid: String?
     var token_count: [LLMModel: UInt]?     // gotten from server, kept locally
-    var token_usage: [LLMModel: Float]?
-    var current_usage: [LLMModel: Float]?   // current month usage
+    var token_usage: [LLMModel: Double]?
+    var current_usage: [LLMModel: Double]?   // current month usage
     var subscription: Bool = false          // Flag indicating active subscription
     var family_name: String?
     var given_name: String?

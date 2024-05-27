@@ -26,14 +26,6 @@ struct Utility {
         } else {
             return RecognizerLocale.English
         }
-//        switch NSLocale.current.language.languageCode?.identifier {
-//        case "zh":
-//            return RecognizerLocale.Chinese
-//        case "ja":
-//            return RecognizerLocale.Japanese
-//        default:
-//            return RecognizerLocale.English
-//        }
     }
     static func printDict(obj: Dictionary<String, Any>) {
         print(obj.description)
@@ -65,5 +57,23 @@ struct Utility {
             }
         }
         return convertedDict
+    }
+    
+    static func convertDictionaryToUser<T>(from dict: [String: T], user: User) -> User {
+        var user = user
+        if let tokenCountData = dict["token_count"] as? [String: UInt] {
+            user.token_count = Utility.convertDictionaryKeys(from: tokenCountData)
+        }
+        if let tokenUsageData = dict["token_usage"] as? [String: Double] {
+            user.token_usage = Utility.convertDictionaryKeys(from: tokenUsageData)
+        }
+        if let currentUsageData = dict["current_usage"] as? [String: Double] {
+            user.current_usage = Utility.convertDictionaryKeys(from: currentUsageData)
+        }
+        // save User information to keychain
+        if let mid = dict["mid"] as? String {
+            user.mid = mid
+        }
+        return user
     }
 }

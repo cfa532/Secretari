@@ -24,24 +24,24 @@ class Websocket: NSObject, ObservableObject, URLSessionWebSocketDelegate, Observ
     private override init() {
         super.init()
         self.urlSession = URLSession(configuration: .default, delegate: self, delegateQueue: OperationQueue())
-//        self.serverURL = SettingsManager.shared.getSettings().serverURL      // dead sure it is a string
+        //        self.serverURL = SettingsManager.shared.getSettings().serverURL      // dead sure it is a string
     }
     
     func configure(_ url: String) {
-//        self.serverURL = url       // different request has different end point.
+        //        self.serverURL = url       // different request has different end point.
         if let token=self.tokenManager.loadToken(), !tokenManager.isTokenExpired(token: token) {
             // valid token
             setRequestHeader()
         } else {
-//            fetchToken() { token, tokenCount in
-//                guard token != nil else {
-//                    print("Empty token from server.")
-//                    self.alertItem = AlertContext.invalidData
-//                    return
-//                }
-//                self.tokenManager.saveToken(token: token!)
-//                self.setRequestHeader()
-//            }
+            //            fetchToken() { token, tokenCount in
+            //                guard token != nil else {
+            //                    print("Empty token from server.")
+            //                    self.alertItem = AlertContext.invalidData
+            //                    return
+            //                }
+            //                self.tokenManager.saveToken(token: token!)
+            //                self.setRequestHeader()
+            //            }
         }
     }
     
@@ -87,19 +87,27 @@ class Websocket: NSObject, ObservableObject, URLSessionWebSocketDelegate, Observ
                     if let data = text.data(using: .utf8) {
                         do {
                             if let dict = try JSONSerialization.jsonObject(with: data) as? NSDictionary {
+                                print("Data from ws: ", dict)
                                 if let type = dict["type"] as? String {
                                     if type == "result" {
                                         if let answer = dict["answer"] as? String {
-                                            print(answer, dict["tokens"]!, dict["cost"]!)
                                             // send reply from AI to display
                                             action(answer)
                                             self.cancel()
+                                            
+                                            // bookkeeping. Update token count
+                                            let user = dict["user"] as? [String: Any] ?? [:]
+                                            UserManager.shared.currentUser = Utility.convertDictionaryToUser(from: user, user: UserManager.shared.currentUser!)
+                                            print("Received from ws", UserManager.shared.currentUser as Any)
+                                            if !KeychainManager.shared.save(data: UserManager.shared.currentUser, for: "currentUser") {
+                                                print("Failed to update user account from WS")
+                                            }
                                         }
                                     } else {
                                         // should be stream type
                                         if let s = dict["data"] as? String {
                                             Task { @MainActor in
-                                                self.streamedText += s
+                                                self.streamedText += s      // display streaming message from ai to user.
                                             }
                                             self.receive(action: action)
                                         }
@@ -168,7 +176,7 @@ class Websocket: NSObject, ObservableObject, URLSessionWebSocketDelegate, Observ
                 self.wsTask?.cancel()
                 self.wsTask = urlSession?.webSocketTask(with: URL(string: "ws://" + self.settings.serverURL + "/ws/")!)
             }
-
+            
             Task {
                 self.send(jsonString) { error in
                     self.alertItem = AlertContext.unableToComplete
@@ -189,11 +197,11 @@ class Websocket: NSObject, ObservableObject, URLSessionWebSocketDelegate, Observ
 extension Websocket {
     func registerUser(_ user: User, completion: @escaping ([String: Any]?) -> Void) {
         // send to register endpoint
-        var request = URLRequest(url: URL(string: "https://"+self.settings.serverURL+"/users/register")!)   // should be https://ip/secretari/users/register
+        var request = URLRequest(url: URL(string: "http://"+self.settings.serverURL+"/users/register")!)   // should be https://ip/secretari/users/register
         request.httpMethod = "POST"
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")
         
-        let body: [String: String] = ["username": user.username, "password": user.password]
+        let body: [String: Any] = ["username": user.username, "password": user.password, "family_name": user.family_name ?? "", "given_name": user.given_name ?? "", "email": user.email ?? "", "mid": user.mid ?? "", "subscription": user.subscription ?? false]
         request.httpBody = try? JSONSerialization.data(withJSONObject: body)
         
         let task = URLSession.shared.dataTask(with: request) { data, response, error in
@@ -233,7 +241,7 @@ extension Websocket {
     
     // fetch login token and updated user information from server
     @MainActor func fetchToken(_ user: User, completion: @escaping ([String: Any]?) -> Void) {
-        var request = URLRequest(url: URL(string: "https://"+self.settings.serverURL + "/token")!)   // should be https://ip/secretari/token
+        var request = URLRequest(url: URL(string: "http://"+self.settings.serverURL + "/token")!)   // should be https://ip/secretari/token
         request.httpMethod = "POST"
         //        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
         request.addValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")   // required by FastAPI
