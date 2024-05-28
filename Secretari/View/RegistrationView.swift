@@ -81,7 +81,9 @@ struct RegistrationView: View {
                 print(UserManager.shared.currentUser as Any)
             })
             .alert(isPresented: $userManager.showAlert) {
-                Alert(title: userManager.alertItem?.title ?? Text("Alert"), message: userManager.alertItem?.message, dismissButton: userManager.alertItem?.dismissButton)
+                Alert(title: userManager.alertItem?.title ?? Text("Alert"),
+                      message: userManager.alertItem?.message,
+                      dismissButton: userManager.alertItem?.dismissButton)
             }
             Button {
                 userManager.loginStatus = .signedOut

@@ -13,6 +13,7 @@ class Websocket: NSObject, ObservableObject, URLSessionWebSocketDelegate, Observ
     @Published var isStreaming: Bool = false
     @Published var streamedText: String = ""
     @Published var alertItem: AlertItem?
+    @Published var showAlert = false
     
     private var tokenManager = TokenManager.shared
     private var urlSession: URLSession?
@@ -25,24 +26,6 @@ class Websocket: NSObject, ObservableObject, URLSessionWebSocketDelegate, Observ
         super.init()
         self.urlSession = URLSession(configuration: .default, delegate: self, delegateQueue: OperationQueue())
         //        self.serverURL = SettingsManager.shared.getSettings().serverURL      // dead sure it is a string
-    }
-    
-    func configure(_ url: String) {
-        //        self.serverURL = url       // different request has different end point.
-        if let token=self.tokenManager.loadToken(), !tokenManager.isTokenExpired(token: token) {
-            // valid token
-            setRequestHeader()
-        } else {
-            //            fetchToken() { token, tokenCount in
-            //                guard token != nil else {
-            //                    print("Empty token from server.")
-            //                    self.alertItem = AlertContext.invalidData
-            //                    return
-            //                }
-            //                self.tokenManager.saveToken(token: token!)
-            //                self.setRequestHeader()
-            //            }
-        }
     }
     
     func setRequestHeader() {
@@ -147,11 +130,13 @@ class Websocket: NSObject, ObservableObject, URLSessionWebSocketDelegate, Observ
     
     // Might need to temporarily revise settings' value.
     @MainActor func sendToAI(_ rawText: String, action: @escaping (_ summary: String)->Void) {
-        guard settings.llmParams != nil, settings.llmParams![settings.llmModel!] != nil else { print("Empty LLM parameters"); return }
-        let llmParams = settings.llmParams![settings.llmModel!]
-        let prompt = settings.prompt[settings.promptType]![settings.selectedLocale]
-        Utility.printDict(obj: llmParams!)
+        
         let user = UserManager.shared.currentUser
+        let llmParams = settings.llmParams[settings.llmModel]
+        let prompt = settings.prompt[settings.promptType]![settings.selectedLocale]
+
+        guard user != nil, llmParams != nil else { print("Null user in SendToAI"); return}
+        Utility.printDict(obj: llmParams!)
         let msg = [
             "user": user!.username,
             "input": [
@@ -161,7 +146,7 @@ class Websocket: NSObject, ObservableObject, URLSessionWebSocketDelegate, Observ
                 "llm": llmParams!["llm"],
                 "temperature": llmParams!["temperature"],
                 "client":"mobile",
-                "model": settings.llmModel!.rawValue
+                "model": settings.llmModel.rawValue
             ]] as [String : Any]
         
         // Convert the Data to String

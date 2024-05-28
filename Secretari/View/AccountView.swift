@@ -18,9 +18,15 @@ struct AccountView: View {
         case .signedOut:
             // login page
             LoginView()
-                .alert(isPresented: $userManager.showAlert) {
-                    Alert(title: userManager.alertItem?.title ?? Text("Alert"), message: userManager.alertItem?.message, dismissButton: userManager.alertItem?.dismissButton)
+//                .alert(isPresented: $userManager.showAlert) {
+//                    Alert(title: userManager.alertItem?.title ?? Text("Alert"), message: userManager.alertItem?.message, dismissButton: userManager.alertItem?.dismissButton)
+//                }
+                .alert("Login error", isPresented: $userManager.showAlert, presenting: userManager.alertItem) { _ in
+                    Button("OK", role: .cancel, action: {print("OK")})
+                } message: { alertItem in
+                    alertItem.message
                 }
+
         case .unregistered:
             // register
             RegistrationView()
@@ -29,7 +35,7 @@ struct AccountView: View {
 }
 
 struct AccountDetailView: View {
-    @State private var showingAlert = false
+    @State private var showAlert = false
     @State private var user = UserManager.shared.currentUser
     @StateObject var userManager = UserManager.shared
     
@@ -89,12 +95,12 @@ struct AccountDetailView: View {
                 }
                 Section("Account") {
                     Button(action: {
-                        self.showingAlert = true
+                        self.showAlert = true
                     }, label: {
                         Text("Sign out")
                     })
                 }
-                .alert(isPresented: $showingAlert) {
+                .alert(isPresented: $showAlert) {
                     Alert(
                         title: Text("Confirm Logout"),
                         message: Text("Are you sure you want to logout?"),

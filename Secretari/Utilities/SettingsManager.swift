@@ -48,8 +48,8 @@ struct Settings :Codable {
     var audioSilentDB: String
     var selectedLocale: RecognizerLocale
     var promptType: PromptType       // Two type: Summary and Memo. Memo is a list of bulletins.
-    var llmModel: LLMModel?
-    var llmParams: [LLMModel :Dictionary<String, String>]?  // dict that match llm model with respective parameters, which is also a dict.
+    var llmModel: LLMModel
+    var llmParams: [LLMModel :Dictionary<String, String>]  // dict that match llm model with respective parameters, which is also a dict.
     
     enum CodingKeys: String, CodingKey {
         case prompt, serverURL, audioSilentDB, selectedLocale, promptType, llmModel, llmParams
@@ -96,7 +96,8 @@ final class AppConstants {
                                           selectedLocale: Utility.systemLanguage(),
                                           promptType: Settings.PromptType.memo,
                                           llmModel: LLMModel.GPT_4_Turbo,
-                                          llmParams: [LLMModel.GPT_4_Turbo : ["llm":"openai", "temperature":"0.0"]]
+                                          llmParams: [LLMModel.GPT_4_Turbo: ["llm":"openai", "temperature":"0.0"],
+                                                      LLMModel.GPT_3: ["llm":"openai", "temperature":"0.0"]]
     )
     
     static let defaultPrompt = [

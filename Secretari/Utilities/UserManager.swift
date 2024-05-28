@@ -120,10 +120,12 @@ class UserManager: ObservableObject, Observable {
                 // update account with token usage data from WS server
                 print("Reply to login: ", dict)
                 self.currentUser = Utility.updateUserFromServerDict(from: dict["user"] as? [String: Any] ?? [:], user: self.currentUser!)
-                self.userToken = dict["token"] as? String
+                
+                let token = dict["token"] as? [String: String] ?? [:]       // {token_type:Bearer, access_token: a long string}
+                self.userToken = token["access_token"]
                 if self.keychainManager.save(data: self.currentUser, for: "currentUser") {
                     print("Login OK:", self.currentUser as Any)
-                    self.loginStatus = .signedIn
+//                    self.loginStatus = .signedIn
                 }
             }
         }

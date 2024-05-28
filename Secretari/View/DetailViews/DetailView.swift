@@ -207,11 +207,15 @@ struct DetailView: View {
                 .disabled(isRecording)
             }
         })
-        .alert(item: $websocket.alertItem) { alertItem in
-            Alert(title: alertItem.title,
-                  message: alertItem.message,
-                  dismissButton: alertItem.dismissButton)
+//        .alert(item: $websocket.alertItem) { alertItem in
+//            Alert(title: alertItem.title,
+//                  message: alertItem.message,
+//                  dismissButton: alertItem.dismissButton)
+//        }
+        .alert(("Websocket Error"), isPresented: $websocket.showAlert, presenting: websocket.alertItem) { alertItem in
+            alertItem.message
         }
+
     }
     
     struct ShareSheet: UIViewControllerRepresentable {

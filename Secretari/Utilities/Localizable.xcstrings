@@ -326,6 +326,9 @@
         }
       }
     },
+    "Login error" : {
+
+    },
     "Login failed. Please try again." : {
 
     },
@@ -993,6 +996,9 @@
 
     },
     "Username:" : {
+
+    },
+    "Websocket Error" : {
 
     },
     "Yes" : {

@@ -66,11 +66,6 @@ struct LoginView: View {
             }
         }
     }
-    
-    func login() {
-        // Here you would typically handle the login logic, possibly verifying credentials with a server.
-        print("Login attempt for \(username) with password \(password)")
-    }
 }
 
 #Preview {
