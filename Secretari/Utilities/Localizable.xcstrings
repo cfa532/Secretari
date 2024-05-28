@@ -10,7 +10,10 @@
     "*" : {
 
     },
-    "********" : {
+    "Account" : {
+
+    },
+    "Account blance: " : {
 
     },
     "advanced" : {
@@ -22,9 +25,6 @@
           }
         }
       }
-    },
-    "again:" : {
-
     },
     "Alert" : {
       "localizations" : {
@@ -80,7 +80,13 @@
         }
       }
     },
+    "Are you sure you want to logout?" : {
+
+    },
     "Change Password" : {
+
+    },
+    "Confirm Logout" : {
 
     },
     "Confirm Password" : {
@@ -101,6 +107,9 @@
           }
         }
       }
+    },
+    "Don't have an account?" : {
+
     },
     "Edit" : {
       "extractionState" : "stale",
@@ -134,9 +143,6 @@
     "Email" : {
 
     },
-    "email:" : {
-
-    },
     "English" : {
       "localizations" : {
         "ja" : {
@@ -163,9 +169,6 @@
 
     },
     "Family Name" : {
-
-    },
-    "Family name:" : {
 
     },
     "First make sure to select the right language for recognition in setting ⚙️ Otherwise the built-in speech recognizer cannot work properly." : {
@@ -196,10 +199,13 @@
         }
       }
     },
+    "General" : {
+
+    },
     "Given Name" : {
 
     },
-    "Given name:" : {
+    "Have an account?" : {
 
     },
     "Indonesia" : {
@@ -320,7 +326,10 @@
         }
       }
     },
-    "Login" : {
+    "Login failed. Please try again." : {
+
+    },
+    "Logout" : {
 
     },
     "Memo Missing" : {
@@ -445,9 +454,6 @@
           }
         }
       }
-    },
-    "Password:" : {
-
     },
     "Personal Information" : {
 
@@ -637,9 +643,6 @@
     "Regenerate summary from transcript. Existing content will be overwritten." : {
 
     },
-    "Register" : {
-
-    },
     "Reset" : {
       "localizations" : {
         "es-419" : {
@@ -754,6 +757,21 @@
           }
         }
       }
+    },
+    "Sign in" : {
+
+    },
+    "SIGN IN" : {
+
+    },
+    "Sign out" : {
+
+    },
+    "Sign up" : {
+
+    },
+    "SIGN UP" : {
+
     },
     "Start" : {
       "localizations" : {
@@ -968,10 +986,10 @@
     "Update Profile" : {
 
     },
-    "Username" : {
+    "Usage of the month:" : {
 
     },
-    "Username and password are required. Please make sure to input the same password twice." : {
+    "Username is required and less than 20 characters long. Please confirm the password." : {
 
     },
     "Username:" : {

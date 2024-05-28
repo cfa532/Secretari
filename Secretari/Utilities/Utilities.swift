@@ -59,7 +59,7 @@ struct Utility {
         return convertedDict
     }
     
-    static func convertDictionaryToUser<T>(from dict: [String: T], user: User) -> User {
+    static func updateUserFromServerDict<T>(from dict: [String: T], user: User) -> User {
         var user = user
         if let tokenCountData = dict["token_count"] as? [String: UInt] {
             user.token_count = Utility.convertDictionaryKeys(from: tokenCountData)

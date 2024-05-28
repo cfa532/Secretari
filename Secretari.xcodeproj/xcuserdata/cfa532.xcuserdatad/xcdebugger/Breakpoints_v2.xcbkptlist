@@ -7,47 +7,17 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "B376560F-02A1-41E7-AAD3-EAF437EFF1E0"
+            uuid = "8FA8FA12-9431-4F64-B188-B3754A679FE3"
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "Secretari/View/AccountView.swift"
+            filePath = "Secretari/Utilities/UserManager.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "29"
-            endingLineNumber = "29"
-            landmarkName = "body"
+            startingLineNumber = "15"
+            endingLineNumber = "15"
+            landmarkName = "currentUser"
             landmarkType = "24">
-            <Locations>
-               <Location
-                  uuid = "B376560F-02A1-41E7-AAD3-EAF437EFF1E0 - 44368d0a71d60af1"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "closure #2 () -&gt; () in Secretari.AccountView.body.getter : some"
-                  moduleName = "Secretari"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/cfa532/Documents/GitHub/Secretari/Secretari/View/AccountView.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "29"
-                  endingLineNumber = "29">
-               </Location>
-               <Location
-                  uuid = "B376560F-02A1-41E7-AAD3-EAF437EFF1E0 - 44368d0a71d60af1"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "closure #2 () -&gt; () in Secretari.AccountView.body.getter : some"
-                  moduleName = "Secretari"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/cfa532/Documents/GitHub/Secretari/Secretari/View/AccountView.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "29"
-                  endingLineNumber = "29">
-               </Location>
-            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>

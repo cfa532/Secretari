@@ -17,76 +17,30 @@ struct RegistrationView: View {
         NavigationStack {
             Form {
                 Section(header: Text("Information")) {
-                    VStack {
-                        HStack {Text("Username:")
-                                .frame(maxWidth: .infinity, alignment: .leading)
-                            Text("*").foregroundStyle(.red)
-                            Spacer()
-                        }
-                        TextField(user.username.count==0 ? "< 20 characters long" : user.username, text: $user.username)
-                            .foregroundColor(.secondary)
-                            .background(Color.gray.opacity(0.1))
-                        //                            .border(Color.gray, width: 1)
-                    }
+
+                    InputView(text: $user.username, title: "Username", placeHolder: user.username, isSecureField: false, required: true)
+                        .padding(.top, 40)
+                        .textInputAutocapitalization(.never)
+
+                    
                     HStack {
-                        VStack {
-                            HStack {
-                                Text("Password:")
-                                    .frame(maxWidth: .infinity, alignment: .leading)
-                                Text("*").foregroundStyle(.red)
-                                Spacer()
-                            }
-                            SecureField("", text: $user.password)
-                                .foregroundColor(.secondary)
-                                .background(Color.gray.opacity(0.15))
-                        }
-                        Spacer()
-                        VStack {
-                            HStack {
-                                Text("again:")
-                                    .frame(maxWidth: .infinity, alignment: .leading)
-                                Text("*").foregroundStyle(.red)
-                                Spacer()
-                            }
-                            SecureField("", text: $passwd)
-                                .foregroundColor(.secondary)
-                                .background(Color.gray.opacity(0.15))
-                        }
-                    }
-                    VStack {
-                        Text("Family name:")
-                            .frame(maxWidth: .infinity, alignment: .leading)
-                        TextField(user.family_name ?? "", text: Binding<String> (
-                            get: {user.family_name ?? ""}, set: { user.family_name = $0}
-                        ))
-                        .foregroundColor(.secondary)
-                        .background(Color.gray.opacity(0.1))
+                        InputView(text: $user.password, title: "Password", placeHolder: "", isSecureField: true, required: true)
+                        InputView(text: $passwd, title: "Confirm", placeHolder: "", isSecureField: true, required: true)
                     }
                     
-                    VStack {
-                        Text("Given name:")
-                            .frame(maxWidth: .infinity, alignment: .leading)
-                        TextField(user.given_name ?? "", text: Binding<String> (
-                            get: {user.given_name ?? ""}, set: { user.given_name = $0}
-                        ))
-                        .foregroundColor(.secondary)
-                        .background(Color.gray.opacity(0.1))
-                    }
+                    InputView(text: Binding<String> (get: {user.family_name ?? ""}, set: {user.family_name=$0}), title: "Family name", placeHolder: user.family_name ?? "")
                     
-                    VStack {
-                        Text("email:")
-                            .frame(maxWidth: .infinity, alignment: .leading)
-                        TextField(user.email ?? "email@", text: Binding<String> (
-                            get: {user.email ?? ""}, set: { user.email = $0}
-                        ))
-                        .foregroundColor(.secondary)
-                        .background(Color.gray.opacity(0.1))
-                    }
+
+                    InputView(text: Binding<String> (get: {user.given_name ?? ""}, set: { user.given_name = $0}), title: "Given name", placeHolder: user.given_name ?? "")
+
+                    InputView(text: Binding<String> (get: {user.email ?? ""}, set: { user.email = $0}), title: "Email", placeHolder: user.email ?? "")
+                    .textInputAutocapitalization(.never)
                 }
+
                 Section(header: Text("")) {
                     Button(action: {
                         // register
-                        if user.username.count>0, user.password.count>0, user.password==passwd {
+                        if 1...20 ~= user.username.count, user.password.count>0, user.password==passwd {
                             
                             // prepare currentUser for save to keychain. If it fails, restore currentUser.
                             userManager.currentUser?.username = user.username
@@ -101,12 +55,20 @@ struct RegistrationView: View {
                             showAlert = true
                         }
                     }, label: {
-                        Text("Register")
+                        HStack {
+                            Text("SIGN UP")
+                                .fontWeight(.semibold)
+                            Image(systemName: "arrow.right")
+                        }
+                        .foregroundStyle(.white)
+                        .frame(width: UIScreen.main.bounds.width - 32, height: 48)
                     })
+                    .background(Color(.systemBlue).opacity(0.8))
+                    .cornerRadius(10)
                     .alert("Alert", isPresented: $showAlert) {
                            Button("OK", role: .cancel) { }
                        } message: {
-                           Text("Username and password are required. Please make sure to input the same password twice." )
+                           Text("Username is required and less than 20 characters long. Please confirm the password." )
                        }
                 }
             }
@@ -121,6 +83,18 @@ struct RegistrationView: View {
             .alert(isPresented: $userManager.showAlert) {
                 Alert(title: userManager.alertItem?.title ?? Text("Alert"), message: userManager.alertItem?.message, dismissButton: userManager.alertItem?.dismissButton)
             }
+            Button {
+                userManager.loginStatus = .signedOut
+            } label: {
+                HStack(spacing: 5, content: {
+                    Text("Have an account?")
+                    Text("Sign in")
+                        .fontWeight(.bold)
+                        .opacity(0.9)
+                })
+                .font(.system(size: 16))
+            }
+
         }
     }
 }

@@ -18,15 +18,24 @@ import SwiftData
 struct ContentView: View {
     @Environment(\.modelContext) private var modelContext
     @Query(sort: \AudioRecord.recordDate, order: .reverse) var records: [AudioRecord]
-    @Binding var errorWrapper: ErrorWrapper?
+    @StateObject private var userManager = UserManager.shared
     
     @State private var settings: Settings = SettingsManager.shared.getSettings()
     @State private var isRecording = false
     @State private var showDetailView = false
     @State private var showSettings = false
     
-    private let userManager = UserManager.shared
-
+    private var statusLogin: String {
+        switch userManager.loginStatus {
+        case .signedIn:
+            return "Account"
+        case .signedOut:
+            return "Login"
+        case .unregistered:
+            return "Register"
+        }
+    }
+    
     var body: some View {
         NavigationStack {
             List {
@@ -74,19 +83,19 @@ struct ContentView: View {
                             AccountView()
                         } label: {
                             Label(
-                                title: { Text(loginMenuBar()) },
+                                title: { Text(self.statusLogin) },
                                 icon: { Image(systemName: "square.and.pencil") }
                             )
                         }
-
                         
-//                        NavigationLink(destination: AccountView) {
-//                            Label(title: {
-//                                userManager.currentUser?.username.count > 20 ? "Login" : "Register"
-//                            }, icon: {
-//                                "pencil.and.scribble")
-//                            }
-//                        }
+                        
+                        //                        NavigationLink(destination: AccountView) {
+                        //                            Label(title: {
+                        //                                userManager.currentUser?.username.count > 20 ? "Login" : "Register"
+                        //                            }, icon: {
+                        //                                "pencil.and.scribble")
+                        //                            }
+                        //                        }
                     } label: {
                         Image(systemName: "person.crop.circle")
                             .resizable()
@@ -94,23 +103,23 @@ struct ContentView: View {
                             .foregroundColor(.primary)
                             .opacity(0.7)
                     }
-
+                    
                 }
-//                ToolbarItem(placement: .topBarTrailing, content: {
-//                    NavigationLink(destination: SettingsView(settings: $settings)) {
-//                        // navigationLink does not work becuase tappablePadding interfered with onTap()
-//                        // showSettings=true triggered navigation destination.
-//                        // keep navigationLnik because it change image color when tapped.
-//                        Image(systemName: "person.fill.turn.down")
-//                            .resizable()
-//                            .frame(width: 20, height: 20)
-//                            .foregroundColor(.primary)
-//                            .opacity(0.8)
-//                            .tappablePadding(EdgeInsets(top: 12, leading: 12, bottom: 12, trailing: 12)) {
-//                                self.showSettings = true
-//                            }
-//                    }
-//                })
+                //                ToolbarItem(placement: .topBarTrailing, content: {
+                //                    NavigationLink(destination: SettingsView(settings: $settings)) {
+                //                        // navigationLink does not work becuase tappablePadding interfered with onTap()
+                //                        // showSettings=true triggered navigation destination.
+                //                        // keep navigationLnik because it change image color when tapped.
+                //                        Image(systemName: "person.fill.turn.down")
+                //                            .resizable()
+                //                            .frame(width: 20, height: 20)
+                //                            .foregroundColor(.primary)
+                //                            .opacity(0.8)
+                //                            .tappablePadding(EdgeInsets(top: 12, leading: 12, bottom: 12, trailing: 12)) {
+                //                                self.showSettings = true
+                //                            }
+                //                    }
+                //                })
             }
             
             Button(action: {
@@ -129,24 +138,12 @@ struct ContentView: View {
         .onAppear {
         }
     }
-    
-    private func loginMenuBar() -> String {
-        if let user=UserManager.shared.currentUser, user.username.count > 20 {
-            // a temp default account with system generated name
-            return "Register"
-        } else {
-            if userManager.loginStatus == .signedIn {
-                return "Account"
-            }
-            return "Login"
-        }
-    }
 }
 
 #Preview {
     let container = try! ModelContainer(for: AudioRecord.self, configurations: ModelConfiguration(isStoredInMemoryOnly: true))
     container.mainContext.insert(AudioRecord.sampleData[0])
-    return ContentView(errorWrapper: .constant(.emptyError))
+    return ContentView()
         .modelContainer(container)
     //    TranscriptView(errorWrapper: .constant(.emptyError))
     //        .modelContainer(for: [AudioRecord.self, AppSettings.self], inMemory: true)

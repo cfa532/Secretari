@@ -10,19 +10,38 @@ import SwiftUI
 
 //@MainActor
 class UserManager: ObservableObject, Observable {
-    @Published var currentUser: User?
+    @Published var currentUser: User? {
+        didSet {
+            if let count=currentUser?.username.count, count > 20 {
+                loginStatus = .unregistered
+            } else {
+                loginStatus = .signedOut
+                if userToken != nil, userToken != "" {
+                    loginStatus = .signedIn
+                }
+            }
+        }
+    }
     @Published var showAlert: Bool = false
     @Published var alertItem: AlertItem?
-    @Published var loginStatus: StatusLogin = .unregistered     // login status of the current user
+    @Published var loginStatus: StatusLogin = .signedIn     // login status of the current user
     var userToken: String? {
         didSet {
-            if userToken != nil {
+            TokenManager.shared.saveToken(token: userToken ?? "")
+            if userToken != nil, userToken != "" {
                 loginStatus = .signedIn
-            }
+            } else {
+                loginStatus = .signedOut
+                if let count=currentUser?.username.count, count > 20 {
+                    // in case of annoymous user.
+                    loginStatus = .unregistered
+                }
+           }
         }
     }
     private let keychainManager = KeychainManager.shared
     static let shared = UserManager()
+    private let websocket = Websocket.shared
     private init() {}
 
     enum StatusLogin {
@@ -32,12 +51,11 @@ class UserManager: ObservableObject, Observable {
     func createTempUser(_ id: String) {
         // When someone starts to use the app without registration. Give it an identify.
         // Enforce registration only when user wants to subscribe.
-        let webSocket = Websocket.shared
-        Task { @MainActor in
+//        Task { @MainActor in
             currentUser = User(username: id, password: "zaq1^WSX")
             print("Current", currentUser!)
             
-            webSocket.createTempUser(currentUser!) { dict, statusCode in
+            websocket.createTempUser(currentUser!) { dict, statusCode in
                 Task { @MainActor in
                     guard let dict = dict, self.currentUser != nil else {
                         print("Failed to create temp user account.", self.currentUser as Any)
@@ -47,49 +65,67 @@ class UserManager: ObservableObject, Observable {
                         return
                     }
                     // update temp user with account data recieved from server.
-                    self.currentUser = Utility.convertDictionaryToUser(from: dict, user: self.currentUser!)
+                    self.currentUser = Utility.updateUserFromServerDict(from: dict, user: self.currentUser!)
                     
                     if !self.keychainManager.save(data: self.currentUser, for: "currentUser") {
                         print("Temp account created OK", self.currentUser as Any)
                     }
                 }
-            }
+//            }
         }
     }
     
     func register(_ user: User) {
         // register a user at sever when subscribe.
-        let webSocket = Websocket.shared
-        Task { @MainActor in
-            webSocket.registerUser(user) { dict, statusCode in
+//        Task { @MainActor in
+            websocket.registerUser(user) { dict, statusCode in
                 Task { @MainActor in
                     guard let dict = dict, self.currentUser != nil, statusCode != .failure  else {
                         print("Failed to register.", self.currentUser as Any)
                         // restore current user to original value, pop an alert and stay at registration page
-                        UserManager.shared.currentUser = self.keychainManager.retrieve(for: "currentUser", type: User.self)
+                        self.currentUser = self.keychainManager.retrieve(for: "currentUser", type: User.self)
                         self.alertItem = AlertContext.unableToComplete
                         self.alertItem?.message = Text("The username is taken. Please try again.")
                         self.showAlert = true
                         return
                     }
                     // update account with token usage data from WS server
-                    self.currentUser = Utility.convertDictionaryToUser(from: dict, user: self.currentUser!)
+                    self.currentUser = Utility.updateUserFromServerDict(from: dict, user: self.currentUser!)
                     
                     if self.keychainManager.save(data: self.currentUser, for: "currentUser") {
                         print("Registration data received OK:", self.currentUser as Any)
                         
                         // the registration succesed. Go to login page.
-                        self.loginStatus = .signedOut
+//                        self.loginStatus = .signedOut
                     }
+                }
+//            }
+        }
+    }
+
+    func login(username: String, password: String) {
+        websocket.fetchToken(username: username, password: password) { dict, statusCode in
+            Task { @MainActor in
+                guard let dict = dict, statusCode != .failure  else {
+                    print("Failed to login.", self.currentUser as Any)
+                    
+                    // fetch secure token and store it on keychain
+                    self.currentUser = self.keychainManager.retrieve(for: "currentUser", type: User.self)
+                    self.alertItem = AlertContext.unableToComplete
+                    self.alertItem?.message = Text("Login failed. Please try again.")
+                    self.showAlert = true
+                    return
+                }
+                // update account with token usage data from WS server
+                print("Reply to login: ", dict)
+                self.currentUser = Utility.updateUserFromServerDict(from: dict["user"] as? [String: Any] ?? [:], user: self.currentUser!)
+                self.userToken = dict["token"] as? String
+                if self.keychainManager.save(data: self.currentUser, for: "currentUser") {
+                    print("Login OK:", self.currentUser as Any)
+                    self.loginStatus = .signedIn
                 }
             }
         }
-    }
-    
-    func loadUser(username: String?, deviceId: String?) {
-        // Load user data from persistent storage (optional)
-        // id can have two values. If the user never signed up, the id is device identifier. Otherwise its username
-        
     }
     
     func updateSubscriptionStatus(isSubscribed: Bool) {

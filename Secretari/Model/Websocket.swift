@@ -97,7 +97,7 @@ class Websocket: NSObject, ObservableObject, URLSessionWebSocketDelegate, Observ
                                             
                                             // bookkeeping. Update token count
                                             let user = dict["user"] as? [String: Any] ?? [:]
-                                            UserManager.shared.currentUser = Utility.convertDictionaryToUser(from: user, user: UserManager.shared.currentUser!)
+                                            UserManager.shared.currentUser = Utility.updateUserFromServerDict(from: user, user: UserManager.shared.currentUser!)
                                             print("Received from ws", UserManager.shared.currentUser as Any)
                                             if !KeychainManager.shared.save(data: UserManager.shared.currentUser, for: "currentUser") {
                                                 print("Failed to update user account from WS")
@@ -193,12 +193,12 @@ class Websocket: NSObject, ObservableObject, URLSessionWebSocketDelegate, Observ
 }
 
 enum HTTPStatusCode: Int {
-  case success = 200
-  case created = 201
-  case accepted = 202
-  case noContent = 204
+    case success = 200
+    case created = 201
+    case accepted = 202
+    case noContent = 204
     case failure = 400
-  // ... Add other common codes as needed
+    // ... Add other common codes as needed
 }
 
 // http calls for user account management
@@ -260,27 +260,24 @@ extension Websocket {
     }
     
     // fetch login token and updated user information from server
-    @MainActor func fetchToken(_ user: User, completion: @escaping ([String: Any]?, HTTPStatusCode?) -> Void) {
+    func fetchToken(username: String, password: String, completion: @escaping ([String: Any]?, HTTPStatusCode?) -> Void) {
         var request = URLRequest(url: URL(string: "http://"+self.settings.serverURL + "/token")!)   // should be https://ip/secretari/token
         request.httpMethod = "POST"
-        //        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
         request.addValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")   // required by FastAPI
-        
-        let body: [String: String] = ["username": user.username, "password": user.password]
-        request.httpBody = try? JSONSerialization.data(withJSONObject: body)
+        let formData = "username=\(username)&password=\(password)"
+        print(formData)
+        request.httpBody = formData.data(using: .utf8)
         
         let task = URLSession.shared.dataTask(with: request) { data, response, error in
             guard let data = data, error == nil else {
                 completion(nil, nil)
                 return
             }
-            if let httpResponse = response as? HTTPURLResponse {
-                if httpResponse.statusCode >= 400 {
-                    completion(nil, .failure)
-                } else {
-                    let json = try? JSONSerialization.jsonObject(with: data) as? [String: Any]
-                    completion(json, .created)
-                }
+            if let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 {
+                let json = try? JSONSerialization.jsonObject(with: data) as? [String: Any]
+                completion(json, .success)
+            } else {
+                completion(nil, .failure)
             }
         }
         task.resume()

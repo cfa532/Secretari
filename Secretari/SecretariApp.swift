@@ -12,7 +12,6 @@ import SwiftData
 struct SecretariApp: App {
     @Environment(\.scenePhase) var scenePhase
     @Environment(\.modelContext) private var modelContext
-    @State private var errorWrapper: ErrorWrapper?
     
     var sharedModelContainer: ModelContainer = {
         let schema = Schema([AudioRecord.self, /*Settings.self,*/ Item.self])
@@ -26,7 +25,7 @@ struct SecretariApp: App {
     
     var body: some Scene {
         WindowGroup {
-            ContentView(errorWrapper: $errorWrapper)
+            ContentView()
                 .task {
                     guard let appSupportDir = FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask).last else { return }
                     print(appSupportDir)
@@ -68,11 +67,6 @@ struct SecretariApp: App {
                     } else {
                         print("This is not the first run after an update")
                     }
-                }
-                .sheet(item: $errorWrapper) {
-                    //                     var records = AudioRecord.sampleData     // no need here
-                } content: { wrapper in
-                    ErrorView(errorWrapper: wrapper)
                 }
         }
         //        .environment(userManager)
