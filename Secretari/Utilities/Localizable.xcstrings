@@ -13,7 +13,7 @@
     "Account" : {
 
     },
-    "Account blance: " : {
+    "Account blance in token amount:" : {
 
     },
     "advanced" : {
@@ -80,13 +80,13 @@
         }
       }
     },
-    "Are you sure you want to logout?" : {
+    "Are you sure to logout?" : {
+
+    },
+    "Cancel" : {
 
     },
     "Change Password" : {
-
-    },
-    "Confirm Logout" : {
 
     },
     "Confirm Password" : {
@@ -203,6 +203,12 @@
 
     },
     "Given Name" : {
+
+    },
+    "GPT-3:" : {
+
+    },
+    "GPT-4-Turbo:" : {
 
     },
     "Have an account?" : {
@@ -330,9 +336,6 @@
 
     },
     "Login failed. Please try again." : {
-
-    },
-    "Logout" : {
 
     },
     "Memo Missing" : {
@@ -989,7 +992,7 @@
     "Update Profile" : {
 
     },
-    "Usage of the month:" : {
+    "Usage of the month in USD amount:" : {
 
     },
     "Username is required and less than 20 characters long. Please confirm the password." : {

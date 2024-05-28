@@ -30,6 +30,22 @@ struct AccountDetailView: View {
     @State private var user = UserManager.shared.currentUser
     @StateObject var userManager = UserManager.shared
     
+    private let formatterUSD = {
+        let formatter = NumberFormatter()
+        formatter.numberStyle = .currency
+        formatter.currencyCode = "USD" // Sets the currency symbol to USD
+        formatter.currencySymbol = "$" // Explicitly sets the currency symbol to $
+        formatter.minimumFractionDigits = 2
+        formatter.maximumFractionDigits = 2
+        return formatter
+    }
+    private let formatterInt = {
+        let formatter = NumberFormatter()
+        formatter.numberStyle = .decimal // Use the decimal style
+        formatter.groupingSeparator = "," // Explicitly set the grouping separator to comma
+        formatter.usesGroupingSeparator = true // Enable the use of the grouping separator
+        return formatter
+    }
     var body: some View {
         NavigationStack {
             List {
@@ -55,32 +71,48 @@ struct AccountDetailView: View {
                     }
                 }
                 Section("General") {
-                    VStack(alignment: .leading) {
+                    VStack(alignment: .leading, spacing: 8) {
                         Text("Username:")
                             .font(.subheadline)
                             .foregroundStyle(.gray)
                         Text(user?.username ?? " ")
                     }
-                    VStack(alignment: .leading) {
-                        Text("Account blance: ")
+                    VStack(alignment: .leading, spacing: 10) {
+                        Text("Account blance in token amount:")
                             .font(.subheadline)
                             .foregroundStyle(.gray)
                         if let g3 = user?.token_count, let g3c=g3[LLMModel.GPT_3] {
-                            Text("GPT-3 " + String(describing: g3c))
+                            HStack {
+                                Text("GPT-3:")
+                                Spacer()
+                                Text(formatterInt().string(from: NSNumber(value: g3c))!)
+                            }
                         }
                         if let g4 = user?.token_count, let g4c=g4[LLMModel.GPT_4_Turbo] {
-                            Text("GPT-4-Turbo " + String(describing: g4c))
-                        }
+                            HStack {
+                                Text("GPT-4-Turbo:")
+                                Spacer()
+                                Text(formatterInt().string(from: NSNumber(value: g4c))!)
+                            }
+                       }
                     }
-                    VStack(alignment: .leading) {
-                        Text("Usage of the month:")
+                    VStack(alignment: .leading, spacing: 10) {
+                        Text("Usage of the month in USD amount:")
                             .font(.subheadline)
                             .foregroundStyle(.gray)
                         if let u3 = user?.current_usage, let u3c=u3[LLMModel.GPT_3] {
-                            Text("GPT-3 " + String(describing: u3c))
+                            HStack {
+                                Text("GPT-3:")
+                                Spacer()
+                                Text(formatterUSD().string(from: NSNumber(value: u3c))!)
+                            }
                         }
                         if let u4 = user?.current_usage, let u4c=u4[LLMModel.GPT_4_Turbo] {
-                            Text("GPT-4-Turbo " + String(describing: u4c))
+                            HStack {
+                                Text("GPT-4-Turbo:")
+                                Spacer()
+                                Text(formatterUSD().string(from: NSNumber(value: u4c))!)
+                            }
                         }
                     }
                 }
@@ -91,17 +123,24 @@ struct AccountDetailView: View {
                         Text("Sign out")
                     })
                 }
-                .alert(isPresented: $showAlert) {
-                    Alert(
-                        title: Text("Confirm Logout"),
-                        message: Text("Are you sure you want to logout?"),
-                        primaryButton: .destructive(Text("Logout")) {
-                            print("User logged out")
-                            userManager.userToken = nil
-                        },
-                        secondaryButton: .cancel()
-                    )
+//                .alert(isPresented: $showAlert) {
+//                    Alert(
+//                        title: Text("Confirm Logout"),
+//                        message: Text("Are you sure you want to logout?"),
+//                        primaryButton: .destructive(Text("Logout")) {
+//                            print("User logged out")
+//                            userManager.userToken = nil
+//                        },
+//                        secondaryButton: .cancel()
+//                    )
+//                }
+                .alert("Sign out", isPresented: $showAlert) {
+                    Button("OK", action: {userManager.userToken = nil})
+                    Button("Cancel", role: .cancel, action: { print("cancelled")})
+                } message: {
+                    Text("Are you sure to logout?")
                 }
+
             }
         }
     }

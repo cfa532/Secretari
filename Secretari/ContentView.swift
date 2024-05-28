@@ -5,13 +5,6 @@
 //  Created by 超方 on 2024/5/26.
 //
 
-//
-//  ContentView.swift
-//  SummarySwiftData
-//
-//  Created by 超方 on 2024/4/5.
-//
-
 import SwiftUI
 import SwiftData
 
@@ -25,7 +18,7 @@ struct ContentView: View {
     @State private var showDetailView = false
     @State private var showSettings = false
     
-    private var statusLogin: String {
+    private var loginStatus: String {
         switch userManager.loginStatus {
         case .signedIn:
             return "Account"
@@ -83,19 +76,10 @@ struct ContentView: View {
                             AccountView()
                         } label: {
                             Label(
-                                title: { Text(self.statusLogin) },
+                                title: { Text(self.loginStatus) },
                                 icon: { Image(systemName: "square.and.pencil") }
                             )
                         }
-                        
-                        
-                        //                        NavigationLink(destination: AccountView) {
-                        //                            Label(title: {
-                        //                                userManager.currentUser?.username.count > 20 ? "Login" : "Register"
-                        //                            }, icon: {
-                        //                                "pencil.and.scribble")
-                        //                            }
-                        //                        }
                     } label: {
                         Image(systemName: "person.crop.circle")
                             .resizable()
@@ -134,8 +118,6 @@ struct ContentView: View {
                     .clipShape(Circle())
                     .shadow(radius: 5)
             })
-        }
-        .onAppear {
         }
     }
 }

@@ -212,7 +212,8 @@ struct DetailView: View {
 //                  message: alertItem.message,
 //                  dismissButton: alertItem.dismissButton)
 //        }
-        .alert(("Websocket Error"), isPresented: $websocket.showAlert, presenting: websocket.alertItem) { alertItem in
+        .alert("Websocket Error", isPresented: $websocket.showAlert, presenting: websocket.alertItem) { _ in
+        } message: { alertItem in
             alertItem.message
         }
 
