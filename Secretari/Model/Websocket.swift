@@ -48,6 +48,7 @@ class Websocket: NSObject, ObservableObject, URLSessionWebSocketDelegate, Observ
         // expecting {"type": "result", "answer": "summary content"}
         // add a timeout timer
         wsTask?.receive( completionHandler: { result in
+            Task { @MainActor in
             switch result {
             case .failure(let error):
                 print("WebSocket failure: \(error)")
@@ -79,9 +80,7 @@ class Websocket: NSObject, ObservableObject, URLSessionWebSocketDelegate, Observ
                                     } else {
                                         // should be stream type
                                         if let s = dict["data"] as? String {
-                                            Task { @MainActor in
                                                 self.streamedText += s      // display streaming message from ai to user.
-                                            }
                                             self.receive(action: action)
                                         }
                                     }
@@ -98,6 +97,7 @@ class Websocket: NSObject, ObservableObject, URLSessionWebSocketDelegate, Observ
                     self.cancel()
                     self.alertItem = AlertContext.invalidData
                 }
+            }
             }
         })
     }
