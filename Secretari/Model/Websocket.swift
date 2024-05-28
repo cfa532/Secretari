@@ -192,13 +192,17 @@ class Websocket: NSObject, ObservableObject, URLSessionWebSocketDelegate, Observ
     }
 }
 
-enum HTTPStatusCode: Int {
+enum HTTPStatusCode: Int, Comparable {
     case success = 200
     case created = 201
     case accepted = 202
     case noContent = 204
     case failure = 400
     // ... Add other common codes as needed
+    
+    static func < (lhs: HTTPStatusCode, rhs: HTTPStatusCode) -> Bool {
+         return lhs.rawValue < rhs.rawValue
+     }
 }
 
 // http calls for user account management
@@ -265,7 +269,6 @@ extension Websocket {
         request.httpMethod = "POST"
         request.addValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")   // required by FastAPI
         let formData = "username=\(username)&password=\(password)"
-        print(formData)
         request.httpBody = formData.data(using: .utf8)
         
         let task = URLSession.shared.dataTask(with: request) { data, response, error in

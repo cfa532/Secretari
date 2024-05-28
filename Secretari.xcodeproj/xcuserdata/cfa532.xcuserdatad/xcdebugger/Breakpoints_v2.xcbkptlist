@@ -20,5 +20,67 @@
             landmarkType = "24">
          </BreakpointContent>
       </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "4FD24FA6-13B5-417E-9A34-AE8741F32DB0"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Secretari/Utilities/UserManager.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "110"
+            endingLineNumber = "110"
+            landmarkName = "login(username:password:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "29D54D46-B6E5-4339-A5A8-0CF2986FFBB4"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Secretari/Model/Websocket.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "279"
+            endingLineNumber = "279"
+            landmarkName = "fetchToken(username:password:completion:)"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "29D54D46-B6E5-4339-A5A8-0CF2986FFBB4 - f59976a80ef0700e"
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 @Sendable (Swift.Optional&lt;Foundation.Data&gt;, Swift.Optional&lt;__C.NSURLResponse&gt;, Swift.Optional&lt;Swift.Error&gt;) -&gt; () in Secretari.Websocket.fetchToken(username: Swift.String, password: Swift.String, completion: (Swift.Optional&lt;Swift.Dictionary&lt;Swift.String, Any&gt;&gt;, Swift.Optional&lt;Secretari.HTTPStatusCode&gt;) -&gt; ()) -&gt; ()"
+                  moduleName = "Secretari"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/cfa532/Documents/GitHub/Secretari/Secretari/Model/Websocket.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "279"
+                  endingLineNumber = "279">
+               </Location>
+               <Location
+                  uuid = "29D54D46-B6E5-4339-A5A8-0CF2986FFBB4 - f59976a80ef0700e"
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 @Sendable (Swift.Optional&lt;Foundation.Data&gt;, Swift.Optional&lt;__C.NSURLResponse&gt;, Swift.Optional&lt;Swift.Error&gt;) -&gt; () in Secretari.Websocket.fetchToken(username: Swift.String, password: Swift.String, completion: (Swift.Optional&lt;Swift.Dictionary&lt;Swift.String, Any&gt;&gt;, Swift.Optional&lt;Secretari.HTTPStatusCode&gt;) -&gt; ()) -&gt; ()"
+                  moduleName = "Secretari"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/cfa532/Documents/GitHub/Secretari/Secretari/Model/Websocket.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "279"
+                  endingLineNumber = "279">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
    </Breakpoints>
 </Bucket>

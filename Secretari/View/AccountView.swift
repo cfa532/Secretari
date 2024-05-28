@@ -18,6 +18,9 @@ struct AccountView: View {
         case .signedOut:
             // login page
             LoginView()
+                .alert(isPresented: $userManager.showAlert) {
+                    Alert(title: userManager.alertItem?.title ?? Text("Alert"), message: userManager.alertItem?.message, dismissButton: userManager.alertItem?.dismissButton)
+                }
         case .unregistered:
             // register
             RegistrationView()
@@ -91,17 +94,17 @@ struct AccountDetailView: View {
                         Text("Sign out")
                     })
                 }
-            }
-            .alert(isPresented: $showingAlert) {
-                Alert(
-                    title: Text("Confirm Logout"),
-                    message: Text("Are you sure you want to logout?"),
-                    primaryButton: .destructive(Text("Logout")) {
-                        print("User logged out")
-                        userManager.userToken = nil
-                    },
-                    secondaryButton: .cancel()
-                )
+                .alert(isPresented: $showingAlert) {
+                    Alert(
+                        title: Text("Confirm Logout"),
+                        message: Text("Are you sure you want to logout?"),
+                        primaryButton: .destructive(Text("Logout")) {
+                            print("User logged out")
+                            userManager.userToken = nil
+                        },
+                        secondaryButton: .cancel()
+                    )
+                }
             }
         }
     }

@@ -57,7 +57,7 @@ class UserManager: ObservableObject, Observable {
             
             websocket.createTempUser(currentUser!) { dict, statusCode in
                 Task { @MainActor in
-                    guard let dict = dict, self.currentUser != nil else {
+                    guard let dict = dict, self.currentUser != nil, let code=statusCode, code < .failure else {
                         print("Failed to create temp user account.", self.currentUser as Any)
                         self.alertItem = AlertContext.unableToComplete
                         self.alertItem?.message = Text("Failed to create temporary account. Please try again later.")
@@ -80,7 +80,7 @@ class UserManager: ObservableObject, Observable {
 //        Task { @MainActor in
             websocket.registerUser(user) { dict, statusCode in
                 Task { @MainActor in
-                    guard let dict = dict, self.currentUser != nil, statusCode != .failure  else {
+                    guard let dict = dict, self.currentUser != nil, let code=statusCode, code < .failure  else {
                         print("Failed to register.", self.currentUser as Any)
                         // restore current user to original value, pop an alert and stay at registration page
                         self.currentUser = self.keychainManager.retrieve(for: "currentUser", type: User.self)
@@ -106,11 +106,12 @@ class UserManager: ObservableObject, Observable {
     func login(username: String, password: String) {
         websocket.fetchToken(username: username, password: password) { dict, statusCode in
             Task { @MainActor in
-                guard let dict = dict, statusCode != .failure  else {
+                guard let dict = dict, let code=statusCode, code < .failure  else {
                     print("Failed to login.", self.currentUser as Any)
                     
                     // fetch secure token and store it on keychain
                     self.currentUser = self.keychainManager.retrieve(for: "currentUser", type: User.self)
+                    
                     self.alertItem = AlertContext.unableToComplete
                     self.alertItem?.message = Text("Login failed. Please try again.")
                     self.showAlert = true
