@@ -39,7 +39,7 @@ struct SecretariApp: App {
                     
                     let userManager = UserManager.shared
                     let identifierManager = IdentifierManager()
-                    userManager.userToken = TokenManager.shared.loadToken()
+                    userManager.userToken = KeychainManager.shared.retrieve(for: "userToken", type: String.self)
                     
                     // check if this the first time of running. Assign an Id to user if not.
                     if identifierManager.setupIdentifier() {
@@ -69,9 +69,6 @@ struct SecretariApp: App {
                     }
                 }
         }
-        //        .environment(userManager)
-        //        .environment(identifierManager)
-        //        .environment(setting)
         .modelContainer(sharedModelContainer)
         
         .onChange(of: scenePhase, { oldPhase, newPhase in

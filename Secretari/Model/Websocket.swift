@@ -15,7 +15,6 @@ class Websocket: NSObject, ObservableObject, URLSessionWebSocketDelegate, Observ
     @Published var alertItem: AlertItem?
     @Published var showAlert = false
     
-    private var tokenManager = TokenManager.shared
     private var urlSession: URLSession?
     private var settings = SettingsManager.shared.getSettings()
     private var wsTask: URLSessionWebSocketTask?
@@ -26,15 +25,6 @@ class Websocket: NSObject, ObservableObject, URLSessionWebSocketDelegate, Observ
         super.init()
         self.urlSession = URLSession(configuration: .default, delegate: self, delegateQueue: OperationQueue())
         //        self.serverURL = SettingsManager.shared.getSettings().serverURL      // dead sure it is a string
-    }
-    
-    func setRequestHeader() {
-        var request = URLRequest(url: URL(string: self.settings.serverURL)!)
-        request.httpMethod = "POST"
-        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
-        request.addValue("Bearer " + self.tokenManager.loadToken()!, forHTTPHeaderField: "Authorization")
-        request.cachePolicy = .reloadIgnoringLocalCacheData
-        request.timeoutInterval = 5.0
     }
     
     nonisolated func urlSession(_ session: URLSession, webSocketTask: URLSessionWebSocketTask, didOpenWithProtocol protocol: String?) {

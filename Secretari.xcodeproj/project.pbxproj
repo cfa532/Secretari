@@ -32,7 +32,6 @@
 		4623C6F02C046AEE006CB3D1 /* AccountView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4623C6EF2C046AEE006CB3D1 /* AccountView.swift */; };
 		4623C6F22C04700E006CB3D1 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4623C6F12C04700E006CB3D1 /* LoginView.swift */; };
 		4623C6F42C0471E3006CB3D1 /* UpdateAccountView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4623C6F32C0471E3006CB3D1 /* UpdateAccountView.swift */; };
-		4623C6F62C0478C1006CB3D1 /* TokenManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4623C6F52C0478C1006CB3D1 /* TokenManager.swift */; };
 		4623C6F82C055828006CB3D1 /* InputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4623C6F72C055828006CB3D1 /* InputView.swift */; };
 		468B0B662BEDB83900C6D2FF /* TappablePadding.swift in Sources */ = {isa = PBXBuildFile; fileRef = 468B0B652BEDB83900C6D2FF /* TappablePadding.swift */; };
 		468B0B6A2BEF29EE00C6D2FF /* IdentifierManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 468B0B692BEF29EE00C6D2FF /* IdentifierManager.swift */; };
@@ -98,7 +97,6 @@
 		4623C6EF2C046AEE006CB3D1 /* AccountView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountView.swift; sourceTree = "<group>"; };
 		4623C6F12C04700E006CB3D1 /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
 		4623C6F32C0471E3006CB3D1 /* UpdateAccountView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateAccountView.swift; sourceTree = "<group>"; };
-		4623C6F52C0478C1006CB3D1 /* TokenManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenManager.swift; sourceTree = "<group>"; };
 		4623C6F72C055828006CB3D1 /* InputView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputView.swift; sourceTree = "<group>"; };
 		468B0B652BEDB83900C6D2FF /* TappablePadding.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TappablePadding.swift; sourceTree = "<group>"; };
 		468B0B692BEF29EE00C6D2FF /* IdentifierManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IdentifierManager.swift; sourceTree = "<group>"; };
@@ -246,7 +244,6 @@
 				4623C6E52C00F396006CB3D1 /* KeychainManager.swift */,
 				4623C6E72C018F67006CB3D1 /* SettingsManager.swift */,
 				4623C6E92C023378006CB3D1 /* UserDefaultsManager.swift */,
-				4623C6F52C0478C1006CB3D1 /* TokenManager.swift */,
 			);
 			path = Utilities;
 			sourceTree = "<group>";
@@ -449,7 +446,6 @@
 				461ADD992BD2B5E400C0DD94 /* SpeechRecognizer.swift in Sources */,
 				461ADDA72BD2B6EB00C0DD94 /* DetailView.swift in Sources */,
 				461ADD5F2BD2A0AC00C0DD94 /* Item.swift in Sources */,
-				4623C6F62C0478C1006CB3D1 /* TokenManager.swift in Sources */,
 				4623C6F22C04700E006CB3D1 /* LoginView.swift in Sources */,
 				46FAC6142BEA0CEC0013B9B5 /* DetailBulletinView.swift in Sources */,
 				4623C6F82C055828006CB3D1 /* InputView.swift in Sources */,

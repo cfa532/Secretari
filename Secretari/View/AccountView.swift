@@ -9,7 +9,7 @@ import SwiftUI
 
 struct AccountView: View {
     @StateObject var userManager = UserManager.shared
-    
+
     var body: some View {
         switch userManager.loginStatus {
         case .signedIn:
@@ -18,15 +18,6 @@ struct AccountView: View {
         case .signedOut:
             // login page
             LoginView()
-//                .alert(isPresented: $userManager.showAlert) {
-//                    Alert(title: userManager.alertItem?.title ?? Text("Alert"), message: userManager.alertItem?.message, dismissButton: userManager.alertItem?.dismissButton)
-//                }
-                .alert("Login error", isPresented: $userManager.showAlert, presenting: userManager.alertItem) { _ in
-                    Button("OK", role: .cancel, action: {print("OK")})
-                } message: { alertItem in
-                    alertItem.message
-                }
-
         case .unregistered:
             // register
             RegistrationView()
