@@ -59,7 +59,6 @@ struct ContentView: View {
             .navigationTitle("Records")
             .navigationBarTitleDisplayMode(.inline)
             .navigationDestination(isPresented: $showDetailView, destination: {
-                DetailView(isRecording: $isRecording, record: AudioRecord(), settings: $settings)
                 DetailView(isRecording: $isRecording, record: AudioRecord())
             })
             .toolbar {
