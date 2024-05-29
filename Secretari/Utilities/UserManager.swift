@@ -10,25 +10,12 @@ import SwiftUI
 
 //@MainActor
 class UserManager: ObservableObject, Observable {
-    @Published var currentUser: User? 
-//    {
-//        didSet {
-//            if let count=currentUser?.username.count, count > 20 {
-//                loginStatus = .unregistered
-//            } else {
-//                loginStatus = .signedOut
-//                if userToken != nil, userToken != "" {
-//                    loginStatus = .signedIn
-//                }
-//            }
-//        }
-//    }
+    @Published var currentUser: User?
     @Published var showAlert: Bool = false
     @Published var alertItem: AlertItem?
     @Published var loginStatus: StatusLogin = .signedIn     // login status of the current user
     var userToken: String? {
         didSet {
-//            TokenManager.shared.saveToken(token: userToken ?? "")
             if keychainManager.save(data: userToken, for: "userToken") {
                 print("user token saved", userToken as Any)
             }
@@ -129,24 +116,5 @@ class UserManager: ObservableObject, Observable {
         guard var user = self.currentUser else { return }
         user.subscription = isSubscribed
         self.currentUser = user
-    }
-}
-
-struct User :Codable {
-    //    let id: String // Unique identifier for the user
-    var username: String
-    var password: String
-    var mid: String?
-    var token_count: [LLMModel: UInt]?     // gotten from server, kept locally
-    var token_usage: [LLMModel: Double]?
-    var current_usage: [LLMModel: Double]?   // current month usage
-    var subscription: Bool = false          // Flag indicating active subscription
-    var family_name: String?
-    var given_name: String?
-    var email: String?
-    var template: [LLM: [String: String]]?
-    
-    enum CodingKeys: String, CodingKey {
-        case username, mid, token_count, token_usage, current_usage, subscription, password, family_name, given_name, email, template
     }
 }
