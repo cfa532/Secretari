@@ -9,13 +9,13 @@ import SwiftUI
 
 struct SummaryRowView: View {
     var record: AudioRecord
-    var promptType: Settings.PromptType
     
     var body: some View {
         let title = AudioRecord.dateFormatter.string(from: record.recordDate) + ": "
         
         VStack {
             // display content based on prompt type
+            let promptType = SettingsManager.shared.getSettings().promptType
             if promptType == .memo {
                 if !record.memo.isEmpty {
                     Text(title + concateMemo())
@@ -47,5 +47,5 @@ struct SummaryRowView: View {
 }
 
 #Preview {
-    SummaryRowView(record: AudioRecord.sampleData[0], promptType: Settings.PromptType.memo)
+    SummaryRowView(record: AudioRecord.sampleData[0])
 }

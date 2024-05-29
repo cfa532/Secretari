@@ -15,7 +15,8 @@ struct DetailView: View {
     
     @Binding var isRecording: Bool
     @State var record: AudioRecord
-    @Binding var settings: Settings
+    
+    @State private var settings = SettingsManager.shared.getSettings()
 
     @State private var showShareSheet = false
     @State private var showRedoAlert = false  // for Redo confirm dialog
@@ -37,6 +38,7 @@ struct DetailView: View {
                                 }
                             }
                             .onChange(of: settings.selectedLocale) {
+//                                settings. =settings.prompt[settings.promptType]![settings.selectedLocale]
                                 SettingsManager.shared.updateSettings(settings)
                                 speechRecognizer.stopTranscribing()
                                 Task {
@@ -207,16 +209,13 @@ struct DetailView: View {
                 .disabled(isRecording)
             }
         })
-//        .alert(item: $websocket.alertItem) { alertItem in
-//            Alert(title: alertItem.title,
-//                  message: alertItem.message,
-//                  dismissButton: alertItem.dismissButton)
-//        }
         .alert("Websocket Error", isPresented: $websocket.showAlert, presenting: websocket.alertItem) { _ in
         } message: { alertItem in
             alertItem.message
         }
-
+        .onAppear(perform: {
+            settings = SettingsManager.shared.getSettings()     // update settings which may changed somewhere else.
+        })
     }
     
     struct ShareSheet: UIViewControllerRepresentable {
@@ -266,7 +265,7 @@ extension DetailView: TimerDelegate {
 }
 
 #Preview {
-    DetailView(isRecording: .constant(true), record: AudioRecord.sampleData[0], settings: .constant(AppConstants.defaultSettings))
+    DetailView(isRecording: .constant(true), record: AudioRecord.sampleData[0])
     //    let container = try! ModelContainer(for: AudioRecord.self, Settings.self, configurations: ModelConfiguration(isStoredInMemoryOnly: true))
     //    return DetailView(record: AudioRecord.sampleData[0])
     //        .modelContainer(container)

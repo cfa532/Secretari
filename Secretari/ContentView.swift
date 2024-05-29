@@ -13,10 +13,9 @@ struct ContentView: View {
     @Query(sort: \AudioRecord.recordDate, order: .reverse) var records: [AudioRecord]
     @StateObject private var userManager = UserManager.shared
     
-    @State private var settings: Settings = SettingsManager.shared.getSettings()
     @State private var isRecording = false
     @State private var showDetailView = false
-    @State private var showSettings = false
+//    @State private var showSettings = false
     
     private var loginStatus: String {
         switch userManager.loginStatus {
@@ -34,9 +33,9 @@ struct ContentView: View {
             List {
                 ForEach(records, id: \.recordDate) { item in
                     NavigationLink {
-                        DetailView(isRecording: .constant(false), record: item, settings: $settings)
+                        DetailView(isRecording: .constant(false), record: item)
                     } label: {
-                        SummaryRowView(record: item, promptType: settings.promptType)
+                        SummaryRowView(record: item)
                     }
                 }
                 .onDelete { indexSet in
@@ -61,17 +60,15 @@ struct ContentView: View {
             .navigationBarTitleDisplayMode(.inline)
             .navigationDestination(isPresented: $showDetailView, destination: {
                 DetailView(isRecording: $isRecording, record: AudioRecord(), settings: $settings)
-            })
-            .navigationDestination(isPresented: $showSettings, destination: {
-                // navigate to settingsView is triggered by tapping button with enlarged tappable area.
-                SettingsView(settings: $settings)
+                DetailView(isRecording: $isRecording, record: AudioRecord())
             })
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
                     Menu {
-                        NavigationLink(destination: SettingsView(settings: $settings)) {
+                        NavigationLink(destination: SettingsView()) {
                             Label("Settings", systemImage: "gearshape")
                         }
+                        
                         NavigationLink {
                             AccountView()
                         } label: {
@@ -83,27 +80,14 @@ struct ContentView: View {
                     } label: {
                         Image(systemName: "person.crop.circle")
                             .resizable()
-                            .frame(width: 24, height: 24)
+                            .frame(width: 20, height: 20)
                             .foregroundColor(.primary)
                             .opacity(0.7)
+                            .padding()
+                            .contentShape(Rectangle())      // increase tappable area
                     }
                     
                 }
-                //                ToolbarItem(placement: .topBarTrailing, content: {
-                //                    NavigationLink(destination: SettingsView(settings: $settings)) {
-                //                        // navigationLink does not work becuase tappablePadding interfered with onTap()
-                //                        // showSettings=true triggered navigation destination.
-                //                        // keep navigationLnik because it change image color when tapped.
-                //                        Image(systemName: "person.fill.turn.down")
-                //                            .resizable()
-                //                            .frame(width: 20, height: 20)
-                //                            .foregroundColor(.primary)
-                //                            .opacity(0.8)
-                //                            .tappablePadding(EdgeInsets(top: 12, leading: 12, bottom: 12, trailing: 12)) {
-                //                                self.showSettings = true
-                //                            }
-                //                    }
-                //                })
             }
             
             Button(action: {

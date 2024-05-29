@@ -67,23 +67,32 @@ struct AccountDetailView: View {
                             
                             Text(user?.email ?? "email@account")
                                 .font(.footnote)
+                                .foregroundStyle(.secondary)
                         })
                     }
                 }
                 Section("General") {
-                    VStack(alignment: .leading, spacing: 8) {
-                        Text("Username:")
-                            .font(.subheadline)
-                            .foregroundStyle(.gray)
+                    HStack {
+                        let title = Text("Username").font(.subheadline).foregroundStyle(.secondary)
+                        SettingsRowView(title: title, tintColor: .secondary)
+                        Spacer()
                         Text(user?.username ?? " ")
                     }
+                    HStack {
+                        let title = Text("Version").font(.subheadline).foregroundStyle(.secondary)
+                        SettingsRowView(imageName: nil, title: title, tintColor: .secondary)
+                        Spacer()
+                        Text("v1.0.0")
+                    }
+                    
                     VStack(alignment: .leading, spacing: 10) {
-                        Text("Account blance in token amount:")
+                        Text("Account blance in token:")
                             .font(.subheadline)
                             .foregroundStyle(.gray)
                         if let g3 = user?.token_count, let g3c=g3[LLMModel.GPT_3] {
                             HStack {
                                 Text("GPT-3:")
+                                    .font(.subheadline)
                                 Spacer()
                                 Text(formatterInt().string(from: NSNumber(value: g3c))!)
                             }
@@ -91,18 +100,20 @@ struct AccountDetailView: View {
                         if let g4 = user?.token_count, let g4c=g4[LLMModel.GPT_4_Turbo] {
                             HStack {
                                 Text("GPT-4-Turbo:")
+                                    .font(.subheadline)
                                 Spacer()
                                 Text(formatterInt().string(from: NSNumber(value: g4c))!)
                             }
                        }
                     }
                     VStack(alignment: .leading, spacing: 10) {
-                        Text("Usage of the month in USD amount:")
+                        Text("Usage of the month in USD:")
                             .font(.subheadline)
                             .foregroundStyle(.gray)
                         if let u3 = user?.current_usage, let u3c=u3[LLMModel.GPT_3] {
                             HStack {
                                 Text("GPT-3:")
+                                    .font(.subheadline)
                                 Spacer()
                                 Text(formatterUSD().string(from: NSNumber(value: u3c))!)
                             }
@@ -110,6 +121,7 @@ struct AccountDetailView: View {
                         if let u4 = user?.current_usage, let u4c=u4[LLMModel.GPT_4_Turbo] {
                             HStack {
                                 Text("GPT-4-Turbo:")
+                                    .font(.subheadline)
                                 Spacer()
                                 Text(formatterUSD().string(from: NSNumber(value: u4c))!)
                             }
@@ -120,20 +132,11 @@ struct AccountDetailView: View {
                     Button(action: {
                         self.showAlert = true
                     }, label: {
-                        Text("Sign out")
+                        HStack {
+                            SettingsRowView(imageName: "arrow.left.circle.fill", title:Text("Sign out"), tintColor: .accentColor)
+                        }
                     })
                 }
-//                .alert(isPresented: $showAlert) {
-//                    Alert(
-//                        title: Text("Confirm Logout"),
-//                        message: Text("Are you sure you want to logout?"),
-//                        primaryButton: .destructive(Text("Logout")) {
-//                            print("User logged out")
-//                            userManager.userToken = nil
-//                        },
-//                        secondaryButton: .cancel()
-//                    )
-//                }
                 .alert("Sign out", isPresented: $showAlert) {
                     Button("OK", action: {userManager.userToken = nil})
                     Button("Cancel", role: .cancel, action: { print("cancelled")})

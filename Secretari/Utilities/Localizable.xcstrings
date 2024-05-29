@@ -13,7 +13,7 @@
     "Account" : {
 
     },
-    "Account blance in token amount:" : {
+    "Account blance in token:" : {
 
     },
     "advanced" : {
@@ -992,13 +992,19 @@
     "Update Profile" : {
 
     },
-    "Usage of the month in USD amount:" : {
+    "Usage of the month in USD:" : {
+
+    },
+    "Username" : {
 
     },
     "Username is required and less than 20 characters long. Please confirm the password." : {
 
     },
-    "Username:" : {
+    "v1.0.0" : {
+
+    },
+    "Version" : {
 
     },
     "Websocket Error" : {
