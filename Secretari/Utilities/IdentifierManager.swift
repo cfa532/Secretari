@@ -8,7 +8,7 @@
 import SwiftUI
 import Security
 
-class IdentifierManager: ObservableObject, Observable {
+class IdentifierManager: ObservableObject {
     private let firstLaunchKey = "HasLaunchedBefore"
     
     func setupIdentifier() -> Bool {
