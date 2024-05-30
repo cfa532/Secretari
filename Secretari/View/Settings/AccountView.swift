@@ -85,6 +85,7 @@ struct AccountDetailView: View {
                         SettingsRowView(imageName: nil, title: title, tintColor: .secondary)
                         Spacer()
                         Text("v1.0.0")
+                            .font(.subheadline)
                     }
                     
                     VStack(alignment: .leading, spacing: 10) {

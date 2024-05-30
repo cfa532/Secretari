@@ -75,6 +75,11 @@ struct ContentView: View {
                                 icon: { Image(systemName: "square.and.pencil") }
                             )
                         }
+                        NavigationLink {
+                            PurchaseView()
+                        } label: {
+                            Label("Purchase", systemImage: "lightbulb.max")
+                        }
                     } label: {
                         Image(systemName: "person.crop.circle")
                             .resizable()
@@ -84,10 +89,8 @@ struct ContentView: View {
                             .padding()
                             .contentShape(Rectangle())      // increase tappable area
                     }
-                    
                 }
             }
-            
             Button(action: {
                 self.isRecording = true
                 self.showDetailView = true        // active navigation link to detail view

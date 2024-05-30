@@ -8,10 +8,11 @@
 import Foundation
 import StoreKit
 
-class TransactionManager: NSObject, SKProductsRequestDelegate, SKPaymentTransactionObserver {
+class TransactionManager: NSObject, SKProductsRequestDelegate, SKPaymentTransactionObserver, ObservableObject {
     static let shared = TransactionManager()
+    @Published var availableProducts: [SKProduct] = []
+
     var productsRequest: SKProductsRequest?
-    var availableProducts: [SKProduct] = []
 
     func fetchProducts(productIds: Set<String>) {
         let request = SKProductsRequest(productIdentifiers: productIds)
@@ -21,13 +22,14 @@ class TransactionManager: NSObject, SKProductsRequestDelegate, SKPaymentTransact
     }
 
     func productsRequest(_ request: SKProductsRequest, didReceive response: SKProductsResponse) {
-        self.availableProducts = response.products
-        // Handle the case where there are no products found
-        if availableProducts.isEmpty {
-            print("No products available")
-        } else {
-            for product in availableProducts {
-                print("Found product: \(product.localizedTitle) \(product.price)")
+        DispatchQueue.main.async {
+            self.availableProducts = response.products
+            if self.availableProducts.isEmpty {
+                print("No products available")
+            } else {
+                for product in self.availableProducts {
+                    print("Found product: \(product.localizedTitle) \(product.price)")
+                }
             }
         }
     }
@@ -36,10 +38,8 @@ class TransactionManager: NSObject, SKProductsRequestDelegate, SKPaymentTransact
         for transaction in transactions {
             switch transaction.transactionState {
             case .purchased, .restored:
-                // Handle successful transaction
                 SKPaymentQueue.default().finishTransaction(transaction)
             case .failed:
-                // Handle failed transaction
                 SKPaymentQueue.default().finishTransaction(transaction)
             default:
                 break

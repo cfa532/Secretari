@@ -83,6 +83,9 @@
     "Are you sure to logout?" : {
 
     },
+    "Buy" : {
+
+    },
     "Cancel" : {
 
     },
@@ -506,6 +509,9 @@
           }
         }
       }
+    },
+    "Purchase" : {
+
     },
     "Push the START button to record your own speech. A summary will be generated automatically after STOP button is pushed." : {
       "localizations" : {
