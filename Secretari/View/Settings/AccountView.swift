@@ -73,10 +73,12 @@ struct AccountDetailView: View {
                 }
                 Section("General") {
                     HStack {
-                        let title = Text("Username").font(.subheadline).foregroundStyle(.secondary)
+                        let title = Text("Username")
+                            .font(.subheadline)
+                            .foregroundStyle(.secondary)
                         SettingsRowView(title: title, tintColor: .secondary)
                         Spacer()
-                        Text(user?.username ?? " ")
+                        Text(user?.diaplayUsername ?? "signup now")
                     }
                     HStack {
                         let title = Text("Version").font(.subheadline).foregroundStyle(.secondary)

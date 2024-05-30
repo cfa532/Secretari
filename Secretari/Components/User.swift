@@ -32,4 +32,11 @@ struct User :Codable {
         }
         return ""
     }
+    
+    var diaplayUsername: String? {
+        if username.count > 20 {
+            return nil
+        }
+        return username
+    }
 }

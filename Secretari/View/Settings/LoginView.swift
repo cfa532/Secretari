@@ -23,7 +23,7 @@ struct LoginView: View {
                 .padding(.bottom, 50)
 //                .padding(.top, 50)
             VStack {
-                InputView(text: $username, title: "Username", placeHolder: userManager.currentUser?.username ?? "username", isSecureField: false, required: required)
+                InputView(text: $username, title: "Username", placeHolder: userManager.currentUser?.diaplayUsername ?? "", isSecureField: false, required: required)
                     .textFieldStyle(RoundedBorderTextFieldStyle())
                     .autocapitalization(.none)
                 InputView(text: $password, title: "Password", placeHolder: "******", isSecureField: true, required: required)
