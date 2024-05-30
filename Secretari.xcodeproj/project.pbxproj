@@ -35,6 +35,8 @@
 		4623C6F42C0471E3006CB3D1 /* UpdateAccountView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4623C6F32C0471E3006CB3D1 /* UpdateAccountView.swift */; };
 		4623C6F82C055828006CB3D1 /* InputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4623C6F72C055828006CB3D1 /* InputView.swift */; };
 		4623C6FB2C06C531006CB3D1 /* SettingsRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4623C6FA2C06C531006CB3D1 /* SettingsRowView.swift */; };
+		467CC9432C0826E800FD5DC2 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 46FAC60D2BE7C8AB0013B9B5 /* StoreKit.framework */; };
+		467CC9482C084A3200FD5DC2 /* TransactionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 467CC9472C084A3200FD5DC2 /* TransactionManager.swift */; };
 		468B0B662BEDB83900C6D2FF /* TappablePadding.swift in Sources */ = {isa = PBXBuildFile; fileRef = 468B0B652BEDB83900C6D2FF /* TappablePadding.swift */; };
 		468B0B6A2BEF29EE00C6D2FF /* IdentifierManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 468B0B692BEF29EE00C6D2FF /* IdentifierManager.swift */; };
 		46DA71392BD7FB60001A3685 /* NetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46DA71382BD7FB60001A3685 /* NetworkManager.swift */; };
@@ -45,7 +47,6 @@
 		46FAC6072BE146950013B9B5 /* DetailTranscriptView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46FAC6062BE146950013B9B5 /* DetailTranscriptView.swift */; };
 		46FAC6092BE146A60013B9B5 /* DetailTranslationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46FAC6082BE146A60013B9B5 /* DetailTranslationView.swift */; };
 		46FAC60B2BE36A8C0013B9B5 /* UserManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46FAC60A2BE36A8C0013B9B5 /* UserManager.swift */; };
-		46FAC60E2BE7C8AC0013B9B5 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 46FAC60D2BE7C8AB0013B9B5 /* StoreKit.framework */; };
 		46FAC6142BEA0CEC0013B9B5 /* DetailBulletinView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46FAC6132BEA0CEC0013B9B5 /* DetailBulletinView.swift */; };
 		46FAC6162BEA29410013B9B5 /* CheckboxView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46FAC6152BEA29410013B9B5 /* CheckboxView.swift */; };
 		46FAC6182BEA2BEC0013B9B5 /* SummaryRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46FAC6172BEA2BEC0013B9B5 /* SummaryRowView.swift */; };
@@ -103,6 +104,8 @@
 		4623C6F32C0471E3006CB3D1 /* UpdateAccountView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateAccountView.swift; sourceTree = "<group>"; };
 		4623C6F72C055828006CB3D1 /* InputView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputView.swift; sourceTree = "<group>"; };
 		4623C6FA2C06C531006CB3D1 /* SettingsRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsRowView.swift; sourceTree = "<group>"; };
+		467CC9462C082B3600FD5DC2 /* SecretariDebug.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = SecretariDebug.entitlements; sourceTree = "<group>"; };
+		467CC9472C084A3200FD5DC2 /* TransactionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionManager.swift; sourceTree = "<group>"; };
 		468B0B652BEDB83900C6D2FF /* TappablePadding.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TappablePadding.swift; sourceTree = "<group>"; };
 		468B0B692BEF29EE00C6D2FF /* IdentifierManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IdentifierManager.swift; sourceTree = "<group>"; };
 		46DA71382BD7FB60001A3685 /* NetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkManager.swift; sourceTree = "<group>"; };
@@ -125,7 +128,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				46FAC60E2BE7C8AC0013B9B5 /* StoreKit.framework in Frameworks */,
+				467CC9432C0826E800FD5DC2 /* StoreKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -171,6 +174,7 @@
 		461ADD592BD2A0AC00C0DD94 /* Secretari */ = {
 			isa = PBXGroup;
 			children = (
+				467CC9462C082B3600FD5DC2 /* SecretariDebug.entitlements */,
 				46FAC5FC2BDF6C2F0013B9B5 /* Components */,
 				46DA71352BD7FB26001A3685 /* Utilities */,
 				461ADD8E2BD2A49900C0DD94 /* Launch Screen.storyboard */,
@@ -253,6 +257,7 @@
 				46DA71382BD7FB60001A3685 /* NetworkManager.swift */,
 				46DA71402BD8C95C001A3685 /* Localizable.xcstrings */,
 				46DA71422BD8D724001A3685 /* Utilities.swift */,
+				467CC9472C084A3200FD5DC2 /* TransactionManager.swift */,
 				46FAC60A2BE36A8C0013B9B5 /* UserManager.swift */,
 				468B0B652BEDB83900C6D2FF /* TappablePadding.swift */,
 				468B0B692BEF29EE00C6D2FF /* IdentifierManager.swift */,
@@ -472,6 +477,7 @@
 				4623C6FB2C06C531006CB3D1 /* SettingsRowView.swift in Sources */,
 				468B0B6A2BEF29EE00C6D2FF /* IdentifierManager.swift in Sources */,
 				4623C6EC2C02B689006CB3D1 /* ContentView.swift in Sources */,
+				467CC9482C084A3200FD5DC2 /* TransactionManager.swift in Sources */,
 				4623C6F42C0471E3006CB3D1 /* UpdateAccountView.swift in Sources */,
 				461ADD9B2BD2B5ED00C0DD94 /* Websocket.swift in Sources */,
 				461ADD5B2BD2A0AC00C0DD94 /* SecretariApp.swift in Sources */,
@@ -637,13 +643,15 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = Secretari/SecretariDebug.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 10;
+				CURRENT_PROJECT_VERSION = 11;
 				DEVELOPMENT_ASSET_PATHS = "\"Secretari/Preview Content\"";
 				DEVELOPMENT_TEAM = 96LBXG78A7;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Secretari/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = Bunny;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.productivity";
 				INFOPLIST_KEY_NSMicrophoneUsageDescription = "Need Microphone to record user speech";
 				INFOPLIST_KEY_NSSpeechRecognitionUsageDescription = "Need to create transcript of user speech";
@@ -658,7 +666,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 1.0.1;
 				PRODUCT_BUNDLE_IDENTIFIER = Leither.uk.Secretari;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -673,12 +681,13 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 10;
+				CURRENT_PROJECT_VERSION = 11;
 				DEVELOPMENT_ASSET_PATHS = "\"Secretari/Preview Content\"";
 				DEVELOPMENT_TEAM = 96LBXG78A7;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Secretari/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = Bunny;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.productivity";
 				INFOPLIST_KEY_NSMicrophoneUsageDescription = "Need Microphone to record user speech";
 				INFOPLIST_KEY_NSSpeechRecognitionUsageDescription = "Need to create transcript of user speech";
@@ -693,7 +702,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 1.0.1;
 				PRODUCT_BUNDLE_IDENTIFIER = secretari.leither.uk;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;

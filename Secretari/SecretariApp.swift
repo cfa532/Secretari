@@ -12,6 +12,7 @@ import SwiftData
 struct SecretariApp: App {
     @Environment(\.scenePhase) var scenePhase
     @Environment(\.modelContext) private var modelContext
+    @StateObject private var userManager = UserManager.shared
     
     var sharedModelContainer: ModelContainer = {
         let schema = Schema([AudioRecord.self, /*Settings.self,*/ Item.self])
@@ -36,10 +37,7 @@ struct SecretariApp: App {
 //                                        if let bundleID = Bundle.main.bundleIdentifier {
 //                                            UserDefaults.standard.removePersistentDomain(forName: bundleID)
 //                                        }
-                    
-                    let userManager = UserManager.shared
                     let identifierManager = IdentifierManager()
-                    userManager.userToken = KeychainManager.shared.retrieve(for: "userToken", type: String.self)
                     
                     // check if this the first time of running. Assign an Id to user if not.
                     if identifierManager.setupIdentifier() {
@@ -50,6 +48,7 @@ struct SecretariApp: App {
                     } else {
                         print("This is not the first run after launch")
                         let keychainManager = KeychainManager.shared
+                        userManager.userToken = KeychainManager.shared.retrieve(for: "userToken", type: String.self)
                         if let user = keychainManager.retrieve(for: "currentUser", type: User.self) {
                             userManager.currentUser = user          // local user infor will be updated with each fetchToken() call
                             print("CurrentUser from keychain", userManager.currentUser! as User)
@@ -68,9 +67,13 @@ struct SecretariApp: App {
                         print("This is not the first run after an update")
                     }
                 }
+                .alert("Error", isPresented: $userManager.showAlert, presenting: userManager.alertItem) { _ in
+                } message: { alertItem in
+                    userManager.alertItem?.message
+                }
+
         }
         .modelContainer(sharedModelContainer)
-        
         .onChange(of: scenePhase, { oldPhase, newPhase in
             print("scene phase \(newPhase)")
             if newPhase == .background {

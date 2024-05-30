@@ -15,7 +15,6 @@ struct ContentView: View {
     
     @State private var isRecording = false
     @State private var showDetailView = false
-//    @State private var showSettings = false
     
     private var loginStatus: String {
         switch userManager.loginStatus {

@@ -17,7 +17,6 @@ struct DetailView: View {
     @State var record: AudioRecord
     
     @State private var settings = SettingsManager.shared.getSettings()
-
     @State private var showShareSheet = false
     @State private var showRedoAlert = false  // for Redo confirm dialog
 
@@ -38,7 +37,6 @@ struct DetailView: View {
                                 }
                             }
                             .onChange(of: settings.selectedLocale) {
-//                                settings. =settings.prompt[settings.promptType]![settings.selectedLocale]
                                 SettingsManager.shared.updateSettings(settings)
                                 speechRecognizer.stopTranscribing()
                                 Task {
