@@ -237,6 +237,9 @@
 		461ADD872BD2A0D600C0DD94 /* View */ = {
 			isa = PBXGroup;
 			children = (
+				461ADDA62BD2B6EB00C0DD94 /* DetailView.swift */,
+				467CC9492C08767000FD5DC2 /* PurchaseView.swift */,
+				4623C6EF2C046AEE006CB3D1 /* AccountView.swift */,
 				4623C6F92C06C500006CB3D1 /* Settings */,
 				46FAC5FF2BDFC4AC0013B9B5 /* DetailViews */,
 				461ADD8A2BD2A40500C0DD94 /* ErrorView.swift */,
@@ -249,11 +252,8 @@
 			children = (
 				4623C6F12C04700E006CB3D1 /* LoginView.swift */,
 				4623C6ED2C030BA6006CB3D1 /* RegistrationView.swift */,
-				4623C6EF2C046AEE006CB3D1 /* AccountView.swift */,
 				4623C6F32C0471E3006CB3D1 /* UpdateAccountView.swift */,
 				461ADD902BD2A4F000C0DD94 /* SettingsView.swift */,
-				4623C6FA2C06C531006CB3D1 /* SettingsRowView.swift */,
-				467CC9492C08767000FD5DC2 /* PurchaseView.swift */,
 			);
 			path = Settings;
 			sourceTree = "<group>";
@@ -294,6 +294,7 @@
 				46FAC6172BEA2BEC0013B9B5 /* SummaryRowView.swift */,
 				46FAC6192BEB2DEF0013B9B5 /* LocalePicker.swift */,
 				46FAC6152BEA29410013B9B5 /* CheckboxView.swift */,
+				4623C6FA2C06C531006CB3D1 /* SettingsRowView.swift */,
 				4623C6F72C055828006CB3D1 /* InputView.swift */,
 			);
 			path = Components;
@@ -302,7 +303,6 @@
 		46FAC5FF2BDFC4AC0013B9B5 /* DetailViews */ = {
 			isa = PBXGroup;
 			children = (
-				461ADDA62BD2B6EB00C0DD94 /* DetailView.swift */,
 				46FAC6062BE146950013B9B5 /* DetailTranscriptView.swift */,
 				46FAC6082BE146A60013B9B5 /* DetailTranslationView.swift */,
 				46FAC6132BEA0CEC0013B9B5 /* DetailBulletinView.swift */,
