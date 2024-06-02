@@ -41,7 +41,7 @@ struct SettingsView: View {
                     }
                     
                     Picker("Prompt Type", selection: $settings.promptType) {
-                        ForEach(Settings.PromptType.allCases, id:\.self) { option in
+                        ForEach(Settings.PromptType.allowedCases(lowBalance: allowedPromptType()), id:\.self) { option in
                             Text(String(describing: option))
                         }
                     }
@@ -120,6 +120,14 @@ struct SettingsView: View {
                 settings.llmParams = AppConstants.defaultSettings.llmParams
             }))}
         )
+    }
+    
+    private func allowedPromptType() -> Bool {
+        if let user = UserManager.shared.currentUser, !user.subscription, user.token_count![LLMModel.GPT_4_Turbo]! < 100 {
+            // non-subscriber has not enough balance for gpt-4
+            return true
+        }
+        return false
     }
 }
 

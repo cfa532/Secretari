@@ -58,6 +58,15 @@ struct Settings :Codable {
     enum PromptType: String, CaseIterable, Codable {
         case summary, memo
         var id: Self { self }
+        
+        // when non-subscriber get low balance, only summary type is allowed.
+        static func allowedCases(lowBalance: Bool) -> [Settings.PromptType] {
+            if lowBalance {
+                return [.summary]
+            } else {
+                return PromptType.allCases
+            }
+        }
     }
 }
 

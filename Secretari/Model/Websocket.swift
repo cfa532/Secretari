@@ -8,7 +8,7 @@
 import Foundation
 import SwiftUI
 
-@MainActor
+//@MainActor
 class Websocket: NSObject, ObservableObject, URLSessionWebSocketDelegate, Observable {
     @Published var isStreaming: Bool = false
     @Published var streamedText: String = ""
@@ -119,44 +119,50 @@ class Websocket: NSObject, ObservableObject, URLSessionWebSocketDelegate, Observ
     
     // Might need to temporarily revise settings' value.
     @MainActor func sendToAI(_ rawText: String, action: @escaping (_ summary: String)->Void) {
-        let settings = SettingsManager.shared.getSettings()
-        let user = UserManager.shared.currentUser
-        let llmParams = settings.llmParams[settings.llmModel]
-        let prompt = settings.prompt[settings.promptType]![settings.selectedLocale]
-        
-        guard user != nil, llmParams != nil else { print("Null user in SendToAI"); return}
-        Utility.printDict(obj: llmParams!)
-        let msg = [
-            "user": user!.username,
-            "input": [
-                "prompt": prompt,
-                "rawtext": rawText],
-            "parameters": [
-                "llm": llmParams!["llm"],
-                "temperature": llmParams!["temperature"],
-                "client":"mobile",
-                "model": settings.llmModel.rawValue
-            ]] as [String : Any]
-        
-        // Convert the Data to String
-        let jsonData = try! JSONSerialization.data(withJSONObject: msg)
-        if let jsonString = String(data: jsonData, encoding: .utf8) {
-            print("Websocket sending: ", jsonString)
-            
-            if let activeTask = self.wsTask, activeTask.state == .running {
-                // do nothing
-            } else  {
-                // cancel hanging wsTask if any
-                self.wsTask?.cancel()
-                self.wsTask = urlSession?.webSocketTask(with: URL(string: "ws://" + settings.serverURL + "/ws/")!)
+        var settings = SettingsManager.shared.getSettings()
+        // logic here to distinguish rigths between paid users and unpaid.
+        // unpaid users use gpt-3.5, if there is still balance. Not memo prompt
+        if let user = UserManager.shared.currentUser {
+            if !user.subscription, let token_count=user.token_count, let balance=token_count[LLMModel.GPT_4_Turbo], balance < 100 {
+                // non-subscriber, without enough balance of GPT-4, try GPT-3
+                settings.llmModel = LLMModel.GPT_3
+//                settings.promptType = .summary
             }
+        }
+        if let user = UserManager.shared.currentUser, let llmParams = settings.llmParams[settings.llmModel], let prompt = settings.prompt[settings.promptType] {
+            Utility.printDict(obj: llmParams)
+            let msg = [
+                "user": user.username,
+                "input": [
+                    "prompt": prompt[settings.selectedLocale],
+                    "rawtext": rawText],
+                "parameters": [
+                    "llm": llmParams["llm"],
+                    "temperature": llmParams["temperature"],
+                    "client":"mobile",
+                    "model": settings.llmModel.rawValue
+                ]] as [String : Any]
             
-            Task {
-                self.send(jsonString) { error in
-                    self.alertItem = AlertContext.unableToComplete
+            // Convert the Data to String
+            let jsonData = try! JSONSerialization.data(withJSONObject: msg)
+            if let jsonString = String(data: jsonData, encoding: .utf8) {
+                print("Websocket sending: ", jsonString)
+                
+                if let activeTask = self.wsTask, activeTask.state == .running {
+                    // do nothing
+                } else  {
+                    // cancel hanging wsTask if any
+                    self.wsTask?.cancel()
+                    self.wsTask = urlSession?.webSocketTask(with: URL(string: "ws://" + settings.serverURL + "/ws/")!)
                 }
-                self.receive(action: action)
-                self.resume()
+                
+                Task {
+                    self.send(jsonString) { error in
+                        self.alertItem = AlertContext.unableToComplete
+                    }
+                    self.receive(action: action)
+                    self.resume()
+                }
             }
         }
     }

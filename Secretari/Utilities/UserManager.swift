@@ -8,12 +8,12 @@
 import Foundation
 import SwiftUI
 
-@MainActor
+//@MainActor
 class UserManager: ObservableObject, Observable {
-    @MainActor @Published var currentUser: User?
-    @MainActor @Published var showAlert: Bool = false
-    @MainActor @Published var alertItem: AlertItem?
-    @MainActor @Published var loginStatus: StatusLogin = .signedOut     // login status of the current user
+    @Published var currentUser: User?
+    @Published var showAlert: Bool = false
+    @Published var alertItem: AlertItem?
+    @Published var loginStatus: StatusLogin = .signedOut     // login status of the current user
     var userToken: String? {
         didSet {
             if keychainManager.save(data: userToken, for: "userToken") {
@@ -35,6 +35,9 @@ class UserManager: ObservableObject, Observable {
     
     static let shared = UserManager()
     private init() {
+        
+        // There is the code code of initialization. Setup user and retrieve user data.
+        
         let keychainManager = KeychainManager.shared
         let identifierManager = IdentifierManager()
         let identifier = identifierManager.getDeviceIdentifier()
