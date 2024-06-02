@@ -68,12 +68,9 @@ class UserManager: ObservableObject, Observable {
         self.currentUser = User(username: id, password: "zaq1^WSX")
         websocket.createTempUser(currentUser!) { dict, statusCode in
             Task { @MainActor in
-                guard let dict = dict, self.currentUser != nil, let code=statusCode, code < .failure else {
-                    print("Failed to create temp user account.", self.currentUser as Any)
-                    self.alertItem = AlertContext.unableToComplete
-                    self.alertItem?.message = Text("Failed to create temporary account. Please try again later.")
-                    self.showAlert = true
-                    return
+                guard let dict = dict, let code=statusCode, code < .failure else {
+                    print(dict as Any)
+                    fatalError("Failed to create temp user account.")
                 }
                 // update temp user with account data recieved from server.
                 self.currentUser = Utility.updateUserFromServerDict(from: dict, user: self.currentUser!)
@@ -91,15 +88,17 @@ class UserManager: ObservableObject, Observable {
             Task { @MainActor in
                 guard let dict = dict, self.currentUser != nil, let code=statusCode, code < .failure  else {
                     print("Failed to register.", dict as Any)
-                    
-                    self.alertItem = AlertContext.unableToComplete
-                    self.alertItem?.message = Text("The username is taken. Please try again.")
-                    self.showAlert = true
+                    if let dict = dict as? [String: String] {
+                        self.alertItem = AlertContext.unableToComplete
+                        self.alertItem?.message = Text(dict["detail"] ?? "Failed to register.")
+                        self.showAlert = true
+                    }
                     return
                 }
                 // update account with token usage data from WS server
                 self.currentUser = Utility.updateUserFromServerDict(from: dict, user: self.currentUser!)
                 
+                // even after registration, the currentUser still use temp account, until after login.
                 if self.keychainManager.save(data: self.currentUser, for: "currentUser") {
                     print("Registration data received OK:", self.currentUser as Any)
                     self.loginStatus = .signedOut
@@ -109,6 +108,9 @@ class UserManager: ObservableObject, Observable {
     }
     
     func login(username: String, password: String) {
+        
+        // not used for now.
+        
         websocket.fetchToken(username: username, password: password) { dict, statusCode in
             Task { @MainActor in
                 guard let dict = dict, let code=statusCode, code < .failure  else {

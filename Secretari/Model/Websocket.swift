@@ -235,6 +235,27 @@ extension Websocket {
         task.resume()
     }
     
+    func getProductIDs(_ completion: @escaping ([String: String]?, HTTPStatusCode?) -> Void) {
+        let settings = SettingsManager.shared.getSettings()
+        var request = URLRequest(url: URL(string: "http://" + settings.serverURL + "/")!)
+        request.httpMethod = "GET"
+        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+
+        let task = URLSession.shared.dataTask(with: request) { data, response, error in
+            guard let data = data, error == nil else {
+                completion(nil, nil)
+                return
+            }
+            let json = try? JSONSerialization.jsonObject(with: data) as? [String: String]
+            if let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 {
+                completion(json, .success)
+            } else {
+                completion(json, .failure)
+            }
+        }
+        task.resume()
+    }
+    
     // fetch login token and updated user information from server
     func fetchToken(username: String, password: String, completion: @escaping ([String: Any]?, HTTPStatusCode?) -> Void) {
         let settings = SettingsManager.shared.getSettings()

@@ -61,7 +61,7 @@ struct AccountDetailView: View {
                         
                         VStack(alignment: .leading, spacing: 4, content: {
                             Text(String(describing: fullName()))
-                                .font(.subheadline)
+                                .font(.headline)
                                 .fontWeight(.semibold)
                                 .padding(.top, 4)
                             
@@ -159,7 +159,7 @@ struct AccountDetailView: View {
     }
         
     func fullName() -> String {
-        return (user?.family_name ?? "Smith") + ", " + (user?.given_name ?? "John")
+        return (user?.family_name ?? "No") + " " + (user?.given_name ?? "one")
     }
 }
 

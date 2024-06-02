@@ -59,7 +59,9 @@ struct DetailView: View {
                 .padding()
                 .onAppear(perform: {
                     print("Start timer. Audio db=\(String(describing: self.settings.audioSilentDB))")
-                    recorderTimer.delegate = self
+                    
+                    recorderTimer.delegate = self   // register with recordTimer. It calls delegate when timer stops.
+                    
                     recorderTimer.startTimer()
                     {
                         // body of isSilent(), updated by frequency per 10s
@@ -246,12 +248,15 @@ struct DetailView: View {
 }
 
 extension DetailView: TimerDelegate {
-    @MainActor func timerStopped() {
+    func timerStopped() {
         // body of action() closure
         self.isRecording = false
-        guard speechRecognizer.transcript != "" else { print("No audio input"); dismiss(); return }
-        Task {
-            record.transcript = speechRecognizer.transcript + "。"
+        guard speechRecognizer.transcript != "" else {
+            print("No audio input");
+            dismiss();      // go back to parent view
+            return }
+        Task { @MainActor in
+            record.transcript = speechRecognizer.transcript + NSLocalizedString(".", comment: "")
             modelContext.insert(record)
             speechRecognizer.transcript = ""
             websocket.sendToAI(record.transcript) { result in

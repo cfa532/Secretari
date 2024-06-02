@@ -9,7 +9,7 @@ import StoreKit
 
 @MainActor
 class SubscriptionsManager: NSObject, ObservableObject {
-    let productIDs: [String] = ["890842", "24052901"]
+    var productIDs: [String] = []
     var purchasedProductIDs: Set<String> = []
 
     @Published var products: [Product] = []
@@ -22,6 +22,17 @@ class SubscriptionsManager: NSObject, ObservableObject {
         super.init()
         self.updates = observeTransactionUpdates()
         SKPaymentQueue.default().add(self)
+
+        Websocket.shared.getProductIDs { dict, statusCode in
+            guard let dict = dict, let code=statusCode, code < .failure else {
+                print("Failed to get product IDs.", dict as Any)
+                return
+            }
+            print(dict as Any)
+            if let ids = dict["ver0"] {
+                self.productIDs = ids.split(separator: "|").map(String.init)
+            }
+        }
     }
     
     deinit {

@@ -7,6 +7,9 @@
     " " : {
 
     },
+    "." : {
+
+    },
     "*" : {
 
     },
@@ -166,9 +169,6 @@
       }
     },
     "Error" : {
-
-    },
-    "Failed to create temporary account. Please try again later." : {
 
     },
     "Family Name" : {
@@ -874,9 +874,6 @@
 
     },
     "The data received from the server was invalid. Please contact support." : {
-
-    },
-    "The username is taken. Please try again." : {
 
     },
     "There was an error saving or retrieving your profile." : {
