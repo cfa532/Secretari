@@ -8,12 +8,12 @@
 import Foundation
 import SwiftUI
 
-//@MainActor
+@MainActor
 class UserManager: ObservableObject, Observable {
-    @Published var currentUser: User?
-    @Published var showAlert: Bool = false
-    @Published var alertItem: AlertItem?
-    @Published var loginStatus: StatusLogin = .signedIn     // login status of the current user
+    @MainActor @Published var currentUser: User?
+    @MainActor @Published var showAlert: Bool = false
+    @MainActor @Published var alertItem: AlertItem?
+    @MainActor @Published var loginStatus: StatusLogin = .signedOut     // login status of the current user
     var userToken: String? {
         didSet {
             if keychainManager.save(data: userToken, for: "userToken") {
@@ -27,14 +27,15 @@ class UserManager: ObservableObject, Observable {
                     // in case of annoymous user.
                     loginStatus = .unregistered
                 }
-           }
+            }
         }
     }
     private let keychainManager = KeychainManager.shared
-    static let shared = UserManager()
     private let websocket = Websocket.shared
+    
+    static let shared = UserManager()
     private init() {}
-
+    
     enum StatusLogin {
         case signedIn, signedOut, unregistered
     }
@@ -67,9 +68,8 @@ class UserManager: ObservableObject, Observable {
         websocket.registerUser(user) { dict, statusCode in
             Task { @MainActor in
                 guard let dict = dict, self.currentUser != nil, let code=statusCode, code < .failure  else {
-                    print("Failed to register.", self.currentUser as Any)
-                    // restore current user to original value, pop an alert and stay at registration page
-                    self.currentUser = self.keychainManager.retrieve(for: "currentUser", type: User.self)
+                    print("Failed to register.", dict as Any)
+                    
                     self.alertItem = AlertContext.unableToComplete
                     self.alertItem?.message = Text("The username is taken. Please try again.")
                     self.showAlert = true
@@ -80,22 +80,21 @@ class UserManager: ObservableObject, Observable {
                 
                 if self.keychainManager.save(data: self.currentUser, for: "currentUser") {
                     print("Registration data received OK:", self.currentUser as Any)
+                    self.loginStatus = .signedOut
                 }
             }
         }
     }
-
+    
     func login(username: String, password: String) {
         websocket.fetchToken(username: username, password: password) { dict, statusCode in
             Task { @MainActor in
                 guard let dict = dict, let code=statusCode, code < .failure  else {
-                    print("Failed to login.", self.currentUser as Any)
-                    
-                    // fetch secure token and store it on keychain
-                    self.currentUser = self.keychainManager.retrieve(for: "currentUser", type: User.self)
-                    
+                    print("Failed to login.", dict as Any)
                     self.alertItem = AlertContext.unableToComplete
-                    self.alertItem?.message = Text("Login failed. Please try again.")
+                    if let dict = dict as? [String: String] {
+                        self.alertItem?.message = Text(dict["detail"] ?? "Login error")
+                    }
                     self.showAlert = true
                     return
                 }

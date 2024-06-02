@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct AccountView: View {
-    @StateObject var userManager = UserManager.shared
+    @EnvironmentObject var userManager: UserManager
 
     var body: some View {
         switch userManager.loginStatus {
@@ -28,8 +28,8 @@ struct AccountView: View {
 struct AccountDetailView: View {
     @State private var showAlert = false
     @State private var user = UserManager.shared.currentUser
-    @StateObject var userManager = UserManager.shared
-    
+    @EnvironmentObject var userManager: UserManager
+
     private let formatterUSD = {
         let formatter = NumberFormatter()
         formatter.numberStyle = .currency
@@ -137,6 +137,13 @@ struct AccountDetailView: View {
                     }, label: {
                         HStack {
                             SettingsRowView(imageName: "arrow.left.circle.fill", title:Text("Sign out"), tintColor: .accentColor)
+                        }
+                    })
+                    Button(action: {
+//                        self.showAlert = true
+                    }, label: {
+                        HStack {
+                            SettingsRowView(imageName: "wand.and.stars", title:Text("Update account"), tintColor: .accentColor)
                         }
                     })
                 }

@@ -11,7 +11,7 @@ struct RegistrationView: View {
     @State private var user: User = UserManager.shared.currentUser ?? User(username: "", password: "")
     @State private var passwd: String = ""
     @State private var showAlert = false
-    @StateObject private var userManager = UserManager.shared
+    @EnvironmentObject var userManager: UserManager
 
     var body: some View {
         NavigationStack {
@@ -43,11 +43,11 @@ struct RegistrationView: View {
                         if 1...20 ~= user.username.count, user.password.count>0, user.password==passwd {
                             
                             // prepare currentUser for save to keychain. If it fails, restore currentUser.
-                            userManager.currentUser?.username = user.username
-                            userManager.currentUser?.password = user.password
-                            userManager.currentUser?.family_name = user.family_name
-                            userManager.currentUser?.given_name = user.given_name
-                            userManager.currentUser?.email = user.email
+//                            userManager.currentUser?.username = user.username
+//                            userManager.currentUser?.password = user.password
+//                            userManager.currentUser?.family_name = user.family_name
+//                            userManager.currentUser?.given_name = user.given_name
+//                            userManager.currentUser?.email = user.email
                             
                             userManager.register(user)
                         } else {

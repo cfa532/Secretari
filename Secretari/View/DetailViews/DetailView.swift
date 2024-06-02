@@ -264,8 +264,5 @@ extension DetailView: TimerDelegate {
 
 #Preview {
     DetailView(isRecording: .constant(true), record: AudioRecord.sampleData[0])
-    //    let container = try! ModelContainer(for: AudioRecord.self, Settings.self, configurations: ModelConfiguration(isStoredInMemoryOnly: true))
-    //    return DetailView(record: AudioRecord.sampleData[0])
-    //        .modelContainer(container)
 }
  

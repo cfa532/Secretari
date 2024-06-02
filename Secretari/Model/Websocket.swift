@@ -8,7 +8,7 @@
 import Foundation
 import SwiftUI
 
-//@MainActor
+@MainActor
 class Websocket: NSObject, ObservableObject, URLSessionWebSocketDelegate, Observable {
     @Published var isStreaming: Bool = false
     @Published var streamedText: String = ""
@@ -48,55 +48,55 @@ class Websocket: NSObject, ObservableObject, URLSessionWebSocketDelegate, Observ
         // add a timeout timer
         wsTask?.receive( completionHandler: { result in
             Task { @MainActor in
-            switch result {
-            case .failure(let error):
-                print("WebSocket failure: \(error)")
-                self.alertItem = AlertContext.invalidResponse
-                self.alertItem?.message = Text(error.localizedDescription)
-                self.cancel()
-            case .success(let message):
-                switch message {
-                case .string(let text):
-                    if let data = text.data(using: .utf8) {
-                        do {
-                            if let dict = try JSONSerialization.jsonObject(with: data) as? NSDictionary {
-                                print("Data from ws: ", dict)
-                                if let type = dict["type"] as? String {
-                                    if type == "result" {
-                                        if let answer = dict["answer"] as? String {
-                                            // send reply from AI to display
-                                            action(answer)
-                                            self.cancel()
-                                            
-                                            // bookkeeping. Update token count
-                                            let user = dict["user"] as? [String: Any] ?? [:]
-                                            UserManager.shared.currentUser = Utility.updateUserFromServerDict(from: user, user: UserManager.shared.currentUser!)
-                                            print("Received from ws", UserManager.shared.currentUser as Any)
-                                            if !KeychainManager.shared.save(data: UserManager.shared.currentUser, for: "currentUser") {
-                                                print("Failed to update user account from WS")
+                switch result {
+                case .failure(let error):
+                    print("WebSocket failure: \(error)")
+                    self.alertItem = AlertContext.invalidResponse
+                    self.alertItem?.message = Text(error.localizedDescription)
+                    self.cancel()
+                case .success(let message):
+                    switch message {
+                    case .string(let text):
+                        if let data = text.data(using: .utf8) {
+                            do {
+                                if let dict = try JSONSerialization.jsonObject(with: data) as? NSDictionary {
+                                    print("Data from ws: ", dict)
+                                    if let type = dict["type"] as? String {
+                                        if type == "result" {
+                                            if let answer = dict["answer"] as? String {
+                                                // send reply from AI to display
+                                                action(answer)
+                                                self.cancel()
+                                                
+                                                // bookkeeping. Update token count
+                                                let user = dict["user"] as? [String: Any] ?? [:]
+                                                UserManager.shared.currentUser = Utility.updateUserFromServerDict(from: user, user: UserManager.shared.currentUser!)
+                                                print("Received from ws", UserManager.shared.currentUser as Any)
+                                                if !KeychainManager.shared.save(data: UserManager.shared.currentUser, for: "currentUser") {
+                                                    print("Failed to update user account from WS")
+                                                }
                                             }
-                                        }
-                                    } else {
-                                        // should be stream type
-                                        if let s = dict["data"] as? String {
+                                        } else {
+                                            // should be stream type
+                                            if let s = dict["data"] as? String {
                                                 self.streamedText += s      // display streaming message from ai to user.
-                                            self.receive(action: action)
+                                                self.receive(action: action)
+                                            }
                                         }
                                     }
                                 }
+                            } catch {
+                                self.alertItem = AlertContext.invalidData
                             }
-                        } catch {
-                            self.alertItem = AlertContext.invalidData
                         }
+                    case .data(let data):
+                        print("Received data: \(data)")
+                        self.cancel()
+                    @unknown default:
+                        self.cancel()
+                        self.alertItem = AlertContext.invalidData
                     }
-                case .data(let data):
-                    print("Received data: \(data)")
-                    self.cancel()
-                @unknown default:
-                    self.cancel()
-                    self.alertItem = AlertContext.invalidData
                 }
-            }
             }
         })
     }
@@ -123,7 +123,7 @@ class Websocket: NSObject, ObservableObject, URLSessionWebSocketDelegate, Observ
         let user = UserManager.shared.currentUser
         let llmParams = settings.llmParams[settings.llmModel]
         let prompt = settings.prompt[settings.promptType]![settings.selectedLocale]
-
+        
         guard user != nil, llmParams != nil else { print("Null user in SendToAI"); return}
         Utility.printDict(obj: llmParams!)
         let msg = [
@@ -175,8 +175,8 @@ enum HTTPStatusCode: Int, Comparable {
     // ... Add other common codes as needed
     
     static func < (lhs: HTTPStatusCode, rhs: HTTPStatusCode) -> Bool {
-         return lhs.rawValue < rhs.rawValue
-     }
+        return lhs.rawValue < rhs.rawValue
+    }
 }
 
 // http calls for user account management
@@ -196,13 +196,11 @@ extension Websocket {
                 completion(nil, nil)
                 return
             }
-            if let httpResponse = response as? HTTPURLResponse {
-                if httpResponse.statusCode >= 400 {
-                    completion(nil, .failure)
-                } else {
-                    let json = try? JSONSerialization.jsonObject(with: data) as? [String: Any]
-                    completion(json, .created)
-                }
+            let json = try? JSONSerialization.jsonObject(with: data) as? [String: Any]
+            if let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode >= 400 {
+                completion(json, .failure)
+            } else {
+                completion(json, .created)
             }
         }
         task.resume()
@@ -227,13 +225,11 @@ extension Websocket {
                 completion(nil, nil)
                 return
             }
-            if let httpResponse = response as? HTTPURLResponse {
-                if httpResponse.statusCode >= 400 {
-                    completion(nil, .failure)
-                } else {
-                    let json = try? JSONSerialization.jsonObject(with: data) as? [String: Any]
-                    completion(json, .created)
-                }
+            let json = try? JSONSerialization.jsonObject(with: data) as? [String: Any]
+            if let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode >= 400 {
+                completion(json, .failure)
+            } else {
+                completion(json, .created)
             }
         }
         task.resume()
@@ -253,11 +249,11 @@ extension Websocket {
                 completion(nil, nil)
                 return
             }
+            let json = try? JSONSerialization.jsonObject(with: data) as? [String: Any]
             if let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 {
-                let json = try? JSONSerialization.jsonObject(with: data) as? [String: Any]
                 completion(json, .success)
             } else {
-                completion(nil, .failure)
+                completion(json, .failure)
             }
         }
         task.resume()

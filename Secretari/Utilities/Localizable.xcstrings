@@ -83,9 +83,6 @@
     "Are you sure to logout?" : {
 
     },
-    "Buy" : {
-
-    },
     "Cancel" : {
 
     },
@@ -206,6 +203,12 @@
       }
     },
     "General" : {
+
+    },
+    "Get access to all of our features" : {
+
+    },
+    "Get full access for just %@" : {
 
     },
     "Given Name" : {
@@ -339,9 +342,6 @@
       }
     },
     "Login error" : {
-
-    },
-    "Login failed. Please try again." : {
 
     },
     "Memo Missing" : {
@@ -686,6 +686,9 @@
         }
       }
     },
+    "Restore Purchases" : {
+
+    },
     "Select one of the following languages to translate the Summary. If summary exists, it will be overwritten." : {
       "localizations" : {
         "es-419" : {
@@ -995,7 +998,13 @@
         }
       }
     },
+    "Unlock Pro Access" : {
+
+    },
     "Update" : {
+
+    },
+    "Update account" : {
 
     },
     "Update Profile" : {
@@ -1075,6 +1084,9 @@
           }
         }
       }
+    },
+    "You've Unlocked Pro Access" : {
+
     },
     "Your profile information was successfully saved." : {
 

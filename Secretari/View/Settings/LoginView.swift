@@ -11,8 +11,11 @@ struct LoginView: View {
     @State private var username: String = ""
     @State private var password: String = ""
     @State private var required = false
-    @StateObject var userManager = UserManager.shared
-
+    @EnvironmentObject var userManager: UserManager
+    
+    @State private var alertMessage: String?
+    @State private var showAlert = false
+    
     var body: some View {
         NavigationStack {
             Spacer()
@@ -21,7 +24,7 @@ struct LoginView: View {
                 .aspectRatio(contentMode: .fit)
                 .padding(.horizontal, 120)
                 .padding(.bottom, 50)
-//                .padding(.top, 50)
+            //                .padding(.top, 50)
             VStack {
                 InputView(text: $username, title: "Username", placeHolder: userManager.currentUser?.diaplayUsername ?? "", isSecureField: false, required: required)
                     .textFieldStyle(RoundedBorderTextFieldStyle())
@@ -31,11 +34,34 @@ struct LoginView: View {
             }
             .padding(.horizontal, 30)
             .padding(.top, 12)
-
+            
             Button {
                 if username.count>0, password.count>0 {
                     self.required = false
-                    UserManager.shared.login(username: username, password: password)
+                    Websocket.shared.fetchToken(username: username, password: password) { dict, statusCode in
+                        guard let dict = dict, let code=statusCode, code < .failure  else {
+                            print("Failed to login.", dict as Any)
+                            if let dict = dict as? [String: String] {
+                                self.alertMessage = dict["detail"]  // {detail: message} received from FastAPI server
+                            }
+                            self.showAlert = true
+                            return
+                        }
+                        // update account with token usage data from WS server
+                        Task { @MainActor in
+                            print("Reply to login: ", dict)
+                            if let user=dict["user"] as? [String: Any], let token=dict["token"] as? [String: String] {
+                                userManager.currentUser = Utility.updateUserFromServerDict(from: user, user: userManager.currentUser!)
+                                userManager.currentUser?.username = username
+                                userManager.currentUser?.password = ""
+                                userManager.userToken = token["access_token"]
+                                if KeychainManager.shared.save(data: userManager.currentUser, for: "currentUser") {
+                                    print("Login OK:", userManager.currentUser as Any)
+                                }
+                            }
+                        }
+                    }
+                    
                 } else {
                     self.required = true
                 }
@@ -52,9 +78,9 @@ struct LoginView: View {
             .cornerRadius(10)
             Spacer()
             
-            if let count=UserManager.shared.currentUser?.username.count, count > 20 {
+            if let count=userManager.currentUser?.username.count, count > 20 {
                 Button {
-                    UserManager.shared.loginStatus = .unregistered
+                    userManager.loginStatus = .unregistered
                 } label: {
                     HStack(spacing: 3, content: {
                         Text("Don't have an account?")
@@ -66,9 +92,9 @@ struct LoginView: View {
                 }
             }
         }
-        .alert("Login error", isPresented: $userManager.showAlert, presenting: userManager.alertItem) { _ in
-        } message: { alertItem in
-            alertItem.message
+        .alert("Login error", isPresented: $showAlert, presenting: alertMessage) { _ in
+        } message: { alert in
+            Text(alert)
         }
     }
 }

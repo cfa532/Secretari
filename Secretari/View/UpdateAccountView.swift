@@ -8,7 +8,8 @@
 import SwiftUI
 
 struct UpdateAccountView: View {
-    @ObservedObject var user: UserManager = UserManager.shared
+    @EnvironmentObject private var userManager: UserManager
+    
     @State private var familyName: String = ""
     @State private var givenName: String = ""
     @State private var email: String = ""

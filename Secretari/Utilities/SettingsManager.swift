@@ -76,7 +76,7 @@ enum LLM: String, Codable, CaseIterable {
     case Gemini = "gemini"
 }
 enum LLMModel: String, Codable, CaseIterable {
-    case GPT_3 = "gpt-3.5"
+    case GPT_3 = "gpt-3.5-turbo"
     case GPT_4 = "gpt-4"
     case GPT_4_Turbo = "gpt-4-turbo"
 }

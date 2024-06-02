@@ -11,7 +11,10 @@ import SwiftData
 struct ContentView: View {
     @Environment(\.modelContext) private var modelContext
     @Query(sort: \AudioRecord.recordDate, order: .reverse) var records: [AudioRecord]
-    @StateObject private var userManager = UserManager.shared
+    
+    @EnvironmentObject private var userManager: UserManager
+    @EnvironmentObject private var entitlementManager: EntitlementManager
+    @EnvironmentObject private var subscriptionsManager: SubscriptionsManager
     
     @State private var isRecording = false
     @State private var showDetailView = false
@@ -43,18 +46,6 @@ struct ContentView: View {
                     }
                 }
             }
-            .overlay(content: {
-                if records.isEmpty {
-                    ContentUnavailableView(label: {
-                        Label("No records", systemImage: "list.bullet.rectangle.portrait")
-                    }, description: {
-                        Text("Push the START button to record your own speech. A summary will be generated automatically after STOP button is pushed.")
-                        Text("First make sure to select the right language for recognition in setting ⚙️ Otherwise the built-in speech recognizer cannot work properly.")
-                            .foregroundColor(.accentColor)
-                            .fontWeight(.bold)
-                    })
-                }
-            })
             .navigationTitle("Records")
             .navigationBarTitleDisplayMode(.inline)
             .navigationDestination(isPresented: $showDetailView, destination: {
@@ -91,6 +82,25 @@ struct ContentView: View {
                     }
                 }
             }
+            .onAppear(perform: {
+                if let _ = userManager.userToken {
+                    userManager.loginStatus = .signedIn
+                }
+            })
+            .overlay(content: {
+                if records.isEmpty {
+                    ContentUnavailableView(label: {
+                        Label("No records", systemImage: "list.bullet.rectangle.portrait")
+                    }, description: {
+                        Text("Push the START button to record your own speech. A summary will be generated automatically after STOP button is pushed.")
+                        Text("First make sure to select the right language for recognition in setting ⚙️ Otherwise the built-in speech recognizer cannot work properly.")
+                            .foregroundColor(.accentColor)
+                            .fontWeight(.bold)
+                    })
+                }
+            })
+
+            
             Button(action: {
                 self.isRecording = true
                 self.showDetailView = true        // active navigation link to detail view

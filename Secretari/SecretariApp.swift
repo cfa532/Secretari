@@ -14,6 +14,17 @@ struct SecretariApp: App {
     @Environment(\.modelContext) private var modelContext
     @StateObject private var userManager = UserManager.shared
     
+    @StateObject private var entitlementManager: EntitlementManager
+    @StateObject private var subscriptionsManager: SubscriptionsManager
+    
+    init() {
+        let entitlementManager = EntitlementManager()
+        let subscriptionsManager = SubscriptionsManager(entitlementManager: entitlementManager)
+        
+        self._entitlementManager = StateObject(wrappedValue: entitlementManager)
+        self._subscriptionsManager = StateObject(wrappedValue: subscriptionsManager)
+    }
+    
     var sharedModelContainer: ModelContainer = {
         let schema = Schema([AudioRecord.self, /*Settings.self,*/ Item.self])
         let modelConfiguration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: false)
@@ -33,10 +44,12 @@ struct SecretariApp: App {
                     print("App lang:", UserDefaults.standard.stringArray(forKey: "AppleLanguages")!)
                     print("identifier: ", NSLocale.current.identifier)
                     
-//                     clear UserDefaults data
-//                                        if let bundleID = Bundle.main.bundleIdentifier {
-//                                            UserDefaults.standard.removePersistentDomain(forName: bundleID)
-//                                        }
+                    // clear UserDefaults data
+                    let keychainManager = KeychainManager.shared
+//                    if let bundleID = Bundle.main.bundleIdentifier {
+//                        UserDefaults.standard.removePersistentDomain(forName: bundleID)
+////                        keychainManager.delete(for: "userIdentifier")
+//                    }
                     let identifierManager = IdentifierManager()
                     
                     // check if this the first time of running. Assign an Id to user if not.
@@ -47,7 +60,6 @@ struct SecretariApp: App {
                         userManager.createTempUser(identifier)
                     } else {
                         print("This is not the first run after launch")
-                        let keychainManager = KeychainManager.shared
                         userManager.userToken = KeychainManager.shared.retrieve(for: "userToken", type: String.self)
                         if let user = keychainManager.retrieve(for: "currentUser", type: User.self) {
                             userManager.currentUser = user          // local user infor will be updated with each fetchToken() call
@@ -57,9 +69,6 @@ struct SecretariApp: App {
                             fatalError("Could not retrieve user account.")
                         }
                     }
-                    
-                    // check the subscription status of the user on server. Async mode.
-                    
                     let appUpdated = AppVersionManager.shared.checkIfAppUpdated()
                     if appUpdated {
                         print("App is running for the first time after an update")
@@ -70,6 +79,13 @@ struct SecretariApp: App {
                 .alert("Error", isPresented: $userManager.showAlert, presenting: userManager.alertItem) { _ in
                 } message: { alertItem in
                     userManager.alertItem?.message
+                }
+                .environmentObject(userManager)
+                .environmentObject(entitlementManager)
+                .environmentObject(subscriptionsManager)
+                .task {
+                    // check the subscription status of the user on server. Async mode.
+                    await subscriptionsManager.updatePurchasedProducts()
                 }
 
         }
@@ -97,4 +113,3 @@ struct SecretariApp: App {
         })
     }
 }
-
