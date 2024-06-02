@@ -44,31 +44,33 @@ struct SecretariApp: App {
                     print("App lang:", UserDefaults.standard.stringArray(forKey: "AppleLanguages")!)
                     print("identifier: ", NSLocale.current.identifier)
                     
-                    // clear UserDefaults data
-                    let keychainManager = KeychainManager.shared
+                    // clear user data from UserDefaults and Keychain
 //                    if let bundleID = Bundle.main.bundleIdentifier {
+//                        let keychainManager = KeychainManager.shared
 //                        UserDefaults.standard.removePersistentDomain(forName: bundleID)
-////                        keychainManager.delete(for: "userIdentifier")
+//                        keychainManager.delete(for: "userIdentifier")
+//                        keychainManager.delete(for: "userToken")
+//                        keychainManager.delete(for: "currentUser")
 //                    }
-                    let identifierManager = IdentifierManager()
+//                    let identifierManager = IdentifierManager()
                     
-                    // check if this the first time of running. Assign an Id to user if not.
-                    if identifierManager.setupIdentifier() {
+                    // check if this the first time of running. Assign an ID to user if not.
+//                    if identifierManager.setupIdentifier() {
                         // setup an anonymous account
-                        let identifier = identifierManager.retrieveIdentifierFromKeychain() ?? UUID().uuidString
-                        print("First run after launch. Init temp user account, id=", identifier)
-                        userManager.createTempUser(identifier)
-                    } else {
-                        print("This is not the first run after launch")
-                        userManager.userToken = KeychainManager.shared.retrieve(for: "userToken", type: String.self)
-                        if let user = keychainManager.retrieve(for: "currentUser", type: User.self) {
-                            userManager.currentUser = user          // local user infor will be updated with each fetchToken() call
-                            print("CurrentUser from keychain", userManager.currentUser! as User)
-                        } else {
-                            // create user account on server only when user actually send request
-                            fatalError("Could not retrieve user account.")
-                        }
-                    }
+//                        let identifier = identifierManager.retrieveIdentifierFromKeychain() ?? UUID().uuidString
+//                        userManager.createTempUser(identifier)
+//                        print("First run after launch. Init temp user account, id=", identifier)
+//                    } else {
+//                        print("This is not the first run after launch")
+//                        userManager.userToken = KeychainManager.shared.retrieve(for: "userToken", type: String.self)
+//                        if let user = keychainManager.retrieve(for: "currentUser", type: User.self) {
+//                            userManager.currentUser = user          // local user infor will be updated with each fetchToken() call
+//                            print("CurrentUser from keychain", userManager.currentUser! as User)
+//                        } else {
+//                            // create user account on server only when user actually send request
+//                            fatalError("Could not retrieve user account.")
+//                        }
+//                    }
                     let appUpdated = AppVersionManager.shared.checkIfAppUpdated()
                     if appUpdated {
                         print("App is running for the first time after an update")

@@ -225,6 +225,7 @@
 			isa = PBXGroup;
 			children = (
 				461ADD982BD2B5E400C0DD94 /* SpeechRecognizer.swift */,
+				461797D52C07707B0034B213 /* User.swift */,
 				461ADD9A2BD2B5ED00C0DD94 /* Websocket.swift */,
 				461ADD9C2BD2B5F400C0DD94 /* RecorderTimer.swift */,
 				461ADD8C2BD2A42000C0DD94 /* ErrorWrapper.swift */,
@@ -294,7 +295,6 @@
 				46FAC6192BEB2DEF0013B9B5 /* LocalePicker.swift */,
 				46FAC6152BEA29410013B9B5 /* CheckboxView.swift */,
 				4623C6F72C055828006CB3D1 /* InputView.swift */,
-				461797D52C07707B0034B213 /* User.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";

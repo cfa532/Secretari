@@ -23,6 +23,17 @@ class IdentifierManager: ObservableObject {
         return isFirstLaunch
     }
     
+    func getDeviceIdentifier() -> String {
+        if let id = retrieveIdentifierFromKeychain() {
+            return id
+        } else {
+            // nothing on keychain, create one
+            let id = UIDevice.current.identifierForVendor?.uuidString ?? UUID().uuidString
+            storeIdentifierInKeychain(id)
+            return id
+        }
+    }
+    
     private func storeIdentifierInKeychain(_ identifier: String) {
         let query: [String: Any] = [
             kSecClass as String: kSecClassGenericPassword,
@@ -32,11 +43,7 @@ class IdentifierManager: ObservableObject {
         SecItemAdd(query as CFDictionary, nil)
     }
     
-    private func getDeviceIdentifier() -> String {
-        return UIDevice.current.identifierForVendor?.uuidString ?? UUID().uuidString
-    }
-    
-    func retrieveIdentifierFromKeychain() -> String? {
+    private func retrieveIdentifierFromKeychain() -> String? {
         let query: [String: Any] = [
             kSecClass as String: kSecClassGenericPassword,
             kSecAttrAccount as String: "userIdentifier",

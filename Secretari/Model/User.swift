@@ -7,12 +7,13 @@
 
 import Foundation
 
-struct User :Codable {
+struct User :Codable, Identifiable {
+    var id: String { username }
     var username: String
     var password: String
     var mid: String?
-    var token_count: [LLMModel: UInt]?     // gotten from server, kept locally
-    var token_usage: [LLMModel: Double]?
+    var token_count: [LLMModel: UInt]?     // Account balance in token amount per LLModel
+    var token_usage: [LLMModel: Double]?    // total usage in dollar amount per LLModel
     var current_usage: [LLMModel: Double]?   // current month usage
     var subscription: Bool = false          // Flag indicating active subscription
     var family_name: String?
