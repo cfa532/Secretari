@@ -123,7 +123,7 @@ struct SettingsView: View {
     }
     
     private func allowedPromptType() -> Bool {
-        if let user = UserManager.shared.currentUser, !user.subscription, user.token_count![LLMModel.GPT_4_Turbo]! < 100 {
+        if let user = UserManager.shared.currentUser, !user.subscription, user.dollar_balance![LLMModel.GPT_4_Turbo]! <= 0 {
             // non-subscriber has not enough balance for gpt-4
             return true
         }

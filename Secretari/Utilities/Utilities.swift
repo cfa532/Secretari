@@ -58,17 +58,17 @@ struct Utility {
         }
         return convertedDict
     }
-    
+
     static func updateUserFromServerDict<T>(from dict: [String: T], user: User) -> User {
         var user = user
         if let tokenCountData = dict["token_count"] as? [String: UInt] {
             user.token_count = Utility.convertDictionaryKeys(from: tokenCountData)
         }
-        if let tokenUsageData = dict["token_usage"] as? [String: Double] {
-            user.token_usage = Utility.convertDictionaryKeys(from: tokenUsageData)
+        if let tokenUsageData = dict["dollar_balance"] as? [String: Double] {
+            user.dollar_balance = Utility.convertDictionaryKeys(from: tokenUsageData)
         }
-        if let currentUsageData = dict["current_usage"] as? [String: Double] {
-            user.current_usage = Utility.convertDictionaryKeys(from: currentUsageData)
+        if let currentUsageData = dict["monthly_usage"] as? [String: Double] {
+            user.monthly_usage = currentUsageData
         }
         // save User information to keychain
         if let mid = dict["mid"] as? String {

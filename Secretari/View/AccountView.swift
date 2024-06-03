@@ -89,7 +89,7 @@ struct AccountDetailView: View {
                     }
                     
                     VStack(alignment: .leading, spacing: 10) {
-                        Text("Account blance in token:")
+                        Text("Token usage:")
                             .font(.subheadline)
                             .foregroundStyle(.gray)
                         if let g3 = user?.token_count, let g3c=g3[LLMModel.GPT_3] {
@@ -110,23 +110,15 @@ struct AccountDetailView: View {
                        }
                     }
                     VStack(alignment: .leading, spacing: 10) {
-                        Text("Usage of the month in USD:")
-                            .font(.subheadline)
-                            .foregroundStyle(.gray)
-                        if let u3 = user?.current_usage, let u3c=u3[LLMModel.GPT_3] {
+                        let currentDate = Date()
+                        let calendar = Calendar.current
+                        let currentMonth = String(calendar.component(.month, from: currentDate))
+                        if let u3 = user?.monthly_usage, let u3c=u3[currentMonth] {
                             HStack {
-                                Text("GPT-3:")
+                                Text("Cost of the month in USD:")
                                     .font(.subheadline)
                                 Spacer()
                                 Text(formatterUSD().string(from: NSNumber(value: u3c))!)
-                            }
-                        }
-                        if let u4 = user?.current_usage, let u4c=u4[LLMModel.GPT_4_Turbo] {
-                            HStack {
-                                Text("GPT-4-Turbo:")
-                                    .font(.subheadline)
-                                Spacer()
-                                Text(formatterUSD().string(from: NSNumber(value: u4c))!)
                             }
                         }
                     }

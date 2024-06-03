@@ -13,8 +13,8 @@ struct User :Codable, Identifiable {
     var password: String
     var mid: String?
     var token_count: [LLMModel: UInt]?     // Account balance in token amount per LLModel
-    var token_usage: [LLMModel: Double]?    // total usage in dollar amount per LLModel
-    var current_usage: [LLMModel: Double]?   // current month usage
+    var dollar_balance: [LLMModel: Double]?    // total usage in dollar amount per LLModel
+    var monthly_usage: [String: Double]?   // current month usage. month is string 1..12
     var subscription: Bool = false          // Flag indicating active subscription
     var family_name: String?
     var given_name: String?
@@ -22,7 +22,7 @@ struct User :Codable, Identifiable {
     var template: [LLM: [String: String]]?
     
     enum CodingKeys: String, CodingKey {
-        case username, mid, token_count, token_usage, current_usage, subscription, password, family_name, given_name, email, template
+        case username, mid, token_count, dollar_balance, monthly_usage, subscription, password, family_name, given_name, email, template
     }
     
     var initials: String {

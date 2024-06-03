@@ -71,6 +71,7 @@ class Websocket: NSObject, ObservableObject, URLSessionWebSocketDelegate, Observ
                                                 // bookkeeping. Update token count
                                                 let user = dict["user"] as? [String: Any] ?? [:]
                                                 UserManager.shared.currentUser = Utility.updateUserFromServerDict(from: user, user: UserManager.shared.currentUser!)
+                                                
                                                 print("Received from ws", UserManager.shared.currentUser as Any)
                                                 if !KeychainManager.shared.save(data: UserManager.shared.currentUser, for: "currentUser") {
                                                     print("Failed to update user account from WS")
@@ -123,10 +124,10 @@ class Websocket: NSObject, ObservableObject, URLSessionWebSocketDelegate, Observ
         // logic here to distinguish rigths between paid users and unpaid.
         // unpaid users use gpt-3.5, if there is still balance. Not memo prompt
         if let user = UserManager.shared.currentUser {
-            if !user.subscription, let token_count=user.token_count, let balance=token_count[LLMModel.GPT_4_Turbo], balance < 100 {
+            if !user.subscription, let token_count=user.dollar_balance, let balance=token_count[LLMModel.GPT_4_Turbo], balance <= 0 {
                 // non-subscriber, without enough balance of GPT-4, try GPT-3
                 settings.llmModel = LLMModel.GPT_3
-//                settings.promptType = .summary
+                // settings.promptType = .summary
             }
         }
         if let user = UserManager.shared.currentUser, let llmParams = settings.llmParams[settings.llmModel], let prompt = settings.prompt[settings.promptType] {
@@ -243,7 +244,7 @@ extension Websocket {
     
     func getProductIDs(_ completion: @escaping ([String: String]?, HTTPStatusCode?) -> Void) {
         let settings = SettingsManager.shared.getSettings()
-        var request = URLRequest(url: URL(string: "http://" + settings.serverURL + "/")!)
+        var request = URLRequest(url: URL(string: "http://" + settings.serverURL + "/productids")!)
         request.httpMethod = "GET"
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")
 

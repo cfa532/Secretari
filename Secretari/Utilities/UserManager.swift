@@ -40,23 +40,16 @@ class UserManager: ObservableObject, Observable {
         
         let keychainManager = KeychainManager.shared
         let identifierManager = IdentifierManager()
-        let identifier = identifierManager.getDeviceIdentifier()
 
-        self.userToken = keychainManager.retrieve(for: "userToken", type: String.self)
-        print("Access token", self.userToken as Any)
-        
         if let user = keychainManager.retrieve(for: "currentUser", type: User.self) {
             // local user infor will be updated with each fetchToken() call
-            if self.userToken != nil, self.userToken != "" {
-                self.currentUser = user
-                print("CurrentUser from keychain", self.currentUser! as User)
-            } else {
-                // Not login. use local temp user account.
-                self.currentUser = User(username: identifier, password: "zaq1^WSX")
-            }
+            self.currentUser = user    // User(username: identifier, password: "zaq1^WSX")
+            self.userToken = keychainManager.retrieve(for: "userToken", type: String.self)
+            print("CurrentUser from keychain", self.currentUser! as User, self.userToken as Any)
         } else {
             // create user account on server only when user actually send request
             // fatalError("Could not retrieve user account.")
+            let identifier = identifierManager.getDeviceIdentifier()
             self.createTempUser(identifier)
         }
     }
