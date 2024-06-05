@@ -6,26 +6,36 @@
 //
 
 import StoreKit
+import SwiftUI
 
 @MainActor
 class SubscriptionsManager: NSObject, ObservableObject {
     var productIDs: [String] = []
     var purchasedProductIDs: Set<String> = []
 
+    @Published var purchasedSubscriptions = Set<Product>()
+    @Published var purchasedConsumables = [Product]()      // consumables can be repeatedly buy.
+//    @Published var entitlements = [Transaction]()
     @Published var products: [Product] = []
+    
+    @Published var showAlert = false
+    @Published var alertItem: AlertItem?
     
     private var entitlementManager: EntitlementManager? = nil
     private var updates: Task<Void, Never>? = nil
+    private var userManager = UserManager.shared
+    private var websocket = Websocket.shared
     
     init(entitlementManager: EntitlementManager) {
-        self.entitlementManager = entitlementManager
         super.init()
+        self.entitlementManager = entitlementManager
         self.updates = observeTransactionUpdates()
         SKPaymentQueue.default().add(self)
 
-        Websocket.shared.getProductIDs { dict, statusCode in
+        websocket.getProductIDs { dict, statusCode in
             guard let dict = dict, let code=statusCode, code < .failure else {
                 print("Failed to get product IDs.", dict as Any)
+                // No network connection. Cannot purchase neither.
                 return
             }
             print(dict as Any)
@@ -46,6 +56,15 @@ class SubscriptionsManager: NSObject, ObservableObject {
             }
         }
     }
+    
+    @MainActor
+    func requestProducts() async {
+        do {
+            products = try await Product.products(for: productIDs)
+        } catch {
+            print(error)
+        }
+    }
 }
 
 // MARK: StoreKit2 API
@@ -59,14 +78,36 @@ extension SubscriptionsManager {
         }
     }
     
-    func buyProduct(_ product: Product) async {
-        do {
-            let result = try await product.purchase()
-            
+    func buyProduct(_ product: Product, result: Product.PurchaseResult) async {
+//        do {
+//            let result = try await product.purchase()
+
             switch result {
             case let .success(.verified(transaction)):
                 // Successful purhcase
                 await transaction.finish()
+                if product.type == .consumable {
+                    // recharge account with the amount
+                    let purchased: [String: String] = ["product_id": product.id, "amount": String(describing: product.price), "date": String(describing: Date().timeIntervalSince1970)]
+                    do {
+                        let result = try await websocket.recharge(purchased)
+                        if result {
+                            // edit balance on local record too.
+                            let nsDecimalNumber = NSDecimalNumber(decimal: product.price)
+                            userManager.currentUser?.dollar_balance?[AppConstants.PrimaryModel]? += nsDecimalNumber.doubleValue
+                            userManager.persistCurrentUser()
+                            
+                            self.alertItem = AlertContext.rechargeSuccess
+                        } else {
+                            self.alertItem = AlertContext.unableToComplete
+                        }
+                        self.showAlert = true
+                    } catch {
+                        print("Error recharging user account")
+                        self.alertItem = AlertContext.unableToComplete
+                        self.showAlert = true
+                    }
+                }
                 await self.updatePurchasedProducts()
             case let .success(.unverified(_, error)):
                 // Successful purchase but transaction/receipt can't be verified
@@ -84,9 +125,9 @@ extension SubscriptionsManager {
                 print("Failed to purchase the product!")
                 break
             }
-        } catch {
-            print("Failed to purchase the product!")
-        }
+//        } catch {
+//            print("Failed to purchase the product!")
+//        }
     }
     
     func updatePurchasedProducts() async {

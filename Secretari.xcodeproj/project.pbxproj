@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4603DD0D2C0DABB4006CBAB4 /* IAPManaager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4603DD0C2C0DABB4006CBAB4 /* IAPManaager.swift */; };
+		4603DD0F2C0EA6EE006CBAB4 /* Store.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4603DD0E2C0EA6EE006CBAB4 /* Store.swift */; };
+		4603DD112C0EA70C006CBAB4 /* Persistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4603DD102C0EA70C006CBAB4 /* Persistence.swift */; };
 		461797D62C07707B0034B213 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 461797D52C07707B0034B213 /* User.swift */; };
 		461ADD5B2BD2A0AC00C0DD94 /* SecretariApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 461ADD5A2BD2A0AC00C0DD94 /* SecretariApp.swift */; };
 		461ADD5F2BD2A0AC00C0DD94 /* Item.swift in Sources */ = {isa = PBXBuildFile; fileRef = 461ADD5E2BD2A0AC00C0DD94 /* Item.swift */; };
@@ -38,7 +41,6 @@
 		46285DCC2C0AC91900C83F43 /* EntitlementManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46285DCB2C0AC91900C83F43 /* EntitlementManager.swift */; };
 		46285DCE2C0B56B000C83F43 /* SubscriptionsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46285DCD2C0B56B000C83F43 /* SubscriptionsManager.swift */; };
 		467CC9432C0826E800FD5DC2 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 46FAC60D2BE7C8AB0013B9B5 /* StoreKit.framework */; };
-		467CC9482C084A3200FD5DC2 /* TransactionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 467CC9472C084A3200FD5DC2 /* TransactionManager.swift */; };
 		467CC94A2C08767000FD5DC2 /* PurchaseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 467CC9492C08767000FD5DC2 /* PurchaseView.swift */; };
 		468B0B662BEDB83900C6D2FF /* TappablePadding.swift in Sources */ = {isa = PBXBuildFile; fileRef = 468B0B652BEDB83900C6D2FF /* TappablePadding.swift */; };
 		468B0B6A2BEF29EE00C6D2FF /* IdentifierManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 468B0B692BEF29EE00C6D2FF /* IdentifierManager.swift */; };
@@ -74,6 +76,9 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		4603DD0C2C0DABB4006CBAB4 /* IAPManaager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IAPManaager.swift; sourceTree = "<group>"; };
+		4603DD0E2C0EA6EE006CBAB4 /* Store.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Store.swift; sourceTree = "<group>"; };
+		4603DD102C0EA70C006CBAB4 /* Persistence.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Persistence.swift; sourceTree = "<group>"; };
 		461797D52C07707B0034B213 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		461797D72C0771620034B213 /* Secretai.storekit */ = {isa = PBXFileReference; lastKnownFileType = text; path = Secretai.storekit; sourceTree = "<group>"; };
 		461ADD572BD2A0AC00C0DD94 /* Secretari.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Secretari.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -110,7 +115,6 @@
 		46285DCB2C0AC91900C83F43 /* EntitlementManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EntitlementManager.swift; sourceTree = "<group>"; };
 		46285DCD2C0B56B000C83F43 /* SubscriptionsManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SubscriptionsManager.swift; sourceTree = "<group>"; };
 		467CC9462C082B3600FD5DC2 /* SecretariDebug.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = SecretariDebug.entitlements; sourceTree = "<group>"; };
-		467CC9472C084A3200FD5DC2 /* TransactionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionManager.swift; sourceTree = "<group>"; };
 		467CC9492C08767000FD5DC2 /* PurchaseView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PurchaseView.swift; sourceTree = "<group>"; };
 		468B0B652BEDB83900C6D2FF /* TappablePadding.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TappablePadding.swift; sourceTree = "<group>"; };
 		468B0B692BEF29EE00C6D2FF /* IdentifierManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IdentifierManager.swift; sourceTree = "<group>"; };
@@ -155,6 +159,19 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		4603DD0B2C0DABA0006CBAB4 /* IAP */ = {
+			isa = PBXGroup;
+			children = (
+				46285DCD2C0B56B000C83F43 /* SubscriptionsManager.swift */,
+				4603DD0E2C0EA6EE006CBAB4 /* Store.swift */,
+				46285DCB2C0AC91900C83F43 /* EntitlementManager.swift */,
+				4603DD102C0EA70C006CBAB4 /* Persistence.swift */,
+				467CC9492C08767000FD5DC2 /* PurchaseView.swift */,
+				4603DD0C2C0DABB4006CBAB4 /* IAPManaager.swift */,
+			);
+			path = IAP;
+			sourceTree = "<group>";
+		};
 		461ADD4E2BD2A0AC00C0DD94 = {
 			isa = PBXGroup;
 			children = (
@@ -237,8 +254,8 @@
 		461ADD872BD2A0D600C0DD94 /* View */ = {
 			isa = PBXGroup;
 			children = (
+				4603DD0B2C0DABA0006CBAB4 /* IAP */,
 				461ADDA62BD2B6EB00C0DD94 /* DetailView.swift */,
-				467CC9492C08767000FD5DC2 /* PurchaseView.swift */,
 				4623C6EF2C046AEE006CB3D1 /* AccountView.swift */,
 				4623C6F92C06C500006CB3D1 /* Settings */,
 				46FAC5FF2BDFC4AC0013B9B5 /* DetailViews */,
@@ -265,11 +282,8 @@
 				46DA71382BD7FB60001A3685 /* NetworkManager.swift */,
 				46DA71402BD8C95C001A3685 /* Localizable.xcstrings */,
 				46DA71422BD8D724001A3685 /* Utilities.swift */,
-				467CC9472C084A3200FD5DC2 /* TransactionManager.swift */,
 				46FAC60A2BE36A8C0013B9B5 /* UserManager.swift */,
-				46285DCB2C0AC91900C83F43 /* EntitlementManager.swift */,
 				468B0B652BEDB83900C6D2FF /* TappablePadding.swift */,
-				46285DCD2C0B56B000C83F43 /* SubscriptionsManager.swift */,
 				468B0B692BEF29EE00C6D2FF /* IdentifierManager.swift */,
 				4623C6E52C00F396006CB3D1 /* KeychainManager.swift */,
 				4623C6E72C018F67006CB3D1 /* SettingsManager.swift */,
@@ -457,6 +471,7 @@
 				46DA713D2BD7FBFB001A3685 /* Alert.swift in Sources */,
 				461ADD912BD2A4F000C0DD94 /* SettingsView.swift in Sources */,
 				46FAC6072BE146950013B9B5 /* DetailTranscriptView.swift in Sources */,
+				4603DD112C0EA70C006CBAB4 /* Persistence.swift in Sources */,
 				468B0B662BEDB83900C6D2FF /* TappablePadding.swift in Sources */,
 				461ADD8D2BD2A42000C0DD94 /* ErrorWrapper.swift in Sources */,
 				46FAC6182BEA2BEC0013B9B5 /* SummaryRowView.swift in Sources */,
@@ -472,6 +487,7 @@
 				461ADD9F2BD2B63C00C0DD94 /* RecorderButton.swift in Sources */,
 				4623C6E62C00F396006CB3D1 /* KeychainManager.swift in Sources */,
 				46FAC6092BE146A60013B9B5 /* DetailTranslationView.swift in Sources */,
+				4603DD0D2C0DABB4006CBAB4 /* IAPManaager.swift in Sources */,
 				461ADD892BD2A11700C0DD94 /* AudioRecord.swift in Sources */,
 				46DA713C2BD7FBFB001A3685 /* APError.swift in Sources */,
 				461ADD992BD2B5E400C0DD94 /* SpeechRecognizer.swift in Sources */,
@@ -489,8 +505,8 @@
 				4623C6FB2C06C531006CB3D1 /* SettingsRowView.swift in Sources */,
 				468B0B6A2BEF29EE00C6D2FF /* IdentifierManager.swift in Sources */,
 				4623C6EC2C02B689006CB3D1 /* ContentView.swift in Sources */,
-				467CC9482C084A3200FD5DC2 /* TransactionManager.swift in Sources */,
 				4623C6F42C0471E3006CB3D1 /* UpdateAccountView.swift in Sources */,
+				4603DD0F2C0EA6EE006CBAB4 /* Store.swift in Sources */,
 				461ADD9B2BD2B5ED00C0DD94 /* Websocket.swift in Sources */,
 				461ADD5B2BD2A0AC00C0DD94 /* SecretariApp.swift in Sources */,
 			);

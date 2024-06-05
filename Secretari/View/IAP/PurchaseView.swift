@@ -11,7 +11,8 @@ import StoreKit
 struct PurchaseView: View {
     @EnvironmentObject private var entitlementManager: EntitlementManager
     @EnvironmentObject private var subscriptionsManager: SubscriptionsManager
-    
+    @Environment(\.purchase) private var purchase: PurchaseAction
+
     @State private var selectedProduct: Product? = nil
     private let features: [String] = ["Remove all ads", "Daily new content", "Other cool features", "Follow for more tutorials"]
     
@@ -131,7 +132,10 @@ struct PurchaseView: View {
         Button(action: {
             if let selectedProduct = selectedProduct {
                 Task {
-                    await subscriptionsManager.buyProduct(selectedProduct)
+                    let purchaseOptions: Set<Product.PurchaseOption> = []
+                    if let result = try? await purchase(selectedProduct, options: purchaseOptions) {
+                        await subscriptionsManager.buyProduct(selectedProduct, result: result)
+                    }
                 }
             } else {
                 print("Please select a product before purchasing.")

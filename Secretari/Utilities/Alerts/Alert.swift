@@ -16,6 +16,11 @@ struct AlertItem: Identifiable {
 
 
 struct AlertContext {
+    //MARK: - Success
+    static let rechargeSuccess  = AlertItem(title: Text("Success"),
+                                            message: Text("Recharge success. Please check your account balance."),
+                                            dismissButton: .default(Text("OK")))
+    
     //MARK: - Network Alerts
     static let invalidData      = AlertItem(title: Text("Server Error"),
                                             message: Text("The data received from the server was invalid. Please contact support."),

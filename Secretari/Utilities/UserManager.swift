@@ -40,15 +40,18 @@ class UserManager: ObservableObject, Observable {
         
         let keychainManager = KeychainManager.shared
         let identifierManager = IdentifierManager()
-
+        
+//        let userDefaultsManager = UserDefaultsManager()
+//        if let user = userDefaultsManager.get(User.self, forKey: "currentUser") {     // remember to store newly create temp user.
         if let user = keychainManager.retrieve(for: "currentUser", type: User.self) {
             // local user infor will be updated with each fetchToken() call
             self.currentUser = user    // User(username: identifier, password: "zaq1^WSX")
             self.userToken = keychainManager.retrieve(for: "userToken", type: String.self)
-            print("CurrentUser from keychain", self.currentUser! as User, self.userToken as Any)
+            print("CurrentUser from keychain", self.currentUser! as User, "Token=", self.userToken as Any)
         } else {
             // create user account on server only when user actually send request
             // fatalError("Could not retrieve user account.")
+            print("First time run.")
             let identifier = identifierManager.getDeviceIdentifier()
             self.createTempUser(identifier)
         }
@@ -56,6 +59,10 @@ class UserManager: ObservableObject, Observable {
     
     enum StatusLogin {
         case signedIn, signedOut, unregistered
+    }
+    
+    func persistCurrentUser() {
+        _ = self.keychainManager.save(data: self.currentUser, for: "currentUser")
     }
     
     func createTempUser(_ id: String) {

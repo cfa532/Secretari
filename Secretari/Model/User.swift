@@ -19,10 +19,11 @@ struct User :Codable, Identifiable {
     var family_name: String?
     var given_name: String?
     var email: String?
-    var template: [LLM: [String: String]]?
+    var template: [LLM: [String: String]]?      // LLM parameters for eahc model.
+    var purchaseHistory: [String: String]?         // [productID, purchase date, amount} or {productID, start date, end date, monthly/yearly, price}
     
     enum CodingKeys: String, CodingKey {
-        case username, mid, token_count, dollar_balance, monthly_usage, subscription, password, family_name, given_name, email, template
+        case username, mid, token_count, dollar_balance, monthly_usage, subscription, password, family_name, given_name, email, template, purchaseHistory
     }
     
     var initials: String {
@@ -35,7 +36,7 @@ struct User :Codable, Identifiable {
     }
     
     var diaplayUsername: String? {
-        if username.count > 20 {
+        if username.count > 20 {    // a system create string as temp name. Do not display it.
             return nil
         }
         return username

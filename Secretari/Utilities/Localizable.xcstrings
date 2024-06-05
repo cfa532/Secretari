@@ -16,9 +16,6 @@
     "Account" : {
 
     },
-    "Account blance in token:" : {
-
-    },
     "advanced" : {
       "localizations" : {
         "es-419" : {
@@ -93,6 +90,9 @@
 
     },
     "Confirm Password" : {
+
+    },
+    "Cost of the month in USD:" : {
 
     },
     "Dismiss" : {
@@ -541,6 +541,9 @@
         }
       }
     },
+    "Recharge success. Please check your account balance." : {
+
+    },
     "Recognizing" : {
       "localizations" : {
         "es-419" : {
@@ -839,6 +842,9 @@
         }
       }
     },
+    "Success" : {
+
+    },
     "Summarize" : {
 
     },
@@ -880,6 +886,9 @@
 
     },
     "There was an issue connecting to the server. If this persists, please contact support." : {
+
+    },
+    "Token usage:" : {
 
     },
     "Transcript" : {
@@ -1005,9 +1014,6 @@
 
     },
     "Update Profile" : {
-
-    },
-    "Usage of the month in USD:" : {
 
     },
     "Username" : {

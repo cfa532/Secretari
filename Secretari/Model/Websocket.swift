@@ -81,7 +81,7 @@ class Websocket: NSObject, ObservableObject, URLSessionWebSocketDelegate, Observ
                                             // should be stream type
                                             if let s = dict["data"] as? String {
                                                 self.streamedText += s      // display streaming message from ai to user.
-                                                self.receive(action: action)
+                                                self.receive(action: action)    // receive next charater
                                             }
                                         }
                                     }
@@ -261,6 +261,30 @@ extension Websocket {
             }
         }
         task.resume()
+    }
+    
+    func recharge(_ dict: [String: String]) async throws -> Bool {
+        let settings = SettingsManager.shared.getSettings()
+        var request = URLRequest(url: URL(string: "http://" + settings.serverURL + "/recharge")!)
+        request.httpMethod = "POST"
+        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+        guard let accessToken = UserManager.shared.userToken else { return false}
+        request.addValue("Bearer \(accessToken)", forHTTPHeaderField: "Authorization")
+        
+        if let receiptURL = Bundle.main.appStoreReceiptURL,
+           let receipt = try? Data(contentsOf: receiptURL) {
+            // Send this receipt data to your server
+            var dict: [String: Any] = dict
+            dict["receipt"] = receipt
+            request.httpBody = try? JSONSerialization.data(withJSONObject: dict)
+        }
+        
+        let (_, response) = try await URLSession.shared.data(for: request)
+        if let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 {
+            return true
+        } else {
+            return false
+        }
     }
     
     // fetch login token and updated user information from server

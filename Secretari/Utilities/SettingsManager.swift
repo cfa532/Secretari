@@ -97,7 +97,7 @@ final class AppConstants {
     static let NumRecordsInSwiftData = 30   // number of records kept locally by SwiftData
     static let RecorderTimerFrequency = 10.0  // frequency in seconds to run update() of timer.
 
-    static let DefaultTokenCount = [LLMModel.GPT_3 : UInt(0), LLMModel.GPT_4_Turbo :UInt(0)]
+    static let PrimaryModel = LLMModel.GPT_4_Turbo      // any recharge shall be on the balance of primary LLM model.
     static let DefaultPassword = "zaq12WSX"
     static let defaultSettings = Settings(prompt: defaultPrompt,
                                           serverURL: "localhost:8000/secretari",

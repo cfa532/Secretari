@@ -9,15 +9,20 @@ import SwiftUI
 import Security
 
 class IdentifierManager: ObservableObject {
-    private let firstLaunchKey = "HasLaunchedBefore"
+//    private let firstLaunchKey = "HasLaunchedBefore"
+//    static let userDefaults = UserDefaults(suiteName: "secretari.leither.uk")!
+    
+    @AppStorage("HasLaunchedBefore") var isFirstLaunch: Bool = true
     
     func setupIdentifier() -> Bool {
-        let isFirstLaunch = !UserDefaults.standard.bool(forKey: firstLaunchKey)
+//        let isFirstLaunch = !UserDefaults.standard.bool(forKey: firstLaunchKey)
         if isFirstLaunch {
+            print("Launch for the first time.")
             let identifier = getDeviceIdentifier()      // make sure the identiifier is more than 20 chars long, to distinguish fromm real username.
             storeIdentifierInKeychain(identifier)
-            UserDefaults.standard.set(true, forKey: firstLaunchKey)
-            UserDefaults.standard.synchronize()
+//            UserDefaults.standard.set(true, forKey: firstLaunchKey)
+//            UserDefaults.standard.synchronize()
+            isFirstLaunch = false
             print("Device identifier", identifier)
         }
         return isFirstLaunch
