@@ -19,10 +19,9 @@ struct User :Codable, Identifiable {
     var family_name: String?
     var given_name: String?
     var email: String?
-    var template: [LLM: [String: String]]?      // LLM parameters for eahc model.
     
     enum CodingKeys: String, CodingKey {
-        case username, mid, token_count, dollar_balance, monthly_usage, subscription, password, family_name, given_name, email, template
+        case username, mid, token_count, dollar_balance, monthly_usage, subscription, password, family_name, given_name, email
     }
     
     var initials: String {

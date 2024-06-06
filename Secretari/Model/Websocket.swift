@@ -228,8 +228,32 @@ extension Websocket {
         // update
     }
     
-    // create a temp user record on server
-    func createTempUser(_ user: User, completion: @escaping ([String: Any]?, HTTPStatusCode?) -> Void) {
+//    // create a temp user record on server
+//    func createTempUser(_ user: User, completion: @escaping ([String: Any]?, HTTPStatusCode?) -> Void) {
+//        let settings = SettingsManager.shared.getSettings()
+//        var request = URLRequest(url: URL(string: "http://" + settings.serverURL + "/users/temp")!)   // should be https://ip/secretari/users/temp
+//        request.httpMethod = "POST"
+//        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+//        
+//        let body: [String: String] = ["username": user.username, "password": user.password]
+//        request.httpBody = try? JSONSerialization.data(withJSONObject: body)
+//        
+//        let task = URLSession.shared.dataTask(with: request) { data, response, error in
+//            guard let data = data, error == nil else {
+//                completion(nil, nil)
+//                return
+//            }
+//            let json = try? JSONSerialization.jsonObject(with: data) as? [String: Any]
+//            if let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode >= 400 {
+//                completion(json, .failure)
+//            } else {
+//                completion(json, .created)
+//            }
+//        }
+//        task.resume()
+//    }
+    
+    func createTempUser(_ user: User) async throws -> [String: Any]? {
         let settings = SettingsManager.shared.getSettings()
         var request = URLRequest(url: URL(string: "http://" + settings.serverURL + "/users/temp")!)   // should be https://ip/secretari/users/temp
         request.httpMethod = "POST"
@@ -238,19 +262,12 @@ extension Websocket {
         let body: [String: String] = ["username": user.username, "password": user.password]
         request.httpBody = try? JSONSerialization.data(withJSONObject: body)
         
-        let task = URLSession.shared.dataTask(with: request) { data, response, error in
-            guard let data = data, error == nil else {
-                completion(nil, nil)
-                return
-            }
-            let json = try? JSONSerialization.jsonObject(with: data) as? [String: Any]
-            if let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode >= 400 {
-                completion(json, .failure)
-            } else {
-                completion(json, .created)
-            }
+        let (data, response) = try await URLSession.shared.data(for: request)
+        if let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 {
+            return try? JSONSerialization.jsonObject(with: data) as? [String: Any]
+        } else {
+            return nil
         }
-        task.resume()
     }
     
     func getProductIDs(_ completion: @escaping ([String: String]?, HTTPStatusCode?) -> Void) {
@@ -285,19 +302,11 @@ extension Websocket {
         request.addValue("Bearer \(accessToken)", forHTTPHeaderField: "Authorization")
         request.httpBody = try? JSONSerialization.data(withJSONObject: dict)
   
-        // not necessary according to: https://developer.apple.com/documentation/appstorereceipts/validating_receipts_on_the_device
-//        if let receiptURL = Bundle.main.appStoreReceiptURL,
-//           let receipt = try? Data(contentsOf: receiptURL) {
-//            // Send this receipt data to your server
-//            var dict: [String: Any] = dict
-//            dict["receipt"] = receipt
-//            request.httpBody = try? JSONSerialization.data(withJSONObject: dict)
-//        }
+        // receipt is not necessary according to: https://developer.apple.com/documentation/appstorereceipts/validating_receipts_on_the_device
         
         let (data, response) = try await URLSession.shared.data(for: request)
         if let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 {
-            let json = try? JSONSerialization.jsonObject(with: data) as? [String: Any]
-            return json
+            return try? JSONSerialization.jsonObject(with: data) as? [String: Any]
         } else {
             return nil
         }
@@ -315,8 +324,7 @@ extension Websocket {
         
         let (data, response) = try await URLSession.shared.data(for: request)
         if let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 {
-            let json = try? JSONSerialization.jsonObject(with: data) as? [String: Any]
-            return json
+            return try? JSONSerialization.jsonObject(with: data) as? [String: Any]
         } else {
             return nil
         }

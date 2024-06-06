@@ -70,6 +70,9 @@ struct Utility {
         if let currentUsageData = dict["monthly_usage"] as? [String: Double] {
             user.monthly_usage = currentUsageData
         }
+        if let subscription = dict["subscription"] as? Bool {
+            user.subscription = subscription
+        }
         // save User information to keychain
         if let mid = dict["mid"] as? String {
             user.mid = mid

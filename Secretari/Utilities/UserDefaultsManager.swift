@@ -12,20 +12,20 @@ class UserDefaultsManager {
     private let defaults = UserDefaults.standard
 
     // Save data
-    func set<T: Encodable>(_ value: T, forKey key: String) {
+    func set<T: Encodable>(_ value: T, for key: String) {
         if let encoded = try? JSONEncoder().encode(value) {
             defaults.set(encoded, forKey: key)
         }
     }
 
     // Retrieve data
-    func get<T: Decodable>(_ type: T.Type, forKey key: String) -> T? {
+    func get<T: Decodable>(for key: String, type: T.Type) -> T? {
         guard let data = defaults.data(forKey: key) else { return nil }
         return try? JSONDecoder().decode(type, from: data)
     }
 
     // Remove data
-    func remove(forKey key: String) {
+    func remove(for key: String) {
         defaults.removeObject(forKey: key)
     }
 }

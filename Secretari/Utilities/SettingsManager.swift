@@ -19,7 +19,7 @@ class SettingsManager {
     }
 
     init() {
-        settings = UserDefaultsManager.shared.get(Settings.self, forKey: "appSettings") ?? AppConstants.defaultSettings
+        settings = UserDefaultsManager.shared.get(for: "appSettings", type: Settings.self) ?? AppConstants.defaultSettings
     }
 
     func getSettings() -> Settings {
@@ -31,11 +31,11 @@ class SettingsManager {
     }
 
     private func saveSettings() {
-        UserDefaultsManager.shared.set(settings, forKey: "appSettings")
+        UserDefaultsManager.shared.set(settings, for: "appSettings")
     }
 
     private func loadSettings() -> Settings? {
-        UserDefaultsManager.shared.get(Settings.self, forKey: "appSettings")
+        UserDefaultsManager.shared.get(for: "appSettings", type: Settings.self)
     }
 }
 

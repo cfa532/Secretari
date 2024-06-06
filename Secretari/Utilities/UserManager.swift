@@ -10,15 +10,19 @@ import SwiftUI
 
 //@MainActor
 class UserManager: ObservableObject, Observable {
+    
     @Published var currentUser: User?
     @Published var showAlert: Bool = false
     @Published var alertItem: AlertItem?
     @Published var loginStatus: StatusLogin = .signedOut     // login status of the current user
+    
+    private let keychainManager = KeychainManager.shared
+    private let userDefaultsManager = UserDefaultsManager.shared
+    private let websocket = Websocket.shared
+    
     var userToken: String? {
         didSet {
-            if keychainManager.save(data: userToken, for: "userToken") {
-                print("user token saved", userToken as Any)
-            }
+            _ = keychainManager.save(data: userToken, for: "userToken")
             if userToken != nil, userToken != "" {
                 loginStatus = .signedIn
             } else {
@@ -30,28 +34,18 @@ class UserManager: ObservableObject, Observable {
             }
         }
     }
-    private let keychainManager = KeychainManager.shared
-    private let websocket = Websocket.shared
-    
     static let shared = UserManager()
     private init() {
-        
         // There is the code code of initialization. Setup user and retrieve user data.
-        
-        let keychainManager = KeychainManager.shared
-        let identifierManager = IdentifierManager()
-        
-//        let userDefaultsManager = UserDefaultsManager()
-//        if let user = userDefaultsManager.get(User.self, forKey: "currentUser") {     // remember to store newly create temp user.
-        if let user = keychainManager.retrieve(for: "currentUser", type: User.self) {
+                
+        if let user = userDefaultsManager.get(for: "currentUser", type: User.self) {
             // local user infor will be updated with each fetchToken() call
-            self.currentUser = user    // User(username: identifier, password: "zaq1^WSX")
+            self.currentUser = user
             self.userToken = keychainManager.retrieve(for: "userToken", type: String.self)
-            print("CurrentUser from keychain", self.currentUser! as User, "Token=", self.userToken as Any)
+            print("CurrentUser retrieved:", self.currentUser! as User, "Token=", self.userToken as Any)
         } else {
-            // create user account on server only when user actually send request
-            // fatalError("Could not retrieve user account.")
             print("First time run.")
+            let identifierManager = IdentifierManager()
             let identifier = identifierManager.getDeviceIdentifier()
             self.createTempUser(identifier)
         }
@@ -62,25 +56,30 @@ class UserManager: ObservableObject, Observable {
     }
     
     func persistCurrentUser() {
-        _ = self.keychainManager.save(data: self.currentUser, for: "currentUser")
+        self.userDefaultsManager.set(self.currentUser, for: "currentUser")
     }
     
     func createTempUser(_ id: String) {
         // When someone starts to use the app without registration. Give it an identify.
-        // Enforce registration only when user wants to subscribe.
-        self.currentUser = User(username: id, password: "zaq1^WSX")
-        websocket.createTempUser(currentUser!) { dict, statusCode in
-            Task { @MainActor in
-                guard let dict = dict, let code=statusCode, code < .failure else {
-                    print(dict as Any)
-                    fatalError("Failed to create temp user account.")
+        Task { @MainActor in
+            do {
+                self.currentUser = User(username: id, password: "zaq1^WSX")
+                if let json = try await websocket.createTempUser( self.currentUser! ) {
+
+                    // json from server should be {token, user}
+                    if let token = json["token"] as? [String: Any] {
+                        self.userToken = token["access_token"] as? String
+                    }
+                    if let user = json["user"] as? [String: Any] {
+                        // update temp user with account data recieved from server.
+                        self.currentUser = Utility.updateUserFromServerDict(from: user, user: self.currentUser!)
+                        self.currentUser?.password = ""
+                        self.persistCurrentUser()
+                        print("temm user created", self.currentUser as Any)
+                    }
                 }
-                // update temp user with account data recieved from server.
-                self.currentUser = Utility.updateUserFromServerDict(from: dict, user: self.currentUser!)
-                self.currentUser?.password = ""
-                if !self.keychainManager.save(data: self.currentUser, for: "currentUser") {
-                    print("Temp account created OK", self.currentUser as Any)
-                }
+            } catch {
+                fatalError("Failed to create temporary user.")
             }
         }
     }
@@ -100,20 +99,15 @@ class UserManager: ObservableObject, Observable {
                 }
                 // update account with token usage data from WS server
                 self.currentUser = Utility.updateUserFromServerDict(from: dict, user: self.currentUser!)
-                
+                self.persistCurrentUser()
+
                 // even after registration, the currentUser still use temp account, until after login.
-                if self.keychainManager.save(data: self.currentUser, for: "currentUser") {
-                    print("Registration data received OK:", self.currentUser as Any)
-                    self.loginStatus = .signedOut
-                }
+                self.loginStatus = .signedOut
             }
         }
     }
     
     func login(username: String, password: String) {
-        
-        // not used for now.
-        
         websocket.fetchToken(username: username, password: password) { dict, statusCode in
             Task { @MainActor in
                 guard let dict = dict, let code=statusCode, code < .failure  else {
@@ -130,18 +124,11 @@ class UserManager: ObservableObject, Observable {
                 self.currentUser = Utility.updateUserFromServerDict(from: dict["user"] as? [String: Any] ?? [:], user: self.currentUser!)
                 self.currentUser?.username = username
                 self.currentUser?.password = ""
+                self.persistCurrentUser()
+
                 let token = dict["token"] as? [String: String] ?? [:]       // {token_type:Bearer, access_token: a long string}
                 self.userToken = token["access_token"]
-                if self.keychainManager.save(data: self.currentUser, for: "currentUser") {
-                    print("Login OK:", self.currentUser as Any)
-                }
             }
         }
-    }
-    
-    func updateSubscriptionStatus(isSubscribed: Bool) {
-        guard var user = self.currentUser else { return }
-        user.subscription = isSubscribed
-        self.currentUser = user
     }
 }
