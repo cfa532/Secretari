@@ -19,6 +19,7 @@ struct PurchaseView: View {
     
     var body: some View {
         VStack {
+            Spacer()
             StoreView(ids: subscriptionsManager.productIDs) { product in
                 ProductIcon(productId: product.id)
             }

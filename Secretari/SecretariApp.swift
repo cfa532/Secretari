@@ -52,25 +52,6 @@ struct SecretariApp: App {
 //                        keychainManager.delete(for: "userToken")
 //                        keychainManager.delete(for: "currentUser")
 //                    }
-//                    let identifierManager = IdentifierManager()
-                    
-                    // check if this the first time of running. Assign an ID to user if not.
-//                    if identifierManager.setupIdentifier() {
-                        // setup an anonymous account
-//                        let identifier = identifierManager.retrieveIdentifierFromKeychain() ?? UUID().uuidString
-//                        userManager.createTempUser(identifier)
-//                        print("First run after launch. Init temp user account, id=", identifier)
-//                    } else {
-//                        print("This is not the first run after launch")
-//                        userManager.userToken = KeychainManager.shared.retrieve(for: "userToken", type: String.self)
-//                        if let user = keychainManager.retrieve(for: "currentUser", type: User.self) {
-//                            userManager.currentUser = user          // local user infor will be updated with each fetchToken() call
-//                            print("CurrentUser from keychain", userManager.currentUser! as User)
-//                        } else {
-//                            // create user account on server only when user actually send request
-//                            fatalError("Could not retrieve user account.")
-//                        }
-//                    }
                     let appUpdated = AppVersionManager.shared.checkIfAppUpdated()
                     if appUpdated {
                         print("App is running for the first time after an update")

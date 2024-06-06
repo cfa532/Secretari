@@ -224,35 +224,6 @@ extension Websocket {
         task.resume()
     }
     
-    func updateUser(_ user: User) {
-        // update
-    }
-    
-//    // create a temp user record on server
-//    func createTempUser(_ user: User, completion: @escaping ([String: Any]?, HTTPStatusCode?) -> Void) {
-//        let settings = SettingsManager.shared.getSettings()
-//        var request = URLRequest(url: URL(string: "http://" + settings.serverURL + "/users/temp")!)   // should be https://ip/secretari/users/temp
-//        request.httpMethod = "POST"
-//        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
-//        
-//        let body: [String: String] = ["username": user.username, "password": user.password]
-//        request.httpBody = try? JSONSerialization.data(withJSONObject: body)
-//        
-//        let task = URLSession.shared.dataTask(with: request) { data, response, error in
-//            guard let data = data, error == nil else {
-//                completion(nil, nil)
-//                return
-//            }
-//            let json = try? JSONSerialization.jsonObject(with: data) as? [String: Any]
-//            if let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode >= 400 {
-//                completion(json, .failure)
-//            } else {
-//                completion(json, .created)
-//            }
-//        }
-//        task.resume()
-//    }
-    
     func createTempUser(_ user: User) async throws -> [String: Any]? {
         let settings = SettingsManager.shared.getSettings()
         var request = URLRequest(url: URL(string: "http://" + settings.serverURL + "/users/temp")!)   // should be https://ip/secretari/users/temp
@@ -291,7 +262,7 @@ extension Websocket {
         task.resume()
     }
     
-    func recharge(_ dict: [String: String]) async throws -> [String: Any]? {
+    func recharge(_ dict: [String: Any]) async throws -> [String: Any]? {
         let settings = SettingsManager.shared.getSettings()
         var request = URLRequest(url: URL(string: "http://" + settings.serverURL + "/users/recharge")!)
         request.httpMethod = "POST"
@@ -312,7 +283,7 @@ extension Websocket {
         }
     }
     
-    func subscribe(_ dict: [String: String]) async throws -> [String: Any]? {
+    func subscribe(_ dict: [String: Any]) async throws -> [String: Any]? {
         let settings = SettingsManager.shared.getSettings()
         var request = URLRequest(url: URL(string: "http://" + settings.serverURL + "/users/subscribe")!)
         request.httpMethod = "POST"

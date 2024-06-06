@@ -83,25 +83,20 @@ extension SubscriptionsManager {
         case .success(let result):
             print(result)
             switch result {
-            case let .success(.verified(transaction)):
+            case .success(.verified(let transaction)):
                 // Successful purhcase
                 print("puchase successed.", product.id)
                 await transaction.finish()
-                if let receiptURL = Bundle.main.appStoreReceiptURL,
-                    let receipt = try? Data(contentsOf: receiptURL) {
-                    let payload = receipt.base64EncodedString(options: [])
-                    print("payload is ", payload)
-                }
+//                print(transaction)
                 
                 if product.type == .consumable {
                     // recharge account with the amount
-                    let nsDecimalNumber = NSDecimalNumber(decimal: product.price)
-                    let purchase: [String: String] = ["product_id": product.id, "amount": String(describing: nsDecimalNumber), "date": String(describing: Date().timeIntervalSince1970)]
+                    let purchase: [String: Any] = ["product_id": transaction.productID, "amount": transaction.price as Any, "date": transaction.purchaseDate.timeIntervalSince1970]
                     do {
                         if let json = try await websocket.recharge(purchase) {
                             // edit balance on local record too.
                             print("User from server after recharge", json)      // do not use it for now.
-                            userManager.currentUser?.dollar_balance += nsDecimalNumber.doubleValue
+                            userManager.currentUser?.dollar_balance += NSDecimalNumber(decimal: product.price).doubleValue
                             userManager.persistCurrentUser()
                             
 //                            await self.updatePurchasedProducts()
@@ -117,10 +112,12 @@ extension SubscriptionsManager {
                     }
                 } else if product.type == .autoRenewable {
                     // set current subscription status
-                    let sup: [String: String] = ["product_id": product.id, "start_date": String(describing: Date().timeIntervalSince1970), "plan": product.type.rawValue]
+                    print("autorenew", transaction as Any)
+                    let sup: [String: Any] = ["product_id": transaction.productID, "start_date": transaction.purchaseDate.timeIntervalSince1970, "end_date": transaction.expirationDate?.timeIntervalSince1970 as Any, "plan": transaction.productType.rawValue, "price": transaction.price as Any]
                     do {
-                        if try await websocket.subscribe(sup) != nil {
+                        if let json = try await websocket.subscribe(sup) {
                             // edit balance on local record too.
+                            print("User from server after subscribe", json)
                             userManager.currentUser?.subscription = true
                             userManager.persistCurrentUser()
                             
