@@ -78,25 +78,48 @@ extension SubscriptionsManager {
         }
     }
     
-    func buyProduct(_ product: Product, result: Product.PurchaseResult) async {
-//        do {
-//            let result = try await product.purchase()
-
+    func buyProduct(_ product: Product, result: Result<Product.PurchaseResult, any Error>) async {
+        switch result {
+        case .success(let result):
+            print(result)
             switch result {
             case let .success(.verified(transaction)):
                 // Successful purhcase
+                print("puchase successed.", product.id)
                 await transaction.finish()
+                
                 if product.type == .consumable {
                     // recharge account with the amount
-                    let purchased: [String: String] = ["product_id": product.id, "amount": String(describing: product.price), "date": String(describing: Date().timeIntervalSince1970)]
+                    let nsDecimalNumber = NSDecimalNumber(decimal: product.price)
+                    let purchase: [String: String] = ["product_id": product.id, "amount": String(describing: nsDecimalNumber), "date": String(describing: Date().timeIntervalSince1970)]
                     do {
-                        let result = try await websocket.recharge(purchased)
-                        if result {
+                        if try await websocket.recharge(purchase) != nil {
                             // edit balance on local record too.
-                            let nsDecimalNumber = NSDecimalNumber(decimal: product.price)
-                            userManager.currentUser?.dollar_balance?[AppConstants.PrimaryModel]? += nsDecimalNumber.doubleValue
+                            print("recharge price", nsDecimalNumber.doubleValue)
+                            userManager.currentUser?.dollar_balance += nsDecimalNumber.doubleValue
                             userManager.persistCurrentUser()
                             
+//                            await self.updatePurchasedProducts()
+                            self.alertItem = AlertContext.rechargeSuccess
+                        } else {
+                            self.alertItem = AlertContext.unableToComplete
+                        }
+                        self.showAlert = true
+                    } catch {
+                        print("Error recharging user account")
+                        self.alertItem = AlertContext.unableToComplete
+                        self.showAlert = true
+                    }
+                } else if product.type == .autoRenewable {
+                    // set current subscription status
+                    let sup: [String: String] = ["product_id": product.id, "start_date": String(describing: Date().timeIntervalSince1970), "plan": product.type.rawValue]
+                    do {
+                        if try await websocket.subscribe(sup) != nil {
+                            // edit balance on local record too.
+                            userManager.currentUser?.subscription = true
+                            userManager.persistCurrentUser()
+                            
+//                            await self.updatePurchasedProducts()
                             self.alertItem = AlertContext.rechargeSuccess
                         } else {
                             self.alertItem = AlertContext.unableToComplete
@@ -108,7 +131,6 @@ extension SubscriptionsManager {
                         self.showAlert = true
                     }
                 }
-                await self.updatePurchasedProducts()
             case let .success(.unverified(_, error)):
                 // Successful purchase but transaction/receipt can't be verified
                 // Could be a jailbroken phone
@@ -125,9 +147,9 @@ extension SubscriptionsManager {
                 print("Failed to purchase the product!")
                 break
             }
-//        } catch {
-//            print("Failed to purchase the product!")
-//        }
+        case .failure(let error):
+            print(error)
+        }
     }
     
     func updatePurchasedProducts() async {

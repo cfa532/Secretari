@@ -41,6 +41,8 @@ struct SettingsView: View {
                     }
                     
                     Picker("Prompt Type", selection: $settings.promptType) {
+                        
+                        // if the account balance<0.1, only gpt-3.5 is allowed, therefore NO memo type here.
                         ForEach(Settings.PromptType.allowedCases(lowBalance: allowedPromptType()), id:\.self) { option in
                             Text(String(describing: option))
                         }
@@ -123,7 +125,7 @@ struct SettingsView: View {
     }
     
     private func allowedPromptType() -> Bool {
-        if let user = UserManager.shared.currentUser, !user.subscription, user.dollar_balance![LLMModel.GPT_4_Turbo]! <= 0 {
+        if let user = UserManager.shared.currentUser, !user.subscription, user.dollar_balance <= 0.1 {
             // non-subscriber has not enough balance for gpt-4
             return true
         }

@@ -92,22 +92,7 @@ struct AccountDetailView: View {
                         Text("Token usage:")
                             .font(.subheadline)
                             .foregroundStyle(.gray)
-                        if let g3 = user?.token_count, let g3c=g3[LLMModel.GPT_3] {
-                            HStack {
-                                Text("GPT-3:")
-                                    .font(.subheadline)
-                                Spacer()
-                                Text(formatterInt().string(from: NSNumber(value: g3c))!)
-                            }
-                        }
-                        if let g4 = user?.token_count, let g4c=g4[LLMModel.GPT_4_Turbo] {
-                            HStack {
-                                Text("GPT-4-Turbo:")
-                                    .font(.subheadline)
-                                Spacer()
-                                Text(formatterInt().string(from: NSNumber(value: g4c))!)
-                            }
-                       }
+
                     }
                     VStack(alignment: .leading, spacing: 10) {
                         let currentDate = Date()

@@ -39,6 +39,7 @@ class Websocket: NSObject, ObservableObject, URLSessionWebSocketDelegate, Observ
             if let error = error {
                 print("Websocket.send() failed", error)
                 self.alertItem = AlertContext.unableToComplete
+                self.showAlert = true
             }
         }
     }
@@ -53,6 +54,7 @@ class Websocket: NSObject, ObservableObject, URLSessionWebSocketDelegate, Observ
                     print("WebSocket failure: \(error)")
                     self.alertItem = AlertContext.invalidResponse
                     self.alertItem?.message = Text(error.localizedDescription)
+                    self.showAlert = true
                     self.cancel()
                 case .success(let message):
                     switch message {
@@ -88,6 +90,7 @@ class Websocket: NSObject, ObservableObject, URLSessionWebSocketDelegate, Observ
                                 }
                             } catch {
                                 self.alertItem = AlertContext.invalidData
+                                self.showAlert = true
                             }
                         }
                     case .data(let data):
@@ -96,6 +99,7 @@ class Websocket: NSObject, ObservableObject, URLSessionWebSocketDelegate, Observ
                     @unknown default:
                         self.cancel()
                         self.alertItem = AlertContext.invalidData
+                        self.showAlert = true
                     }
                 }
             }
@@ -124,10 +128,10 @@ class Websocket: NSObject, ObservableObject, URLSessionWebSocketDelegate, Observ
         // logic here to distinguish rigths between paid users and unpaid.
         // unpaid users use gpt-3.5, if there is still balance. Not memo prompt
         if let user = UserManager.shared.currentUser {
-            if !user.subscription, let token_count=user.dollar_balance, let balance=token_count[LLMModel.GPT_4_Turbo], balance <= 0 {
+            if !user.subscription, user.dollar_balance <= 0.1 {
                 // non-subscriber, without enough balance of GPT-4, try GPT-3
                 settings.llmModel = LLMModel.GPT_3
-                // settings.promptType = .summary
+                // settings.promptType = .summary       // need further test
             }
         }
         if let user = UserManager.shared.currentUser, let llmParams = settings.llmParams[settings.llmModel], let prompt = settings.prompt[settings.promptType] {
@@ -154,12 +158,19 @@ class Websocket: NSObject, ObservableObject, URLSessionWebSocketDelegate, Observ
                 } else  {
                     // cancel hanging wsTask if any
                     self.wsTask?.cancel()
-                    self.wsTask = urlSession?.webSocketTask(with: URL(string: "ws://" + settings.serverURL + "/ws/")!)
+                    if let accessToken = UserManager.shared.userToken {
+                        self.wsTask = urlSession?.webSocketTask(with: URL(string: "ws://" + settings.serverURL + "/ws/?token=" + accessToken)!)
+                    } else {
+                        self.alertItem = AlertContext.invalidUserData
+                        self.alertItem?.message = Text("Invalid access token")
+                        self.showAlert = true
+                    }
                 }
                 
                 Task {
                     self.send(jsonString) { error in
                         self.alertItem = AlertContext.unableToComplete
+                        self.showAlert = true
                     }
                     self.receive(action: action)
                     self.resume()
@@ -263,27 +274,51 @@ extension Websocket {
         task.resume()
     }
     
-    func recharge(_ dict: [String: String]) async throws -> Bool {
+    func recharge(_ dict: [String: String]) async throws -> [String: Any]? {
         let settings = SettingsManager.shared.getSettings()
-        var request = URLRequest(url: URL(string: "http://" + settings.serverURL + "/recharge")!)
+        var request = URLRequest(url: URL(string: "http://" + settings.serverURL + "/users/recharge")!)
         request.httpMethod = "POST"
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")
-        guard let accessToken = UserManager.shared.userToken else { return false}
+        
+        guard let accessToken = UserManager.shared.userToken else { return nil}
+        
         request.addValue("Bearer \(accessToken)", forHTTPHeaderField: "Authorization")
+        request.httpBody = try? JSONSerialization.data(withJSONObject: dict)
+  
+        // not necessary according to: https://developer.apple.com/documentation/appstorereceipts/validating_receipts_on_the_device
+//        if let receiptURL = Bundle.main.appStoreReceiptURL,
+//           let receipt = try? Data(contentsOf: receiptURL) {
+//            // Send this receipt data to your server
+//            var dict: [String: Any] = dict
+//            dict["receipt"] = receipt
+//            request.httpBody = try? JSONSerialization.data(withJSONObject: dict)
+//        }
         
-        if let receiptURL = Bundle.main.appStoreReceiptURL,
-           let receipt = try? Data(contentsOf: receiptURL) {
-            // Send this receipt data to your server
-            var dict: [String: Any] = dict
-            dict["receipt"] = receipt
-            request.httpBody = try? JSONSerialization.data(withJSONObject: dict)
-        }
-        
-        let (_, response) = try await URLSession.shared.data(for: request)
+        let (data, response) = try await URLSession.shared.data(for: request)
         if let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 {
-            return true
+            let json = try? JSONSerialization.jsonObject(with: data) as? [String: Any]
+            return json
         } else {
-            return false
+            return nil
+        }
+    }
+    
+    func subscribe(_ dict: [String: String]) async throws -> [String: Any]? {
+        let settings = SettingsManager.shared.getSettings()
+        var request = URLRequest(url: URL(string: "http://" + settings.serverURL + "/users/subscribe")!)
+        request.httpMethod = "POST"
+        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+        
+        guard let accessToken = UserManager.shared.userToken else { return nil}
+        request.addValue("Bearer \(accessToken)", forHTTPHeaderField: "Authorization")
+        request.httpBody = try? JSONSerialization.data(withJSONObject: dict)
+        
+        let (data, response) = try await URLSession.shared.data(for: request)
+        if let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 {
+            let json = try? JSONSerialization.jsonObject(with: data) as? [String: Any]
+            return json
+        } else {
+            return nil
         }
     }
     

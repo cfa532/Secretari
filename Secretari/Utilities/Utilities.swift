@@ -61,11 +61,11 @@ struct Utility {
 
     static func updateUserFromServerDict<T>(from dict: [String: T], user: User) -> User {
         var user = user
-        if let tokenCountData = dict["token_count"] as? [String: UInt] {
-            user.token_count = Utility.convertDictionaryKeys(from: tokenCountData)
+        if let tokenCountData = dict["token_count"] as? UInt {
+            user.token_count = tokenCountData
         }
-        if let tokenUsageData = dict["dollar_balance"] as? [String: Double] {
-            user.dollar_balance = Utility.convertDictionaryKeys(from: tokenUsageData)
+        if let tokenUsageData = dict["dollar_balance"] as? Double {
+            user.dollar_balance = tokenUsageData
         }
         if let currentUsageData = dict["monthly_usage"] as? [String: Double] {
             user.monthly_usage = currentUsageData

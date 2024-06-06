@@ -214,12 +214,6 @@
     "Given Name" : {
 
     },
-    "GPT-3:" : {
-
-    },
-    "GPT-4-Turbo:" : {
-
-    },
     "Have an account?" : {
 
     },
@@ -246,6 +240,9 @@
       }
     },
     "Information" : {
+
+    },
+    "Invalid access token" : {
 
     },
     "Invalid Email" : {

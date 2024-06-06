@@ -14,20 +14,22 @@ struct PurchaseView: View {
     @Environment(\.purchase) private var purchase: PurchaseAction
 
     @State private var selectedProduct: Product? = nil
+    public static let subscriptionGroupId = "Bunny0"
     private let features: [String] = ["Remove all ads", "Daily new content", "Other cool features", "Follow for more tutorials"]
     
     var body: some View {
-        if entitlementManager.hasPro {
-            hasSubscriptionView
-        } else {
-            subscriptionOptionsView
-                .padding(.horizontal, 15)
-                .padding(.vertical, 15)
-                .onAppear {
-                    Task {
-                        await subscriptionsManager.loadProducts()
-                    }
-                }
+        VStack {
+            StoreView(ids: subscriptionsManager.productIDs) { product in
+                ProductIcon(productId: product.id)
+            }
+            .onInAppPurchaseCompletion { product, result in
+//                print("buy", product, result)
+                await subscriptionsManager.buyProduct(product, result: result)
+            }
+
+            .productViewStyle(.compact)
+            .storeButton(.visible, for: .restorePurchases)
+            .storeButton(.hidden, for: .cancellation)       // hide the top right close button
         }
     }
     
@@ -46,7 +48,7 @@ struct PurchaseView: View {
         }
         .ignoresSafeArea(.all)
     }
-    
+
     private var subscriptionOptionsView: some View {
         VStack(alignment: .center, spacing: 12.5) {
             if !subscriptionsManager.products.isEmpty {
@@ -134,7 +136,8 @@ struct PurchaseView: View {
                 Task {
                     let purchaseOptions: Set<Product.PurchaseOption> = []
                     if let result = try? await purchase(selectedProduct, options: purchaseOptions) {
-                        await subscriptionsManager.buyProduct(selectedProduct, result: result)
+                        // PurchaseAction must be called in View
+//                        await subscriptionsManager.buyProduct(selectedProduct, result: result)
                     }
                 }
             } else {
@@ -151,6 +154,26 @@ struct PurchaseView: View {
         .padding(.horizontal, 20)
         .frame(height: 46)
         .disabled(selectedProduct == nil)
+    }
+}
+
+struct ProductIcon: View {
+    var productId: String
+    
+    var body: some View {
+        Image(tintById(productId: productId))
+            .resizable()
+            .frame(width: 50, height: 50)
+    }
+    
+    func tintById(productId: String) -> String {
+        if productId.hasPrefix("Monthly") {
+            return "Monthly"
+        }
+        else if productId.hasPrefix("Yearly") {
+            return "Yearly"
+        }
+        return "bunny"
     }
 }
 
