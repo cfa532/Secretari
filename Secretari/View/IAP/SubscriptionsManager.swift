@@ -11,11 +11,11 @@ import SwiftUI
 @MainActor
 class SubscriptionsManager: NSObject, ObservableObject {
     var productIDs: [String] = []
-    var purchasedProductIDs: Set<String> = []
+    var purchasedProductIDs: Set<String> = []       // if empty, not purchase
 
     @Published var purchasedSubscriptions = Set<Product>()
     @Published var purchasedConsumables = [Product]()      // consumables can be repeatedly buy.
-//    @Published var entitlements = [Transaction]()
+    // @Published var entitlements = [Transaction]()
     @Published var products: [Product] = []
     
     @Published var showAlert = false
@@ -104,7 +104,7 @@ extension SubscriptionsManager {
                         } else {
                             self.alertItem = AlertContext.unableToComplete
                         }
-                        self.showAlert = true
+//                        self.showAlert = true
                     } catch {
                         print("Error recharging user account")
                         self.alertItem = AlertContext.unableToComplete
@@ -112,7 +112,7 @@ extension SubscriptionsManager {
                     }
                 } else if product.type == .autoRenewable {
                     // set current subscription status
-                    print("autorenew", transaction as Any)
+//                    print("autorenew", transaction as Any)
                     let sup: [String: Any] = ["product_id": transaction.productID, "start_date": transaction.purchaseDate.timeIntervalSince1970, "end_date": transaction.expirationDate?.timeIntervalSince1970 as Any, "plan": transaction.productType.rawValue, "price": transaction.price as Any]
                     do {
                         if let json = try await websocket.subscribe(sup) {
@@ -126,9 +126,9 @@ extension SubscriptionsManager {
                         } else {
                             self.alertItem = AlertContext.unableToComplete
                         }
-                        self.showAlert = true
+//                        self.showAlert = true
                     } catch {
-                        print("Error recharging user account")
+                        print("Error update subscription status")
                         self.alertItem = AlertContext.unableToComplete
                         self.showAlert = true
                     }
@@ -166,7 +166,11 @@ extension SubscriptionsManager {
             }
         }
         
-        self.entitlementManager?.hasPro = !self.purchasedProductIDs.isEmpty
+//        self.entitlementManager?.hasPro = !self.purchasedProductIDs.isEmpty
+        if !self.purchasedProductIDs.isEmpty {
+            userManager.currentUser?.subscription = true
+            userManager.persistCurrentUser()
+        }
     }
     
     func restorePurchases() async {

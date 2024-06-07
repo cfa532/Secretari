@@ -133,17 +133,16 @@ struct PurchaseView: View {
     
     private var purchaseButtonView: some View {
         Button(action: {
-            if let selectedProduct = selectedProduct {
-                Task {
-                    let purchaseOptions: Set<Product.PurchaseOption> = []
-                    if let result = try? await purchase(selectedProduct, options: purchaseOptions) {
-                        // PurchaseAction must be called in View
+//            if let selectedProduct = selectedProduct {
+//                Task {
+//                    let purchaseOptions: Set<Product.PurchaseOption> = []
+//                    if let result = try? await purchase(selectedProduct, options: purchaseOptions) {
 //                        await subscriptionsManager.buyProduct(selectedProduct, result: result)
-                    }
-                }
-            } else {
-                print("Please select a product before purchasing.")
-            }
+//                    }
+//                }
+//            } else {
+//                print("Please select a product before purchasing.")
+//            }
         }) {
             RoundedRectangle(cornerRadius: 12.5)
                 .overlay {

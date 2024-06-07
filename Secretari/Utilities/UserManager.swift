@@ -74,8 +74,10 @@ class UserManager: ObservableObject, Observable {
                         // update temp user with account data recieved from server.
                         self.currentUser = Utility.updateUserFromServerDict(from: user, user: self.currentUser!)
                         self.currentUser?.password = ""
+                        
+                        self.currentUser?.subscription = user["subscription"] as? Bool ?? false     // only time to read subscription status from server
                         self.persistCurrentUser()
-                        print("temm user created", self.currentUser as Any)
+                        print("temprory user created", self.currentUser as Any)
                     }
                 }
             } catch {
