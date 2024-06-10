@@ -152,9 +152,8 @@ extension SubscriptionsManager {
                         if let json = try await websocket.subscribe(sup) {
                             // edit balance on local record too.
                             print("User from server after subscribe", json)
-                            userManager.currentUser?.subscription = true
-                            userManager.persistCurrentUser()
-                            
+//                            userManager.currentUser?.subscription = true
+//                            userManager.persistCurrentUser()                            
                             await self.updatePurchasedProducts()
                         }
                     } catch {
@@ -196,9 +195,9 @@ extension SubscriptionsManager {
                 self.purchasedProductIDs.remove(transaction.productID)
             }
         }
-        // self.entitlementManager?.hasPro = !self.purchasedProductIDs.isEmpty
-        self.userManager.currentUser?.subscription = !self.purchasedProductIDs.isEmpty
-        userManager.persistCurrentUser()
+        self.entitlementManager?.hasPro = !self.purchasedProductIDs.isEmpty
+//        self.userManager.currentUser?.subscription = !self.purchasedProductIDs.isEmpty
+//        userManager.persistCurrentUser()
     }
     
     func restorePurchases() async {

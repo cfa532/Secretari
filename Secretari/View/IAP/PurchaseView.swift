@@ -24,10 +24,12 @@ struct PurchaseView: View {
                 ProductIcon(productId: product.id)
             }
             .inAppPurchaseOptions({ _ in
+                // associate this purchase with user id, which will be used as appAccountToken in Transaction
                 var purchaseOptions = Set<Product.PurchaseOption>()
-                let appToken = UUID(uuidString: UserManager.shared.currentUser!.id)
-                let o = Product.PurchaseOption.appAccountToken(appToken ?? UUID())
-                purchaseOptions.insert(o)
+                if let user = UserManager.shared.currentUser {
+                    let o = Product.PurchaseOption.appAccountToken(UUID(uuidString: user.id) ?? UUID())
+                    purchaseOptions.insert(o)
+                }
                 return purchaseOptions
             })
             .onInAppPurchaseCompletion { product, result in

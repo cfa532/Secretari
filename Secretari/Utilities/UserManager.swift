@@ -77,7 +77,7 @@ class UserManager: ObservableObject, Observable {
                         
                         // Only on creation, read dollar balance and subscription status from server
                         // User device is the main source of bookkeeping dollar balance, recharge and subscription status
-                        self.currentUser?.subscription = serverUser["subscription"] as? Bool ?? false
+//                        self.currentUser?.subscription = serverUser["subscription"] as? Bool ?? false
                         self.currentUser?.dollar_balance = serverUser["dollar_balance"] as? Double ?? AppConstants.SignupBonus
                         self.persistCurrentUser()
                         print("temprory user created", self.currentUser as Any)

@@ -140,7 +140,7 @@ class Websocket: NSObject, ObservableObject, URLSessionWebSocketDelegate, Observ
 
             // logic here to distinguish rigths between paid users and unpaid.
             // unpaid users use gpt-3.5, if there is still balance. Not memo prompt
-            if !user.subscription, user.dollar_balance <= 0.1 {
+            if user.dollar_balance <= 0.1 {
                 // non-subscriber, without enough balance of GPT-4, try GPT-3
                 settings.llmModel = LLMModel.GPT_3
                 // settings.promptType = .summary       // need further test
@@ -229,7 +229,7 @@ extension Websocket {
         request.httpMethod = "POST"
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")
         
-        let body: [String: Any] = ["username": user.username, "password": user.password, "family_name": user.family_name ?? "", "given_name": user.given_name ?? "", "email": user.email ?? "", "mid": user.mid ?? "", "subscription": user.subscription]
+        let body: [String: Any] = ["username": user.username, "password": user.password, "family_name": user.family_name ?? "", "given_name": user.given_name ?? "", "email": user.email ?? "", "mid": user.mid ?? ""]
         request.httpBody = try? JSONSerialization.data(withJSONObject: body)
         
         let task = URLSession.shared.dataTask(with: request) { data, response, error in

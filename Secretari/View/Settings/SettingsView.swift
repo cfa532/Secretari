@@ -125,7 +125,7 @@ struct SettingsView: View {
     }
     
     private func allowedPromptType() -> Bool {
-        if let user = UserManager.shared.currentUser, !user.subscription, user.dollar_balance <= 0.1 {
+        if let user = UserManager.shared.currentUser, user.dollar_balance <= 0.1 {
             // non-subscriber has not enough balance for gpt-4
             return true
         }

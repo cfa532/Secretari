@@ -7,8 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		4603DD0D2C0DABB4006CBAB4 /* IAPManaager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4603DD0C2C0DABB4006CBAB4 /* IAPManaager.swift */; };
-		4603DD112C0EA70C006CBAB4 /* Persistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4603DD102C0EA70C006CBAB4 /* Persistence.swift */; };
 		4603DD152C13ED02006CBAB4 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 46FAC60D2BE7C8AB0013B9B5 /* StoreKit.framework */; };
 		461797D62C07707B0034B213 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 461797D52C07707B0034B213 /* User.swift */; };
 		461ADD5B2BD2A0AC00C0DD94 /* SecretariApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 461ADD5A2BD2A0AC00C0DD94 /* SecretariApp.swift */; };
@@ -75,8 +73,6 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		4603DD0C2C0DABB4006CBAB4 /* IAPManaager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IAPManaager.swift; sourceTree = "<group>"; };
-		4603DD102C0EA70C006CBAB4 /* Persistence.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Persistence.swift; sourceTree = "<group>"; };
 		461797D52C07707B0034B213 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		461797D72C0771620034B213 /* Secretai.storekit */ = {isa = PBXFileReference; lastKnownFileType = text; path = Secretai.storekit; sourceTree = "<group>"; };
 		461ADD572BD2A0AC00C0DD94 /* Secretari.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Secretari.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -162,9 +158,7 @@
 			children = (
 				46285DCD2C0B56B000C83F43 /* SubscriptionsManager.swift */,
 				46285DCB2C0AC91900C83F43 /* EntitlementManager.swift */,
-				4603DD102C0EA70C006CBAB4 /* Persistence.swift */,
 				467CC9492C08767000FD5DC2 /* PurchaseView.swift */,
-				4603DD0C2C0DABB4006CBAB4 /* IAPManaager.swift */,
 			);
 			path = IAP;
 			sourceTree = "<group>";
@@ -468,7 +462,6 @@
 				46DA713D2BD7FBFB001A3685 /* Alert.swift in Sources */,
 				461ADD912BD2A4F000C0DD94 /* SettingsView.swift in Sources */,
 				46FAC6072BE146950013B9B5 /* DetailTranscriptView.swift in Sources */,
-				4603DD112C0EA70C006CBAB4 /* Persistence.swift in Sources */,
 				468B0B662BEDB83900C6D2FF /* TappablePadding.swift in Sources */,
 				461ADD8D2BD2A42000C0DD94 /* ErrorWrapper.swift in Sources */,
 				46FAC6182BEA2BEC0013B9B5 /* SummaryRowView.swift in Sources */,
@@ -484,7 +477,6 @@
 				461ADD9F2BD2B63C00C0DD94 /* RecorderButton.swift in Sources */,
 				4623C6E62C00F396006CB3D1 /* KeychainManager.swift in Sources */,
 				46FAC6092BE146A60013B9B5 /* DetailTranslationView.swift in Sources */,
-				4603DD0D2C0DABB4006CBAB4 /* IAPManaager.swift in Sources */,
 				461ADD892BD2A11700C0DD94 /* AudioRecord.swift in Sources */,
 				46DA713C2BD7FBFB001A3685 /* APError.swift in Sources */,
 				461ADD992BD2B5E400C0DD94 /* SpeechRecognizer.swift in Sources */,
