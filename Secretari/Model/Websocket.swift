@@ -14,7 +14,8 @@ class Websocket: NSObject, ObservableObject, URLSessionWebSocketDelegate, Observ
     @Published var streamedText: String = ""
     @Published var alertItem: AlertItem?
     @Published var showAlert = false
-    
+    @EnvironmentObject private var entitlementManager: EntitlementManager
+
     private var urlSession: URLSession?
     private var wsTask: URLSessionWebSocketTask?
     private var webURL: URLComponents
@@ -134,23 +135,24 @@ class Websocket: NSObject, ObservableObject, URLSessionWebSocketDelegate, Observ
     }
     
     // Might need to temporarily revise settings' value.
-    @MainActor func sendToAI(_ rawText: String, action: @escaping (_ summary: String)->Void) {
+    @MainActor func sendToAI(_ rawText: String, prompt: String, action: @escaping (_ summary: String)->Void) {
         if let user = UserManager.shared.currentUser {
             var settings = SettingsManager.shared.getSettings()
 
-            // logic here to distinguish rigths between paid users and unpaid.
-            // unpaid users use gpt-3.5, if there is still balance. Not memo prompt
-            if user.dollar_balance <= 0.1 {
+            // logic here to distinguish between subscribers and others.
+            // non-subscribers use gpt-3.5, if there is still balance. Not memo prompt
+            if user.dollar_balance <= 0.1, !self.entitlementManager.hasPro {
                 // non-subscriber, without enough balance of GPT-4, try GPT-3
                 settings.llmModel = LLMModel.GPT_3
-                // settings.promptType = .summary       // need further test
+//                settings.promptType = .summary       // need further test
             }
-            if let llmParams = settings.llmParams[settings.llmModel], let prompt = settings.prompt[settings.promptType] {
+            
+            if let llmParams = settings.llmParams[settings.llmModel], let sprompt = settings.prompt[settings.promptType] {
                 Utility.printDict(obj: llmParams)
                 let msg = [
                     "user": user.username,
                     "input": [
-                        "prompt": prompt[settings.selectedLocale],
+                        "prompt": prompt=="" ? sprompt[settings.selectedLocale] : prompt,
                         "rawtext": rawText],
                     "parameters": [
                         "llm": llmParams["llm"],
@@ -159,7 +161,7 @@ class Websocket: NSObject, ObservableObject, URLSessionWebSocketDelegate, Observ
                         "model": settings.llmModel.rawValue
                     ]] as [String : Any]
                 
-                // Convert the Data to String
+                // Convert String to Data
                 let jsonData = try! JSONSerialization.data(withJSONObject: msg)
                 if let jsonString = String(data: jsonData, encoding: .utf8) {
                     print("Websocket sending: ", jsonString)

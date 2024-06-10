@@ -195,7 +195,7 @@ struct DetailView: View {
                 .alert(isPresented: $showRedoAlert, content: {
                     Alert(title: Text("Alert"), message: Text("Regenerate summary from transcript. Existing content will be overwritten."), primaryButton: .cancel(), secondaryButton: .destructive(Text("Yes"), action: {
                         Task { @MainActor in
-                            websocket.sendToAI(record.transcript) { result in
+                            websocket.sendToAI(record.transcript, prompt: "") { result in
                                 
                                 record.locale = settings.selectedLocale      // update current locale of the record
                                 record.resultFromAI(promptType: settings.promptType, summary: result)
@@ -259,7 +259,7 @@ extension DetailView: TimerDelegate {
             record.transcript = speechRecognizer.transcript + NSLocalizedString(".", comment: "")
             modelContext.insert(record)
             speechRecognizer.transcript = ""
-            websocket.sendToAI(record.transcript) { result in
+            websocket.sendToAI(record.transcript, prompt: "") { result in
                 record.locale = settings.selectedLocale
                 record.resultFromAI(promptType: settings.promptType, summary: result)
             }

@@ -12,7 +12,7 @@ struct DetailTranslationView: View {
     @Binding var record: AudioRecord
     @Environment(\.modelContext) private var modelContext
     @Environment(\.dismiss) var dismiss
-
+    
     @State private var alertItem: AlertItem?
     @State private var showShareSheet = false
     @State private var settings: Settings = SettingsManager.shared.getSettings()
@@ -86,8 +86,9 @@ struct DetailTranslationView: View {
     
     @MainActor private func translateSummary(locale: RecognizerLocale, record: AudioRecord, prompt: String) {
         if let summary = record.summary[record.locale] {
-            websocket.sendToAI(summary) { result in
-                record.locale = locale
+            // use Summary of orginal local as source to translate.
+            websocket.sendToAI(summary, prompt: prompt) { result in
+                record.locale = locale      // change current locale to the last selectedLocale
                 record.summary[locale] = result
                 try? modelContext.save()
                 Task {
@@ -95,7 +96,6 @@ struct DetailTranslationView: View {
                 }
             }
         } else {
-//            print("No summary to translate.")
             self.alertItem = AlertContext.emptySummary
         }
     }
@@ -117,7 +117,7 @@ struct DetailTranslationView: View {
             let jsonData = try JSONSerialization.data(withJSONObject: arr, options: [])
             if let jsonString = String(data: jsonData, encoding: .utf8) {
                 
-                websocket.sendToAI(jsonString) { result in
+                websocket.sendToAI(jsonString, prompt: prompt) { result in
                     do {
                         // extract valie JSON string from AI reply. Get text between [ ]
 //                        let regex = try NSRegularExpression(pattern: "\\[(.*?)\\]", options: [])

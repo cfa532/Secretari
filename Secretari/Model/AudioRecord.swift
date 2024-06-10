@@ -13,7 +13,7 @@ final class AudioRecord {
     @Attribute(.unique) var recordDate: Date
     
     var transcript: String
-    var locale: RecognizerLocale    // language of the transcript
+    var locale: RecognizerLocale    // language of the original transcript
     var translatedLocale: RecognizerLocale?
     var summary: [RecognizerLocale: String]
     var memo: [MemoJsonData]               // array of Json data
@@ -45,6 +45,7 @@ final class AudioRecord {
                                 // update the language of current record's tilte, actually its content.
                                 self.memo[i].title[self.locale] = title
                             } else {
+                                // happens only when creating check list memo record type. Won't happen during translation.
                                 self.memo.append(AudioRecord.MemoJsonData(id: id, title: [self.locale :title], isChecked: isChecked))
                             }
                         }

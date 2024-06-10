@@ -43,7 +43,8 @@ struct SettingsView: View {
                     Picker("Prompt Type", selection: $settings.promptType) {
                         
                         // if the account balance<0.1, only gpt-3.5 is allowed, therefore NO memo type here.
-                        ForEach(Settings.PromptType.allowedCases(lowBalance: allowedPromptType()), id:\.self) { option in
+//                        ForEach(Settings.PromptType.allowedCases(lowBalance: allowedPromptType()), id:\.self) { option in
+                        ForEach(Settings.PromptType.allCases, id:\.self) { option in
                             Text(String(describing: option))
                         }
                     }

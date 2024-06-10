@@ -34,6 +34,7 @@ struct Utility {
         }
     }
     
+    // parse AI output to JSON format array. Each element is {id, title, checked}
     static func getAIJson(aiJson: String) throws ->String {
         let regex = try NSRegularExpression(pattern: "\\[(.*?)\\]", options: [])
         let str = aiJson.replacingOccurrences(of: "\n", with: " ")      // regex has problem with new line char.

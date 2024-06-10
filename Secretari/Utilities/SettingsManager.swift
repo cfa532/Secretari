@@ -62,6 +62,7 @@ struct Settings :Codable {
         // when non-subscriber get low balance, only summary type is allowed.
         static func allowedCases(lowBalance: Bool) -> [Settings.PromptType] {
             if lowBalance {
+                // set prompt to summary type too.
                 return [.summary]
             } else {
                 return PromptType.allCases
