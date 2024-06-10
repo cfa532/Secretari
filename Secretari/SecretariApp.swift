@@ -69,6 +69,7 @@ struct SecretariApp: App {
                 .task {
                     // check the subscription status of the user on server. Async mode.
                     await subscriptionsManager.updatePurchasedProducts()
+                    await subscriptionsManager.loadProducts()       // preload products
                 }
 
         }

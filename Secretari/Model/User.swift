@@ -8,7 +8,7 @@
 import Foundation
 
 struct User :Codable, Identifiable {
-    var id: String { username }
+    var id: String               // when temp user is created, use device identifier as id, and username
     var username: String
     var password: String
     var mid: String?
@@ -19,9 +19,10 @@ struct User :Codable, Identifiable {
     var family_name: String?
     var given_name: String?
     var email: String?
+    var balance_synced: Bool = true     // is dollar_balace on server updated after recharge?
     
     enum CodingKeys: String, CodingKey {
-        case username, mid, token_count, dollar_balance, monthly_usage, subscription, password, family_name, given_name, email
+        case id, username, mid, token_count, dollar_balance, monthly_usage, subscription, password, family_name, given_name, email
     }
     
     var initials: String {

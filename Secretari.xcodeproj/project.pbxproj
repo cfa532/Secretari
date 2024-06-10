@@ -8,8 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		4603DD0D2C0DABB4006CBAB4 /* IAPManaager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4603DD0C2C0DABB4006CBAB4 /* IAPManaager.swift */; };
-		4603DD0F2C0EA6EE006CBAB4 /* Store.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4603DD0E2C0EA6EE006CBAB4 /* Store.swift */; };
 		4603DD112C0EA70C006CBAB4 /* Persistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4603DD102C0EA70C006CBAB4 /* Persistence.swift */; };
+		4603DD152C13ED02006CBAB4 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 46FAC60D2BE7C8AB0013B9B5 /* StoreKit.framework */; };
 		461797D62C07707B0034B213 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 461797D52C07707B0034B213 /* User.swift */; };
 		461ADD5B2BD2A0AC00C0DD94 /* SecretariApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 461ADD5A2BD2A0AC00C0DD94 /* SecretariApp.swift */; };
 		461ADD5F2BD2A0AC00C0DD94 /* Item.swift in Sources */ = {isa = PBXBuildFile; fileRef = 461ADD5E2BD2A0AC00C0DD94 /* Item.swift */; };
@@ -40,7 +40,6 @@
 		4623C6FB2C06C531006CB3D1 /* SettingsRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4623C6FA2C06C531006CB3D1 /* SettingsRowView.swift */; };
 		46285DCC2C0AC91900C83F43 /* EntitlementManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46285DCB2C0AC91900C83F43 /* EntitlementManager.swift */; };
 		46285DCE2C0B56B000C83F43 /* SubscriptionsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46285DCD2C0B56B000C83F43 /* SubscriptionsManager.swift */; };
-		467CC9432C0826E800FD5DC2 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 46FAC60D2BE7C8AB0013B9B5 /* StoreKit.framework */; };
 		467CC94A2C08767000FD5DC2 /* PurchaseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 467CC9492C08767000FD5DC2 /* PurchaseView.swift */; };
 		468B0B662BEDB83900C6D2FF /* TappablePadding.swift in Sources */ = {isa = PBXBuildFile; fileRef = 468B0B652BEDB83900C6D2FF /* TappablePadding.swift */; };
 		468B0B6A2BEF29EE00C6D2FF /* IdentifierManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 468B0B692BEF29EE00C6D2FF /* IdentifierManager.swift */; };
@@ -77,7 +76,6 @@
 
 /* Begin PBXFileReference section */
 		4603DD0C2C0DABB4006CBAB4 /* IAPManaager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IAPManaager.swift; sourceTree = "<group>"; };
-		4603DD0E2C0EA6EE006CBAB4 /* Store.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Store.swift; sourceTree = "<group>"; };
 		4603DD102C0EA70C006CBAB4 /* Persistence.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Persistence.swift; sourceTree = "<group>"; };
 		461797D52C07707B0034B213 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		461797D72C0771620034B213 /* Secretai.storekit */ = {isa = PBXFileReference; lastKnownFileType = text; path = Secretai.storekit; sourceTree = "<group>"; };
@@ -138,7 +136,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				467CC9432C0826E800FD5DC2 /* StoreKit.framework in Frameworks */,
+				4603DD152C13ED02006CBAB4 /* StoreKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -163,7 +161,6 @@
 			isa = PBXGroup;
 			children = (
 				46285DCD2C0B56B000C83F43 /* SubscriptionsManager.swift */,
-				4603DD0E2C0EA6EE006CBAB4 /* Store.swift */,
 				46285DCB2C0AC91900C83F43 /* EntitlementManager.swift */,
 				4603DD102C0EA70C006CBAB4 /* Persistence.swift */,
 				467CC9492C08767000FD5DC2 /* PurchaseView.swift */,
@@ -506,7 +503,6 @@
 				468B0B6A2BEF29EE00C6D2FF /* IdentifierManager.swift in Sources */,
 				4623C6EC2C02B689006CB3D1 /* ContentView.swift in Sources */,
 				4623C6F42C0471E3006CB3D1 /* UpdateAccountView.swift in Sources */,
-				4603DD0F2C0EA6EE006CBAB4 /* Store.swift in Sources */,
 				461ADD9B2BD2B5ED00C0DD94 /* Websocket.swift in Sources */,
 				461ADD5B2BD2A0AC00C0DD94 /* SecretariApp.swift in Sources */,
 			);
@@ -679,7 +675,7 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Secretari/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = Bunny;
+				INFOPLIST_KEY_CFBundleDisplayName = Bouny;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.productivity";
 				INFOPLIST_KEY_NSMicrophoneUsageDescription = "Need Microphone to record user speech";
 				INFOPLIST_KEY_NSSpeechRecognitionUsageDescription = "Need to create transcript of user speech";
@@ -695,7 +691,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0.1;
-				PRODUCT_BUNDLE_IDENTIFIER = Leither.uk.Secretari;
+				PRODUCT_BUNDLE_IDENTIFIER = secretari.leither.uk;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -715,7 +711,7 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Secretari/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = Bunny;
+				INFOPLIST_KEY_CFBundleDisplayName = Bouny;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.productivity";
 				INFOPLIST_KEY_NSMicrophoneUsageDescription = "Need Microphone to record user speech";
 				INFOPLIST_KEY_NSSpeechRecognitionUsageDescription = "Need to create transcript of user speech";

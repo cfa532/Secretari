@@ -88,6 +88,7 @@ enum LLMModel: String, Codable, CaseIterable {
     case GPT_3 = "gpt-3.5-turbo"
     case GPT_4 = "gpt-4"
     case GPT_4_Turbo = "gpt-4-turbo"
+    case GPT_4o = "gpt-4o"
 }
 
 // system constants
@@ -97,15 +98,16 @@ final class AppConstants {
     static let NumRecordsInSwiftData = 30   // number of records kept locally by SwiftData
     static let RecorderTimerFrequency = 10.0  // frequency in seconds to run update() of timer.
 
-    static let PrimaryModel = LLMModel.GPT_4_Turbo      // any recharge shall be on the balance of primary LLM model.
+    static let PrimaryModel = LLMModel.GPT_4o      // 
+    static let SignupBonus = 0.2                // the initial dollar balance to give user for free trial.
     static let DefaultPassword = "zaq12WSX"
     static let defaultSettings = Settings(prompt: defaultPrompt,
-                                          serverURL: "localhost:8000/secretari",
+                                          serverURL: "leither.uk/secretari",
                                           audioSilentDB: "-40",
                                           selectedLocale: Utility.systemLanguage(),
                                           promptType: Settings.PromptType.memo,
-                                          llmModel: LLMModel.GPT_4_Turbo,
-                                          llmParams: [LLMModel.GPT_4_Turbo: ["llm":"openai", "temperature":"0.0"],
+                                          llmModel: LLMModel.GPT_4o,
+                                          llmParams: [LLMModel.GPT_4o: ["llm":"openai", "temperature":"0.0"],
                                                       LLMModel.GPT_3: ["llm":"openai", "temperature":"0.0"]]
     )
     

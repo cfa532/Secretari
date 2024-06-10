@@ -63,19 +63,22 @@ class UserManager: ObservableObject, Observable {
         // When someone starts to use the app without registration. Give it an identify.
         Task { @MainActor in
             do {
-                self.currentUser = User(username: id, password: "zaq1^WSX")
+                self.currentUser = User(id: id, username: id, password: "zaq1^WSX")
                 if let json = try await websocket.createTempUser( self.currentUser! ) {
 
                     // json from server should be {token, user}
                     if let token = json["token"] as? [String: Any] {
                         self.userToken = token["access_token"] as? String
                     }
-                    if let user = json["user"] as? [String: Any] {
+                    if let serverUser = json["user"] as? [String: Any] {
                         // update temp user with account data recieved from server.
-                        self.currentUser = Utility.updateUserFromServerDict(from: user, user: self.currentUser!)
+                        self.currentUser = Utility.updateUserFromServerDict(from: serverUser, user: self.currentUser!)
                         self.currentUser?.password = ""
                         
-                        self.currentUser?.subscription = user["subscription"] as? Bool ?? false     // only time to read subscription status from server
+                        // Only on creation, read dollar balance and subscription status from server
+                        // User device is the main source of bookkeeping dollar balance, recharge and subscription status
+                        self.currentUser?.subscription = serverUser["subscription"] as? Bool ?? false
+                        self.currentUser?.dollar_balance = serverUser["dollar_balance"] as? Double ?? AppConstants.SignupBonus
                         self.persistCurrentUser()
                         print("temprory user created", self.currentUser as Any)
                     }

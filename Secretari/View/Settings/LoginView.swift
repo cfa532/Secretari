@@ -54,16 +54,14 @@ struct LoginView: View {
                                 userManager.currentUser = Utility.updateUserFromServerDict(from: user, user: userManager.currentUser!)
                                 userManager.currentUser?.username = username
                                 userManager.currentUser?.password = ""
+                                userManager.persistCurrentUser()
                                 userManager.userToken = token["access_token"]
-                                if KeychainManager.shared.save(data: userManager.currentUser, for: "currentUser") {
-                                    print("Login OK:", userManager.currentUser as Any)
-                                }
                             }
                         }
                     }
                     
                 } else {
-                    self.required = true
+                    self.required = true        // indicate username is required field.
                 }
             } label: {
                 HStack {

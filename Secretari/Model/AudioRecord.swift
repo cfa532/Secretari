@@ -38,15 +38,11 @@ final class AudioRecord {
                 }
                 // Decode the data into an array of dictionaries
                 if let jsonArray = try JSONSerialization.jsonObject(with: data, options: []) as? [[String: Any]] {
-                    
-                    //                    self.memo = [AudioRecord.MemoJsonData]()      // clear memo which is a dict
                     for item in jsonArray {
-                        if let id = item["id"] as? Int,
-                           let title = item["title"] as? String,
-                           let isChecked = item["isChecked"] as? Bool {
-
+                        if let id = item["id"] as? Int, let title = item["title"] as? String, let isChecked = item["isChecked"] as? Bool {
                             if let i = self.memo.firstIndex(where: { $0.id == id }) {
                                 //  print("ID: \(t?.id), Title: \(t?.title), isChecked: \(t?.isChecked)")
+                                // update the language of current record's tilte, actually its content.
                                 self.memo[i].title[self.locale] = title
                             } else {
                                 self.memo.append(AudioRecord.MemoJsonData(id: id, title: [self.locale :title], isChecked: isChecked))

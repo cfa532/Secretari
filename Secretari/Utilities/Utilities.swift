@@ -64,9 +64,6 @@ struct Utility {
         if let tokenCountData = dict["token_count"] as? UInt {
             user.token_count = tokenCountData
         }
-        if let tokenUsageData = dict["dollar_balance"] as? Double {
-            user.dollar_balance = tokenUsageData
-        }
         if let currentUsageData = dict["monthly_usage"] as? [String: Double] {
             user.monthly_usage = currentUsageData
         }
@@ -74,7 +71,12 @@ struct Utility {
 //        if let subscription = dict["subscription"] as? Bool {
 //            user.subscription = subscription
 //        }
-        // save User information to keychain
+
+        // manage dollar balance by Device
+//        if let tokenUsageData = dict["dollar_balance"] as? Double {
+//            user.dollar_balance = tokenUsageData
+//        }
+
         if let mid = dict["mid"] as? String {
             user.mid = mid
         }

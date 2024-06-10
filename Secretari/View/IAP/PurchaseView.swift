@@ -20,11 +20,18 @@ struct PurchaseView: View {
     var body: some View {
         VStack {
             Spacer()
-            StoreView(ids: subscriptionsManager.productIDs) { product in
+            StoreView(products: subscriptionsManager.products) { product in
                 ProductIcon(productId: product.id)
             }
+            .inAppPurchaseOptions({ _ in
+                var purchaseOptions = Set<Product.PurchaseOption>()
+                let appToken = UUID(uuidString: UserManager.shared.currentUser!.id)
+                let o = Product.PurchaseOption.appAccountToken(appToken ?? UUID())
+                purchaseOptions.insert(o)
+                return purchaseOptions
+            })
             .onInAppPurchaseCompletion { product, result in
-//                print("buy", product, result)
+                // print("buy", product, result)
                 await subscriptionsManager.buyProduct(product, result: result)
             }
 

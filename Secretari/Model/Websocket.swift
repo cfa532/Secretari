@@ -17,13 +17,22 @@ class Websocket: NSObject, ObservableObject, URLSessionWebSocketDelegate, Observ
     
     private var urlSession: URLSession?
     private var wsTask: URLSessionWebSocketTask?
-    
+    private var webURL: URLComponents
+    private var wsURL: URLComponents
+    private let settings = SettingsManager.shared.getSettings()
+
     static let shared = Websocket()
-    
     private override init() {
+        webURL = URLComponents()
+        wsURL = URLComponents()
         super.init()
         self.urlSession = URLSession(configuration: .default, delegate: self, delegateQueue: OperationQueue())
-        //        self.serverURL = SettingsManager.shared.getSettings().serverURL      // dead sure it is a string
+        webURL.scheme = "http"
+        webURL.host = "localhost"
+        webURL.port = 8000
+        wsURL.scheme = "ws"
+        wsURL.host = "localhost"
+        wsURL.port = 8000
     }
     
     nonisolated func urlSession(_ session: URLSession, webSocketTask: URLSessionWebSocketTask, didOpenWithProtocol protocol: String?) {
@@ -36,10 +45,12 @@ class Websocket: NSObject, ObservableObject, URLSessionWebSocketDelegate, Observ
     
     func send(_ jsonString: String, errorWrapper: @escaping (_: Error)->Void) {
         wsTask?.send(.string(jsonString)) { error in
-            if let error = error {
-                print("Websocket.send() failed", error)
-                self.alertItem = AlertContext.unableToComplete
-                self.showAlert = true
+            Task {@MainActor in
+                if let error = error {
+                    print("Websocket.send() failed", error)
+                    self.alertItem = AlertContext.unableToComplete
+                    self.showAlert = true
+                }
             }
         }
     }
@@ -61,17 +72,17 @@ class Websocket: NSObject, ObservableObject, URLSessionWebSocketDelegate, Observ
                     case .string(let text):
                         if let data = text.data(using: .utf8) {
                             do {
-                                if let dict = try JSONSerialization.jsonObject(with: data) as? NSDictionary {
+                                if let dict = try JSONSerialization.jsonObject(with: data) as? NSDictionary, let type = dict["type"] as? String {
                                     print("Data from ws: ", dict)
-                                    if let type = dict["type"] as? String {
-                                        if type == "result" {
-                                            if let answer = dict["answer"] as? String {
-                                                // send reply from AI to display
-                                                action(answer)
-                                                self.cancel()
+                                    if type == "result" {
+                                        if let answer = dict["answer"] as? String {
+                                            // send reply from AI to display
+                                            action(answer)
+                                            self.cancel()
+                                            
+                                            // bookkeeping. Update token count
+                                            if let user = dict["user"] as? [String: Any] {
                                                 
-                                                // bookkeeping. Update token count
-                                                let user = dict["user"] as? [String: Any] ?? [:]
                                                 UserManager.shared.currentUser = Utility.updateUserFromServerDict(from: user, user: UserManager.shared.currentUser!)
                                                 
                                                 print("Received from ws", UserManager.shared.currentUser as Any)
@@ -79,12 +90,12 @@ class Websocket: NSObject, ObservableObject, URLSessionWebSocketDelegate, Observ
                                                     print("Failed to update user account from WS")
                                                 }
                                             }
-                                        } else {
-                                            // should be stream type
-                                            if let s = dict["data"] as? String {
-                                                self.streamedText += s      // display streaming message from ai to user.
-                                                self.receive(action: action)    // receive next charater
-                                            }
+                                        }
+                                    } else {
+                                        // should be stream type. Display the streaming text from AI
+                                        if let s = dict["data"] as? String {
+                                            self.streamedText += s      // display streaming message from ai to user.
+                                            self.receive(action: action)    // receive next charater
                                         }
                                     }
                                 }
@@ -124,53 +135,55 @@ class Websocket: NSObject, ObservableObject, URLSessionWebSocketDelegate, Observ
     
     // Might need to temporarily revise settings' value.
     @MainActor func sendToAI(_ rawText: String, action: @escaping (_ summary: String)->Void) {
-        var settings = SettingsManager.shared.getSettings()
-        // logic here to distinguish rigths between paid users and unpaid.
-        // unpaid users use gpt-3.5, if there is still balance. Not memo prompt
         if let user = UserManager.shared.currentUser {
+            var settings = SettingsManager.shared.getSettings()
+
+            // logic here to distinguish rigths between paid users and unpaid.
+            // unpaid users use gpt-3.5, if there is still balance. Not memo prompt
             if !user.subscription, user.dollar_balance <= 0.1 {
                 // non-subscriber, without enough balance of GPT-4, try GPT-3
                 settings.llmModel = LLMModel.GPT_3
                 // settings.promptType = .summary       // need further test
             }
-        }
-        if let user = UserManager.shared.currentUser, let llmParams = settings.llmParams[settings.llmModel], let prompt = settings.prompt[settings.promptType] {
-            Utility.printDict(obj: llmParams)
-            let msg = [
-                "user": user.username,
-                "input": [
-                    "prompt": prompt[settings.selectedLocale],
-                    "rawtext": rawText],
-                "parameters": [
-                    "llm": llmParams["llm"],
-                    "temperature": llmParams["temperature"],
-                    "client":"mobile",
-                    "model": settings.llmModel.rawValue
-                ]] as [String : Any]
-            
-            // Convert the Data to String
-            let jsonData = try! JSONSerialization.data(withJSONObject: msg)
-            if let jsonString = String(data: jsonData, encoding: .utf8) {
-                print("Websocket sending: ", jsonString)
+            if let llmParams = settings.llmParams[settings.llmModel], let prompt = settings.prompt[settings.promptType] {
+                Utility.printDict(obj: llmParams)
+                let msg = [
+                    "user": user.username,
+                    "input": [
+                        "prompt": prompt[settings.selectedLocale],
+                        "rawtext": rawText],
+                    "parameters": [
+                        "llm": llmParams["llm"],
+                        "temperature": llmParams["temperature"],
+                        "client":"mobile",
+                        "model": settings.llmModel.rawValue
+                    ]] as [String : Any]
                 
-                if let activeTask = self.wsTask, activeTask.state == .running {
-                    // do nothing
-                } else  {
-                    // cancel hanging wsTask if any
-                    self.wsTask?.cancel()
-                    if let accessToken = UserManager.shared.userToken {
-                        self.wsTask = urlSession?.webSocketTask(with: URL(string: "ws://" + settings.serverURL + "/ws/?token=" + accessToken)!)
-                    } else {
-                        self.alertItem = AlertContext.invalidUserData
-                        self.alertItem?.message = Text("Invalid access token")
-                        self.showAlert = true
+                // Convert the Data to String
+                let jsonData = try! JSONSerialization.data(withJSONObject: msg)
+                if let jsonString = String(data: jsonData, encoding: .utf8) {
+                    print("Websocket sending: ", jsonString)
+                    
+                    if let activeTask = self.wsTask, activeTask.state == .running {
+                        // do nothing
+                    } else  {
+                        // cancel hanging wsTask if any
+                        self.wsTask?.cancel()
+                        if let accessToken = UserManager.shared.userToken {
+                            self.wsURL.path = EndPoint.websocket.rawValue
+                            self.wsURL.query = "token="+accessToken
+                            self.wsTask = urlSession?.webSocketTask(with: self.wsURL.url!)
+                        } else {
+                            self.alertItem = AlertContext.invalidUserData
+                            self.alertItem?.message = Text("Invalid access token")
+                            self.showAlert = true
+                        }
                     }
-                }
-                
-                Task {
                     self.send(jsonString) { error in
-                        self.alertItem = AlertContext.unableToComplete
-                        self.showAlert = true
+                        Task { @MainActor in
+                            self.alertItem = AlertContext.unableToComplete
+                            self.showAlert = true
+                        }
                     }
                     self.receive(action: action)
                     self.resume()
@@ -197,12 +210,22 @@ enum HTTPStatusCode: Int, Comparable {
     }
 }
 
+enum EndPoint: String {
+    case accessToken    = "/secretari/token"
+    case productIDs     = "/secretari/productids"
+    case register       = "/secretari/users/register"
+    case temporaryUser  = "/secretari/users/temp"
+    case recharge       = "/secretari/users/recharge"
+    case subscibe       = "/secretari/users/subscribe"
+    case websocket      = "/secretari/ws/"
+}
+
 // http calls for user account management
 extension Websocket {
     func registerUser(_ user: User, completion: @escaping ([String: Any]?, HTTPStatusCode?) -> Void) {
         // send to register endpoint
-        let settings = SettingsManager.shared.getSettings()
-        var request = URLRequest(url: URL(string: "http://" + settings.serverURL + "/users/register")!)   // should be https://ip/secretari/users/register
+        self.webURL.path = EndPoint.register.rawValue
+        var request = URLRequest(url: self.webURL.url!)   // should be https://ip/secretari/users/register
         request.httpMethod = "POST"
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")
         
@@ -225,8 +248,8 @@ extension Websocket {
     }
     
     func createTempUser(_ user: User) async throws -> [String: Any]? {
-        let settings = SettingsManager.shared.getSettings()
-        var request = URLRequest(url: URL(string: "http://" + settings.serverURL + "/users/temp")!)   // should be https://ip/secretari/users/temp
+        self.webURL.path = EndPoint.temporaryUser.rawValue
+        var request = URLRequest(url: self.webURL.url!)
         request.httpMethod = "POST"
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")
         
@@ -241,9 +264,10 @@ extension Websocket {
         }
     }
     
-    func getProductIDs(_ completion: @escaping ([String: String]?, HTTPStatusCode?) -> Void) {
-        let settings = SettingsManager.shared.getSettings()
-        var request = URLRequest(url: URL(string: "http://" + settings.serverURL + "/productids")!)
+    func getProductIDs(_ completion: @escaping ([String: Any]?, HTTPStatusCode?) -> Void) {
+        self.webURL.path = EndPoint.productIDs.rawValue
+        print(webURL.url as Any)
+        var request = URLRequest(url: self.webURL.url!)
         request.httpMethod = "GET"
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")
 
@@ -252,7 +276,7 @@ extension Websocket {
                 completion(nil, nil)
                 return
             }
-            let json = try? JSONSerialization.jsonObject(with: data) as? [String: String]
+            let json = try? JSONSerialization.jsonObject(with: data) as? [String: Any]
             if let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 {
                 completion(json, .success)
             } else {
@@ -263,8 +287,8 @@ extension Websocket {
     }
     
     func recharge(_ dict: [String: Any]) async throws -> [String: Any]? {
-        let settings = SettingsManager.shared.getSettings()
-        var request = URLRequest(url: URL(string: "http://" + settings.serverURL + "/users/recharge")!)
+        self.webURL.path = EndPoint.recharge.rawValue
+        var request = URLRequest(url: self.webURL.url!)
         request.httpMethod = "POST"
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")
         
@@ -284,8 +308,8 @@ extension Websocket {
     }
     
     func subscribe(_ dict: [String: Any]) async throws -> [String: Any]? {
-        let settings = SettingsManager.shared.getSettings()
-        var request = URLRequest(url: URL(string: "http://" + settings.serverURL + "/users/subscribe")!)
+        self.webURL.path = EndPoint.subscibe.rawValue
+        var request = URLRequest(url: self.webURL.url!)
         request.httpMethod = "POST"
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")
         
@@ -303,8 +327,8 @@ extension Websocket {
     
     // fetch login token and updated user information from server
     func fetchToken(username: String, password: String, completion: @escaping ([String: Any]?, HTTPStatusCode?) -> Void) {
-        let settings = SettingsManager.shared.getSettings()
-        var request = URLRequest(url: URL(string: "http://" + settings.serverURL + "/token")!)   // should be https://ip/secretari/token
+        self.webURL.path = EndPoint.accessToken.rawValue
+        var request = URLRequest(url: self.webURL.url!)   // should be https://ip/secretari/token
         request.httpMethod = "POST"
         request.addValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")   // required by FastAPI
         let formData = "username=\(username)&password=\(password)"

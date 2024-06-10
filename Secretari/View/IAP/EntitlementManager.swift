@@ -8,7 +8,7 @@
 import SwiftUI
 
 class EntitlementManager: ObservableObject {
-    static let userDefaults = UserDefaults(suiteName: "secretari.leither.uk")!
+    static let userDefaults = UserDefaults(suiteName: "secretari") ?? UserDefaults.standard
     
     @AppStorage("hasPro", store: userDefaults)
     var hasPro: Bool = false

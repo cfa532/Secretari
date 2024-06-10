@@ -38,9 +38,18 @@ class SubscriptionsManager: NSObject, ObservableObject {
                 // No network connection. Cannot purchase neither.
                 return
             }
-            print(dict as Any)
-            if let ids = dict["ver0"] {
-                self.productIDs = ids.split(separator: "|").map(String.init)
+            if let dict = dict["ver0"] as? [String: Any] {
+                if let ids = dict["productIDs"] as? [String: Double] {
+                    self.productIDs = ids.keys.map{ $0 as String }
+                    print("productIDs", self.productIDs)
+                }
+                if let llmModel = dict["llmModel"] as? String {
+                    print("LLModel", llmModel)
+                    let sm = SettingsManager.shared
+                    var setting = sm.getSettings()
+                    setting.llmModel = LLMModel(rawValue: llmModel) ?? AppConstants.PrimaryModel
+                    sm.updateSettings(setting)
+                }
             }
         }
     }
@@ -78,42 +87,67 @@ extension SubscriptionsManager {
         }
     }
     
+    func syncRetry(_ purchase: [String: Any], retries: Int = 3) async throws -> Void {
+        var attempts = 0
+        var delay: UInt64 = 1
+        
+        while attempts < retries {
+            do {
+                if let json = try await websocket.recharge(purchase), let balance=json["dollar_balance"] as? Double {
+                    // edit balance on local record too.
+                    print("User from server after recharge", json)      // do not use it for now.
+                    userManager.currentUser?.dollar_balance = balance
+                    userManager.currentUser?.balance_synced = true
+                    userManager.persistCurrentUser()
+                }
+            } catch {
+                attempts += 1
+                if attempts >= retries {
+                    throw error
+                }
+                try await Task.sleep(nanoseconds: delay * 1_000_000_000) // Convert seconds to nanoseconds
+                delay *= 2 // Exponential backoff
+            }
+        }
+        throw URLError(.cannotLoadFromNetwork)
+    }
+    
     func buyProduct(_ product: Product, result: Result<Product.PurchaseResult, any Error>) async {
         switch result {
         case .success(let result):
-            print(result)
             switch result {
             case .success(.verified(let transaction)):
                 // Successful purhcase
-                print("puchase successed.", product.id)
+                print("puchase successed.", transaction)
                 await transaction.finish()
 //                print(transaction)
                 
                 if product.type == .consumable {
                     // recharge account with the amount
-                    let purchase: [String: Any] = ["product_id": transaction.productID, "amount": transaction.price as Any, "date": transaction.purchaseDate.timeIntervalSince1970]
+                    userManager.currentUser?.balance_synced = false
+                    userManager.persistCurrentUser()
+                    let purchase: [String: Any] = ["product_id": transaction.productID, "amount": transaction.price! as Any, "currency":transaction.currency!.identifier as Any, "transactionDate": transaction.originalPurchaseDate.timeIntervalSince1970, "originalTransactionID": transaction.originalID, "version":"ver0", "UUID": transaction.appAccountToken?.uuidString as Any]    // original transaction ID very important
+                    print(purchase)
                     do {
-                        if let json = try await websocket.recharge(purchase) {
+                        if let json = try await websocket.recharge(purchase), let balance=json["dollar_balance"] as? Double {
                             // edit balance on local record too.
                             print("User from server after recharge", json)      // do not use it for now.
-                            userManager.currentUser?.dollar_balance += NSDecimalNumber(decimal: product.price).doubleValue
+                            userManager.currentUser?.dollar_balance = balance
+                            userManager.currentUser?.balance_synced = true
                             userManager.persistCurrentUser()
-                            
-//                            await self.updatePurchasedProducts()
-                            self.alertItem = AlertContext.rechargeSuccess
-                        } else {
-                            self.alertItem = AlertContext.unableToComplete
                         }
-//                        self.showAlert = true
                     } catch {
-                        print("Error recharging user account")
-                        self.alertItem = AlertContext.unableToComplete
-                        self.showAlert = true
+                        print("Error recharge. Retry....")
+                        // recharge to server failed. Retry the next time when
+                        do {
+                            try await self.syncRetry(purchase)
+                        } catch {
+                            print("Error sending consumble purchase data to server.")
+                        }
                     }
                 } else if product.type == .autoRenewable {
                     // set current subscription status
-//                    print("autorenew", transaction as Any)
-                    let sup: [String: Any] = ["product_id": transaction.productID, "start_date": transaction.purchaseDate.timeIntervalSince1970, "end_date": transaction.expirationDate?.timeIntervalSince1970 as Any, "plan": transaction.productType.rawValue, "price": transaction.price as Any]
+                    let sup: [String: Any] = ["product_id": transaction.productID, "start_date": transaction.purchaseDate.timeIntervalSince1970, "end_date": transaction.expirationDate?.timeIntervalSince1970 as Any, "plan": transaction.productType.rawValue, "price": transaction.price as Any, "originalID": transaction.originalID, "version":"ver0", "UUID": transaction.appAccountToken?.uuidString as Any]
                     do {
                         if let json = try await websocket.subscribe(sup) {
                             // edit balance on local record too.
@@ -121,12 +155,8 @@ extension SubscriptionsManager {
                             userManager.currentUser?.subscription = true
                             userManager.persistCurrentUser()
                             
-//                            await self.updatePurchasedProducts()
-                            self.alertItem = AlertContext.rechargeSuccess
-                        } else {
-                            self.alertItem = AlertContext.unableToComplete
+                            await self.updatePurchasedProducts()
                         }
-//                        self.showAlert = true
                     } catch {
                         print("Error update subscription status")
                         self.alertItem = AlertContext.unableToComplete
@@ -154,6 +184,7 @@ extension SubscriptionsManager {
         }
     }
     
+    // watch for user's entitlements in case purchased somewhere else.
     func updatePurchasedProducts() async {
         for await result in Transaction.currentEntitlements {
             guard case .verified(let transaction) = result else {
@@ -165,12 +196,9 @@ extension SubscriptionsManager {
                 self.purchasedProductIDs.remove(transaction.productID)
             }
         }
-        
-//        self.entitlementManager?.hasPro = !self.purchasedProductIDs.isEmpty
-        if !self.purchasedProductIDs.isEmpty {
-            userManager.currentUser?.subscription = true
-            userManager.persistCurrentUser()
-        }
+        // self.entitlementManager?.hasPro = !self.purchasedProductIDs.isEmpty
+        self.userManager.currentUser?.subscription = !self.purchasedProductIDs.isEmpty
+        userManager.persistCurrentUser()
     }
     
     func restorePurchases() async {
