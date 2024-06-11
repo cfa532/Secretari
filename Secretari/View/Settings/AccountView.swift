@@ -29,6 +29,7 @@ struct AccountDetailView: View {
     @State private var showAlert = false
     @State private var user = UserManager.shared.currentUser
     @EnvironmentObject var userManager: UserManager
+    @EnvironmentObject var entitlementManager: EntitlementManager
 
     private let formatterUSD = {
         let formatter = NumberFormatter()
@@ -84,39 +85,56 @@ struct AccountDetailView: View {
                         let title = Text("Version").font(.subheadline).foregroundStyle(.secondary)
                         SettingsRowView(imageName: nil, title: title, tintColor: .secondary)
                         Spacer()
-                        Text("v1.0.0")
+                        Text("1.0.0")
                             .font(.subheadline)
                     }
                     
-                    VStack(alignment: .leading, spacing: 10) {
+                    HStack {
                         Text("Token usage:")
                             .font(.subheadline)
                             .foregroundStyle(.gray)
-
-                    }
-                    VStack(alignment: .leading, spacing: 10) {
-                        let currentDate = Date()
-                        let calendar = Calendar.current
-                        let currentMonth = String(calendar.component(.month, from: currentDate))
-                        if let u3 = user?.monthly_usage, let u3c=u3[currentMonth] {
-                            HStack {
-                                Text("Cost of the month in USD:")
-                                    .font(.subheadline)
-                                Spacer()
-                                Text(formatterUSD().string(from: NSNumber(value: u3c))!)
-                            }
+                        Spacer()
+                        if let count = user?.token_count {
+                            Text(String(count))
                         }
                     }
+                    if !entitlementManager.hasPro {
+                        if let balance = user?.dollar_balance {
+                            HStack {
+                                Text("Account balance in USD:")
+                                    .font(.subheadline)
+                                    .foregroundStyle(.secondary)
+                                Spacer()
+                                Text(formatterUSD().string(from: NSNumber(value: balance))!)
+                            }
+                        }
+
+//                        let currentDate = Date()
+//                        let calendar = Calendar.current
+//                        let currentMonth = String(calendar.component(.month, from: currentDate))
+//                        if let u3 = user?.monthly_usage, let u3c=u3[currentMonth] {
+//                            HStack {
+//                                Text("Cost of the month in USD:")
+//                                    .font(.subheadline)
+//                                    .foregroundStyle(.secondary)
+//                                Spacer()
+//                                Text(formatterUSD().string(from: NSNumber(value: u3c))!)
+//                            }
+//                        }
+                    }
                 }
-                Section("Account") {
+                Section(" ") {
                     Button(action: {
                         self.showAlert = true
                     }, label: {
                         SettingsRowView(imageName: "arrow.left.circle.fill", title:Text("Sign out"), tintColor: .accentColor)
                     })
-                    NavigationLink(destination: UpdateAccountView(userManager: userManager), label: {
-                        SettingsRowView(imageName: "wand.and.stars", title:Text("Update account"), tintColor: .accentColor)
-                    })
+                    if let count=user?.username.count, count <= 20 {
+                        // Do NOT show update option to temp user
+                        NavigationLink(destination: UpdateAccountView(userManager: userManager), label: {
+                            SettingsRowView(imageName: "wand.and.stars", title:Text("Update account"), tintColor: .accentColor)
+                        })
+                    }
                 }
                 .alert("Sign out", isPresented: $showAlert) {
                     Button("OK", action: {userManager.userToken = nil})
@@ -124,6 +142,9 @@ struct AccountDetailView: View {
                 } message: {
                     Text("Are you sure to logout?")
                 }
+                .onAppear(perform: {
+                    user = UserManager.shared.currentUser
+                })
 
             }
         }

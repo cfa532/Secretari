@@ -13,7 +13,10 @@
     "*" : {
 
     },
-    "Account" : {
+    "1.0.0" : {
+
+    },
+    "Account balance in USD:" : {
 
     },
     "advanced" : {
@@ -84,9 +87,6 @@
 
     },
     "Cancel" : {
-
-    },
-    "Cost of the month in USD:" : {
 
     },
     "Dismiss" : {
@@ -999,9 +999,6 @@
 
     },
     "Username is required and less than 20 characters long. Please confirm the password." : {
-
-    },
-    "v1.0.0" : {
 
     },
     "Version" : {

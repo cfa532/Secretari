@@ -28,12 +28,12 @@ class Websocket: NSObject, ObservableObject, URLSessionWebSocketDelegate, Observ
         wsURL = URLComponents()
         super.init()
         self.urlSession = URLSession(configuration: .default, delegate: self, delegateQueue: OperationQueue())
-        webURL.scheme = "http"
-        webURL.host = "localhost"
-        webURL.port = 8000
-        wsURL.scheme = "ws"
-        wsURL.host = "localhost"
-        wsURL.port = 8000
+        webURL.scheme = "https"
+        webURL.host = "leither.uk"
+//        webURL.port = 8000
+        wsURL.scheme = "wss"
+        wsURL.host = "leither.uk"
+//        wsURL.port = 8000
     }
     
     nonisolated func urlSession(_ session: URLSession, webSocketTask: URLSessionWebSocketTask, didOpenWithProtocol protocol: String?) {
