@@ -247,7 +247,6 @@
 			children = (
 				4603DD0B2C0DABA0006CBAB4 /* IAP */,
 				461ADDA62BD2B6EB00C0DD94 /* DetailView.swift */,
-				4623C6EF2C046AEE006CB3D1 /* AccountView.swift */,
 				4623C6F92C06C500006CB3D1 /* Settings */,
 				46FAC5FF2BDFC4AC0013B9B5 /* DetailViews */,
 				461ADD8A2BD2A40500C0DD94 /* ErrorView.swift */,
@@ -258,6 +257,7 @@
 		4623C6F92C06C500006CB3D1 /* Settings */ = {
 			isa = PBXGroup;
 			children = (
+				4623C6EF2C046AEE006CB3D1 /* AccountView.swift */,
 				4623C6F12C04700E006CB3D1 /* LoginView.swift */,
 				4623C6ED2C030BA6006CB3D1 /* RegistrationView.swift */,
 				4623C6F32C0471E3006CB3D1 /* UpdateAccountView.swift */,

@@ -8,49 +8,80 @@
 import SwiftUI
 
 struct UpdateAccountView: View {
-    @EnvironmentObject private var userManager: UserManager
-    
-    @State private var familyName: String = ""
-    @State private var givenName: String = ""
-    @State private var email: String = ""
-    @State private var newPassword: String = ""
-    @State private var confirmPassword: String = ""
-    
-    var body: some View {
-        NavigationView {
-            Form {
-                Section(header: Text("Personal Information")) {
-                    TextField("Family Name", text: $familyName)
-                    TextField("Given Name", text: $givenName)
-                    TextField("Email", text: $email)
-                }
-                
-                Section(header: Text("Change Password")) {
-                    SecureField("New Password", text: $newPassword)
-                    SecureField("Confirm Password", text: $confirmPassword)
-                }
-                
-                Button("Update") {
-                    updateProfile()
-                }
-            }
-            .navigationBarTitle("Update Profile")
-            .onAppear {
-//                loadCurrentUserData()
-            }
-        }
+    @Environment(\.presentationMode) var presentationMode
+
+    @State private var userManager: UserManager
+    @State private var user: User
+    @State private var passwd: String = ""
+    @State private var showAlert = false
+
+    init(userManager: UserManager) {
+        self.userManager = userManager
+        self.user = userManager.currentUser!
     }
-    
-    private func updateProfile() {
-        guard newPassword == confirmPassword else {
-            print("Passwords do not match")
-            return
+
+    var body: some View {
+        NavigationStack {
+            Form {
+                Section(header: Text("Information")) {
+
+                    InputView(text: $user.username, title: "Username", placeHolder: user.username, isSecureField: false, required: true)
+                        .padding(.top, 40)
+                        .textInputAutocapitalization(.never)
+                        .disabled(true)
+                    
+                    HStack {
+                        InputView(text: $user.password, title: "Password", placeHolder: "", isSecureField: true, required: true)
+                        InputView(text: $passwd, title: "Confirm", placeHolder: "", isSecureField: true, required: true)
+                    }
+                    
+                    InputView(text: Binding<String> (get: {user.family_name ?? ""}, set: {user.family_name=$0}), title: "Family name", placeHolder: user.family_name ?? "")
+                    
+
+                    InputView(text: Binding<String> (get: {user.given_name ?? ""}, set: { user.given_name = $0}), title: "Given name", placeHolder: user.given_name ?? "")
+
+                    InputView(text: Binding<String> (get: {user.email ?? ""}, set: { user.email = $0}), title: "Email", placeHolder: user.email ?? "")
+                    .textInputAutocapitalization(.never)
+                }
+
+                Section(header: Text("")) {
+                    Button(action: {
+                        // register
+                        if user.password==passwd {
+                            Task {
+                                await userManager.updateUser(user)
+                                presentationMode.wrappedValue.dismiss()
+                            }
+                        } else {
+                            print(user.username, user.password, passwd)
+                            showAlert = true
+                        }
+                    }, label: {
+                        HStack {
+                            Text("Update")
+                                .fontWeight(.semibold)
+                            Image(systemName: "arrow.right")
+                        }
+                        .foregroundStyle(.white)
+                        .frame(width: UIScreen.main.bounds.width - 32, height: 48)
+                    })
+                    .background(Color(.systemBlue).opacity(0.8))
+                    .cornerRadius(10)
+                    .alert("Alert", isPresented: $showAlert) {
+                           Button("OK", role: .cancel) { }
+                       } message: {
+                           Text("Please confirm the password." )
+                       }
+                }
+            }
+            .alert(isPresented: $userManager.showAlert) {
+                Alert(title: userManager.alertItem?.title ?? Text("Alert"),
+                      message: userManager.alertItem?.message,
+                      dismissButton: userManager.alertItem?.dismissButton)
+            }
         }
-        
-        // Here you would typically handle the update logic, possibly updating credentials on a server.
-        print("Profile update attempt for \(email)")
     }
 }
 #Preview {
-    UpdateAccountView()
+    UpdateAccountView(userManager: UserManager.shared)
 }

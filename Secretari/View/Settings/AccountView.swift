@@ -20,7 +20,7 @@ struct AccountView: View {
             LoginView()
         case .unregistered:
             // register
-            RegistrationView()
+            RegistrationView(userManager: userManager)
         }
     }
 }
@@ -112,16 +112,10 @@ struct AccountDetailView: View {
                     Button(action: {
                         self.showAlert = true
                     }, label: {
-                        HStack {
-                            SettingsRowView(imageName: "arrow.left.circle.fill", title:Text("Sign out"), tintColor: .accentColor)
-                        }
+                        SettingsRowView(imageName: "arrow.left.circle.fill", title:Text("Sign out"), tintColor: .accentColor)
                     })
-                    Button(action: {
-//                        self.showAlert = true
-                    }, label: {
-                        HStack {
-                            SettingsRowView(imageName: "wand.and.stars", title:Text("Update account"), tintColor: .accentColor)
-                        }
+                    NavigationLink(destination: UpdateAccountView(userManager: userManager), label: {
+                        SettingsRowView(imageName: "wand.and.stars", title:Text("Update account"), tintColor: .accentColor)
                     })
                 }
                 .alert("Sign out", isPresented: $showAlert) {

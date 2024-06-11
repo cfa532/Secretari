@@ -86,12 +86,6 @@
     "Cancel" : {
 
     },
-    "Change Password" : {
-
-    },
-    "Confirm Password" : {
-
-    },
     "Cost of the month in USD:" : {
 
     },
@@ -143,9 +137,6 @@
         }
       }
     },
-    "Email" : {
-
-    },
     "English" : {
       "localizations" : {
         "ja" : {
@@ -169,9 +160,6 @@
       }
     },
     "Error" : {
-
-    },
-    "Family Name" : {
 
     },
     "First make sure to select the right language for recognition in setting ⚙️ Otherwise the built-in speech recognizer cannot work properly." : {
@@ -209,9 +197,6 @@
 
     },
     "Get full access for just %@" : {
-
-    },
-    "Given Name" : {
 
     },
     "Have an account?" : {
@@ -376,9 +361,6 @@
     "Min Audible (dB)" : {
 
     },
-    "New Password" : {
-
-    },
     "No memo to translate. Please generate the Memo content first using Summarize in ... menu." : {
       "localizations" : {
         "es-419" : {
@@ -464,7 +446,7 @@
         }
       }
     },
-    "Personal Information" : {
+    "Please confirm the password." : {
 
     },
     "Please ensure all fields in the form have been filled out." : {
@@ -1010,7 +992,7 @@
     "Update account" : {
 
     },
-    "Update Profile" : {
+    "Update failure" : {
 
     },
     "Username" : {

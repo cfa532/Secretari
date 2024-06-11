@@ -8,11 +8,16 @@
 import SwiftUI
 
 struct RegistrationView: View {
-    @State private var user: User = UserManager.shared.currentUser!
+    @State private var userManager: UserManager
+    @State private var user: User
     @State private var passwd: String = ""
     @State private var showAlert = false
-    @EnvironmentObject var userManager: UserManager
 
+    init(userManager: UserManager) {
+        self.userManager = userManager
+        self.user = userManager.currentUser!
+    }
+    
     var body: some View {
         NavigationStack {
             Form {
@@ -102,5 +107,5 @@ struct RegistrationView: View {
 }
 
 #Preview {
-    RegistrationView()
+    RegistrationView(userManager: UserManager.shared)
 }

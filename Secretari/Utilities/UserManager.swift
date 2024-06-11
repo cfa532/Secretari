@@ -10,7 +10,6 @@ import SwiftUI
 
 //@MainActor
 class UserManager: ObservableObject, Observable {
-    
     @Published var currentUser: User?
     @Published var showAlert: Bool = false
     @Published var alertItem: AlertItem?
@@ -74,10 +73,10 @@ class UserManager: ObservableObject, Observable {
                         // update temp user with account data recieved from server.
                         self.currentUser = Utility.updateUserFromServerDict(from: serverUser, user: self.currentUser!)
                         self.currentUser?.password = ""
-                        
+                        //
                         // Only on creation, read dollar balance and subscription status from server
                         // User device is the main source of bookkeeping dollar balance, recharge and subscription status
-//                        self.currentUser?.subscription = serverUser["subscription"] as? Bool ?? false
+                        //
                         self.currentUser?.dollar_balance = serverUser["dollar_balance"] as? Double ?? AppConstants.SignupBonus
                         self.persistCurrentUser()
                         print("temprory user created", self.currentUser as Any)
@@ -106,9 +105,29 @@ class UserManager: ObservableObject, Observable {
                 self.currentUser = Utility.updateUserFromServerDict(from: dict, user: self.currentUser!)
                 self.persistCurrentUser()
 
-                // even after registration, the currentUser still use temp account, until after login.
+                // After registration, the currentUser still use temp account, until user login.
                 self.loginStatus = .signedOut
             }
+        }
+    }
+    
+    @MainActor func updateUser(_ user: User) async {
+        do {
+            if let json = try await websocket.updateUser(user) {
+                // edit balance on local record too.
+                print("User updated.", json)      // do not use it for now.
+                if let email=json["email"] as? String, let fn=json["family_name"] as? String, let gn=json["given_name"] as? String {
+                    self.currentUser?.email = email
+                    self.currentUser?.family_name = fn
+                    self.currentUser?.given_name = gn
+                    self.persistCurrentUser()
+                }
+            }
+        } catch {
+            print("Error update user")
+            self.alertItem = AlertContext.unableToComplete
+            self.alertItem?.message = Text("Update failure")
+            self.showAlert = true
         }
     }
     
