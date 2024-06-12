@@ -18,6 +18,7 @@ class UserManager: ObservableObject, Observable {
     private let keychainManager = KeychainManager.shared
     private let userDefaultsManager = UserDefaultsManager.shared
     private let websocket = Websocket.shared
+    private let entitlementManager = EntitlementManager()
     
     var userToken: String? {
         didSet {
@@ -27,7 +28,7 @@ class UserManager: ObservableObject, Observable {
             } else {
                 loginStatus = .signedOut
                 if let count=currentUser?.username.count, count > 20 {
-                    // in case of annoymous user.
+                    // in case of annoymous user, with device identifier as temp username.
                     loginStatus = .unregistered
                 }
             }
@@ -35,7 +36,7 @@ class UserManager: ObservableObject, Observable {
     }
     static let shared = UserManager()
     private init() {
-        // There is the code code of initialization. Setup user and retrieve user data.
+        // There is the core code of initialization. Setup user and retrieve user data.
                 
         if let user = userDefaultsManager.get(for: "currentUser", type: User.self) {
             // local user infor will be updated with each fetchToken() call

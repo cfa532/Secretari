@@ -15,6 +15,7 @@ class Websocket: NSObject, ObservableObject, URLSessionWebSocketDelegate, Observ
     @Published var alertItem: AlertItem?
     @Published var showAlert = false
     @EnvironmentObject private var entitlementManager: EntitlementManager
+    @EnvironmentObject private var userManager: UserManager
 
     private var urlSession: URLSession?
     private var wsTask: URLSessionWebSocketTask?
@@ -28,12 +29,16 @@ class Websocket: NSObject, ObservableObject, URLSessionWebSocketDelegate, Observ
         wsURL = URLComponents()
         super.init()
         self.urlSession = URLSession(configuration: .default, delegate: self, delegateQueue: OperationQueue())
-        webURL.scheme = "https"
-        webURL.host = "leither.uk"
-//        webURL.port = 8000
-        wsURL.scheme = "wss"
-        wsURL.host = "leither.uk"
-//        wsURL.port = 8000
+//        webURL.scheme = "https"
+//        webURL.host = "leither.uk"
+//        wsURL.scheme = "wss"
+//        wsURL.host = "leither.uk"
+        webURL.scheme = "http"
+        webURL.host = "localhost"
+        wsURL.scheme = "ws"
+        wsURL.host = "localhost"
+        webURL.port = 8000
+        wsURL.port = 8000
     }
     
     nonisolated func urlSession(_ session: URLSession, webSocketTask: URLSessionWebSocketTask, didOpenWithProtocol protocol: String?) {
@@ -79,18 +84,14 @@ class Websocket: NSObject, ObservableObject, URLSessionWebSocketDelegate, Observ
                                         if let answer = dict["answer"] as? String {
                                             // send reply from AI to display
                                             action(answer)
-                                            self.cancel()
                                             
                                             // bookkeeping. Update token count
-                                            if let user = dict["user"] as? [String: Any] {
-                                                
-                                                UserManager.shared.currentUser = Utility.updateUserFromServerDict(from: user, user: UserManager.shared.currentUser!)
-                                                
-                                                print("Received from ws", UserManager.shared.currentUser as Any)
-                                                if !KeychainManager.shared.save(data: UserManager.shared.currentUser, for: "currentUser") {
-                                                    print("Failed to update user account from WS")
-                                                }
+                                            if let cost=dict["cost"] as? Double, let tokens=dict["tokens"] as? UInt {
+                                                self.userManager.currentUser?.dollar_balance -= cost
+                                                self.userManager.currentUser?.token_count += tokens
+                                                self.userManager.persistCurrentUser()
                                             }
+                                            self.cancel()       // close websocket
                                         }
                                     } else {
                                         // should be stream type. Display the streaming text from AI
@@ -152,8 +153,11 @@ class Websocket: NSObject, ObservableObject, URLSessionWebSocketDelegate, Observ
                 let msg = [
                     "user": user.username,
                     "input": [
-                        "prompt": prompt=="" ? sprompt[settings.selectedLocale] : prompt,
-                        "rawtext": rawText],
+                        "prompt": prompt=="" ? sprompt[settings.selectedLocale] as Any : prompt,
+                        "rawtext": rawText,
+                        "subscription": entitlementManager.hasPro,
+                        "balance": user.dollar_balance
+                    ],
                     "parameters": [
                         "llm": llmParams["llm"],
                         "temperature": llmParams["temperature"],

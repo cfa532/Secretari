@@ -157,4 +157,5 @@ struct AccountDetailView: View {
 
 #Preview {
     AccountView()
+        .environment(UserManager.shared)
 }

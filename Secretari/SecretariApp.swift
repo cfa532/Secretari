@@ -12,15 +12,14 @@ import SwiftData
 struct SecretariApp: App {
     @Environment(\.scenePhase) var scenePhase
     @Environment(\.modelContext) private var modelContext
-    @StateObject private var userManager = UserManager.shared
     
+    @StateObject private var userManager = UserManager.shared
     @StateObject private var entitlementManager: EntitlementManager
     @StateObject private var subscriptionsManager: SubscriptionsManager
     
     init() {
         let entitlementManager = EntitlementManager()
         let subscriptionsManager = SubscriptionsManager(entitlementManager: entitlementManager)
-        
         self._entitlementManager = StateObject(wrappedValue: entitlementManager)
         self._subscriptionsManager = StateObject(wrappedValue: subscriptionsManager)
     }
@@ -42,9 +41,9 @@ struct SecretariApp: App {
                     guard let appSupportDir = FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask).last else { return }
                     print(appSupportDir)
                     print("App lang:", UserDefaults.standard.stringArray(forKey: "AppleLanguages")!)
-                    print("identifier: ", NSLocale.current.identifier)
+                    print("Locale identifier: ", NSLocale.current.identifier)
                     
-                    // clear user data from UserDefaults and Keychain
+                    // clear user data from UserDefaults and Keychain. For TEST only
 //                    if let bundleID = Bundle.main.bundleIdentifier {
 //                        let keychainManager = KeychainManager.shared
 //                        UserDefaults.standard.removePersistentDomain(forName: bundleID)
@@ -69,7 +68,7 @@ struct SecretariApp: App {
                 .task {
                     // check the subscription status of the user on server. Async mode.
                     await subscriptionsManager.updatePurchasedProducts()
-                    await subscriptionsManager.loadProducts()       // preload products
+                    await subscriptionsManager.loadProducts()       // preload products. Hope it show up faster.
                 }
 
         }
