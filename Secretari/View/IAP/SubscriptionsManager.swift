@@ -31,27 +31,6 @@ class SubscriptionsManager: NSObject, ObservableObject {
         self.entitlementManager = entitlementManager
         self.updates = observeTransactionUpdates()
         SKPaymentQueue.default().add(self)
-
-        websocket.getProductIDs { dict, statusCode in
-            guard let dict = dict, let code=statusCode, code < .failure else {
-                print("Failed to get product IDs.", dict as Any)
-                // No network connection. Cannot purchase neither.
-                return
-            }
-            if let dict = dict["ver0"] as? [String: Any] {
-                if let ids = dict["productIDs"] as? [String: Double] {
-                    self.productIDs = ids.keys.map{ $0 as String }
-                    print("productIDs", self.productIDs)
-                }
-                if let llmModel = dict["llmModel"] as? String {
-                    print("LLModel", llmModel)
-                    let sm = SettingsManager.shared
-                    var setting = sm.getSettings()
-                    setting.llmModel = LLMModel(rawValue: llmModel) ?? AppConstants.PrimaryModel
-                    sm.updateSettings(setting)
-                }
-            }
-        }
     }
     
     deinit {
@@ -78,12 +57,30 @@ class SubscriptionsManager: NSObject, ObservableObject {
 
 // MARK: StoreKit2 API
 extension SubscriptionsManager {
-    func loadProducts() async {
-        do {
-            self.products = try await Product.products(for: productIDs)
-                .sorted(by: { $0.price > $1.price })
-        } catch {
-            print("Failed to fetch products!")
+    func loadProducts() {
+        websocket.getProductIDs { dict, statusCode in
+            guard let dict = dict, let code=statusCode, code < .failure else {
+                print("Failed to get product IDs.", dict as Any)
+                // No network connection. Cannot purchase neither.
+                return
+            }
+            if let dict = dict["ver0"] as? [String: Any] {
+                if let ids = dict["productIDs"] as? [String: Double] {
+                    self.productIDs = ids.keys.map{ $0 as String }
+                    print("productIDs", self.productIDs)
+                    Task { @MainActor in
+                        self.products = try await Product.products(for: self.productIDs)
+                            .sorted(by: { $0.price > $1.price })
+                    }
+                }
+                if let llmModel = dict["llmModel"] as? String {
+                    print("LLModel", llmModel)
+                    let sm = SettingsManager.shared
+                    var setting = sm.getSettings()
+                    setting.llmModel = LLMModel(rawValue: llmModel) ?? AppConstants.PrimaryModel
+                    sm.updateSettings(setting)
+                }
+            }
         }
     }
     

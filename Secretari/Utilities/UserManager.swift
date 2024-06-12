@@ -18,7 +18,7 @@ class UserManager: ObservableObject, Observable {
     private let keychainManager = KeychainManager.shared
     private let userDefaultsManager = UserDefaultsManager.shared
     private let websocket = Websocket.shared
-    private let entitlementManager = EntitlementManager()
+//    private let entitlementManager = EntitlementManager()
     
     var userToken: String? {
         didSet {
