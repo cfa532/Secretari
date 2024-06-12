@@ -123,7 +123,7 @@ extension SubscriptionsManager {
                     // recharge account with the amount
                     userManager.currentUser?.balance_synced = false
                     userManager.persistCurrentUser()
-                    let purchase: [String: Any] = ["product_id": transaction.productID, "amount": transaction.price! as Any, "currency":transaction.currency!.identifier as Any, "transactionDate": transaction.originalPurchaseDate.timeIntervalSince1970, "originalTransactionID": transaction.originalID, "version":"ver0", "UUID": transaction.appAccountToken?.uuidString as Any]    // original transaction ID very important
+                    let purchase: [String: Any] = ["product_id": transaction.productID, "amount": transaction.price! as Any, "currency":transaction.currency!.identifier as Any, "transactionDate": transaction.originalPurchaseDate.timeIntervalSince1970, "originalTransactionID": transaction.originalID, "version":"ver0", "appAccountToken": transaction.appAccountToken?.uuidString as Any]    // original transaction ID very important
                     print(purchase)
                     do {
                         if let json = try await websocket.recharge(purchase), let balance=json["dollar_balance"] as? Double {
@@ -144,7 +144,7 @@ extension SubscriptionsManager {
                     }
                 } else if product.type == .autoRenewable {
                     // set current subscription status
-                    let sup: [String: Any] = ["product_id": transaction.productID, "start_date": transaction.purchaseDate.timeIntervalSince1970, "end_date": transaction.expirationDate?.timeIntervalSince1970 as Any, "plan": transaction.productType.rawValue, "price": transaction.price as Any, "originalID": transaction.originalID, "version":"ver0", "UUID": transaction.appAccountToken?.uuidString as Any]
+                    let sup: [String: Any] = ["product_id": transaction.productID, "start_date": transaction.purchaseDate.timeIntervalSince1970, "end_date": transaction.expirationDate?.timeIntervalSince1970 as Any, "plan": transaction.productType.rawValue, "price": transaction.price as Any, "originalID": transaction.originalID, "version":"ver0", "appAccountToken": transaction.appAccountToken?.uuidString as Any]
                     do {
                         if let json = try await websocket.subscribe(sup) {
                             // edit balance on local record too.

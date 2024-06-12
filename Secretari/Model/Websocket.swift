@@ -14,8 +14,6 @@ class Websocket: NSObject, ObservableObject, URLSessionWebSocketDelegate, Observ
     @Published var streamedText: String = ""
     @Published var alertItem: AlertItem?
     @Published var showAlert = false
-    @EnvironmentObject private var entitlementManager: EntitlementManager
-    @EnvironmentObject private var userManager: UserManager
 
     private var urlSession: URLSession?
     private var wsTask: URLSessionWebSocketTask?
@@ -87,9 +85,10 @@ class Websocket: NSObject, ObservableObject, URLSessionWebSocketDelegate, Observ
                                             
                                             // bookkeeping. Update token count
                                             if let cost=dict["cost"] as? Double, let tokens=dict["tokens"] as? UInt {
-                                                self.userManager.currentUser?.dollar_balance -= cost
-                                                self.userManager.currentUser?.token_count += tokens
-                                                self.userManager.persistCurrentUser()
+                                                let userManager = UserManager.shared
+                                                userManager.currentUser?.dollar_balance -= cost
+                                                userManager.currentUser?.token_count += tokens
+                                                userManager.persistCurrentUser()
                                             }
                                             self.cancel()       // close websocket
                                         }
@@ -142,7 +141,7 @@ class Websocket: NSObject, ObservableObject, URLSessionWebSocketDelegate, Observ
 
             // logic here to distinguish between subscribers and others.
             // non-subscribers use gpt-3.5, if there is still balance. Not memo prompt
-            if user.dollar_balance <= 0.1, !self.entitlementManager.hasPro {
+            if user.dollar_balance <= 0.1, !EntitlementManager.isSubscriber {
                 // non-subscriber, without enough balance of GPT-4, try GPT-3
                 settings.llmModel = LLMModel.GPT_3
 //                settings.promptType = .summary       // need further test
@@ -151,11 +150,10 @@ class Websocket: NSObject, ObservableObject, URLSessionWebSocketDelegate, Observ
             if let llmParams = settings.llmParams[settings.llmModel], let sprompt = settings.prompt[settings.promptType] {
                 Utility.printDict(obj: llmParams)
                 let msg = [
-                    "user": user.username,
                     "input": [
                         "prompt": prompt=="" ? sprompt[settings.selectedLocale] as Any : prompt,
                         "rawtext": rawText,
-                        "subscription": entitlementManager.hasPro,
+                        "subscription": EntitlementManager.isSubscriber,
                         "balance": user.dollar_balance
                     ],
                     "parameters": [
@@ -170,29 +168,28 @@ class Websocket: NSObject, ObservableObject, URLSessionWebSocketDelegate, Observ
                 if let jsonString = String(data: jsonData, encoding: .utf8) {
                     print("Websocket sending: ", jsonString)
                     
-                    if let activeTask = self.wsTask, activeTask.state == .running {
-                        // do nothing
-                    } else  {
+                    if let activeTask = self.wsTask, activeTask.state != .running {
                         // cancel hanging wsTask if any
                         self.wsTask?.cancel()
-                        if let accessToken = UserManager.shared.userToken {
-                            self.wsURL.path = EndPoint.websocket.rawValue
-                            self.wsURL.query = "token="+accessToken
-                            self.wsTask = urlSession?.webSocketTask(with: self.wsURL.url!)
-                        } else {
-                            self.alertItem = AlertContext.invalidUserData
-                            self.alertItem?.message = Text("Invalid access token")
-                            self.showAlert = true
-                        }
                     }
-                    self.send(jsonString) { error in
-                        Task { @MainActor in
-                            self.alertItem = AlertContext.unableToComplete
-                            self.showAlert = true
+                    if let accessToken = UserManager.shared.userToken {
+                        self.wsURL.path = EndPoint.websocket.rawValue
+                        self.wsURL.query = "token="+accessToken
+                        self.wsTask = urlSession?.webSocketTask(with: self.wsURL.url!)
+
+                        self.send(jsonString) { error in
+                            Task { @MainActor in
+                                self.alertItem = AlertContext.unableToComplete
+                                self.showAlert = true
+                            }
                         }
+                        self.receive(action: action)
+                        self.resume()
+                    } else {
+                        self.alertItem = AlertContext.invalidUserData
+                        self.alertItem?.message = Text("Invalid access token")
+                        self.showAlert = true
                     }
-                    self.receive(action: action)
-                    self.resume()
                 }
             }
         }

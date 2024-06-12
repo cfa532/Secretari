@@ -12,5 +12,7 @@ class EntitlementManager: ObservableObject {
     
     @AppStorage("hasPro", store: userDefaults)
     var hasPro: Bool = false
+    
+    static let isSubscriber = userDefaults.bool(forKey: "hasPro")
 }
 
