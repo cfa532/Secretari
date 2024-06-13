@@ -16,7 +16,8 @@ struct SecretariApp: App {
     @StateObject private var userManager = UserManager.shared
     @StateObject private var entitlementManager: EntitlementManager
     @StateObject private var subscriptionsManager: SubscriptionsManager
-    
+    @StateObject private var speechRecognizer = SpeechRecognizer()
+
     init() {
         let entitlementManager = EntitlementManager()
         let subscriptionsManager = SubscriptionsManager(entitlementManager: entitlementManager)
@@ -69,6 +70,7 @@ struct SecretariApp: App {
                 .environmentObject(userManager)
                 .environmentObject(entitlementManager)
                 .environmentObject(subscriptionsManager)
+                .environmentObject(speechRecognizer)
 
         }
         .modelContainer(sharedModelContainer)

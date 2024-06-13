@@ -15,6 +15,7 @@ struct ContentView: View {
     @EnvironmentObject private var userManager: UserManager
     @EnvironmentObject private var entitlementManager: EntitlementManager
     @EnvironmentObject private var subscriptionsManager: SubscriptionsManager
+    @EnvironmentObject private var speechRecognizer: SpeechRecognizer
     
     @State private var isRecording = false
     @State private var showDetailView = false
@@ -104,6 +105,11 @@ struct ContentView: View {
             Button(action: {
                 self.isRecording = true
                 self.showDetailView = true        // active navigation link to detail view
+                Task {
+                    let settings = SettingsManager.shared.getSettings()
+                    await self.speechRecognizer.setup(locale: settings.selectedLocale.rawValue)
+                    await self.speechRecognizer.startTranscribing()
+                }
             }, label: {
                 Text("Start")
                     .padding(24)
@@ -122,6 +128,6 @@ struct ContentView: View {
     container.mainContext.insert(AudioRecord.sampleData[0])
     return ContentView()
         .modelContainer(container)
-    //    TranscriptView(errorWrapper: .constant(.emptyError))
-    //        .modelContainer(for: [AudioRecord.self, AppSettings.self], inMemory: true)
+        .environmentObject(UserManager.shared)
+        .environmentObject(SpeechRecognizer())
 }

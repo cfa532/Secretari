@@ -12,6 +12,7 @@ struct DetailView: View {
     @Environment(\.scenePhase) var scenePhase
     @Environment(\.modelContext) private var modelContext
     @Environment(\.dismiss) var dismiss
+    @EnvironmentObject private var speechRecognizer: SpeechRecognizer
     
     @Binding var isRecording: Bool
     @State var record: AudioRecord
@@ -21,7 +22,6 @@ struct DetailView: View {
     @State private var showRedoAlert = false  // for Redo confirm dialog
     
     @StateObject private var websocket = Websocket.shared
-    @StateObject private var speechRecognizer = SpeechRecognizer()
     @StateObject private var recorderTimer = RecorderTimer()
     
     var body: some View {
@@ -41,7 +41,7 @@ struct DetailView: View {
                                 speechRecognizer.stopTranscribing()
                                 Task {
                                     await self.speechRecognizer.setup(locale: settings.selectedLocale.rawValue)
-                                    speechRecognizer.startTranscribing()
+                                    await self.speechRecognizer.startTranscribing()
                                 }
                             }
                         }
@@ -61,37 +61,16 @@ struct DetailView: View {
                     print("Start timer. Audio db=\(String(describing: self.settings.audioSilentDB))")
                     
                     recorderTimer.delegate = self   // register with recordTimer. It calls delegate when timer stops.
-                    
-                    recorderTimer.startTimer()
-                    {
+                    recorderTimer.startTimer() {
                         // body of isSilent(), updated by frequency per 10s
                         print("audio level=", SpeechRecognizer.currentLevel)
-                        self.record.transcript = speechRecognizer.transcript     // SwiftData of record updated periodically.
+                        // SwiftData of record updated periodically.
+                        self.record.transcript = speechRecognizer.transcript
                         return SpeechRecognizer.currentLevel < Float(self.settings.audioSilentDB)! ? true : false
                     }
-                    Task {
-                        await self.speechRecognizer.setup(locale: settings.selectedLocale.rawValue)
-                        speechRecognizer.startTranscribing()
-                    }
                 })
-                //                Spacer()
                 RecorderButton(isRecording: $isRecording) {
-                    if self.isRecording {
-                        //                        print("Start timer. Audio db=\(self.settings[0].audioSilentDB)")
-                        //                        self.record = AudioRecord()
-                        //                        recorderTimer.delegate = self
-                        //                        recorderTimer.startTimer()
-                        //                        {
-                        //                            // body of isSilent(), updated by frequency per 10s
-                        //                            print("audio level=", SpeechRecognizer.currentLevel)
-                        //                            self.curRecord?.transcript = speechRecognizer.transcript     // SwiftData of record updated periodically.
-                        //                            return SpeechRecognizer.currentLevel < Float(self.settings[0].audioSilentDB)! ? true : false
-                        //                        }
-                        //                        Task {
-                        //                            await self.speechRecognizer.setup(locale: settings[0].selectedLocale.rawValue)
-                        //                            speechRecognizer.startTranscribing()
-                        //                        }
-                    } else {
+                    if !self.isRecording {
                         speechRecognizer.stopTranscribing()
                         recorderTimer.stopTimer()
                     }
@@ -298,5 +277,6 @@ extension DetailView: TimerDelegate {
 
 #Preview {
     DetailView(isRecording: .constant(true), record: AudioRecord.sampleData[0])
+        .environmentObject(SpeechRecognizer())
 }
 

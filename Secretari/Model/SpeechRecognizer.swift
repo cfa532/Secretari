@@ -65,9 +65,9 @@ actor SpeechRecognizer: ObservableObject {
         }
     }
     
-    @MainActor func startTranscribing() {
+    func startTranscribing() {
         Task {
-            await transcribe()
+            transcribe()
         }
     }
     
