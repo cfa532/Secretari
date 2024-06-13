@@ -28,8 +28,13 @@ final class AudioRecord {
     
     func resultFromAI(promptType: Settings.PromptType, summary: String) {
         if promptType == .summary {
-            self.summary[self.locale] = summary
+            if let s = self.summary[self.locale] {
+                self.summary[self.locale] = s + summary
+            } else {
+                self.summary[self.locale] = summary
+            }
         } else {
+            // memo type
             do {
                 let jsonString = try Utility.getAIJson(aiJson: summary)
                 guard let data = jsonString.data(using: .utf8) else {
@@ -43,10 +48,11 @@ final class AudioRecord {
                             if let i = self.memo.firstIndex(where: { $0.id == id }) {
                                 //  print("ID: \(t?.id), Title: \(t?.title), isChecked: \(t?.isChecked)")
                                 // update the language of current record's tilte, actually its content.
+                                // this part is merging translated content with the original one.
                                 self.memo[i].title[self.locale] = title
                             } else {
                                 // happens only when creating check list memo record type. Won't happen during translation.
-                                self.memo.append(AudioRecord.MemoJsonData(id: id, title: [self.locale :title], isChecked: isChecked))
+                                self.memo.append(AudioRecord.MemoJsonData(id: self.memo.count+1, title: [self.locale :title], isChecked: isChecked))
                             }
                         }
                     }

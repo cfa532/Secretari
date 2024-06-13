@@ -29,7 +29,6 @@ struct DetailView: View {
     var body: some View {
         NavigationStack {
             if self.isRecording {
-                
                 ScrollView {
                     ScrollViewReader { proxy in
                         VStack {
@@ -42,7 +41,7 @@ struct DetailView: View {
                                 .padding(.leading, 20)
                                 .padding(.bottom, 5)
                                 .frame(maxWidth: .infinity, alignment: .leading) // Aligns the content to the rightmost side
-//                                Label("Recognizing", systemImage: "ear.badge.waveform")
+                                
                                 Picker("Language:", selection: $settings.selectedLocale) {
                                     ForEach(RecognizerLocale.allCases, id: \.self) { option in
                                         Text(String(describing: option))
@@ -57,7 +56,6 @@ struct DetailView: View {
                                     }
                                 }
                             }
-//                            .frame(maxWidth: .infinity)
                             .padding()
                             
                             LazyVStack {
@@ -98,7 +96,6 @@ struct DetailView: View {
                 ScrollView {
                     ScrollViewReader { proxy in
                         VStack(alignment: .leading) {
-//                            Label(NSLocalizedString("Streaming from AI...", comment: ""), systemImage: "brain.head.profile.fill")
                             Label {
                                 DotAnimationView(title: "Streaming from AI ")
                             } icon: {
@@ -107,7 +104,7 @@ struct DetailView: View {
                             .padding(.leading, 20)
                             .padding(.bottom, 5)
                             .frame(maxWidth: .infinity, alignment: .leading) // Aligns the content to the rightmost side
-
+                            
                             let message = websocket.streamedText.suffix(suffixLength)
                             Text(message)
                                 .id(message)
@@ -203,16 +200,9 @@ struct DetailView: View {
                         Task { @MainActor in
                             // get updated settings
                             self.settings = SettingsManager.shared.getSettings()
-                            if let t=settings.llmParams["promptLength"], let segmentLen = Int(t) {
-                                let segments = segmentText(record.transcript, segmentLength: segmentLen)
-                                print(segments.count)
-                                segments.forEach { transcript in
-                                    websocket.sendToAI(record.transcript, prompt: "") { result in
-                                        
-                                        record.locale = settings.selectedLocale      // update current locale of the record
-                                        record.resultFromAI(promptType: settings.promptType, summary: result)
-                                    }
-                                }
+                            websocket.sendToAI(record.transcript, prompt: "") { result in
+                                record.locale = settings.selectedLocale       // update current locale of the record
+                                record.resultFromAI(promptType: settings.promptType, summary: result)
                             }
                         }
                     }))
@@ -274,14 +264,9 @@ extension DetailView: TimerDelegate {
             modelContext.insert(record)
             speechRecognizer.transcript = ""
             self.settings = SettingsManager.shared.getSettings()
-            if let t=settings.llmParams["promptLength"], let segmentLen = Int(t) {
-                let segments = segmentText(record.transcript, segmentLength: segmentLen)
-                segments.forEach { transcript in
-                    websocket.sendToAI(transcript, prompt: "") { result in
-                        record.locale = settings.selectedLocale
-                        record.resultFromAI(promptType: settings.promptType, summary: result)
-                    }
-                }
+            websocket.sendToAI(record.transcript, prompt: "") { result in
+                record.locale = settings.selectedLocale
+                record.resultFromAI(promptType: settings.promptType, summary: result)
             }
         }
     }
