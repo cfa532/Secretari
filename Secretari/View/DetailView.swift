@@ -29,31 +29,35 @@ struct DetailView: View {
             if self.isRecording {
                 ScrollView {
                     ScrollViewReader { proxy in
-                        HStack {
-                            Label("Recognizing", systemImage: "ear.badge.waveform")
-                            Picker("Language:", selection: $settings.selectedLocale) {
-                                ForEach(RecognizerLocale.allCases, id:\.self) { option in
-                                    Text(String(describing: option))
+                        VStack {
+                            HStack {
+                                Label("Recognizing", systemImage: "ear.badge.waveform")
+                                Picker("Language:", selection: $settings.selectedLocale) {
+                                    ForEach(RecognizerLocale.allCases, id: \.self) { option in
+                                        Text(String(describing: option))
+                                    }
+                                }
+                                .onChange(of: settings.selectedLocale) {
+                                    SettingsManager.shared.updateSettings(settings)
+                                    speechRecognizer.stopTranscribing()
+                                    Task {
+                                        await self.speechRecognizer.setup(locale: settings.selectedLocale.rawValue)
+                                        await self.speechRecognizer.startTranscribing()
+                                    }
                                 }
                             }
-                            .onChange(of: settings.selectedLocale) {
-                                SettingsManager.shared.updateSettings(settings)
-                                speechRecognizer.stopTranscribing()
-                                Task {
-                                    await self.speechRecognizer.setup(locale: settings.selectedLocale.rawValue)
-                                    await self.speechRecognizer.startTranscribing()
+                            .frame(maxWidth: .infinity)
+                            
+                            LazyVStack {
+                                ForEach(speechRecognizer.transcript.split(separator: "\n"), id: \.self) { message in
+                                    Text(message)
+                                        .id(message)
                                 }
+                            }
+                            .onChange(of: speechRecognizer.transcript) { oldValue, newValue in
+                                proxy.scrollTo(newValue.split(separator: "\n").last, anchor: .bottom)
                             }
                         }
-                        .frame(maxWidth: .infinity)
-                        
-                        let message = speechRecognizer.transcript
-                        Text(message)
-                            .id(message)
-                            .onChange(of: message, {
-                                proxy.scrollTo(message, anchor: .bottom)
-                            })
-                            .frame(alignment: .topLeading)
                     }
                 }
                 .padding()
