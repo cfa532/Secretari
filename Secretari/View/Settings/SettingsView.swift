@@ -119,7 +119,6 @@ struct SettingsView: View {
                 settings.audioSilentDB = AppConstants.defaultSettings.audioSilentDB
                 settings.serverURL = AppConstants.defaultSettings.serverURL
                 settings.promptType = AppConstants.defaultSettings.promptType
-                settings.llmModel = AppConstants.defaultSettings.llmModel
                 settings.llmParams = AppConstants.defaultSettings.llmParams
             }))}
         )

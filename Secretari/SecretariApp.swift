@@ -57,6 +57,10 @@ struct SecretariApp: App {
                     } else {
                         print("This is not the first run after an update")
                     }
+
+                    // check the subscription status of the user on server. Async mode.
+                    await subscriptionsManager.updatePurchasedProducts()
+                    subscriptionsManager.loadDefaultsFromServer()       // preload products. Hope it show up faster.
                 }
                 .alert("Error", isPresented: $userManager.showAlert, presenting: userManager.alertItem) { _ in
                 } message: { alertItem in
@@ -65,11 +69,6 @@ struct SecretariApp: App {
                 .environmentObject(userManager)
                 .environmentObject(entitlementManager)
                 .environmentObject(subscriptionsManager)
-                .task {
-                    // check the subscription status of the user on server. Async mode.
-                    await subscriptionsManager.updatePurchasedProducts()
-                    subscriptionsManager.loadProducts()       // preload products. Hope it show up faster.
-                }
 
         }
         .modelContainer(sharedModelContainer)
@@ -78,7 +77,7 @@ struct SecretariApp: App {
             if newPhase == .background {
                 // add notification to center
                 let content = UNMutableNotificationContent()
-                content.title = "SecretAi listening"
+                content.title = "Secretari"
                 content.body = "Background speech recognization in progress."
                 content.sound = UNNotificationSound.default
                 

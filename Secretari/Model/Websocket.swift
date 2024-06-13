@@ -27,16 +27,16 @@ class Websocket: NSObject, ObservableObject, URLSessionWebSocketDelegate, Observ
         wsURL = URLComponents()
         super.init()
         self.urlSession = URLSession(configuration: .default, delegate: self, delegateQueue: OperationQueue())
-//        webURL.scheme = "https"
-//        webURL.host = "leither.uk"
-//        wsURL.scheme = "wss"
-//        wsURL.host = "leither.uk"
-        webURL.scheme = "http"
-        webURL.host = "localhost"
-        wsURL.scheme = "ws"
-        wsURL.host = "localhost"
-        webURL.port = 8000
-        wsURL.port = 8000
+        webURL.scheme = "https"
+        webURL.host = "leither.uk"
+        wsURL.scheme = "wss"
+        wsURL.host = "leither.uk"
+//        webURL.scheme = "http"
+//        webURL.host = "localhost"
+//        wsURL.scheme = "ws"
+//        wsURL.host = "localhost"
+//        webURL.port = 8000
+//        wsURL.port = 8000
     }
     
     nonisolated func urlSession(_ session: URLSession, webSocketTask: URLSessionWebSocketTask, didOpenWithProtocol protocol: String?) {
@@ -137,30 +137,24 @@ class Websocket: NSObject, ObservableObject, URLSessionWebSocketDelegate, Observ
     // Might need to temporarily revise settings' value.
     @MainActor func sendToAI(_ rawText: String, prompt: String, action: @escaping (_ summary: String)->Void) {
         if let user = UserManager.shared.currentUser {
-            var settings = SettingsManager.shared.getSettings()
-
             // logic here to distinguish between subscribers and others.
             // non-subscribers use gpt-3.5, if there is still balance. Not memo prompt
+            var promptType = settings.promptType
             if user.dollar_balance <= 0.1, !EntitlementManager.isSubscriber {
-                // non-subscriber, without enough balance of GPT-4, try GPT-3
-                settings.llmModel = LLMModel.GPT_3
-//                settings.promptType = .summary       // need further test
+                promptType = .summary       // need further test
             }
             
-            if let llmParams = settings.llmParams[settings.llmModel], let sprompt = settings.prompt[settings.promptType] {
-                Utility.printDict(obj: llmParams)
+            if let sprompt = settings.prompt[promptType] {
                 let msg = [
                     "input": [
-                        "prompt": prompt=="" ? sprompt[settings.selectedLocale] as Any : prompt,
-                        "rawtext": rawText,
+                        "prompt": prompt=="" ? sprompt[settings.selectedLocale] as Any : prompt,    // use defualt prompt if not provided as parameter
+                        "rawtext": "A China-registered account is a WeChat account that was originally registered to a mainland Chinese phone number. A non-China-registered account is any WeChat account that was not originally registered to a mainland Chinese phone number (for example an account registered to a Canadian or United States phone number). China-registered accounts are under terms of service in the jurisdiction of China (specifically Shenzhen) and are subject to censorship. Censorship persists for China-registered accounts even if the account is later associated with a phone number outside of China. Non-China-registered accounts are under terms of service outside the jurisdiction of China (specifically Singapore). While in previous research non-China-registered accounts had not been found to be under political censorship, our latest study reveals that documents and images sent from these accounts are nevertheless under political surveillance and that this content is used to invisibly build up WeChat’s censorship system for China-registered accounts. Someone asked us if non-China-registered users were safe from political surveillance using WeChat as long as they weren’t talking to China-registered users. Since we knew that messages between such users were free from political censorship, we responded that “we think they are free from surveillance too.” But then we got to thinking: how can we actually measure this? Surveillance rarely occurs in a vacuum, and can be used to enable future censorship. We knew from previous work how the surveillance of images and documents is used to employ censorship in an automated fashion on WeChat. The tricky part was that non-China-registered users were not under censorship, and so to test for whether they were under surveillance we had to use two different chat conversations: a first conversation between only non-China-registered accounts for triggering surveillance and a second conversation containing a China-registered account to measure changes in censorship. When we sent politically sensitive content in the first conversation, we observed an increase in censorship in the second, revealing that the first conversation was under surveillance despite being among only non-China-registered accounts.Think of it as a digital fingerprint. When files are run through the MD5 algorithm, the algorithm will generate a fingerprint, or “hash.” The hash is a short, fixed-size string of bits. In theory, it should be difficult to find or create files that will produce the same hash. However, there are vulnerabilities in the MD5 algorithm that make this reproduction easy, and we can exploit these vulnerabilities in our research. By creating two different images with the same hash — one politically sensitive and one benign — we can study how WeChat’s surveillance system works. When we send politically sensitive images between accounts registered outside China, politically benign images with the same hash are censored when sent between Chinese accounts. These benign images would not have usually been flagged as sensitive, proving that surveillance is happening in conversations between accounts registered outside China.",
                         "subscription": EntitlementManager.isSubscriber,
                         "balance": user.dollar_balance
                     ],
                     "parameters": [
-                        "llm": llmParams["llm"],
-                        "temperature": llmParams["temperature"],
-                        "client":"mobile",
-                        "model": settings.llmModel.rawValue
+                        "llm": settings.llmParams["llm"] as Any,
+                        "temperature": settings.llmParams["temperature"] as Any,
                     ]] as [String : Any]
                 
                 // Convert String to Data

@@ -57,28 +57,29 @@ class SubscriptionsManager: NSObject, ObservableObject {
 
 // MARK: StoreKit2 API
 extension SubscriptionsManager {
-    func loadProducts() {
+    func loadDefaultsFromServer() {
         websocket.getProductIDs { dict, statusCode in
             guard let dict = dict, let code=statusCode, code < .failure else {
                 print("Failed to get product IDs.", dict as Any)
                 // No network connection. Cannot purchase neither.
                 return
             }
+            // "productIDs":{"890842":8.99,"Yearly.bunny0":89.99,"monthly.bunny0":8.99}
             if let dict = dict["ver0"] as? [String: Any] {
                 if let ids = dict["productIDs"] as? [String: Double] {
                     self.productIDs = ids.keys.map{ $0 as String }
                     print("productIDs", self.productIDs)
                     Task { @MainActor in
                         self.products = try await Product.products(for: self.productIDs)
-                            .sorted(by: { $0.price > $1.price })
+                            .sorted(by: { $0.id > $1.id })
                     }
                 }
-                if let llmModel = dict["llmModel"] as? String {
-                    print("LLModel", llmModel)
+                if let len = dict["promptLength"] as? String {
+                    // update default settings
                     let sm = SettingsManager.shared
-                    var setting = sm.getSettings()
-                    setting.llmModel = LLMModel(rawValue: llmModel) ?? AppConstants.PrimaryModel
-                    sm.updateSettings(setting)
+                    var s = sm.getSettings()
+                    s.llmParams["promptLength"] = len
+                    sm.updateSettings(s)
                 }
             }
         }

@@ -48,11 +48,11 @@ struct Settings :Codable {
     var audioSilentDB: String
     var selectedLocale: RecognizerLocale
     var promptType: PromptType       // Two type: Summary and Memo. Memo is a list of bulletins.
-    var llmModel: LLMModel
-    var llmParams: [LLMModel :Dictionary<String, String>]  // dict that match llm model with respective parameters, which is also a dict.
+//    var llmModel: LLMModel
+    var llmParams: [String: String]  // llm parameters
     
     enum CodingKeys: String, CodingKey {
-        case prompt, serverURL, audioSilentDB, selectedLocale, promptType, llmModel, llmParams
+        case prompt, serverURL, audioSilentDB, selectedLocale, promptType, llmParams
     }
    
     enum PromptType: String, CaseIterable, Codable {
@@ -80,7 +80,6 @@ enum RecognizerLocale: String, CaseIterable, Codable {
     // fr, sp,
     var id: Self { self }
 }
-
 enum LLM: String, Codable, CaseIterable {
     case OpenAI = "openai"
     case Gemini = "gemini"
@@ -107,15 +106,13 @@ final class AppConstants {
                                           audioSilentDB: "-40",
                                           selectedLocale: Utility.systemLanguage(),
                                           promptType: Settings.PromptType.memo,
-                                          llmModel: LLMModel.GPT_4o,
-                                          llmParams: [LLMModel.GPT_4o: ["llm":"openai", "temperature":"0.0"],
-                                                      LLMModel.GPT_3: ["llm":"openai", "temperature":"0.0"]]
+                                          llmParams: ["llm":"openai", "temperature":"0.0", "promptLength": "6144"]
     )
     
     static let defaultPrompt = [
         Settings.PromptType.summary: [
             RecognizerLocale.English: "You are a smart assistant. Extract the important content from the following text and make a comprehensive summary. Segment appropriately and correct obvious errors. ",
-            RecognizerLocale.中文: "你是個智能秘書。 提取下述文字中的重要內容，做一份全面的摘要。适当分段，并改正明显错误。",
+            RecognizerLocale.中文: "你是個智能秘書。 提取下述文字中的重要內容，做一份全面的摘要。并适当分段。",
             RecognizerLocale.日本語: "あなたは賢い秘書ですね。 次のテキストから重要な内容を抽出し、包括的な要約を作成します。 適切に分割し、明らかなエラーを修正します。 ",
             RecognizerLocale.Español: "Eres una secretaria inteligente. Extraiga el contenido importante del siguiente texto y haga un resumen completo. Segmente adecuadamente y corrija errores obvios. ",
             RecognizerLocale.Indonesia: "Anda adalah sekretaris yang cerdas. Ekstrak konten penting dari teks berikut dan buatlah ringkasan yang komprehensif. Segmentasikan dengan tepat dan perbaiki kesalahan yang jelas terlihat. ",

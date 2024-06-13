@@ -36,8 +36,7 @@ struct PurchaseView: View {
                 // print("buy", product, result)
                 await subscriptionsManager.buyProduct(product, result: result)
             }
-
-            .productViewStyle(.compact)
+            .productViewStyle(.regular)
             .storeButton(.visible, for: .restorePurchases)
             .storeButton(.hidden, for: .cancellation)       // hide the top right close button
         }

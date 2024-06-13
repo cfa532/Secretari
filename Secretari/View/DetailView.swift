@@ -195,10 +195,15 @@ struct DetailView: View {
                 .alert(isPresented: $showRedoAlert, content: {
                     Alert(title: Text("Alert"), message: Text("Regenerate summary from transcript. Existing content will be overwritten."), primaryButton: .cancel(), secondaryButton: .destructive(Text("Yes"), action: {
                         Task { @MainActor in
-                            websocket.sendToAI(record.transcript, prompt: "") { result in
-                                
-                                record.locale = settings.selectedLocale      // update current locale of the record
-                                record.resultFromAI(promptType: settings.promptType, summary: result)
+                            if let t=settings.llmParams["promptLength"], let segmentLen = Int(t) {
+                                let segments = segmentText(record.transcript, segmentLength: segmentLen, overlapLength: 50)
+                                segments.forEach { transcript in
+                                    websocket.sendToAI(record.transcript, prompt: "") { result in
+                                        
+                                        record.locale = settings.selectedLocale      // update current locale of the record
+                                        record.resultFromAI(promptType: settings.promptType, summary: result)
+                                    }
+                                }
                             }
                         }
                     }))
@@ -256,14 +261,35 @@ extension DetailView: TimerDelegate {
             dismiss();      // go back to parent view
             return }
         Task { @MainActor in
-            record.transcript = speechRecognizer.transcript + NSLocalizedString(".", comment: "")
+            record.transcript = speechRecognizer.transcript
             modelContext.insert(record)
             speechRecognizer.transcript = ""
-            websocket.sendToAI(record.transcript, prompt: "") { result in
-                record.locale = settings.selectedLocale
-                record.resultFromAI(promptType: settings.promptType, summary: result)
+            if let t=settings.llmParams["promptLength"], let segmentLen = Int(t) {
+                let segments = segmentText(record.transcript, segmentLength: segmentLen, overlapLength: 50)
+                segments.forEach { transcript in
+                    websocket.sendToAI(transcript, prompt: "") { result in
+                        record.locale = settings.selectedLocale
+                        record.resultFromAI(promptType: settings.promptType, summary: result)
+                    }
+                }
             }
         }
+    }
+    
+    func segmentText(_ text: String, segmentLength: Int, overlapLength: Int = 50) -> [String] {
+        var segments: [String] = []
+        let textLength = text.count
+        var startIndex = text.startIndex
+        
+        while startIndex < text.endIndex {
+            let endIndex = text.index(startIndex, offsetBy: segmentLength, limitedBy: text.endIndex) ?? text.endIndex
+            let segment = String(text[startIndex..<endIndex])
+            segments.append(segment)
+            
+            // Move the start index forward by segmentLength - overlapLength
+            startIndex = text.index(startIndex, offsetBy: segmentLength - overlapLength, limitedBy: text.endIndex) ?? text.endIndex
+        }
+        return segments
     }
 }
 
