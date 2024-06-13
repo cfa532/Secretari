@@ -24,14 +24,25 @@ struct DetailView: View {
     @StateObject private var websocket = Websocket.shared
     @StateObject private var recorderTimer = RecorderTimer()
     
+    private let suffixLength = 600
+    
     var body: some View {
         NavigationStack {
             if self.isRecording {
+                
                 ScrollView {
                     ScrollViewReader { proxy in
                         VStack {
                             HStack {
-                                Label("Recognizing", systemImage: "ear.badge.waveform")
+                                Label {
+                                    DotAnimationView(title: "Recognizing")
+                                } icon: {
+                                    Image(systemName: "ear.badge.waveform")
+                                }
+                                .padding(.leading, 20)
+                                .padding(.bottom, 5)
+                                .frame(maxWidth: .infinity, alignment: .leading) // Aligns the content to the rightmost side
+//                                Label("Recognizing", systemImage: "ear.badge.waveform")
                                 Picker("Language:", selection: $settings.selectedLocale) {
                                     ForEach(RecognizerLocale.allCases, id: \.self) { option in
                                         Text(String(describing: option))
@@ -46,15 +57,16 @@ struct DetailView: View {
                                     }
                                 }
                             }
-                            .frame(maxWidth: .infinity)
+//                            .frame(maxWidth: .infinity)
+                            .padding()
                             
                             LazyVStack {
-                                ForEach(speechRecognizer.transcript.split(separator: "\n"), id: \.self) { message in
+                                ForEach(speechRecognizer.transcript.suffix(suffixLength).split(separator: "\n"), id: \.self) { message in
                                     Text(message)
                                         .id(message)
                                 }
                             }
-                            .onChange(of: speechRecognizer.transcript) { oldValue, newValue in
+                            .onChange(of: speechRecognizer.transcript.suffix(suffixLength)) { oldValue, newValue in
                                 proxy.scrollTo(newValue.split(separator: "\n").last, anchor: .bottom)
                             }
                         }
@@ -85,13 +97,24 @@ struct DetailView: View {
             } else if websocket.isStreaming {
                 ScrollView {
                     ScrollViewReader { proxy in
-                        Label(NSLocalizedString("Streaming from AI...", comment: ""), systemImage: "brain.head.profile.fill")
-                        let message = websocket.streamedText
-                        Text(message)
-                            .id(message)
-                            .onChange(of: message, {
-                                proxy.scrollTo(message, anchor: .bottom)
-                            })
+                        VStack(alignment: .leading) {
+//                            Label(NSLocalizedString("Streaming from AI...", comment: ""), systemImage: "brain.head.profile.fill")
+                            Label {
+                                DotAnimationView(title: "Streaming from AI ")
+                            } icon: {
+                                Image(systemName: "brain.head.profile.fill")
+                            }
+                            .padding(.leading, 20)
+                            .padding(.bottom, 5)
+                            .frame(maxWidth: .infinity, alignment: .leading) // Aligns the content to the rightmost side
+
+                            let message = websocket.streamedText.suffix(suffixLength)
+                            Text(message)
+                                .id(message)
+                                .onChange(of: message, {
+                                    proxy.scrollTo(message, anchor: .bottom)
+                                })
+                        }
                     }
                 }
                 .padding()
