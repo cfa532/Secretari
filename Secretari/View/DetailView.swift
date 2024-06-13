@@ -19,11 +19,11 @@ struct DetailView: View {
     @State private var settings = SettingsManager.shared.getSettings()
     @State private var showShareSheet = false
     @State private var showRedoAlert = false  // for Redo confirm dialog
-
+    
     @StateObject private var websocket = Websocket.shared
     @StateObject private var speechRecognizer = SpeechRecognizer()
     @StateObject private var recorderTimer = RecorderTimer()
-        
+    
     var body: some View {
         NavigationStack {
             if self.isRecording {
@@ -178,7 +178,7 @@ struct DetailView: View {
                     }
                     
                     NavigationLink(destination:
-                            DetailTranslationView(record: $record)
+                                    DetailTranslationView(record: $record)
                     ) {
                         Label("Translation", systemImage: "textformat.abc.dottedunderline")
                     }
@@ -195,8 +195,11 @@ struct DetailView: View {
                 .alert(isPresented: $showRedoAlert, content: {
                     Alert(title: Text("Alert"), message: Text("Regenerate summary from transcript. Existing content will be overwritten."), primaryButton: .cancel(), secondaryButton: .destructive(Text("Yes"), action: {
                         Task { @MainActor in
+                            // get updated settings
+                            self.settings = SettingsManager.shared.getSettings()
                             if let t=settings.llmParams["promptLength"], let segmentLen = Int(t) {
-                                let segments = segmentText(record.transcript, segmentLength: segmentLen, overlapLength: 50)
+                                let segments = segmentText(record.transcript, segmentLength: segmentLen)
+                                print(segments.count)
                                 segments.forEach { transcript in
                                     websocket.sendToAI(record.transcript, prompt: "") { result in
                                         
@@ -264,8 +267,9 @@ extension DetailView: TimerDelegate {
             record.transcript = speechRecognizer.transcript
             modelContext.insert(record)
             speechRecognizer.transcript = ""
+            self.settings = SettingsManager.shared.getSettings()
             if let t=settings.llmParams["promptLength"], let segmentLen = Int(t) {
-                let segments = segmentText(record.transcript, segmentLength: segmentLen, overlapLength: 50)
+                let segments = segmentText(record.transcript, segmentLength: segmentLen)
                 segments.forEach { transcript in
                     websocket.sendToAI(transcript, prompt: "") { result in
                         record.locale = settings.selectedLocale
@@ -278,7 +282,6 @@ extension DetailView: TimerDelegate {
     
     func segmentText(_ text: String, segmentLength: Int, overlapLength: Int = 50) -> [String] {
         var segments: [String] = []
-        let textLength = text.count
         var startIndex = text.startIndex
         
         while startIndex < text.endIndex {
@@ -296,4 +299,4 @@ extension DetailView: TimerDelegate {
 #Preview {
     DetailView(isRecording: .constant(true), record: AudioRecord.sampleData[0])
 }
- 
+

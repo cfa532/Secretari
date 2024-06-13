@@ -106,13 +106,13 @@ final class AppConstants {
                                           audioSilentDB: "-40",
                                           selectedLocale: Utility.systemLanguage(),
                                           promptType: Settings.PromptType.memo,
-                                          llmParams: ["llm":"openai", "temperature":"0.0", "promptLength": "6144"]
+                                          llmParams: ["llm":"openai", "temperature":"0.0", "promptLength": "4096"]
     )
     
     static let defaultPrompt = [
         Settings.PromptType.summary: [
             RecognizerLocale.English: "You are a smart assistant. Extract the important content from the following text and make a comprehensive summary. Segment appropriately and correct obvious errors. ",
-            RecognizerLocale.中文: "你是個智能秘書。 提取下述文字中的重要內容，做一份全面的摘要。并适当分段。",
+            RecognizerLocale.中文: "你是個智能秘書。 提取下述文字中的重要內容，做一份全面的摘要。并适当分段。输出格式用纯文本。",
             RecognizerLocale.日本語: "あなたは賢い秘書ですね。 次のテキストから重要な内容を抽出し、包括的な要約を作成します。 適切に分割し、明らかなエラーを修正します。 ",
             RecognizerLocale.Español: "Eres una secretaria inteligente. Extraiga el contenido importante del siguiente texto y haga un resumen completo. Segmente adecuadamente y corrija errores obvios. ",
             RecognizerLocale.Indonesia: "Anda adalah sekretaris yang cerdas. Ekstrak konten penting dari teks berikut dan buatlah ringkasan yang komprehensif. Segmentasikan dengan tepat dan perbaiki kesalahan yang jelas terlihat. ",

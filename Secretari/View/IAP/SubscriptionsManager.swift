@@ -74,11 +74,12 @@ extension SubscriptionsManager {
                             .sorted(by: { $0.id > $1.id })
                     }
                 }
-                if let len = dict["promptLength"] as? String {
+                if let len = dict["promptLength"] {
                     // update default settings
+                    print("prompt len=", len)
                     let sm = SettingsManager.shared
                     var s = sm.getSettings()
-                    s.llmParams["promptLength"] = len
+                    s.llmParams["promptLength"] = String(describing: len)
                     sm.updateSettings(s)
                 }
             }
