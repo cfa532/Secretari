@@ -26,12 +26,13 @@ final class AudioRecord {
         self.memo = [MemoJsonData]()
     }
     
-    func resultFromAI(promptType: Settings.PromptType, summary: String) {
-        if promptType == .summary {
+    func resultFromAI(taskType: TaskType, summary: String) {
+        let settings = SettingsManager.shared.getSettings()
+        if settings.promptType == .summary {
             if let s = self.summary[self.locale] {
-                self.summary[self.locale] = s + summary
+                self.summary[self.locale] = s + summary + "\n"
             } else {
-                self.summary[self.locale] = summary
+                self.summary[self.locale] = summary + "\n"
             }
         } else {
             // memo type
@@ -44,15 +45,19 @@ final class AudioRecord {
                 // Decode the data into an array of dictionaries
                 if let jsonArray = try JSONSerialization.jsonObject(with: data, options: []) as? [[String: Any]] {
                     for item in jsonArray {
-                        if let id = item["id"] as? Int, let title = item["title"] as? String, let isChecked = item["isChecked"] as? Bool {
-                            if let i = self.memo.firstIndex(where: { $0.id == id }) {
-                                //  print("ID: \(t?.id), Title: \(t?.title), isChecked: \(t?.isChecked)")
-                                // update the language of current record's tilte, actually its content.
-                                // this part is merging translated content with the original one.
-                                self.memo[i].title[self.locale] = title
-                            } else {
+                        if taskType == .summarize {
+                            if let title = item["title"] as? String {
                                 // happens only when creating check list memo record type. Won't happen during translation.
-                                self.memo.append(AudioRecord.MemoJsonData(id: self.memo.count+1, title: [self.locale :title], isChecked: isChecked))
+                                self.memo.append(AudioRecord.MemoJsonData(id: self.memo.count+1, title: [self.locale :title], isChecked: false))
+                            }
+                        } else {
+                            if let id = item["id"] as? Int, let title = item["title"] as? String {
+                                if let i = self.memo.firstIndex(where: { $0.id == id }) {
+                                    //  print("ID: \(t?.id), Title: \(t?.title), isChecked: \(t?.isChecked)")
+                                    // update the language of current record's tilte, actually its content.
+                                    // this part is merging translated content with the original one.
+                                    self.memo[i].title[self.locale] = title
+                                }
                             }
                         }
                     }
@@ -63,6 +68,10 @@ final class AudioRecord {
                 print("Error parsing JSON: \(error)")
             }
         }
+    }
+    
+    enum TaskType {
+        case translate, summarize
     }
 }
 

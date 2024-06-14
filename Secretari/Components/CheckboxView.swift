@@ -14,6 +14,10 @@ struct CheckboxView: View {
     var body: some View {
         HStack {
             Image(systemName: isChecked ? "checkmark.square" : "square")
+//                .resizable()
+                .frame(width: 16, height: 16)
+                .padding(4)
+                .contentShape(Rectangle())
                 .onTapGesture {
                     self.isChecked.toggle()
                 }

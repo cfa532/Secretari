@@ -126,7 +126,7 @@ struct DetailTranslationView: View {
 //                        let r = results.map{ nsString.substring(with: $0.range(at: 1)) }
                         
                         record.locale = locale
-                        record.resultFromAI(promptType: settings.promptType, summary: try Utility.getAIJson(aiJson: result))
+                        record.resultFromAI(taskType: .translate, summary: try Utility.getAIJson(aiJson: result))
                         try? modelContext.save()
                         Task {
                             dismiss()

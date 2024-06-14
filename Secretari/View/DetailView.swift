@@ -200,9 +200,15 @@ struct DetailView: View {
                         Task { @MainActor in
                             // get updated settings
                             self.settings = SettingsManager.shared.getSettings()
+                            // clear old summary,
+                            if settings.promptType == .memo {
+                                record.memo.removeAll()
+                            } else {
+                                record.summary.removeAll()
+                            }
                             websocket.sendToAI(record.transcript, prompt: "") { result in
                                 record.locale = settings.selectedLocale       // update current locale of the record
-                                record.resultFromAI(promptType: settings.promptType, summary: result)
+                                record.resultFromAI(taskType: .summarize, summary: result)
                             }
                         }
                     }))
@@ -266,7 +272,7 @@ extension DetailView: TimerDelegate {
             self.settings = SettingsManager.shared.getSettings()
             websocket.sendToAI(record.transcript, prompt: "") { result in
                 record.locale = settings.selectedLocale
-                record.resultFromAI(promptType: settings.promptType, summary: result)
+                record.resultFromAI(taskType: .summarize, summary: result)
             }
         }
     }

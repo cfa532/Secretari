@@ -106,7 +106,7 @@ final class AppConstants {
                                           audioSilentDB: "-40",
                                           selectedLocale: Utility.systemLanguage(),
                                           promptType: Settings.PromptType.memo,
-                                          llmParams: ["llm":"openai", "temperature":"0.0", "promptLength": "4096"]
+                                          llmParams: ["llm":"openai", "temperature":"0.0"]
     )
     
     static let defaultPrompt = [
