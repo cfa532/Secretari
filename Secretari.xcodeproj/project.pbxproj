@@ -248,7 +248,6 @@
 			isa = PBXGroup;
 			children = (
 				4603DD0B2C0DABA0006CBAB4 /* IAP */,
-				461ADDA62BD2B6EB00C0DD94 /* DetailView.swift */,
 				4623C6F92C06C500006CB3D1 /* Settings */,
 				46FAC5FF2BDFC4AC0013B9B5 /* DetailViews */,
 				461ADD8A2BD2A40500C0DD94 /* ErrorView.swift */,
@@ -300,6 +299,7 @@
 				461ADD9E2BD2B63C00C0DD94 /* RecorderButton.swift */,
 				46FAC6172BEA2BEC0013B9B5 /* SummaryRowView.swift */,
 				46FAC6192BEB2DEF0013B9B5 /* LocalePicker.swift */,
+				469495B02C1B084B00F87E8C /* DotAnimationView.swift */,
 				46FAC6152BEA29410013B9B5 /* CheckboxView.swift */,
 				4623C6FA2C06C531006CB3D1 /* SettingsRowView.swift */,
 				4623C6F72C055828006CB3D1 /* InputView.swift */,
@@ -310,10 +310,10 @@
 		46FAC5FF2BDFC4AC0013B9B5 /* DetailViews */ = {
 			isa = PBXGroup;
 			children = (
+				461ADDA62BD2B6EB00C0DD94 /* DetailView.swift */,
 				46FAC6062BE146950013B9B5 /* DetailTranscriptView.swift */,
 				46FAC6082BE146A60013B9B5 /* DetailTranslationView.swift */,
 				46FAC6132BEA0CEC0013B9B5 /* DetailBulletinView.swift */,
-				469495B02C1B084B00F87E8C /* DotAnimationView.swift */,
 			);
 			path = DetailViews;
 			sourceTree = "<group>";
@@ -416,6 +416,7 @@
 				ja,
 				"zh-Hans",
 				"es-419",
+				ko,
 			);
 			mainGroup = 461ADD4E2BD2A0AC00C0DD94;
 			productRefGroup = 461ADD582BD2A0AC00C0DD94 /* Products */;

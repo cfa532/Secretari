@@ -7,20 +7,48 @@
     " " : {
 
     },
-    "." : {
-
-    },
     "*" : {
 
     },
     "1. Open the Settings app.\n2. Tap your name.\n3. Tap Subscriptions." : {
-
+      "localizations" : {
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "1. 開啟「設定」應用程式。\n2. 點擊您的名字。\n3. 點選訂閱。"
+          }
+        }
+      }
     },
     "1.0.0" : {
 
     },
+    "Account" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "賬戶"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "賬戶"
+          }
+        }
+      }
+    },
     "Account balance in USD:" : {
-
+      "localizations" : {
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "帳戶餘額(USD)："
+          }
+        }
+      }
     },
     "advanced" : {
       "localizations" : {
@@ -83,11 +111,24 @@
             "state" : "translated",
             "value" : "エラーが発生しました。"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "發生錯誤"
+          }
         }
       }
     },
     "Are you sure to logout?" : {
-
+      "localizations" : {
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "您確定要退出嗎？"
+          }
+        }
+      }
     },
     "Cancel" : {
 
@@ -109,33 +150,11 @@
       }
     },
     "Don't have an account?" : {
-
-    },
-    "Edit" : {
-      "extractionState" : "stale",
       "localizations" : {
-        "es-419" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Editar"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "編集"
-          }
-        },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "编辑"
-          }
-        },
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "編輯"
+            "value" : "沒有帳戶？"
           }
         }
       }
@@ -167,27 +186,33 @@
     },
     "First make sure to select the right language for recognition in setting ⚙️ Otherwise the built-in speech recognizer cannot work properly." : {
       "localizations" : {
-        "es-419" : {
+        "en" : {
           "stringUnit" : {
             "state" : "translated",
+            "value" : "Make sure to select the right recognizable language in setting ⚙️ Otherwise the built-in speech recognizer cannot work properly."
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "needs_review",
             "value" : "Primero asegúrese de seleccionar el idioma correcto para el reconocimiento en la configuración ⚙️ De lo contrario, el reconocedor de voz integrado no podrá funcionar correctamente."
           }
         },
         "ja" : {
           "stringUnit" : {
-            "state" : "translated",
+            "state" : "needs_review",
             "value" : "まず、設定 ⚙️ で認識に適切な言語を選択していることを確認してください。そうしないと、内蔵の音声認識機能が正しく動作しません。"
           }
         },
         "zh-Hans" : {
           "stringUnit" : {
-            "state" : "translated",
+            "state" : "needs_review",
             "value" : "首先请确保在设置⚙️中选择正确的可识别语言，否则内置语音识别器无法正常工作。"
           }
         },
         "zh-Hant" : {
           "stringUnit" : {
-            "state" : "translated",
+            "state" : "needs_review",
             "value" : "首先請確保在設定⚙️中選擇正確的可辨識語言，否則內建語音辨識器無法正常運作。"
           }
         }
@@ -203,10 +228,24 @@
 
     },
     "Have an account?" : {
-
+      "localizations" : {
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "有一個帳戶？"
+          }
+        }
+      }
     },
     "How to cancel" : {
-
+      "localizations" : {
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "如何取消"
+          }
+        }
+      }
     },
     "Indonesia" : {
       "localizations" : {
@@ -299,7 +338,20 @@
       }
     },
     "Invalid response from the server. Please try again later or contact support." : {
-
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "サーバーからの応答が無効です。しばらくしてからもう一度お試しいただくか、サポートにお問い合わせください。"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "來自伺服器的無效回應。請稍後重試或聯絡支援人員。"
+          }
+        }
+      }
     },
     "Language:" : {
       "localizations" : {
@@ -329,43 +381,24 @@
         }
       }
     },
+    "Login" : {
+
+    },
     "Login error" : {
 
     },
     "Memo Missing" : {
 
     },
-    "Min audiable dB" : {
-      "extractionState" : "stale",
+    "Min Audible (dB)" : {
       "localizations" : {
-        "es-419" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "dB audibles mínimos"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "min識別ボリューム"
-          }
-        },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "最低可识别音量"
-          }
-        },
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "最低可識別音量"
+            "value" : "最新可錄音量（dB）"
           }
         }
       }
-    },
-    "Min Audible (dB)" : {
-
     },
     "No memo to translate. Please generate the Memo content first using Summarize in ... menu." : {
       "localizations" : {
@@ -436,6 +469,12 @@
             "state" : "translated",
             "value" : "没有可翻译的summary。 请首先使用 ... 中的摘要菜单生成summary内容。"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "沒有可翻譯的摘要。請先使用“重新總結”選單產生“摘要”內容。"
+          }
         }
       }
     },
@@ -453,7 +492,14 @@
       }
     },
     "Please confirm the password." : {
-
+      "localizations" : {
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "請確認密碼。"
+          }
+        }
+      }
     },
     "Please ensure all fields in the form have been filled out." : {
 
@@ -496,7 +542,14 @@
       }
     },
     "Purchase" : {
-
+      "localizations" : {
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "購買"
+          }
+        }
+      }
     },
     "Push the START button to record your own speech. A summary will be generated automatically after STOP button is pushed." : {
       "localizations" : {
@@ -527,33 +580,11 @@
       }
     },
     "Recharge success. Please check your account balance." : {
-
-    },
-    "Recognizing" : {
-      "extractionState" : "stale",
       "localizations" : {
-        "es-419" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Reconociendo"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "認識中"
-          }
-        },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "正在识别"
-          }
-        },
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "正在識別"
+            "value" : "儲值成功。請檢查您的帳戶餘額。"
           }
         }
       }
@@ -615,36 +646,17 @@
         }
       }
     },
-    "Redo Summary" : {
-      "extractionState" : "stale",
+    "Regenerate summary from transcript. Existing content will be overwritten." : {
       "localizations" : {
-        "es-419" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Rehacer resumen"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "概要再生"
-          }
-        },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "重新生成"
-          }
-        },
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "重新生成摘要"
+            "value" : "從錄音稿中重新產生摘要。現有內容將被覆蓋。"
           }
         }
       }
     },
-    "Regenerate summary from transcript. Existing content will be overwritten." : {
+    "Register" : {
 
     },
     "Reset" : {
@@ -676,7 +688,14 @@
       }
     },
     "Restore Purchases" : {
-
+      "localizations" : {
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "恢復購買"
+          }
+        }
+      }
     },
     "Select one of the following languages to translate the Summary. If summary exists, it will be overwritten." : {
       "localizations" : {
@@ -766,22 +785,64 @@
       }
     },
     "Sign in" : {
-
+      "localizations" : {
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "登入"
+          }
+        }
+      }
     },
     "SIGN IN" : {
-
+      "localizations" : {
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "登入"
+          }
+        }
+      }
     },
     "Sign out" : {
-
+      "localizations" : {
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "登出"
+          }
+        }
+      }
     },
     "Sign up" : {
-
+      "localizations" : {
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "註冊"
+          }
+        }
+      }
     },
     "SIGN UP" : {
-
+      "localizations" : {
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "註冊"
+          }
+        }
+      }
     },
     "Signup now" : {
-
+      "localizations" : {
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "馬上註冊"
+          }
+        }
+      }
     },
     "Start" : {
       "localizations" : {
@@ -835,7 +896,14 @@
 
     },
     "Summarize" : {
-
+      "localizations" : {
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "重新總結"
+          }
+        }
+      }
     },
     "Summary" : {
       "localizations" : {
@@ -866,7 +934,14 @@
       }
     },
     "Summary Missing" : {
-
+      "localizations" : {
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "摘要缺失"
+          }
+        }
+      }
     },
     "The data received from the server was invalid. Please contact support." : {
 
@@ -878,7 +953,20 @@
 
     },
     "Token usage:" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Token usage"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Token用量"
+          }
+        }
+      }
     },
     "Transcript" : {
       "localizations" : {
@@ -914,35 +1002,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Traducción"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "翻訳"
-          }
-        },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "翻译"
-          }
-        },
-        "zh-Hant" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "翻譯"
-          }
-        }
-      }
-    },
-    "Translations" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "es-419" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Traducciónes"
           }
         },
         "ja" : {
@@ -1006,13 +1065,34 @@
 
     },
     "Username" : {
-
+      "localizations" : {
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "用戶名"
+          }
+        }
+      }
     },
     "Username is required and less than 20 characters long. Please confirm the password." : {
-
+      "localizations" : {
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "使用者名為必填項，且長度少於 20 個字元。請確認密碼。"
+          }
+        }
+      }
     },
     "Version" : {
-
+      "localizations" : {
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "版本號"
+          }
+        }
+      }
     },
     "Websocket Error" : {
 

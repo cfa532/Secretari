@@ -92,9 +92,11 @@ class Websocket: NSObject, ObservableObject, URLSessionWebSocketDelegate, Observ
                                             if let eof = dict["eof"] as? Bool, eof==true {
                                                 self.isStreaming = false
                                                 self.streamedText = ""
+                                                self.cancel()
                                                 // uvicorn myapp:app --timeout-keep-alive 30 to keep idle connection open for 30s. Default is 5s.
+                                            } else {
+                                                self.receive(action: action)    // keep receiving
                                             }
-                                            self.receive(action: action)    // keep receiving
                                         }
                                     } else {
                                         // should be stream type. Display the streaming text from AI
@@ -130,7 +132,7 @@ class Websocket: NSObject, ObservableObject, URLSessionWebSocketDelegate, Observ
     }
     
     func cancel() {
-        wsTask?.cancel(with: .goingAway, reason: nil)
+        wsTask?.cancel(with: .normalClosure, reason: nil)
         //        urlSession?.invalidateAndCancel()
     }
     

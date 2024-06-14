@@ -34,12 +34,12 @@ struct DetailView: View {
                         VStack {
                             HStack {
                                 Label {
-                                    DotAnimationView(title: "Recognizing")
+                                    DotAnimationView(title: "Streaming from AI")
                                 } icon: {
-                                    Image(systemName: "ear.badge.waveform")
+                                    Image(systemName: "brain.head.profile.fill")
                                 }
-                                .padding(.leading, 20)
-                                .padding(.bottom, 5)
+                                .foregroundStyle(Color.accentColor)
+                                .padding(.leading, 10)
                                 .frame(maxWidth: .infinity, alignment: .leading) // Aligns the content to the rightmost side
                                 
                                 Picker("Language:", selection: $settings.selectedLocale) {
@@ -56,7 +56,7 @@ struct DetailView: View {
                                     }
                                 }
                             }
-                            .padding()
+                            .padding(.bottom, 10)
                             
                             LazyVStack {
                                 ForEach(speechRecognizer.transcript.suffix(suffixLength).split(separator: "\n"), id: \.self) { message in
@@ -97,12 +97,13 @@ struct DetailView: View {
                     ScrollViewReader { proxy in
                         VStack(alignment: .leading) {
                             Label {
-                                DotAnimationView(title: "Streaming from AI ")
+                                DotAnimationView(title: "Streaming from AI")
                             } icon: {
                                 Image(systemName: "brain.head.profile.fill")
                             }
+                            .foregroundStyle(Color.accentColor)
                             .padding(.leading, 20)
-                            .padding(.bottom, 5)
+                            .padding(.bottom, 10)
                             .frame(maxWidth: .infinity, alignment: .leading) // Aligns the content to the rightmost side
                             
                             let message = websocket.streamedText.suffix(suffixLength)

@@ -20,14 +20,14 @@ struct ContentView: View {
     @State private var isRecording = false
     @State private var showDetailView = false
     
-    private var loginStatus: String {
+    private var loginStatus: LocalizedStringKey {
         switch userManager.loginStatus {
         case .signedIn:
-            return "Account"
+            return LocalizedStringKey("Account")
         case .signedOut:
-            return "Login"
+            return LocalizedStringKey("Login")
         case .unregistered:
-            return "Register"
+            return LocalizedStringKey("Register")
         }
     }
     
