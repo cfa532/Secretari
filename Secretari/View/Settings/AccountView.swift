@@ -79,7 +79,13 @@ struct AccountDetailView: View {
                             .foregroundStyle(.secondary)
                         SettingsRowView(title: title, tintColor: .secondary)
                         Spacer()
-                        Text(user?.diaplayUsername ?? "signup now")
+                        if let username = user?.diaplayUsername {
+                            Text(username)
+                        } else {
+                            Button("Signup now") {
+                                userManager.loginStatus = .unregistered
+                            }
+                        }
                     }
                     HStack {
                         let title = Text("Version").font(.subheadline).foregroundStyle(.secondary)

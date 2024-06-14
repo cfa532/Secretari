@@ -11,18 +11,17 @@ import StoreKit
 struct PurchaseView: View {
     @EnvironmentObject private var entitlementManager: EntitlementManager
     @EnvironmentObject private var subscriptionsManager: SubscriptionsManager
-    @Environment(\.purchase) private var purchase: PurchaseAction
-
+    @State private var showCancelSheet = false
     @State private var selectedProduct: Product? = nil
     public static let subscriptionGroupId = "Bunny0"
     private let features: [String] = ["Remove all ads", "Daily new content", "Other cool features", "Follow for more tutorials"]
     
     var body: some View {
         VStack {
-            Spacer()
             StoreView(products: subscriptionsManager.products) { product in
                 ProductIcon(productId: product.id)
             }
+            .padding(.top, 20)
             .inAppPurchaseOptions({ _ in
                 // associate this purchase with user id, which will be used as appAccountToken in Transaction
                 var purchaseOptions = Set<Product.PurchaseOption>()
@@ -39,25 +38,26 @@ struct PurchaseView: View {
             .productViewStyle(.regular)
             .storeButton(.visible, for: .restorePurchases)
             .storeButton(.hidden, for: .cancellation)       // hide the top right close button
+            .storeButton(.visible, for: .policies)
         }
+        
+        Button("How to cancel") {
+            showCancelSheet = true
+        }
+        .sheet(isPresented: $showCancelSheet, content: {
+            VStack {
+                Text("1. Open the Settings app.\n2. Tap your name.\n3. Tap Subscriptions.")
+                    .padding(.top, 20)
+                Image("Cancel")
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+            }
+            .presentationDetents([.medium])
+            .cornerRadius(20)
+            .shadow(radius: /*@START_MENU_TOKEN@*/10/*@END_MENU_TOKEN@*/, x: 10, y: 0)
+        })
     }
     
-    // MARK: - Views
-    private var hasSubscriptionView: some View {
-        VStack(spacing: 20) {
-            Image(systemName: "crown.fill")
-                .foregroundStyle(.yellow)
-                .font(Font.system(size: 100))
-            
-            Text("You've Unlocked Pro Access")
-                .font(.system(size: 30.0, weight: .bold))
-                .fontDesign(.rounded)
-                .multilineTextAlignment(.center)
-                .padding(.horizontal, 30)
-        }
-        .ignoresSafeArea(.all)
-    }
-
     private var subscriptionOptionsView: some View {
         VStack(alignment: .center, spacing: 12.5) {
             if !subscriptionsManager.products.isEmpty {
@@ -175,7 +175,7 @@ struct ProductIcon: View {
     }
     
     func tintById(productId: String) -> String {
-        if productId.hasPrefix("Monthly") {
+        if productId.hasPrefix("monthly") {
             return "Monthly"
         }
         else if productId.hasPrefix("Yearly") {
@@ -222,4 +222,6 @@ struct SubscriptionItemView: View {
 
 #Preview {
     PurchaseView()
+        .environmentObject(EntitlementManager())
+        .environmentObject(SubscriptionsManager(entitlementManager: EntitlementManager()))
 }

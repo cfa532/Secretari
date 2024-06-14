@@ -75,6 +75,7 @@ struct SettingsView: View {
                         set: {settings.prompt[settings.promptType]![settings.selectedLocale] = $0; changed=true}), axis: .vertical)
                         .lineLimit(20)
                 }
+                .hidden()       // hide advanced settings
                 .onAppear(perform: {
                     settings = SettingsManager.shared.getSettings()
                 })

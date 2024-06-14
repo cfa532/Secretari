@@ -13,6 +13,9 @@
     "*" : {
 
     },
+    "1. Open the Settings app.\n2. Tap your name.\n3. Tap Subscriptions." : {
+
+    },
     "1.0.0" : {
 
     },
@@ -200,6 +203,9 @@
 
     },
     "Have an account?" : {
+
+    },
+    "How to cancel" : {
 
     },
     "Indonesia" : {
@@ -774,6 +780,9 @@
     "SIGN UP" : {
 
     },
+    "Signup now" : {
+
+    },
     "Start" : {
       "localizations" : {
         "es-419" : {
@@ -1064,9 +1073,6 @@
           }
         }
       }
-    },
-    "You've Unlocked Pro Access" : {
-
     },
     "Your profile information was successfully saved." : {
 
