@@ -72,6 +72,11 @@ struct ContentView: View {
                         } label: {
                             Label("Purchase", systemImage: "lightbulb.max")
                         }
+                        NavigationLink {
+                            HelpView()
+                        } label: {
+                            Label("Help", systemImage: "questionmark.circle")
+                        }
                     } label: {
                         Image(systemName: "person.crop.circle")
                             .resizable()

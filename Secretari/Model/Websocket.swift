@@ -213,6 +213,7 @@ enum HTTPStatusCode: Int, Comparable {
 enum EndPoint: String {
     case accessToken    = "/secretari/token"
     case productIDs     = "/secretari/productids"
+    case notice         = "/secretari/notice"
     case register       = "/secretari/users/register"
     case updateUser     = "/secretari/users/update"
     case temporaryUser  = "/secretari/users/temp"
@@ -286,7 +287,6 @@ extension Websocket {
     
     func getProductIDs(_ completion: @escaping ([String: Any]?, HTTPStatusCode?) -> Void) {
         self.webURL.path = EndPoint.productIDs.rawValue
-        print(webURL.url as Any)
         var request = URLRequest(url: self.webURL.url!)
         request.httpMethod = "GET"
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")
@@ -304,6 +304,20 @@ extension Websocket {
             }
         }
         task.resume()
+    }
+    
+    func getNotice() async throws -> String? {
+        self.webURL.path = EndPoint.notice.rawValue
+        var request = URLRequest(url: self.webURL.url!)
+        request.httpMethod = "GET"
+        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+
+        let (data, response) = try await URLSession.shared.data(for: request)
+        if let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 {
+            return String(data: data, encoding: .utf8)
+        } else {
+            return nil
+        }
     }
     
     func recharge(_ dict: [String: Any]) async throws -> [String: Any]? {

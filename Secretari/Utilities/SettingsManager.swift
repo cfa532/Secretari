@@ -77,6 +77,7 @@ enum RecognizerLocale: String, CaseIterable, Codable {
     case 中文 = "zh"
     case Español = "es"     // Latin Spanish
     case Indonesia = "id"
+    case 한국인 = "kr"
     // fr, sp,
     var id: Self { self }
 }
@@ -111,7 +112,7 @@ final class AppConstants {
     
     static let defaultPrompt = [
         Settings.PromptType.summary: [
-            RecognizerLocale.English: "You are an intelligent secretary. Extract the important content from the following text and make a comprehensive summary. Please divide it into appropriate sections. The output format should be plain text. ",
+            RecognizerLocale.English: "You are an intelligent secretary. Extract the important content from the following text and make a comprehensive summary. Divide it into appropriate sections. The output format should be plain text. ",
             RecognizerLocale.中文: "你是個智能秘書。 提取下述文字中的重要內容，做一份全面的摘要。并适当分段。输出格式用纯文本。",
             RecognizerLocale.日本語: "あなたはインテリジェントな秘書です。以下のテキストから重要な内容を抽出し、包括的な要約を作成してください。適切に段落を分けてください。出力形式はプレーンテキストでお願いします。",
             RecognizerLocale.Español: "Eres un secretario inteligente. Extrae el contenido importante del siguiente texto y haz un resumen completo. Divide el texto en secciones apropiadas. El formato de salida debe ser texto plano. ",

@@ -64,18 +64,18 @@ struct SettingsView: View {
                     }
                 }
                 Section(header: Text("advanced")) {
+                    TextField(selectedPrompt ?? "", text: Binding<String> (
+                        get: {settings.prompt[settings.promptType]![settings.selectedLocale]!},
+                        set: {settings.prompt[settings.promptType]![settings.selectedLocale] = $0; changed=true}), axis: .vertical)
+                        .lineLimit(20)
                     TextField(settings.serverURL, text: $settings.serverURL)
                         .onChange(of: settings.serverURL) { oldValue, newValue in
                             if (oldValue != newValue) {
                                 changed = true
                             }
                         }
-                    TextField(selectedPrompt ?? "", text: Binding<String> (
-                        get: {settings.prompt[settings.promptType]![settings.selectedLocale]!},
-                        set: {settings.prompt[settings.promptType]![settings.selectedLocale] = $0; changed=true}), axis: .vertical)
-                        .lineLimit(20)
+                        .hidden()       // hide advanced settings
                 }
-                .hidden()       // hide advanced settings
                 .onAppear(perform: {
                     settings = SettingsManager.shared.getSettings()
                 })

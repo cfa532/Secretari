@@ -130,6 +130,9 @@
         }
       }
     },
+    "Bulletin Board" : {
+
+    },
     "Cancel" : {
 
     },
@@ -237,6 +240,9 @@
         }
       }
     },
+    "Help" : {
+
+    },
     "How to cancel" : {
       "localizations" : {
         "zh-Hant" : {
@@ -246,6 +252,12 @@
           }
         }
       }
+    },
+    "How-to" : {
+
+    },
+    "In regarding to cancellation and refund, this App follows the policies of Apple store. With one extra restriction on the usage cap of the subscribers, which limits the monthly expense of a subscriber to about twice of the expense we are paying OpenAI for using its API. If a subscriber is over the limit, the one-time purchase of tokens can be made to continue the use of this App." : {
+
     },
     "Indonesia" : {
       "localizations" : {
@@ -423,7 +435,7 @@
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "沒有可翻譯的memo。 請先使用 ... 中的摘要選單產生memo內容"
+            "value" : "沒有可翻譯的memo，請先使用 ... 中的“重新總結”產生memo內容"
           }
         }
       }
@@ -473,10 +485,13 @@
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "沒有可翻譯的摘要。請先使用“重新總結”選單產生“摘要”內容。"
+            "value" : "沒有可翻譯的summary。請先使用 ... 中的“重新總結”產生summary內容"
           }
         }
       }
+    },
+    "Notice" : {
+
     },
     "OK" : {
 
@@ -505,6 +520,9 @@
 
     },
     "Please ensure your email is correct." : {
+
+    },
+    "Policy" : {
 
     },
     "Profile Error" : {
@@ -950,6 +968,9 @@
 
     },
     "There was an issue connecting to the server. If this persists, please contact support." : {
+
+    },
+    "This App generates summary out of transcripts of user speech by calling the best AI service. There are two types of summaries, " : {
 
     },
     "Token usage:" : {

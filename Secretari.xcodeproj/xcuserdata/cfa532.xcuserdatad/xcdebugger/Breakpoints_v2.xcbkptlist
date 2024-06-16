@@ -16,7 +16,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "167"
             endingLineNumber = "167"
-            landmarkName = "receive(action:)"
+            landmarkName = "sendToAI(_:prompt:action:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -113,6 +113,38 @@
             startingLineNumber = "54"
             endingLineNumber = "54"
             landmarkName = "resultFromAI(taskType:summary:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "DBAD27E9-764B-4F26-BB5E-8F4E9E3CF11D"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Secretari/Model/Websocket.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "316"
+            endingLineNumber = "316"
+            landmarkName = "getNotice()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "06525D04-D333-4517-ABC6-BAECB8644969"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Secretari/View/Settings/HelpView.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "39"
+            endingLineNumber = "39"
+            landmarkName = "loadNotice()"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
