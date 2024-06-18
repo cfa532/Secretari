@@ -221,14 +221,12 @@ enum HTTPStatusCode: Int, Comparable {
 }
 
 enum EndPoint: String {
-    case accessToken    = "/secretari/token"
-    case productIDs     = "/secretari/productids"
-    case notice         = "/secretari/notice"
+    case accessToken    = "/secretari/token"            // login to get access token
+    case productIDs     = "/secretari/productids"       // get products ID from server
+    case notice         = "/secretari/notice"           // anything new will be displaced on NoticeView
     case register       = "/secretari/users/register"
     case updateUser     = "/secretari/users/update"
     case temporaryUser  = "/secretari/users/temp"
-    case recharge       = "/secretari/users/recharge"
-    case subscibe       = "/secretari/users/subscribe"
     case websocket      = "/secretari/ws/"
 }
 
@@ -329,45 +327,7 @@ extension Websocket {
             return nil
         }
     }
-    
-    func recharge(_ dict: [String: Any]) async throws -> [String: Any]? {
-        self.webURL.path = EndPoint.recharge.rawValue
-        var request = URLRequest(url: self.webURL.url!)
-        request.httpMethod = "POST"
-        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
         
-        guard let accessToken = UserManager.shared.userToken else { return nil}
-        request.addValue("Bearer \(accessToken)", forHTTPHeaderField: "Authorization")
-        request.httpBody = try? JSONSerialization.data(withJSONObject: dict)
-  
-        // receipt is not necessary according to: https://developer.apple.com/documentation/appstorereceipts/validating_receipts_on_the_device
-        
-        let (data, response) = try await URLSession.shared.data(for: request)
-        if let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 {
-            return try? JSONSerialization.jsonObject(with: data) as? [String: Any]
-        } else {
-            return nil
-        }
-    }
-    
-    func subscribe(_ dict: [String: Any]) async throws -> [String: Any]? {
-        self.webURL.path = EndPoint.subscibe.rawValue
-        var request = URLRequest(url: self.webURL.url!)
-        request.httpMethod = "POST"
-        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
-        
-        guard let accessToken = UserManager.shared.userToken else { return nil}
-        request.addValue("Bearer \(accessToken)", forHTTPHeaderField: "Authorization")
-        request.httpBody = try? JSONSerialization.data(withJSONObject: dict)
-        
-        let (data, response) = try await URLSession.shared.data(for: request)
-        if let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 {
-            return try? JSONSerialization.jsonObject(with: data) as? [String: Any]
-        } else {
-            return nil
-        }
-    }
-    
     // fetch login token and updated user information from server
     func fetchToken(username: String, password: String, completion: @escaping ([String: Any]?, HTTPStatusCode?) -> Void) {
         self.webURL.path = EndPoint.accessToken.rawValue

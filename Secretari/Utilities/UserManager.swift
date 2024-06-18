@@ -125,30 +125,5 @@ class UserManager: ObservableObject, Observable {
             self.alertItem?.message = Text("Update failure")
             self.showAlert = true
         }
-    }
-    
-    func login(username: String, password: String) {
-        websocket.fetchToken(username: username, password: password) { dict, statusCode in
-            Task { @MainActor in
-                guard let dict = dict, let code=statusCode, code < .failure  else {
-                    print("Failed to login.", dict as Any)
-                    self.alertItem = AlertContext.unableToComplete
-                    if let dict = dict as? [String: String] {
-                        self.alertItem?.message = Text(dict["detail"] ?? "Login error")
-                    }
-                    self.showAlert = true
-                    return
-                }
-                // update account with token usage data from WS server
-                print("Reply to login: ", dict)
-                self.currentUser = Utility.updateUserFromServerDict(from: dict["user"] as? [String: Any] ?? [:], user: self.currentUser!)
-                self.currentUser?.username = username
-                self.currentUser?.password = ""
-                self.persistCurrentUser()
-
-                let token = dict["token"] as? [String: String] ?? [:]       // {token_type:Bearer, access_token: a long string}
-                self.userToken = token["access_token"]
-            }
-        }
-    }
+    }    
 }

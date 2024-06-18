@@ -16,7 +16,7 @@ struct DotAnimationView: View {
     
     var body: some View {
         HStack {
-            Text(title)
+            Text(LocalizedStringKey(title))
             HStack(spacing: 0) {
                 ForEach(0..<dotCount, id: \.self) { _ in
                     Circle()

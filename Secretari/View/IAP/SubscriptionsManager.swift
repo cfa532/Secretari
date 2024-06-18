@@ -87,31 +87,16 @@ extension SubscriptionsManager {
                 // Successful purhcase
                 print("puchase successed.", transaction)
                 await transaction.finish()
-//                print(transaction)
                 
                 if product.type == .consumable {
                     // assume the purchase succeed, update account balance on device now.
-                    // the balance will be updated from server data every time the service is used.
+                    // the balance will be updated from server, every time the service is used.
                     if let balance = userManager.currentUser?.dollar_balance, let price = self.appProducts[product.id] {
                         userManager.currentUser?.dollar_balance = balance + price
                         userManager.persistCurrentUser()
                     }
                 } else if product.type == .autoRenewable {
-                    // set current subscription status
-                    let sup: [String: Any] = ["product_id": transaction.productID, "start_date": transaction.purchaseDate.timeIntervalSince1970, "end_date": transaction.expirationDate?.timeIntervalSince1970 as Any, "plan": transaction.productType.rawValue, "price": transaction.price as Any, "originalID": transaction.originalID, "version":"ver0", "appAccountToken": transaction.appAccountToken?.uuidString as Any]
-                    do {
-                        if let json = try await websocket.subscribe(sup) {
-                            // edit balance on local record too.
-                            print("User from server after subscribe", json)
-//                            userManager.currentUser?.subscription = true
-//                            userManager.persistCurrentUser()                            
-                            await self.updatePurchasedProducts()
-                        }
-                    } catch {
-                        print("Error update subscription status")
-                        self.alertItem = AlertContext.unableToComplete
-                        self.showAlert = true
-                    }
+                    // set current subscription status is processed by server notification.
                 }
             case let .success(.unverified(_, error)):
                 // Successful purchase but transaction/receipt can't be verified

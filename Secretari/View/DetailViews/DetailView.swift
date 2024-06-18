@@ -34,9 +34,9 @@ struct DetailView: View {
                         VStack {
                             HStack {
                                 Label {
-                                    DotAnimationView(title: "Streaming from AI")
+                                    DotAnimationView(title: "recognizing")
                                 } icon: {
-                                    Image(systemName: "brain.head.profile.fill")
+                                    Image(systemName: "ear.badge.waveform")
                                 }
                                 .foregroundStyle(Color.accentColor)
                                 .padding(.leading, 10)
