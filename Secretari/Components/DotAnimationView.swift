@@ -11,7 +11,7 @@ struct DotAnimationView: View {
     @State private var dotCount = 0
     let title: String
     private let maxDots = 5
-    private let timer = Timer.publish(every: 0.3, on: .main, in: .common).autoconnect()
+    private let timer = Timer.publish(every: 0.5, on: .main, in: .common).autoconnect()
     private let dotSize: CGFloat = 6
     
     var body: some View {

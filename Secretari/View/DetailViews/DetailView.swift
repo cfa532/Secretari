@@ -24,7 +24,7 @@ struct DetailView: View {
     @StateObject private var websocket = Websocket.shared
     @StateObject private var recorderTimer = RecorderTimer()
     
-    private let suffixLength = 600
+    private let suffixLength = 1000
     
     var body: some View {
         NavigationStack {
@@ -36,10 +36,10 @@ struct DetailView: View {
                                 Label {
                                     DotAnimationView(title: "recognizing")
                                 } icon: {
-                                    Image(systemName: "ear.badge.waveform")
+                                    Image(systemName: "hearingdevice.ear")
                                 }
                                 .foregroundStyle(Color.accentColor)
-                                .padding(.leading, 10)
+                                .padding(.leading, 20)
                                 .frame(maxWidth: .infinity, alignment: .leading) // Aligns the content to the rightmost side
                                 
                                 Picker("Language:", selection: $settings.selectedLocale) {
@@ -102,7 +102,7 @@ struct DetailView: View {
                                 Image(systemName: "brain.head.profile.fill")
                             }
                             .foregroundStyle(Color.accentColor)
-                            .padding(.leading, 20)
+                            .padding(.leading, 50)
                             .padding(.bottom, 10)
                             .frame(maxWidth: .infinity, alignment: .leading) // Aligns the content to the rightmost side
                             

@@ -30,6 +30,12 @@
             "value" : "1. 설정 앱을 엽니다.\n2. 이름을 탭하세요.\n3. 구독을 탭합니다."
           }
         },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "1. 打开“设置”应用\n2. 点击您的姓名\n3. 点击“订阅”"
+          }
+        },
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
@@ -65,7 +71,7 @@
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "賬戶"
+            "value" : "账号"
           }
         },
         "zh-Hant" : {
@@ -100,6 +106,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "USD로 표시된 계정 잔액"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "账户余额(USD)"
           }
         },
         "zh-Hant" : {
@@ -206,6 +218,12 @@
             "value" : "로그아웃하시겠습니까?"
           }
         },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "确定退出吗？"
+          }
+        },
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
@@ -225,7 +243,14 @@
       }
     },
     "Cancel" : {
-
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "取消"
+          }
+        }
+      }
     },
     "Dismiss" : {
       "localizations" : {
@@ -255,6 +280,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "계정이 없나요?"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "尚无账号？"
           }
         },
         "zh-Hant" : {
@@ -359,6 +390,12 @@
             "value" : "계정을 갖고있다?"
           }
         },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "已有账号？"
+          }
+        },
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
@@ -385,6 +422,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "돕다"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "帮助"
           }
         },
         "zh-Hant" : {
@@ -604,6 +647,12 @@
             "value" : "로그인"
           }
         },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "登录"
+          }
+        },
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
@@ -668,6 +717,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "최소 가청(dB)"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "最低可识别音量(dB)"
           }
         },
         "zh-Hant" : {
@@ -781,7 +836,14 @@
       }
     },
     "Notice" : {
-
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "通知"
+          }
+        }
+      }
     },
     "OK" : {
 
@@ -881,6 +943,12 @@
             "value" : "구입"
           }
         },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "购买"
+          }
+        },
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
@@ -955,6 +1023,12 @@
             "value" : "재충전에 성공했습니다. 계좌 잔액을 확인해주세요."
           }
         },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "充值成功，请检查账户余额。"
+          }
+        },
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "needs_review",
@@ -982,6 +1056,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "인식 중"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "识别中"
           }
         },
         "zh-Hant" : {
@@ -1081,6 +1161,12 @@
             "value" : "취소 및 환불에 관한 이 앱은 Apple Store의 정책을 준수합니다. 또한 구독자에게는 사용량 한도가 있어 API 사용에 대해 OpenAI에 지불하는 금액의 약 2배로 월별 비용이 제한됩니다. 구독자가 이 한도를 초과하는 경우 일회성 토큰 구매를 통해 앱을 계속 사용할 수 있습니다."
           }
         },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "关于取消和退款，此应用遵守 Apple Store 的政策。此外，订阅者有使用上限，限制其每月费用约为我们向 OpenAI 支付的使用其 API 费用的两倍。如果订阅者超出此限制，他们可以一次性购买代币以继续使用该应用。"
+          }
+        },
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1141,6 +1227,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "등록하다"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "注册"
           }
         },
         "zh-Hant" : {
@@ -1344,6 +1436,12 @@
             "value" : "로그인"
           }
         },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "登录"
+          }
+        },
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1370,6 +1468,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "로그인"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "登录"
           }
         },
         "zh-Hant" : {
@@ -1400,6 +1504,12 @@
             "value" : "로그아웃"
           }
         },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "退出"
+          }
+        },
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1426,6 +1536,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "가입하기"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "注册"
           }
         },
         "zh-Hant" : {
@@ -1456,6 +1572,12 @@
             "value" : "가입하기"
           }
         },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "注册"
+          }
+        },
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1482,6 +1604,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "지금 등록하세요"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "马上注册"
           }
         },
         "zh-Hant" : {
@@ -1604,6 +1732,12 @@
             "value" : "요약하다"
           }
         },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "生成摘要"
+          }
+        },
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1703,6 +1837,12 @@
             "value" : "이 앱은 최상위 AI 서비스를 활용하여 사용자 음성 기록에서 요약을 생성합니다. 사용할 수 있는 요약에는 표준 요약과 체크리스트 스타일 요약(메모라고 함)이라는 두 가지 유형이 있습니다. 설정에서 프롬프트 유형을 선택하여 원하는 유형을 선택할 수 있습니다. 두 유형의 요약 모두 수동으로 편집하여 오류를 수정할 수 있습니다."
           }
         },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "此应用利用顶级 AI 服务从用户语音记录中生成摘要。有两种类型的摘要可供选择：标准摘要和清单式摘要（称为备忘录）。您可以通过在设置中选择提示类型来选择所需的类型。这两种类型的摘要都可以手动编辑以更正任何错误。"
+          }
+        },
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1735,6 +1875,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "토큰 사용"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Token 使用量"
           }
         },
         "zh-Hant" : {
@@ -1873,6 +2019,12 @@
             "value" : "사용자 이름"
           }
         },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "用户名"
+          }
+        },
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1901,6 +2053,12 @@
             "value" : "사용자 이름은 필수이며 길이는 20자 미만입니다. 비밀번호를 확인해 주세요."
           }
         },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "用户名必填，且长度小于 20 字符。"
+          }
+        },
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1927,6 +2085,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "버전"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "版本"
           }
         },
         "zh-Hant" : {

@@ -11,7 +11,6 @@ struct User :Codable, Identifiable {
     var id: String               // when temp user is created, use device identifier as id, and username
     var username: String
     var password: String
-    var mid: String?
     var token_count: UInt = 0     // Account balance in token amount per LLModel
     var dollar_balance: Double = 0.0    // total usage in dollar amount per LLModel
     var monthly_usage: [String: Double]?   // current month usage. month is string 1..12
@@ -20,7 +19,7 @@ struct User :Codable, Identifiable {
     var email: String?
 
     enum CodingKeys: String, CodingKey {
-        case id, username, mid, token_count, dollar_balance, monthly_usage, password, family_name, given_name, email
+        case id, username, token_count, dollar_balance, monthly_usage, password, family_name, given_name, email
     }
     
     var initials: String {

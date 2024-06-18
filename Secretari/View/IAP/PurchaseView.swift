@@ -51,10 +51,10 @@ struct PurchaseView: View {
                 Image("Cancel")
                     .resizable()
                     .aspectRatio(contentMode: .fit)
+                    .shadow(radius: /*@START_MENU_TOKEN@*/10/*@END_MENU_TOKEN@*/, x: 0, y: 10)
             }
             .presentationDetents([.medium])
             .cornerRadius(20)
-            .shadow(radius: /*@START_MENU_TOKEN@*/10/*@END_MENU_TOKEN@*/, x: 10, y: 0)
         })
     }
     

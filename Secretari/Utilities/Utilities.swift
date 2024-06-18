@@ -62,7 +62,18 @@ struct Utility {
 
     static func updateUserFromServerDict<T>(from dict: [String: T], user: User) -> User {
         var user = user
-
+        if let id = dict["id"] as? String {
+            user.id = id
+        }
+        if let family_name = dict["family_name"] as? String {
+            user.family_name = family_name
+        }
+        if let given_name = dict["given_name"] as? String {
+            user.given_name = given_name
+        }
+        if let email = dict["email"] as? String {
+            user.email = email
+        }
         if let tokenCountData = dict["token_count"] as? UInt {
             user.token_count = tokenCountData
         }
@@ -72,9 +83,6 @@ struct Utility {
         // manage dollar balance by Server
         if let tokenUsageData = dict["dollar_balance"] as? Double {
             user.dollar_balance = tokenUsageData
-        }
-        if let mid = dict["mid"] as? String {
-            user.mid = mid
         }
         return user
     }

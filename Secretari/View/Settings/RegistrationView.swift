@@ -24,7 +24,7 @@ struct RegistrationView: View {
                 Section(header: Text("Information")) {
 
                     InputView(text: $user.username, title: "Username", placeHolder: user.username, isSecureField: false, required: true)
-                        .padding(.top, 40)
+                        .padding(.top, 10)
                         .textInputAutocapitalization(.never)
 
                     
@@ -46,14 +46,6 @@ struct RegistrationView: View {
                     Button(action: {
                         // register
                         if 1...20 ~= user.username.count, user.password.count>0, user.password==passwd {
-                            
-                            // prepare currentUser for save to keychain. If it fails, restore currentUser.
-//                            userManager.currentUser?.username = user.username
-//                            userManager.currentUser?.password = user.password
-//                            userManager.currentUser?.family_name = user.family_name
-//                            userManager.currentUser?.given_name = user.given_name
-//                            userManager.currentUser?.email = user.email
-                            
                             userManager.register(user)
                         } else {
                             print(user.username, user.password, passwd)

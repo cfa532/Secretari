@@ -76,7 +76,7 @@ struct LoginView: View {
             .cornerRadius(10)
             Spacer()
             
-            if let count=userManager.currentUser?.username.count, count > 20 {
+//            if let count=userManager.currentUser?.username.count, count > 20 {
                 Button {
                     userManager.loginStatus = .unregistered
                 } label: {
@@ -88,7 +88,7 @@ struct LoginView: View {
                     })
                     .font(.system(size: 16))
                 }
-            }
+//            }
         }
         .alert("Login error", isPresented: $showAlert, presenting: alertMessage) { _ in
         } message: { alert in

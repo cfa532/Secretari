@@ -15,7 +15,7 @@ struct InputView: View {
     var required = false
     
     var body: some View {
-        VStack(alignment: .leading, spacing: 12) {
+        VStack(alignment: .leading, spacing: 8) {
             HStack {
                 Text(title)
                     .foregroundStyle(.gray)
@@ -23,17 +23,21 @@ struct InputView: View {
                 .font(.footnote)
                 if required {
                     Text("*").foregroundStyle(.red)
-//                    Spacer()
                 }
             }
-            if isSecureField {
-                SecureField(placeHolder, text: $text)
-                    .font(.system(size: 16))
-            } else {
-                TextField(placeHolder, text: $text)
-                    .font(.system(size: 16))
+            .padding(5)
+            VStack() {
+                if isSecureField {
+                    SecureField(placeHolder, text: $text)
+                        .font(.system(size: 18))
+                } else {
+                    TextField(placeHolder, text: $text)
+                        .font(.system(size: 18))
+                }
             }
-            Divider()
+            .padding(5)
+            .background(Color(red: 0.99, green: 0.95, blue: 0.9).opacity(0.8))
+            .cornerRadius(5)
         }
     }
 }
