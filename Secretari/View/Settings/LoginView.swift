@@ -11,6 +11,7 @@ struct LoginView: View {
     @State private var username: String = ""
     @State private var password: String = ""
     @State private var required = false
+    @State private var submitted = false
     @EnvironmentObject var userManager: UserManager
     
     @State private var alertMessage: String?
@@ -38,6 +39,7 @@ struct LoginView: View {
             Button {
                 if username.count>0, password.count>0 {
                     self.required = false
+                    self.submitted = true
                     Websocket.shared.fetchToken(username: username, password: password) { dict, statusCode in
                         guard let dict = dict, let code=statusCode, code < .failure  else {
                             print("Failed to login.", dict as Any)
@@ -64,13 +66,19 @@ struct LoginView: View {
                     self.required = true        // indicate username is required field.
                 }
             } label: {
-                HStack {
-                    Text("SIGN IN")
-                        .fontWeight(.semibold)
-                    Image(systemName: "arrow.right")
+                ZStack {
+                    HStack {
+                        Text("SIGN IN")
+                            .fontWeight(.semibold)
+                        Image(systemName: "arrow.right")
+                    }
+                    .foregroundStyle(.white)
+                    .frame(width: UIScreen.main.bounds.width - 32, height: 48)
+                    if self.submitted {
+                        ProgressView()
+                            .controlSize(.large)
+                    }
                 }
-                .foregroundStyle(.white)
-                .frame(width: UIScreen.main.bounds.width - 32, height: 48)
             }
             .background(Color(.systemBlue).opacity(0.8))
             .cornerRadius(10)

@@ -20,7 +20,7 @@ struct AccountView: View {
             LoginView()
         case .unregistered:
             // register
-            RegistrationView(userManager: userManager)
+            RegistrationView()
         }
     }
 }

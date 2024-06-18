@@ -2237,7 +2237,7 @@
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "用户名必填，且长度小于 20 字符。"
+            "value" : "用户名密码必填，且长度小于 20 字符。"
           }
         },
         "zh-Hant" : {

@@ -8,14 +8,14 @@
 import SwiftUI
 
 struct RegistrationView: View {
-    @State private var userManager: UserManager
+    @EnvironmentObject var userManager: UserManager
     @State private var user: User
     @State private var passwd: String = ""
     @State private var showAlert = false
-
-    init(userManager: UserManager) {
-        self.userManager = userManager
-        self.user = userManager.currentUser!
+    @State private var submitted = false
+    
+    init() {
+        self.user = UserManager.shared.currentUser!
     }
     
     var body: some View {
@@ -23,7 +23,7 @@ struct RegistrationView: View {
             Form {
                 Section(header: Text("Information")) {
 
-                    InputView(text: $user.username, title: "Username", placeHolder: user.username, isSecureField: false, required: true)
+                    InputView(text: $user.username, title: "Username", placeHolder: "", isSecureField: false, required: true)
                         .padding(.top, 10)
                         .textInputAutocapitalization(.never)
 
@@ -33,12 +33,12 @@ struct RegistrationView: View {
                         InputView(text: $passwd, title: "Confirm", placeHolder: "", isSecureField: true, required: true)
                     }
                     
-                    InputView(text: Binding<String> (get: {user.family_name ?? ""}, set: {user.family_name=$0}), title: "Family name", placeHolder: user.family_name ?? "")
+                    InputView(text: Binding<String> (get: {""}, set: {user.family_name=$0}), title: "Family name", placeHolder: "")
                     
 
-                    InputView(text: Binding<String> (get: {user.given_name ?? ""}, set: { user.given_name = $0}), title: "Given name", placeHolder: user.given_name ?? "")
+                    InputView(text: Binding<String> (get: {user.given_name ?? ""}, set: { user.given_name = $0}), title: "Given name", placeHolder: "")
 
-                    InputView(text: Binding<String> (get: {user.email ?? ""}, set: { user.email = $0}), title: "Email", placeHolder: user.email ?? "")
+                    InputView(text: Binding<String> (get: {user.email ?? ""}, set: { user.email = $0}), title: "Email", placeHolder: "")
                     .textInputAutocapitalization(.never)
                 }
 
@@ -46,19 +46,26 @@ struct RegistrationView: View {
                     Button(action: {
                         // register
                         if 1...20 ~= user.username.count, user.password.count>0, user.password==passwd {
+                            self.submitted = true
                             userManager.register(user)
                         } else {
                             print(user.username, user.password, passwd)
                             showAlert = true
                         }
                     }, label: {
-                        HStack {
-                            Text("SIGN UP")
-                                .fontWeight(.semibold)
-                            Image(systemName: "arrow.right")
+                        ZStack {
+                            HStack {
+                                Text("SIGN UP")
+                                    .fontWeight(.semibold)
+                                Image(systemName: "arrow.right")
+                            }
+                            .foregroundStyle(.white)
+                            .frame(width: UIScreen.main.bounds.width - 32, height: 48)
+                            if self.submitted {
+                                ProgressView()
+                                    .controlSize(.large)
+                            }
                         }
-                        .foregroundStyle(.white)
-                        .frame(width: UIScreen.main.bounds.width - 32, height: 48)
                     })
                     .background(Color(.systemBlue).opacity(0.8))
                     .cornerRadius(10)
@@ -99,5 +106,6 @@ struct RegistrationView: View {
 }
 
 #Preview {
-    RegistrationView(userManager: UserManager.shared)
+    RegistrationView()
+        .environmentObject(UserManager.shared)
 }

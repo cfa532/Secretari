@@ -14,6 +14,7 @@ struct UpdateAccountView: View {
     @State private var user: User
     @State private var passwd: String = ""
     @State private var showAlert = false
+    @State private var submitted = false
 
     init(userManager: UserManager) {
         self.userManager = userManager
@@ -49,6 +50,7 @@ struct UpdateAccountView: View {
                         // register
                         if user.password==passwd {
                             Task {
+                                self.submitted = true
                                 await userManager.updateUser(user)
                                 presentationMode.wrappedValue.dismiss()
                             }
@@ -57,13 +59,20 @@ struct UpdateAccountView: View {
                             showAlert = true
                         }
                     }, label: {
-                        HStack {
-                            Text("Update")
-                                .fontWeight(.semibold)
-                            Image(systemName: "arrow.right")
+                        ZStack {
+                            HStack {
+                                Text("Update")
+                                    .fontWeight(.semibold)
+                                Image(systemName: "arrow.right")
+                            }
+                            .foregroundStyle(.white)
+                            .frame(width: UIScreen.main.bounds.width - 32, height: 48)
+                            
+                            if self.submitted {
+                                ProgressView()
+                                    .controlSize(.large)
+                            }
                         }
-                        .foregroundStyle(.white)
-                        .frame(width: UIScreen.main.bounds.width - 32, height: 48)
                     })
                     .background(Color(.systemBlue).opacity(0.8))
                     .cornerRadius(10)
