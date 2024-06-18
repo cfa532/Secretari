@@ -592,6 +592,12 @@
             "value" : "취소 방법"
           }
         },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "如何取消"
+          }
+        },
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
@@ -805,6 +811,41 @@
         }
       }
     },
+    "Low balance. Please purchase consumable product or subscribe." : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Saldo bajo. Compre un producto consumible o suscríbase."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "残高が少なくなっています。消耗品を購入するか、定期購入してください。"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "낮은 균형. 소모성 제품을 구매하시거나 구독해 주세요."
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "余额不足。请购买消耗品或订阅。"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "餘額低。請購買消耗品或訂閱。"
+          }
+        }
+      }
+    },
     "Memo Missing" : {
       "localizations" : {
         "es-419" : {
@@ -863,6 +904,41 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "最低可錄音量（dB）"
+          }
+        }
+      }
+    },
+    "Monthly max expense exceeded. Purchase consumable product if necessary." : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Se superó el gasto máximo mensual. Compre productos consumibles si es necesario."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "月間最大支出額を超えました。必要に応じて消耗品を購入してください。"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "월간 최대 비용을 초과했습니다. 필요한 경우 소모품을 구입하세요."
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "超出每月最高支出。如有必要，请购买消耗品。"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "超出每月最高支出。如有需要，購買消耗品。"
           }
         }
       }

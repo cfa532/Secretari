@@ -109,7 +109,7 @@ class Websocket: NSObject, ObservableObject, URLSessionWebSocketDelegate, Observ
                                         // type == "error". something wrong.
                                         if let message = dict["message"] as? String {
                                             self.alertItem = AlertContext.invalidData
-                                            self.alertItem?.message = Text(message)
+                                            self.alertItem?.message = Text(LocalizedStringKey(message))
                                             self.showAlert = true
                                         }
                                         self.cancel()
@@ -162,8 +162,7 @@ class Websocket: NSObject, ObservableObject, URLSessionWebSocketDelegate, Observ
                     "input": [
                         "prompt": prompt=="" ? sprompt[settings.selectedLocale] as Any : prompt,    // use defualt prompt if not provided as parameter
                         "rawtext": rawText,
-                        "subscription": EntitlementManager.isSubscriber,
-                        "balance": user.dollar_balance
+                        "subscription": EntitlementManager.isSubscriber
                     ],
                     "parameters": [
                         "llm": settings.llmParams["llm"] as Any,
@@ -282,7 +281,7 @@ extension Websocket {
         request.httpMethod = "POST"
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")
         
-        let body: [String: String] = ["username": user.username, "password": user.password]
+        let body: [String: String] = ["username": user.username, "password": user.password, "id": user.id]
         request.httpBody = try? JSONSerialization.data(withJSONObject: body)
         
         let (data, response) = try await URLSession.shared.data(for: request)

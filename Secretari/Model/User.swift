@@ -8,7 +8,7 @@
 import Foundation
 
 struct User :Codable, Identifiable {
-    var id: String               // when temp user is created, use device identifier as id, and username
+    var id: String               // when temp user is created, use device identifier as id, and temp username. The device idetifier is an UUID.
     var username: String
     var password: String
     var token_count: UInt = 0     // Account balance in token amount per LLModel
