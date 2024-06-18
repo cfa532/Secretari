@@ -74,11 +74,6 @@ class UserManager: ObservableObject, Observable {
                         // update temp user with account data recieved from server.
                         self.currentUser = Utility.updateUserFromServerDict(from: serverUser, user: self.currentUser!)
                         self.currentUser?.password = ""
-                        //
-                        // Only on creation, read dollar balance and subscription status from server
-                        // User device is the main source of bookkeeping dollar balance, recharge and subscription status
-                        //
-                        self.currentUser?.dollar_balance = serverUser["dollar_balance"] as? Double ?? AppConstants.SignupBonus
                         self.persistCurrentUser()
                         print("temprory user created", self.currentUser as Any)
                     }

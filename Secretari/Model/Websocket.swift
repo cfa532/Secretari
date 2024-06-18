@@ -75,6 +75,7 @@ class Websocket: NSObject, ObservableObject, URLSessionWebSocketDelegate, Observ
                     case .string(let text):
                         if let data = text.data(using: .utf8) {
                             do {
+                                // check the websocekt endpoint in FastAPI server code for corresponding message types.
                                 if let dict = try JSONSerialization.jsonObject(with: data) as? NSDictionary, let type = dict["type"] as? String {
                                     print("Data from ws: ", dict)
                                     if type == "result" {
@@ -98,17 +99,26 @@ class Websocket: NSObject, ObservableObject, URLSessionWebSocketDelegate, Observ
                                                 self.receive(action: action)    // keep receiving
                                             }
                                         }
-                                    } else {
+                                    } else if type == "stream" {
                                         // should be stream type. Display the streaming text from AI
                                         if let s = dict["data"] as? String {
                                             self.streamedText += s      // display streaming message from ai to user.
                                             self.receive(action: action)    // receive next charater
                                         }
+                                    } else {
+                                        // type == "error". something wrong.
+                                        if let message = dict["message"] as? String {
+                                            self.alertItem = AlertContext.invalidData
+                                            self.alertItem?.message = Text(message)
+                                            self.showAlert = true
+                                        }
+                                        self.cancel()
                                     }
                                 }
                             } catch {
                                 self.alertItem = AlertContext.invalidData
                                 self.showAlert = true
+                                self.cancel()
                             }
                         }
                     case .data(let data):

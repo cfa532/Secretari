@@ -676,7 +676,7 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Secretari/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = Bouny;
+				INFOPLIST_KEY_CFBundleDisplayName = Bounny;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.productivity";
 				INFOPLIST_KEY_NSMicrophoneUsageDescription = "Need Microphone to record user speech";
 				INFOPLIST_KEY_NSSpeechRecognitionUsageDescription = "Need to create transcript of user speech";
@@ -712,7 +712,7 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Secretari/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = Bouny;
+				INFOPLIST_KEY_CFBundleDisplayName = Bounny;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.productivity";
 				INFOPLIST_KEY_NSMicrophoneUsageDescription = "Need Microphone to record user speech";
 				INFOPLIST_KEY_NSSpeechRecognitionUsageDescription = "Need to create transcript of user speech";

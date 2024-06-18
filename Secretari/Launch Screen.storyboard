@@ -2,9 +2,8 @@
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="32700.99.1234" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" launchScreen="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="01J-lp-oVM">
     <device id="retina6_12" orientation="portrait" appearance="light"/>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="22684"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="22685"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
-        <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -16,53 +15,28 @@
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="9" translatesAutoresizingMaskIntoConstraints="NO" id="obG-Y5-kRd">
-                                <rect key="frame" x="0.0" y="832" width="393" height="0.0"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Secretari" textAlignment="center" lineBreakMode="middleTruncation" baselineAdjustment="alignBaselines" minimumFontSize="18" translatesAutoresizingMaskIntoConstraints="NO" id="GJd-Yh-RWb">
-                                <rect key="frame" x="0.0" y="123" width="393" height="43"/>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="bunny" translatesAutoresizingMaskIntoConstraints="NO" id="ZyM-id-dPt">
+                                <rect key="frame" x="34" y="229" width="325" height="254"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="254" id="ecF-kj-US5"/>
+                                </constraints>
+                            </imageView>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Bounny" textAlignment="center" lineBreakMode="middleTruncation" baselineAdjustment="alignBaselines" minimumFontSize="18" translatesAutoresizingMaskIntoConstraints="NO" id="GJd-Yh-RWb">
+                                <rect key="frame" x="0.0" y="724" width="393" height="43"/>
                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="36"/>
                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="v6v-tG-Q5k">
-                                <rect key="frame" x="16" y="567" width="361" height="128"/>
-                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="128" id="Jag-3V-bRW"/>
-                                </constraints>
-                                <string key="text">点击下面的“Start”开始录音。点击“Stop”结束录音。Secretari 会自动生成内容摘要。
-
-点击右上角的设置⚙️，选择要录音的语言。语音识别功能才会正常工作。</string>
-                                <color key="textColor" systemColor="labelColor"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
-                            </textView>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" image="大耳朵" translatesAutoresizingMaskIntoConstraints="NO" id="tdh-Fc-fnJ">
-                                <rect key="frame" x="0.0" y="223" width="393" height="189"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="189" id="jcd-qJ-rxU"/>
-                                </constraints>
-                            </imageView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="Bcu-3y-fUS"/>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
-                            <constraint firstItem="tdh-Fc-fnJ" firstAttribute="top" secondItem="Ze5-6b-2t3" secondAttribute="top" constant="223" id="8ND-ZC-i6s"/>
-                            <constraint firstItem="GJd-Yh-RWb" firstAttribute="leading" secondItem="Bcu-3y-fUS" secondAttribute="leading" id="92e-BA-d25"/>
-                            <constraint firstItem="Bcu-3y-fUS" firstAttribute="bottom" secondItem="v6v-tG-Q5k" secondAttribute="bottom" constant="123" id="BAt-Bx-aDe"/>
-                            <constraint firstItem="tdh-Fc-fnJ" firstAttribute="trailing" secondItem="obG-Y5-kRd" secondAttribute="trailing" id="Rqf-aH-kPC"/>
-                            <constraint firstItem="tdh-Fc-fnJ" firstAttribute="leading" secondItem="obG-Y5-kRd" secondAttribute="leading" id="WzY-D6-Gyk"/>
-                            <constraint firstAttribute="bottomMargin" secondItem="obG-Y5-kRd" secondAttribute="bottom" constant="-14" id="jSY-58-8EC"/>
-                            <constraint firstItem="GJd-Yh-RWb" firstAttribute="leading" secondItem="tdh-Fc-fnJ" secondAttribute="leading" id="jTf-Gl-TDd"/>
-                            <constraint firstItem="GJd-Yh-RWb" firstAttribute="top" secondItem="Bcu-3y-fUS" secondAttribute="top" constant="64" id="kTC-oF-MIg"/>
-                            <constraint firstItem="v6v-tG-Q5k" firstAttribute="centerX" secondItem="GJd-Yh-RWb" secondAttribute="centerX" id="mNj-kW-0NJ"/>
-                            <constraint firstItem="v6v-tG-Q5k" firstAttribute="leading" secondItem="Ze5-6b-2t3" secondAttribute="leadingMargin" id="muC-7t-95L"/>
-                            <constraint firstItem="GJd-Yh-RWb" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="nQJ-wM-XLr"/>
-                            <constraint firstItem="v6v-tG-Q5k" firstAttribute="centerX" secondItem="obG-Y5-kRd" secondAttribute="centerX" id="ope-Lr-i8t"/>
+                            <constraint firstItem="ZyM-id-dPt" firstAttribute="centerX" secondItem="GJd-Yh-RWb" secondAttribute="centerX" id="3Ih-66-0eZ"/>
+                            <constraint firstItem="ZyM-id-dPt" firstAttribute="leading" secondItem="Bcu-3y-fUS" secondAttribute="leading" constant="34" id="NkL-1x-hLG"/>
+                            <constraint firstItem="GJd-Yh-RWb" firstAttribute="leading" secondItem="Bcu-3y-fUS" secondAttribute="leading" id="Xxb-zW-oD5"/>
+                            <constraint firstItem="GJd-Yh-RWb" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="Z0L-RO-XdI"/>
+                            <constraint firstItem="ZyM-id-dPt" firstAttribute="top" secondItem="Bcu-3y-fUS" secondAttribute="top" constant="170" id="anw-R8-0GL"/>
+                            <constraint firstItem="Bcu-3y-fUS" firstAttribute="bottom" secondItem="GJd-Yh-RWb" secondAttribute="bottom" constant="51" id="oDt-zs-BiL"/>
                         </constraints>
                     </view>
                 </viewController>
@@ -72,12 +46,6 @@
         </scene>
     </scenes>
     <resources>
-        <image name="大耳朵" width="1080" height="1080"/>
-        <systemColor name="labelColor">
-            <color white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-        </systemColor>
-        <systemColor name="systemBackgroundColor">
-            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-        </systemColor>
+        <image name="bunny" width="1500" height="1500"/>
     </resources>
 </document>

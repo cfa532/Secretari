@@ -20,10 +20,10 @@ struct HelpView: View {
                     }
                 }
                 Section(header: Text("How-to")) {
-                    Text("This App generates summary out of transcripts of user speech by calling the best AI service. There are two types of summaries, ")
+                    Text("This app generates summaries from user speech transcripts by utilizing a top-tier AI service. There are two types of summaries available: a standard summary and a checklist-style summary, referred to as a Memo. You can select the desired type by choosing the Prompt Type in the Settings. Both types of summaries can be manually edited to correct any errors.")
                 }
                 Section(header: Text("Policy")) {
-                    Text("In regarding to cancellation and refund, this App follows the policies of Apple store. With one extra restriction on the usage cap of the subscribers, which limits the monthly expense of a subscriber to about twice of the expense we are paying OpenAI for using its API. If a subscriber is over the limit, the one-time purchase of tokens can be made to continue the use of this App.")
+                    Text("Regarding cancellations and refunds, this app adheres to the policies of the Apple Store. Additionally, there is a usage cap for subscribers, limiting their monthly expenses to approximately twice the amount we pay OpenAI for using its API. If a subscriber exceeds this limit, they can make a one-time purchase of tokens to continue using the app.")
                 }
             }
         }

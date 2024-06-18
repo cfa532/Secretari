@@ -18,8 +18,6 @@ struct User :Codable, Identifiable {
     var family_name: String?
     var given_name: String?
     var email: String?
-    var balance_synced: Bool = true     // is dollar_balace on server updated after recharge?
-    // var subscription: Bool = false          // Flag indicating active subscription
 
     enum CodingKeys: String, CodingKey {
         case id, username, mid, token_count, dollar_balance, monthly_usage, password, family_name, given_name, email

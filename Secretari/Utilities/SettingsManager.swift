@@ -77,7 +77,7 @@ enum RecognizerLocale: String, CaseIterable, Codable {
     case 中文 = "zh"
     case Español = "es"     // Latin Spanish
     case Indonesia = "id"
-    case 한국인 = "kr"
+    case 한국인 = "ko"
     // fr, sp,
     var id: Self { self }
 }
