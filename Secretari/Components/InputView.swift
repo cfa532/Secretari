@@ -17,7 +17,7 @@ struct InputView: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
             HStack {
-                Text(title)
+                Text(LocalizedStringKey(title))
                     .foregroundStyle(.gray)
                     .fontWeight(.semibold)
                 .font(.footnote)
