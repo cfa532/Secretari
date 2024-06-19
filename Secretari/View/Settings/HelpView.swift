@@ -9,15 +9,13 @@ import SwiftUI
 
 struct HelpView: View {
     private let websocket = Websocket.shared
-    @State private var notice: String?
+    @State private var notice: String = "Thank you for using our services."
     
     var body: some View {
         NavigationStack {
             List {
                 Section(header: Text("Notice")) {
-                    if let notice = notice {
                         Text(notice)
-                    }
                 }
                 Section(header: Text("How-to")) {
                     Text("This app generates summaries from user speech transcripts by utilizing a top-tier AI service. There are two types of summaries available: a standard summary and a checklist-style summary, referred to as a Memo. You can select the desired type by choosing the Prompt Type in the Settings. Both types of summaries can be manually edited to correct any errors.")
@@ -34,7 +32,7 @@ struct HelpView: View {
     }
     
     private func loadNotice() {
-        Task {
+        Task { @MainActor in
             if let fetchedNotice = try await websocket.getNotice() {
                 print(fetchedNotice as Any)
                 notice = fetchedNotice

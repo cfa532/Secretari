@@ -87,30 +87,30 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Account balance in USD"
+            "value" : "Current balance (USD)"
           }
         },
         "es-419" : {
           "stringUnit" : {
-            "state" : "translated",
+            "state" : "needs_review",
             "value" : "Saldo de cuenta en USD"
           }
         },
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "残高（米ドル）："
+            "value" : "残高（USD）："
           }
         },
         "ko" : {
           "stringUnit" : {
-            "state" : "translated",
+            "state" : "needs_review",
             "value" : "USD로 표시된 계정 잔액"
           }
         },
         "zh-Hans" : {
           "stringUnit" : {
-            "state" : "translated",
+            "state" : "needs_review",
             "value" : "账户余额(USD)"
           }
         },
@@ -425,24 +425,24 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Make sure to select the right recognizable language in setting ⚙️ Otherwise the built-in speech recognizer cannot work properly."
+            "value" : "Make sure to select the correct recognizable language in the settings ⚙️. Otherwise, the built-in speech recognizer will not function properly."
           }
         },
         "es-419" : {
           "stringUnit" : {
-            "state" : "translated",
+            "state" : "needs_review",
             "value" : "Asegúrese de seleccionar el idioma reconocible correcto en la configuración ⚙️ De lo contrario, el reconocedor de voz integrado no podrá funcionar correctamente."
           }
         },
         "ja" : {
           "stringUnit" : {
-            "state" : "translated",
+            "state" : "needs_review",
             "value" : "設定⚙️ で適切な認識可能な言語を選択してください。そうしないと、内蔵の音声認識機能が正しく動作しません。"
           }
         },
         "ko" : {
           "stringUnit" : {
-            "state" : "translated",
+            "state" : "needs_review",
             "value" : "설정에서 올바른 인식 가능한 언어를 선택했는지 확인하세요. ⚙️ 그렇지 않으면 내장된 음성 인식기가 제대로 작동하지 않습니다."
           }
         },
@@ -1148,34 +1148,40 @@
     },
     "Prompt Type" : {
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Summary type"
+          }
+        },
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Tipo de mensaje"
+            "value" : "tipo de resumen"
           }
         },
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "プロンプト種類"
+            "value" : "要約タイプ"
           }
         },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "프롬프트 유형"
+            "value" : "요약 유형"
           }
         },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "提示语类型"
+            "value" : "摘要类型"
           }
         },
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "提示語類型"
+            "value" : "摘要類型"
           }
         }
       }
@@ -1219,12 +1225,12 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Press the START button to begin recording your speech. Once you press the STOP button, a summary will be generated automatically."
+            "value" : "Press the START button to begin recording your speech. Once you press the STOP button, a summary will be generated automatically by OpenAI. By default, the summary type is set to Memo, which provides a checklist of key points from your speech. Each bullet point is editable. Alternatively, you can choose a regular summary format from the Settings menu."
           }
         },
         "es-419" : {
           "stringUnit" : {
-            "state" : "translated",
+            "state" : "needs_review",
             "value" : "Presione el botón INICIO para comenzar a grabar su discurso. Una vez que presione el botón DETENER, se generará un resumen automáticamente."
           }
         },
@@ -1236,7 +1242,7 @@
         },
         "ko" : {
           "stringUnit" : {
-            "state" : "translated",
+            "state" : "needs_review",
             "value" : "연설 녹음을 시작하려면 START 버튼을 누르세요. STOP 버튼을 누르면 요약이 자동으로 생성됩니다."
           }
         },
@@ -1432,39 +1438,8 @@
         }
       }
     },
-    "Regenerate summary from transcript. Existing content will be overwritten." : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Regenerate the summary from the transcript. Existing content will be overwritten."
-          }
-        },
-        "es-419" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Regenerar el resumen a partir de la transcripción. Se sobrescribirá el contenido existente."
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "needs_review",
-            "value" : "トランスクリプトから要約を再生成します。既存のコンテンツは上書きされます。"
-          }
-        },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "성적표에서 요약을 다시 생성합니다. 기존 콘텐츠를 덮어쓰게 됩니다."
-          }
-        },
-        "zh-Hant" : {
-          "stringUnit" : {
-            "state" : "needs_review",
-            "value" : "從錄音稿中重新產生摘要。現有內容將被覆蓋。"
-          }
-        }
-      }
+    "Regenerate summary from the transcript. Existing content will be overwritten." : {
+
     },
     "Register" : {
       "localizations" : {

@@ -197,7 +197,7 @@ struct DetailView: View {
                     Image(systemName: "ellipsis")
                 })
                 .alert(isPresented: $showRedoAlert, content: {
-                    Alert(title: Text("Alert"), message: Text("Regenerate summary from transcript. Existing content will be overwritten."), primaryButton: .cancel(), secondaryButton: .destructive(Text("Yes"), action: {
+                    Alert(title: Text("Alert"), message: Text(LocalizedStringKey("Regenerate summary from the transcript. Existing content will be overwritten.")), primaryButton: .cancel(), secondaryButton: .destructive(Text("Yes"), action: {
                         Task { @MainActor in
                             // get updated settings
                             self.settings = SettingsManager.shared.getSettings()
