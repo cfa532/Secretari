@@ -15,6 +15,7 @@ class Websocket: NSObject, ObservableObject, URLSessionWebSocketDelegate, Observ
     @Published var alertItem: AlertItem?
     @Published var showAlert = false
 
+    private var entitlementManager: EntitlementManager
     private var urlSession: URLSession?
     private var wsTask: URLSessionWebSocketTask?
     private var webURL: URLComponents
@@ -22,6 +23,7 @@ class Websocket: NSObject, ObservableObject, URLSessionWebSocketDelegate, Observ
 
     static let shared = Websocket()
     private override init() {
+        entitlementManager = EntitlementManager()
         webURL = URLComponents()
         wsURL = URLComponents()
         super.init()
@@ -91,8 +93,6 @@ class Websocket: NSObject, ObservableObject, URLSessionWebSocketDelegate, Observ
                                                 userManager.persistCurrentUser()
                                             }
                                             if let eof = dict["eof"] as? Bool, eof==true {
-                                                self.isStreaming = false
-                                                self.streamedText = ""
                                                 self.cancel()
                                                 // uvicorn myapp:app --timeout-keep-alive 30 to keep idle connection open for 30s. Default is 5s.
                                             } else {
@@ -143,26 +143,22 @@ class Websocket: NSObject, ObservableObject, URLSessionWebSocketDelegate, Observ
     
     func cancel() {
         wsTask?.cancel(with: .normalClosure, reason: nil)
-        //        urlSession?.invalidateAndCancel()
+        Task { @MainActor in
+            self.isStreaming = false
+            self.streamedText = ""
+        }
     }
     
     // Might need to temporarily revise settings' value.
     @MainActor func sendToAI(_ rawText: String, prompt: String, action: @escaping (_ summary: String)->Void) {
         if let user = UserManager.shared.currentUser {
-            // logic here to distinguish between subscribers and others.
-            // non-subscribers use gpt-3.5, if there is still balance. Not memo prompt
             let settings = SettingsManager.shared.getSettings()
-            var promptType = settings.promptType
-            if user.dollar_balance <= 0.1, !EntitlementManager.isSubscriber {
-                promptType = .summary       // need further test
-            }
-            
-            if let sprompt = settings.prompt[promptType] {
+            if let sprompt = settings.prompt[settings.promptType] {
                 let msg = [
                     "input": [
                         "prompt": prompt=="" ? sprompt[settings.selectedLocale] as Any : prompt,    // use defualt prompt if not provided as parameter
                         "rawtext": rawText,
-                        "subscription": EntitlementManager.isSubscriber
+                        "subscription": entitlementManager.hasPro
                     ],
                     "parameters": [
                         "llm": settings.llmParams["llm"] as Any,

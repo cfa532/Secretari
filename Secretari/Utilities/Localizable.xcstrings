@@ -835,13 +835,13 @@
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "余额不足。请购买消耗品或订阅。"
+            "value" : "账户余额不足。请购买消耗品或订阅。"
           }
         },
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "餘額低。請購買消耗品或訂閱。"
+            "value" : "賬戶餘額低。請購買消耗品或訂閱。"
           }
         }
       }
@@ -932,13 +932,13 @@
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "超出每月最高支出。如有必要，请购买消耗品。"
+            "value" : "已超出当月限额。如有必要，请另购消耗品。"
           }
         },
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "超出每月最高支出。如有需要，購買消耗品。"
+            "value" : "已超出當月限額。如有需要，請另購消耗品。"
           }
         }
       }
