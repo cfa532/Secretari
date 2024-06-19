@@ -92,7 +92,6 @@ struct AccountDetailView: View {
                         SettingsRowView(imageName: nil, title: title, tintColor: .secondary)
                         Spacer()
                         Text("1.0.0")
-                            .font(.subheadline)
                     }
                     
                     HStack {
@@ -104,7 +103,17 @@ struct AccountDetailView: View {
                             Text(String(count))
                         }
                     }
-                    if !entitlementManager.hasPro {
+                    if entitlementManager.hasPro {
+                        HStack {
+                            Text("Subscription status")
+                                .font(.subheadline)
+                                .foregroundStyle(.secondary)
+                            Spacer()
+                            Text("✔︎")
+                                .foregroundColor(.green)
+                                .font(.system(size: 25)) // Adjust the size as needed
+                        }
+                    } else {
                         if let balance = user?.dollar_balance {
                             HStack {
                                 Text("Account balance in USD:")

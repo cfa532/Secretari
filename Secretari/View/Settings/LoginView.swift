@@ -46,6 +46,7 @@ struct LoginView: View {
                             if let dict = dict as? [String: String] {
                                 self.alertMessage = dict["detail"]  // {detail: message} received from FastAPI server
                             }
+                            self.submitted = false
                             self.showAlert = true
                             return
                         }

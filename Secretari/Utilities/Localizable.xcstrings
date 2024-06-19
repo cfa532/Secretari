@@ -10,6 +10,9 @@
     "*" : {
 
     },
+    "✔︎" : {
+
+    },
     "1. Open the Settings app.\n2. Tap your name.\n3. Tap Subscriptions." : {
       "localizations" : {
         "es-419" : {
@@ -1937,6 +1940,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "AI回答中。。。"
+          }
+        }
+      }
+    },
+    "Subscription status" : {
+      "localizations" : {
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "訂閱狀態"
           }
         }
       }
