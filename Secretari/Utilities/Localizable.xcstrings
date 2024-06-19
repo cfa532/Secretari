@@ -13,6 +13,9 @@
     "✔︎" : {
 
     },
+    "✖︎" : {
+
+    },
     "1. Open the Settings app.\n2. Tap your name.\n3. Tap Subscriptions." : {
       "localizations" : {
         "es-419" : {
@@ -1946,6 +1949,30 @@
     },
     "Subscription status" : {
       "localizations" : {
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "suscripción"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "サブスクリプション"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "신청"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "订阅状态"
+          }
+        },
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",

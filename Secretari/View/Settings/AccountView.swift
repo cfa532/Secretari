@@ -109,9 +109,15 @@ struct AccountDetailView: View {
                                 .font(.subheadline)
                                 .foregroundStyle(.secondary)
                             Spacer()
-                            Text("✔︎")
-                                .foregroundColor(.green)
-                                .font(.system(size: 25)) // Adjust the size as needed
+                            if entitlementManager.hasPro {
+                                Text("✔︎")
+                                    .foregroundStyle(.green)
+                                    .font(.system(size: 25))
+                            } else {
+                                Text("✖︎")
+                                    .foregroundStyle(.red)
+                                    .font(.system(size: 25))
+                            }
                         }
                     } else {
                         if let balance = user?.dollar_balance {
