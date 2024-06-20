@@ -9,12 +9,13 @@ import SwiftUI
 
 struct AccountView: View {
     @EnvironmentObject var userManager: UserManager
+    @EnvironmentObject var entitlementManager: EntitlementManager
 
     var body: some View {
         switch userManager.loginStatus {
         case .signedIn:
             // account details
-            AccountDetailView()
+            AccountDetailView(isSubscriber: entitlementManager.hasPro)
         case .signedOut:
             // login page
             LoginView()
@@ -29,7 +30,8 @@ struct AccountDetailView: View {
     @State private var showAlert = false
     @State private var user = UserManager.shared.currentUser
     @EnvironmentObject var userManager: UserManager
-    @EnvironmentObject var entitlementManager: EntitlementManager
+//    @EnvironmentObject var entitlementManager: EntitlementManager
+    @State var isSubscriber: Bool
 
     private let formatterUSD = {
         let formatter = NumberFormatter()
@@ -103,13 +105,13 @@ struct AccountDetailView: View {
                             Text(String(count))
                         }
                     }
-                    if entitlementManager.hasPro {
+                    if isSubscriber {
                         HStack {
                             Text("Subscription status")
                                 .font(.subheadline)
                                 .foregroundStyle(.secondary)
                             Spacer()
-                            if entitlementManager.hasPro {
+                            if isSubscriber {
                                 Text("✔︎")
                                     .foregroundStyle(.green)
                                     .font(.system(size: 25))

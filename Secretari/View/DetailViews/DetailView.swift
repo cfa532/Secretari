@@ -196,23 +196,25 @@ struct DetailView: View {
                 }, label: {
                     Image(systemName: "ellipsis")
                 })
-                .alert(isPresented: $showRedoAlert, content: {
-                    Alert(title: Text("Alert"), message: Text(LocalizedStringKey("Regenerate summary from the transcript. Existing content will be overwritten.")), primaryButton: .cancel(), secondaryButton: .destructive(Text("Yes"), action: {
-                        Task { @MainActor in
-                            // get updated settings
-                            self.settings = SettingsManager.shared.getSettings()
-                            // clear old summary,
-                            if settings.promptType == .memo {
-                                record.memo.removeAll()
-                            } else {
-                                record.summary.removeAll()
-                            }
-                            websocket.sendToAI(record.transcript, prompt: "") { result in
-                                record.locale = settings.selectedLocale       // update current locale of the record
-                                record.resultFromAI(taskType: .summarize, summary: result)
-                            }
+                .alert("Alert", isPresented: $showRedoAlert, actions: {
+                    Button("No", role: .cancel) { }
+                    Button("Yes") {
+                        // get updated settings
+                        self.settings = SettingsManager.shared.getSettings()
+                        // clear old summary,
+                        if settings.promptType == .memo {
+                            record.memo.removeAll()
+                        } else {
+                            record.summary.removeAll()
                         }
-                    }))
+                        websocket.sendToAI(record.transcript, prompt: "") { result in
+                            record.locale = settings.selectedLocale       // update current locale of the record
+                            record.resultFromAI(taskType: .summarize, summary: result)
+                        }
+                    }
+                }, message: {
+                    Text(LocalizedStringKey("Regenerate summary from the transcript. Existing content will be overwritten."))
+                        .font(.title)
                 })
                 .sheet(isPresented: $showShareSheet) {
                     ShareSheet(activityItems: [textToShare()])
