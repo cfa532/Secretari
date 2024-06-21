@@ -195,6 +195,10 @@ struct DetailView: View {
                     }
                 }, label: {
                     Image(systemName: "ellipsis")
+//                        .resizable()
+                        .frame(width: 23, height: 23)
+                        .padding(7)
+                        .contentShape(Rectangle())      // increase tappable area
                 })
                 .alert("Alert", isPresented: $showRedoAlert, actions: {
                     Button("No", role: .cancel) { }
@@ -273,6 +277,8 @@ extension DetailView: TimerDelegate {
             modelContext.insert(record)
             speechRecognizer.transcript = ""
             self.settings = SettingsManager.shared.getSettings()
+            
+            // If no prompt given, use the system setting's prompt.
             websocket.sendToAI(record.transcript, prompt: "") { result in
                 record.locale = settings.selectedLocale
                 record.resultFromAI(taskType: .summarize, summary: result)

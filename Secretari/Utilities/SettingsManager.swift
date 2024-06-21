@@ -17,23 +17,23 @@ class SettingsManager {
             saveSettings()
         }
     }
-
+    
     init() {
         settings = UserDefaultsManager.shared.get(for: "appSettings", type: Settings.self) ?? AppConstants.defaultSettings
     }
-
+    
     func getSettings() -> Settings {
         return settings
     }
-
+    
     func updateSettings(_ newSettings: Settings) {
         settings = newSettings
     }
-
+    
     private func saveSettings() {
         UserDefaultsManager.shared.set(settings, for: "appSettings")
     }
-
+    
     private func loadSettings() -> Settings? {
         UserDefaultsManager.shared.get(for: "appSettings", type: Settings.self)
     }
@@ -48,15 +48,16 @@ struct Settings :Codable {
     var audioSilentDB: String
     var selectedLocale: RecognizerLocale
     var promptType: PromptType       // Two type: Summary and Memo. Memo is a list of bulletins.
-//    var llmModel: LLMModel
+    //    var llmModel: LLMModel
     var llmParams: [String: String]  // llm parameters
     
     enum CodingKeys: String, CodingKey {
         case prompt, serverURL, audioSilentDB, selectedLocale, promptType, llmParams
     }
-   
+    
     enum PromptType: String, CaseIterable, Codable {
-        case summary, memo
+        case summary = "summary"
+        case memo = "memo"
         var id: Self { self }
         
         // when non-subscriber get low balance, only summary type is allowed.
@@ -98,8 +99,8 @@ final class AppConstants {
     static let MaxRecordSeconds = 28800     // max working hours, 8hrs
     static let NumRecordsInSwiftData = 30   // number of records kept locally by SwiftData
     static let RecorderTimerFrequency = 10.0  // frequency in seconds to run update() of timer.
-
-    static let PrimaryModel = LLMModel.GPT_4o      // 
+    
+    static let PrimaryModel = LLMModel.GPT_4o      //
     static let SignupBonus = 0.2                // the initial dollar balance to give user for free trial.
     static let DefaultPassword = "zaq12WSX"
     static let defaultSettings = Settings(prompt: defaultPrompt,
@@ -117,6 +118,7 @@ final class AppConstants {
             RecognizerLocale.日本語: "あなたはインテリジェントな秘書です。以下のテキストから重要な内容を抽出し、包括的な要約を作成してください。適切に段落を分けてください。出力形式はプレーンテキストでお願いします。",
             RecognizerLocale.Español: "Eres un secretario inteligente. Extrae el contenido importante del siguiente texto y haz un resumen completo. Divide el texto en secciones apropiadas. El formato de salida debe ser texto plano. ",
             RecognizerLocale.Indonesia: "Anda adalah sekretaris cerdas. Ekstrak konten penting dari teks berikut dan buat ringkasan yang komprehensif. Silakan bagi menjadi beberapa bagian yang sesuai. Format keluaran harus dalam teks biasa. ",
+            RecognizerLocale.한국인: "당신은 똑똑한 비서입니다. 다음 텍스트에서 중요한 내용을 추출하여 포괄적인 요약을 작성하세요. 적절한 섹션으로 나누세요. ",
         ],
         Settings.PromptType.memo: [
             RecognizerLocale.English: """
@@ -232,9 +234,31 @@ final class AppConstants {
               ]
               
               rawtext:
-              
-          """,
+            
+            """,
+            RecognizerLocale.한국인: """
+            당신은 똑똑한 조수입니다. 아래 원문에서 중요한 내용을 추출하여 종합적인 메모를 작성해 보세요. 출력 형식은 다음 JSON 시퀀스를 사용합니다. 여기서 제목은 메모의 항목 내용입니다.
+              [
+                {
+                  "id": 1,
+                  "title": "Item 1",
+                  "isChecked": false
+                },
+                {
+                  "id": 2,
+                  "title": "Item 2",
+                  "isChecked": false
+                },
+                {
+                  "id": 3,
+                  "title": "Item 3",
+                  "isChecked": false
+                }
+              ]
+
+              rawtext:
+
+            """
         ]
     ]
-    
 }

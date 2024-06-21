@@ -617,16 +617,22 @@
     },
     "Indonesia" : {
       "localizations" : {
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Indonesia🇮🇩"
+          }
+        },
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "インドネシア"
+            "value" : "インドネシア🇮🇩"
           }
         },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "인도네시아"
+            "value" : "인도네시아🇮🇩"
           }
         },
         "zh-Hans" : {
@@ -1295,7 +1301,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Press the START button to begin recording your speech. Once you press the STOP button, a summary will be generated automatically by OpenAI. By default, the summary type is set to Memo, which provides a checklist of key points from your speech. Each bullet point is editable. Alternatively, you can choose a regular summary format from the Settings menu."
+            "value" : "Press the START button to begin recording your speech. Once you press the STOP button, a summary will be generated automatically by OpenAI."
           }
         },
         "es-419" : {
@@ -2044,6 +2050,7 @@
       }
     },
     "Streaming from AI..." : {
+      "extractionState" : "stale",
       "localizations" : {
         "es-419" : {
           "stringUnit" : {

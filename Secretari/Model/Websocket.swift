@@ -29,9 +29,9 @@ class Websocket: NSObject, ObservableObject, URLSessionWebSocketDelegate, Observ
         super.init()
         self.urlSession = URLSession(configuration: .default, delegate: self, delegateQueue: OperationQueue())
         webURL.scheme = "https"
-        webURL.host = "leither.uk"
+        webURL.host = "secretari.leither.uk"
         wsURL.scheme = "wss"
-        wsURL.host = "leither.uk"
+        wsURL.host = "secretari.leither.uk"
 //        webURL.scheme = "http"
 //        webURL.host = "localhost"
 //        wsURL.scheme = "ws"
@@ -79,10 +79,10 @@ class Websocket: NSObject, ObservableObject, URLSessionWebSocketDelegate, Observ
                             do {
                                 // check the websocekt endpoint in FastAPI server code for corresponding message types.
                                 if let dict = try JSONSerialization.jsonObject(with: data) as? NSDictionary, let type = dict["type"] as? String {
-                                    print("Data from ws: ", dict)
                                     if type == "result" {
                                         if let answer = dict["answer"] as? String {
                                             // send reply from AI to display
+                                            print("Result from AI: ", dict)
                                             action(answer)
                                             
                                             // bookkeeping. Update token count
@@ -108,6 +108,7 @@ class Websocket: NSObject, ObservableObject, URLSessionWebSocketDelegate, Observ
                                     } else {
                                         // type == "error". something wrong.
                                         if let message = dict["message"] as? String {
+                                            print("Message from ws: ", dict)
                                             self.alertItem = AlertContext.invalidData
                                             self.alertItem?.message = Text(LocalizedStringKey(message))
                                             self.showAlert = true
@@ -151,54 +152,49 @@ class Websocket: NSObject, ObservableObject, URLSessionWebSocketDelegate, Observ
     
     // Might need to temporarily revise settings' value.
     @MainActor func sendToAI(_ rawText: String, prompt: String, action: @escaping (_ summary: String)->Void) {
-        if let user = UserManager.shared.currentUser {
-            let settings = SettingsManager.shared.getSettings()
-            if let sprompt = settings.prompt[settings.promptType] {
-                let msg = [
-                    "input": [
-                        "prompt": prompt=="" ? sprompt[settings.selectedLocale] as Any : prompt,    // use defualt prompt if not provided as parameter
-                        "rawtext": rawText,
-                        "subscription": entitlementManager.hasPro
-                    ],
-                    "parameters": [
-                        "llm": settings.llmParams["llm"] as Any,
-                        "temperature": settings.llmParams["temperature"] as Any,
-                    ]] as [String : Any]
+        let settings = SettingsManager.shared.getSettings()
+        if let sprompt = settings.prompt[settings.promptType], let str = sprompt[settings.selectedLocale] ?? sprompt[RecognizerLocale.English] {
+            let msg = [
+                "input": [
+                    "prompt": prompt=="" ? str : prompt,    // use defualt prompt if not provided as parameter
+                    "prompt_type": settings.promptType.rawValue,
+                    "rawtext": rawText,
+                    "subscription": entitlementManager.hasPro
+                ],
+                "parameters": [
+                    "llm": settings.llmParams["llm"] as Any,
+                    "temperature": settings.llmParams["temperature"] as Any,
+                ]] as [String : Any]
+            
+            // Convert String to Data
+            let jsonData = try! JSONSerialization.data(withJSONObject: msg)
+            if let jsonString = String(data: jsonData, encoding: .utf8) {
+                print("Websocket sending: ", jsonString)
                 
-                // Convert String to Data
-                let jsonData = try! JSONSerialization.data(withJSONObject: msg)
-                if let jsonString = String(data: jsonData, encoding: .utf8) {
-                    print("Websocket sending: ", jsonString)
+                if let activeTask = self.wsTask, activeTask.state != .running {
+                    // cancel hanging wsTask if any
+                    self.wsTask?.cancel()
+                }
+                if let accessToken = UserManager.shared.userToken {
+                    self.wsURL.path = EndPoint.websocket.rawValue
+                    self.wsURL.query = "token="+accessToken
+                    self.wsTask = urlSession?.webSocketTask(with: self.wsURL.url!)
                     
-                    if let activeTask = self.wsTask, activeTask.state != .running {
-                        // cancel hanging wsTask if any
-                        self.wsTask?.cancel()
-                    }
-                    if let accessToken = UserManager.shared.userToken {
-                        self.wsURL.path = EndPoint.websocket.rawValue
-                        self.wsURL.query = "token="+accessToken
-                        self.wsTask = urlSession?.webSocketTask(with: self.wsURL.url!)
-
-                        self.send(jsonString) { error in
-                            Task { @MainActor in
-                                self.alertItem = AlertContext.unableToComplete
-                                self.showAlert = true
-                            }
+                    self.send(jsonString) { error in
+                        Task { @MainActor in
+                            self.alertItem = AlertContext.unableToComplete
+                            self.showAlert = true
                         }
-                        self.receive(action: action)
-                        self.resume()
-                    } else {
-                        self.alertItem = AlertContext.invalidUserData
-                        self.alertItem?.message = Text("Invalid access token")
-                        self.showAlert = true
                     }
+                    self.receive(action: action)
+                    self.resume()
+                } else {
+                    self.alertItem = AlertContext.invalidUserData
+                    self.alertItem?.message = Text("Invalid access token")
+                    self.showAlert = true
                 }
             }
         }
-    }
-    
-    func createUser(user: User) {
-        // send user iden
     }
 }
 

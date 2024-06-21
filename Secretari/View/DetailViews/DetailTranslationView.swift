@@ -24,7 +24,11 @@ struct DetailTranslationView: View {
                 if websocket.isStreaming {
                     ScrollViewReader { proxy in
                         let message = websocket.streamedText
-                        Label(NSLocalizedString("Streaming from AI...", comment: ""), systemImage: "brain.head.profile.fill")
+                        Label {
+                            DotAnimationView(title: "Streaming from AI")
+                        } icon: {
+                            Image(systemName: "brain.head.profile.fill")
+                        }
                         Text(message)
                             .id(message)
                             .onChange(of: message, {

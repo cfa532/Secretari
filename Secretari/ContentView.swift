@@ -80,10 +80,10 @@ struct ContentView: View {
                     } label: {
                         Image(systemName: "person.crop.circle")
                             .resizable()
-                            .frame(width: 20, height: 20)
+                            .frame(width: 23, height: 23)
                             .foregroundColor(.primary)
                             .opacity(0.7)
-                            .padding()
+                            .padding(7)
                             .contentShape(Rectangle())      // increase tappable area
                     }
                 }
@@ -110,8 +110,9 @@ struct ContentView: View {
             Button(action: {
                 self.isRecording = true
                 self.showDetailView = true        // active navigation link to detail view
-                Task {
+                Task { @MainActor in
                     let settings = SettingsManager.shared.getSettings()
+                    self.speechRecognizer.transcript = ""
                     await self.speechRecognizer.setup(locale: settings.selectedLocale.rawValue)
                     await self.speechRecognizer.startTranscribing()
                 }
