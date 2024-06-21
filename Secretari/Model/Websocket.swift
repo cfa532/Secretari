@@ -216,7 +216,7 @@ enum EndPoint: String {
     case productIDs     = "/secretari/productids"       // get products ID from server
     case notice         = "/secretari/notice"           // anything new will be displaced on NoticeView
     case register       = "/secretari/users/register"
-    case updateUser     = "/secretari/users/update"
+    case updateUser     = "/secretari/users"
     case temporaryUser  = "/secretari/users/temp"
     case websocket      = "/secretari/ws/"
 }
@@ -250,13 +250,33 @@ extension Websocket {
     
     func updateUser(_ user: User) async throws -> [String: Any]? {
         self.webURL.path = EndPoint.updateUser.rawValue
-        var request = URLRequest(url: self.webURL.url!)
-        request.httpMethod = "POST"
+        guard let url = self.webURL.url else {
+            print("Invalid URL")
+            return nil
+        }
+        var request = URLRequest(url: url)
+        request.httpMethod = "PUT"
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")
-        
-        let body: [String: String] = ["username": user.username, "password": user.password, "email": user.email ?? "", "family_name": user.family_name ?? "", "given_name": user.given_name ?? ""]
-        request.httpBody = try? JSONSerialization.data(withJSONObject: body)
-        guard let accessToken = UserManager.shared.userToken else { return nil}
+
+        let body: [String: String] = [
+            "username": user.username,
+            "password": user.password.trimmingCharacters(in: [" "]),
+            "email": user.email ?? "",
+            "family_name": user.family_name ?? "",
+            "given_name": user.given_name ?? ""
+        ]
+
+        do {
+            request.httpBody = try JSONSerialization.data(withJSONObject: body)
+        } catch {
+            print("Error serializing JSON: \(error)")
+            return nil
+        }
+
+        guard let accessToken = UserManager.shared.userToken else {
+            print("Access token is missing")
+            return nil
+        }
         request.addValue("Bearer \(accessToken)", forHTTPHeaderField: "Authorization")
         
         let (data, response) = try await URLSession.shared.data(for: request)

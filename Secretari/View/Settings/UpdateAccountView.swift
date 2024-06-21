@@ -27,7 +27,7 @@ struct UpdateAccountView: View {
                 Section(header: Text("Information")) {
 
                     InputView(text: $user.username, title: "Username", placeHolder: user.username, isSecureField: false, required: true)
-                        .padding(.top, 40)
+                        .padding(.top, 10)
                         .textInputAutocapitalization(.never)
                         .disabled(true)
                     
@@ -82,11 +82,6 @@ struct UpdateAccountView: View {
                            Text("Please confirm the password." )
                        }
                 }
-            }
-            .alert(isPresented: $userManager.showAlert) {
-                Alert(title: userManager.alertItem?.title ?? Text("Alert"),
-                      message: userManager.alertItem?.message,
-                      dismissButton: userManager.alertItem?.dismissButton)
             }
         }
     }
