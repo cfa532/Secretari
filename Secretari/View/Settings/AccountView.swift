@@ -90,13 +90,6 @@ struct AccountDetailView: View {
                         }
                     }
                     HStack {
-                        let title = Text("Version").font(.subheadline).foregroundStyle(.secondary)
-                        SettingsRowView(imageName: nil, title: title, tintColor: .secondary)
-                        Spacer()
-                        Text("1.0.0")
-                    }
-                    
-                    HStack {
                         Text("Token usage:")
                             .font(.subheadline)
                             .foregroundStyle(.gray)
@@ -170,15 +163,27 @@ struct AccountDetailView: View {
                 })
 
             }
+            // display version at bottom
+            Spacer()
+            Text(appVersion())
+                .font(.subheadline)
+                .foregroundStyle(.gray)
         }
     }
         
     func fullName() -> String {
         return (user?.family_name ?? "No") + " " + (user?.given_name ?? "one")
     }
+    
+    func appVersion() -> String {
+        if let version = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String {
+            return "version@" + version
+        }
+        return " "
+    }
 }
 
 #Preview {
-    AccountView()
-        .environment(UserManager.shared)
+    AccountDetailView(isSubscriber: false)
+        .environmentObject(UserManager.shared)
 }

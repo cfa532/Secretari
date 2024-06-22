@@ -57,7 +57,7 @@ struct Settings :Codable {
     
     enum PromptType: String, CaseIterable, Codable {
         case summary = "summary"
-        case memo = "memo"
+        case checklist = "checklist"
         var id: Self { self }
         
         // when non-subscriber get low balance, only summary type is allowed.
@@ -107,7 +107,7 @@ final class AppConstants {
                                           serverURL: "leither.uk/secretari",
                                           audioSilentDB: "-40",
                                           selectedLocale: Utility.systemLanguage(),
-                                          promptType: Settings.PromptType.memo,
+                                          promptType: Settings.PromptType.checklist,
                                           llmParams: ["llm":"openai", "temperature":"0.0"]
     )
     
@@ -120,7 +120,7 @@ final class AppConstants {
             RecognizerLocale.Indonesia: "Anda adalah sekretaris cerdas. Ekstrak konten penting dari teks berikut dan buat ringkasan yang komprehensif. Silakan bagi menjadi beberapa bagian yang sesuai. Format keluaran harus dalam teks biasa. ",
             RecognizerLocale.한국인: "당신은 똑똑한 비서입니다. 다음 텍스트에서 중요한 내용을 추출하여 포괄적인 요약을 작성하세요. 적절한 섹션으로 나누세요. ",
         ],
-        Settings.PromptType.memo: [
+        Settings.PromptType.checklist: [
             RecognizerLocale.English: """
             You are a smart assistant. Extract the important content from the rawtext below and make a comprehensive memo. The output format uses the following JSON sequence, where title is the item content of the memo.
              [

@@ -25,7 +25,7 @@ struct HelpView: View {
                 }
             }
         }
-        .navigationTitle("Bulletin Board")
+        .navigationTitle("")
         .onAppear {
             loadNotice()
         }

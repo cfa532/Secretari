@@ -1,0 +1,203 @@
+{
+  "identifier" : "7893F7C4",
+  "nonRenewingSubscriptions" : [
+
+  ],
+  "products" : [
+    {
+      "displayPrice" : "8.99",
+      "familyShareable" : false,
+      "internalID" : "6502165460",
+      "localizations" : [
+        {
+          "description" : "Tokens consumibles para el modelo OpenAI",
+          "displayName" : "Comprar fichas",
+          "locale" : "es_ES"
+        },
+        {
+          "description" : "OpenAIモデルの消費可能なトークン",
+          "displayName" : "必要に応じてトークンを購入する",
+          "locale" : "ja"
+        },
+        {
+          "description" : "Consumable tokens for using OpenAI model",
+          "displayName" : "Purchase tokens as needed",
+          "locale" : "en_US"
+        },
+        {
+          "description" : "OpenAI 모델용 소비형 토큰",
+          "displayName" : "필요에 따라 토큰 구매",
+          "locale" : "ko"
+        },
+        {
+          "description" : "調用最新OpenAI大語言模型所需 Token，按需使用。",
+          "displayName" : "根據需要購買tokens",
+          "locale" : "zh_CN"
+        }
+      ],
+      "productID" : "890842",
+      "referenceName" : "One time purchase",
+      "type" : "Consumable"
+    }
+  ],
+  "settings" : {
+    "_applicationInternalID" : "6499114177",
+    "_developerTeamID" : "96LBXG78A7",
+    "_failTransactionsEnabled" : false,
+    "_lastSynchronizedDate" : 740718533.63865495,
+    "_locale" : "en_US",
+    "_storefront" : "USA",
+    "_storeKitErrors" : [
+      {
+        "current" : null,
+        "enabled" : false,
+        "name" : "Load Products"
+      },
+      {
+        "current" : null,
+        "enabled" : false,
+        "name" : "Purchase"
+      },
+      {
+        "current" : null,
+        "enabled" : false,
+        "name" : "Verification"
+      },
+      {
+        "current" : null,
+        "enabled" : false,
+        "name" : "App Store Sync"
+      },
+      {
+        "current" : null,
+        "enabled" : false,
+        "name" : "Subscription Status"
+      },
+      {
+        "current" : null,
+        "enabled" : false,
+        "name" : "App Transaction"
+      },
+      {
+        "current" : null,
+        "enabled" : false,
+        "name" : "Manage Subscriptions Sheet"
+      },
+      {
+        "current" : null,
+        "enabled" : false,
+        "name" : "Refund Request Sheet"
+      },
+      {
+        "current" : null,
+        "enabled" : false,
+        "name" : "Offer Code Redeem Sheet"
+      }
+    ]
+  },
+  "subscriptionGroups" : [
+    {
+      "id" : "21493690",
+      "localizations" : [
+
+      ],
+      "name" : "Bunny0",
+      "subscriptions" : [
+        {
+          "adHocOffers" : [
+
+          ],
+          "codeOffers" : [
+
+          ],
+          "displayPrice" : "8.99",
+          "familyShareable" : false,
+          "groupNumber" : 1,
+          "internalID" : "6503933928",
+          "introductoryOffer" : null,
+          "localizations" : [
+            {
+              "description" : "Full month use of top tier AI model.",
+              "displayName" : "Monthly plan",
+              "locale" : "en_US"
+            },
+            {
+              "description" : "頂級人工智慧模型的全月使用",
+              "displayName" : "每月計劃",
+              "locale" : "zh_CN"
+            },
+            {
+              "description" : "Uso mensual completo del modelo de IA",
+              "displayName" : "Plan mensual",
+              "locale" : "es_ES"
+            },
+            {
+              "description" : "トップレベルのAIモデルを1か月間使用",
+              "displayName" : "月額プラン",
+              "locale" : "ja"
+            },
+            {
+              "description" : "최상위 AI 모델을 한 달 내내 사용",
+              "displayName" : "월간 요금제",
+              "locale" : "ko"
+            }
+          ],
+          "productID" : "monthly.bunny0",
+          "recurringSubscriptionPeriod" : "P1M",
+          "referenceName" : "Monthly plan",
+          "subscriptionGroupID" : "21493690",
+          "type" : "RecurringSubscription"
+        },
+        {
+          "adHocOffers" : [
+
+          ],
+          "codeOffers" : [
+
+          ],
+          "displayPrice" : "89.99",
+          "familyShareable" : false,
+          "groupNumber" : 2,
+          "internalID" : "6503933949",
+          "introductoryOffer" : null,
+          "localizations" : [
+            {
+              "description" : "ビジネスでAIアシスタントを1年間活用",
+              "displayName" : "年間計画",
+              "locale" : "ja"
+            },
+            {
+              "description" : "AI 비즈니스 어시스턴트 1년간 사용",
+              "displayName" : "연간 계획",
+              "locale" : "ko"
+            },
+            {
+              "description" : "Un año completo de uso del asistente de IA",
+              "displayName" : "plan anual",
+              "locale" : "es_ES"
+            },
+            {
+              "description" : "在您的業務中使用人工智慧助理一整年",
+              "displayName" : "年度計劃",
+              "locale" : "zh_CN"
+            },
+            {
+              "description" : "A full year use of AI business assistant",
+              "displayName" : "Yearly plan",
+              "locale" : "en_US"
+            }
+          ],
+          "productID" : "Yearly.bunny0",
+          "recurringSubscriptionPeriod" : "P1Y",
+          "referenceName" : "Yearly plan",
+          "subscriptionGroupID" : "21493690",
+          "type" : "RecurringSubscription"
+        }
+      ]
+    }
+  ],
+  "version" : {
+    "major" : 3,
+    "minor" : 0
+  }
+}

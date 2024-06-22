@@ -63,5 +63,5 @@ struct LocalePicker: View {
 }
 
 #Preview {
-    LocalePicker(promptType: .memo, record: .constant(AudioRecord.sampleData[0]))
+    LocalePicker(promptType: .checklist, record: .constant(AudioRecord.sampleData[0]))
 }

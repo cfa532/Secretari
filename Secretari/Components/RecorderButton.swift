@@ -9,21 +9,25 @@ import SwiftUI
 
 struct RecorderButton: View {
     @Binding var isRecording: Bool
-    let action: ()->Void
-    
+    let action: () -> Void
+
     var body: some View {
         HStack {
             Button(action: {
                 isRecording.toggle()
                 action()
             }, label: {
-                Text(self.isRecording ? "Stop":"Start")
+                Text(self.isRecording ? "Stop" : "Start")
                     .padding(24)
                     .font(.title)
                     .background(Color.white)
-                    .foregroundColor(.red)
+                    .foregroundStyle(isRecording ? .red.opacity(0.8) : .red)
                     .clipShape(Circle())
                     .shadow(radius: 5)
+                    .overlay(
+                        Circle()
+                            .stroke(isRecording ? Color.red.opacity(0.8) : Color.clear, lineWidth: 4)
+                    )
             })
             if isRecording {
                 TimeCounter()

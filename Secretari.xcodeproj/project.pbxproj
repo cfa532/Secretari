@@ -43,7 +43,6 @@
 		468B0B6A2BEF29EE00C6D2FF /* IdentifierManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 468B0B692BEF29EE00C6D2FF /* IdentifierManager.swift */; };
 		469495B12C1B084B00F87E8C /* DotAnimationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 469495B02C1B084B00F87E8C /* DotAnimationView.swift */; };
 		469495B32C1E778500F87E8C /* HelpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 469495B22C1E778500F87E8C /* HelpView.swift */; };
-		46DA71392BD7FB60001A3685 /* NetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46DA71382BD7FB60001A3685 /* NetworkManager.swift */; };
 		46DA713C2BD7FBFB001A3685 /* APError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46DA713A2BD7FBFB001A3685 /* APError.swift */; };
 		46DA713D2BD7FBFB001A3685 /* Alert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46DA713B2BD7FBFB001A3685 /* Alert.swift */; };
 		46DA71412BD8C95C001A3685 /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 46DA71402BD8C95C001A3685 /* Localizable.xcstrings */; };
@@ -108,15 +107,16 @@
 		4623C6F32C0471E3006CB3D1 /* UpdateAccountView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateAccountView.swift; sourceTree = "<group>"; };
 		4623C6F72C055828006CB3D1 /* InputView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputView.swift; sourceTree = "<group>"; };
 		4623C6FA2C06C531006CB3D1 /* SettingsRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsRowView.swift; sourceTree = "<group>"; };
+		4627FAB92C2677BF007D156C /* Bounny.storekit */ = {isa = PBXFileReference; lastKnownFileType = text; name = Bounny.storekit; path = Secretari/Bounny.storekit; sourceTree = "<group>"; };
 		46285DCB2C0AC91900C83F43 /* EntitlementManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EntitlementManager.swift; sourceTree = "<group>"; };
 		46285DCD2C0B56B000C83F43 /* SubscriptionsManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SubscriptionsManager.swift; sourceTree = "<group>"; };
 		467CC9462C082B3600FD5DC2 /* SecretariDebug.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = SecretariDebug.entitlements; sourceTree = "<group>"; };
 		467CC9492C08767000FD5DC2 /* PurchaseView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PurchaseView.swift; sourceTree = "<group>"; };
 		468B0B652BEDB83900C6D2FF /* TappablePadding.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TappablePadding.swift; sourceTree = "<group>"; };
 		468B0B692BEF29EE00C6D2FF /* IdentifierManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IdentifierManager.swift; sourceTree = "<group>"; };
+		468EC94A2C26B5FC001B4691 /* Article.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = Article.md; sourceTree = "<group>"; };
 		469495B02C1B084B00F87E8C /* DotAnimationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DotAnimationView.swift; sourceTree = "<group>"; };
 		469495B22C1E778500F87E8C /* HelpView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HelpView.swift; sourceTree = "<group>"; };
-		46DA71382BD7FB60001A3685 /* NetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkManager.swift; sourceTree = "<group>"; };
 		46DA713A2BD7FBFB001A3685 /* APError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = APError.swift; sourceTree = "<group>"; };
 		46DA713B2BD7FBFB001A3685 /* Alert.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Alert.swift; sourceTree = "<group>"; };
 		46DA71402BD8C95C001A3685 /* Localizable.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = Localizable.xcstrings; sourceTree = "<group>"; };
@@ -170,6 +170,7 @@
 		461ADD4E2BD2A0AC00C0DD94 = {
 			isa = PBXGroup;
 			children = (
+				4627FAB92C2677BF007D156C /* Bounny.storekit */,
 				461797D72C0771620034B213 /* Secretai.storekit */,
 				461ADD592BD2A0AC00C0DD94 /* Secretari */,
 				461ADD6C2BD2A0AE00C0DD94 /* SecretariTests */,
@@ -204,6 +205,7 @@
 				461ADD602BD2A0AD00C0DD94 /* Assets.xcassets */,
 				461ADD622BD2A0AD00C0DD94 /* Preview Content */,
 				4623C6EB2C02B689006CB3D1 /* ContentView.swift */,
+				468EC94A2C26B5FC001B4691 /* Article.md */,
 			);
 			path = Secretari;
 			sourceTree = "<group>";
@@ -274,7 +276,6 @@
 			isa = PBXGroup;
 			children = (
 				46DA71362BD7FB32001A3685 /* Alerts */,
-				46DA71382BD7FB60001A3685 /* NetworkManager.swift */,
 				46DA71402BD8C95C001A3685 /* Localizable.xcstrings */,
 				46DA71422BD8D724001A3685 /* Utilities.swift */,
 				46FAC60A2BE36A8C0013B9B5 /* UserManager.swift */,
@@ -478,7 +479,6 @@
 				461ADD9D2BD2B5F400C0DD94 /* RecorderTimer.swift in Sources */,
 				46FAC60B2BE36A8C0013B9B5 /* UserManager.swift in Sources */,
 				4623C6EA2C023378006CB3D1 /* UserDefaultsManager.swift in Sources */,
-				46DA71392BD7FB60001A3685 /* NetworkManager.swift in Sources */,
 				469495B32C1E778500F87E8C /* HelpView.swift in Sources */,
 				461797D62C07707B0034B213 /* User.swift in Sources */,
 				46FAC61A2BEB2DEF0013B9B5 /* LocalePicker.swift in Sources */,
@@ -670,7 +670,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = Secretari/SecretariDebug.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 13;
+				CURRENT_PROJECT_VERSION = 14;
 				DEVELOPMENT_ASSET_PATHS = "\"Secretari/Preview Content\"";
 				DEVELOPMENT_TEAM = 96LBXG78A7;
 				ENABLE_PREVIEWS = YES;
@@ -706,7 +706,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 13;
+				CURRENT_PROJECT_VERSION = 14;
 				DEVELOPMENT_ASSET_PATHS = "\"Secretari/Preview Content\"";
 				DEVELOPMENT_TEAM = 96LBXG78A7;
 				ENABLE_PREVIEWS = YES;

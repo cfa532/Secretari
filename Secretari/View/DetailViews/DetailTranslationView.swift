@@ -41,14 +41,14 @@ struct DetailTranslationView: View {
                     }, description: {
                         Text("Select one of the following languages to translate the Summary. If summary exists, it will be overwritten.")
                         Button("English") {
-                            if settings.promptType == .memo {
+                            if settings.promptType == .checklist {
                                 translateMemo(locale: .English, record: record, prompt: "The following text is a valid JSON string. Translate the title of each JSON object into English. Only return a pure JSON string in the same format. ")
                             } else {
                                 translateSummary(locale: .English, record: record, prompt: "Translate the following text into English. Export with plain text.")
                             }
                         }
                         Button("Indonesia") {
-                            if settings.promptType == .memo {
+                            if settings.promptType == .checklist {
                                 translateMemo(locale: .Indonesia, record: record, prompt: "Teks berikut adalah string JSON yang valid. Terjemahkan judul setiap objek JSON ke dalam bahasa Indonesia. Hanya kembalikan string JSON murni dalam format yang sama. ")
                             } else {
                                 translateSummary(locale: .Indonesia, record: record, prompt: "Terjemahkan teks berikut ke dalam bahasa Indonesia. Ekspor dengan teks biasa.")

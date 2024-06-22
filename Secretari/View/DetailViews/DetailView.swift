@@ -126,7 +126,7 @@ struct DetailView: View {
                     }
                     .padding(3)
                     
-                    if (settings.promptType == .memo) {
+                    if (settings.promptType == .checklist) {
                         if !record.memo.isEmpty {
                             DetailBulletinView(record: $record)
                         } else {
@@ -206,7 +206,7 @@ struct DetailView: View {
                         // get updated settings
                         self.settings = SettingsManager.shared.getSettings()
                         // clear old summary,
-                        if settings.promptType == .memo {
+                        if settings.promptType == .checklist {
                             record.memo.removeAll()
                         } else {
                             record.summary.removeAll()
@@ -245,7 +245,7 @@ struct DetailView: View {
     
     private func textToShare()->String {
         var textToShare = AudioRecord.dateLongFormat.string(from: record.recordDate) + ":\n"
-        if settings.promptType == .memo {
+        if settings.promptType == .checklist {
             if !record.memo.isEmpty {
                 for m in record.memo {
                     if let t = m.title[record.locale] {

@@ -16,7 +16,7 @@ struct SummaryRowView: View {
         VStack {
             // display content based on prompt type
             let promptType = SettingsManager.shared.getSettings().promptType
-            if promptType == .memo {
+            if promptType == .checklist {
                 if !record.memo.isEmpty {
                     Text(title + concateMemo())
                         .lineLimit(4)

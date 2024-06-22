@@ -41,11 +41,8 @@ struct SettingsView: View {
                     }
                     
                     Picker("Prompt Type", selection: $settings.promptType) {
-                        
-                        // if the account balance<0.1, only gpt-3.5 is allowed, therefore NO memo type here.
-//                        ForEach(Settings.PromptType.allowedCases(lowBalance: allowedPromptType()), id:\.self) { option in
                         ForEach(Settings.PromptType.allCases, id:\.self) { option in
-                            Text(String(describing: option))
+                            Text(LocalizedStringKey(option.rawValue))
                         }
                     }
                     .onChange(of: settings.promptType) { oldValue, newValue in
@@ -64,6 +61,18 @@ struct SettingsView: View {
                     }
                 }
                 Section(header: Text("advanced")) {
+                    HStack {
+                        Text("Silence time")
+                        Spacer()
+                        Text("\(AppConstants.MaxSilentSeconds / 60) " + "min")
+                            .foregroundColor(.secondary)
+                    }
+                    HStack {
+                        Text("Max work time")
+                        Spacer()
+                        Text("\(AppConstants.MaxRecordSeconds / 3600) " + "hr")
+                            .foregroundColor(.secondary)
+                    }
                     TextField(selectedPrompt ?? "", text: Binding<String> (
                         get: {settings.prompt[settings.promptType]![settings.selectedLocale]!},
                         set: {settings.prompt[settings.promptType]![settings.selectedLocale] = $0; changed=true}), axis: .vertical)
