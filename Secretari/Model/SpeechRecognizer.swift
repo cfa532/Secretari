@@ -124,7 +124,9 @@ actor SpeechRecognizer: ObservableObject {
         request.shouldReportPartialResults = true
         
         let audioSession = AVAudioSession.sharedInstance()
-        try audioSession.setCategory(.playAndRecord, mode: .measurement, options: .duckOthers)
+//        audioSession.inputOrientation = .none
+        try audioSession.setCategory(.record, mode: .measurement, options: [.allowBluetooth, .duckOthers])
+//        try audioSession.setCategory(.playAndRecord, mode: .measurement, options: .duckOthers)
         try audioSession.setActive(true, options: .notifyOthersOnDeactivation)
         let inputNode = audioEngine.inputNode
         
@@ -167,9 +169,7 @@ actor SpeechRecognizer: ObservableObject {
             .reduce(0, +) / Float(buffer.frameLength))
             
             // 6
-//            let avgPower = 20 * log10(rms)
-
-            currentLevel = 20 * log10(rms)      // used to check audio input level
+            self.currentLevel = 20 * log10(rms)      // used to check audio input level
         }
         audioEngine.prepare()
         try audioEngine.start()

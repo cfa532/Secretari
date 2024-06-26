@@ -33,22 +33,6 @@ struct AccountDetailView: View {
 //    @EnvironmentObject var entitlementManager: EntitlementManager
     @State var isSubscriber: Bool
 
-    private let formatterUSD = {
-        let formatter = NumberFormatter()
-        formatter.numberStyle = .currency
-        formatter.currencyCode = "USD" // Sets the currency symbol to USD
-        formatter.currencySymbol = "$" // Explicitly sets the currency symbol to $
-        formatter.minimumFractionDigits = 2
-        formatter.maximumFractionDigits = 2
-        return formatter
-    }
-    private let formatterInt = {
-        let formatter = NumberFormatter()
-        formatter.numberStyle = .decimal // Use the decimal style
-        formatter.groupingSeparator = "," // Explicitly set the grouping separator to comma
-        formatter.usesGroupingSeparator = true // Enable the use of the grouping separator
-        return formatter
-    }
     var body: some View {
         NavigationStack {
             List {
@@ -95,7 +79,7 @@ struct AccountDetailView: View {
                             .foregroundStyle(.gray)
                         Spacer()
                         if let count = user?.token_count {
-                            Text(String(count))
+                            Text(formatterInt().string(from: NSNumber(value: count))!)
                         }
                     }
                     if isSubscriber {
@@ -121,7 +105,7 @@ struct AccountDetailView: View {
                                     .font(.subheadline)
                                     .foregroundStyle(.secondary)
                                 Spacer()
-                                Text(formatterUSD().string(from: NSNumber(value: balance))!)
+                                Text(formatterInt().string(from: NSNumber(value: estimateTokens(balance)))!)
                             }
                         }
 
@@ -170,7 +154,26 @@ struct AccountDetailView: View {
                 .foregroundStyle(.gray)
         }
     }
-        
+    
+    private let formatterUSD = {
+        let formatter = NumberFormatter()
+        formatter.numberStyle = .currency
+        formatter.currencyCode = "USD" // Sets the currency symbol to USD
+        formatter.currencySymbol = "$" // Explicitly sets the currency symbol to $
+        formatter.minimumFractionDigits = 2
+        formatter.maximumFractionDigits = 2
+        return formatter
+    }
+    private let formatterInt = {
+        let formatter = NumberFormatter()
+        formatter.numberStyle = .decimal // Use the decimal style
+        formatter.groupingSeparator = "," // Explicitly set the grouping separator to comma
+        formatter.usesGroupingSeparator = true // Enable the use of the grouping separator
+        return formatter
+    }
+    func estimateTokens(_ dollar: Double) -> Int {
+        return Int(dollar*4*1000000/30)
+    }
     func fullName() -> String {
         return (user?.family_name ?? "No") + " " + (user?.given_name ?? "one")
     }

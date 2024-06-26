@@ -158,13 +158,12 @@ struct DetailView: View {
             ToolbarItem(placement: .topBarLeading) {
                 Button(action: {
                     // Dismiss the view
-                    //                    dismiss()
+                    dismiss()
                 }, label: {
                     Image(systemName: "decrease.indent")
-                        .resizable() // Might not be necessary for system images
-                        .tappablePadding(EdgeInsets(top: 12, leading: 12, bottom: 12, trailing: 12)) {
-                            dismiss()
-                        }
+                        .frame(width: 23, height: 23)
+                        .padding(7)
+                        .contentShape(Rectangle())      // increase tappable area
                 })
                 .disabled(isRecording)
             }
