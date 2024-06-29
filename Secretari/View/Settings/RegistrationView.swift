@@ -9,47 +9,56 @@ import SwiftUI
 
 struct RegistrationView: View {
     @EnvironmentObject var userManager: UserManager
-    @State private var user: User
+    @State private var username: String = ""
+    @State private var password: String = ""
+    @State private var email: String = ""
+    @State private var fname: String = ""
+    @State private var gname: String = ""
     @State private var passwd: String = ""
+    @State private var id: String = ""
     @State private var showAlert = false
     @State private var submitted = false
     
-    init() {
-        self.user = UserManager.shared.currentUser!
-    }
+    @State private var errorMessage = ""
     
     var body: some View {
         NavigationStack {
             Form {
                 Section(header: Text("Information")) {
-
-                    InputView(text: $user.username, title: "Username", placeHolder: "", isSecureField: false, required: true)
+                    InputView(text: $username, title: "Username", placeHolder: "", isSecureField: false, required: true)
                         .padding(.top, 10)
                         .textInputAutocapitalization(.never)
-
-                    
                     HStack {
-                        InputView(text: $user.password, title: "Password", placeHolder: "", isSecureField: true, required: true)
+                        InputView(text: $password, title: "Password", placeHolder: "", isSecureField: true, required: true)
                         InputView(text: $passwd, title: "Confirm", placeHolder: "", isSecureField: true, required: true)
                     }
-                    
-                    InputView(text: Binding<String> (get: {""}, set: {user.family_name=$0}), title: "Family name", placeHolder: "")
-                    
-
-                    InputView(text: Binding<String> (get: {user.given_name ?? ""}, set: { user.given_name = $0}), title: "Given name", placeHolder: "")
-
-                    InputView(text: Binding<String> (get: {user.email ?? ""}, set: { user.email = $0}), title: "Email", placeHolder: "")
+                    InputView(text: $fname, title: "Family name", placeHolder: "")
+                    InputView(text: $gname, title: "Given name", placeHolder: "")
+                    InputView(text: $email, title: "Email", placeHolder: "")
                     .textInputAutocapitalization(.never)
                 }
+                .onAppear(perform: {
+                    if let uid = userManager.currentUser?.id {
+                        id = uid
+                    }
+                })
 
                 Section(header: Text("")) {
                     Button(action: {
                         // register
-                        if 1...20 ~= user.username.count, user.password.count>0, user.password==passwd {
+                        if 1...20 ~= username.count, password.count>0, password==passwd {
                             self.submitted = true
-                            userManager.register(user)
+                            let user = User(id: id, username: username, password: password, family_name: fname, given_name: gname, email: email)
+                            Task {
+                                if !(await userManager.register(user)) {
+                                    self.submitted = false
+                                    self.errorMessage = "Username is taken"
+                                    self.showAlert = true
+                                }
+                            }
                         } else {
-                            print(user.username, user.password, passwd)
+                            print(username, password, passwd)
+                            self.errorMessage = "Username is required and less than 20 characters long. Please confirm the password."
                             showAlert = true
                         }
                     }, label: {
@@ -72,23 +81,16 @@ struct RegistrationView: View {
                     .alert("Alert", isPresented: $showAlert) {
                            Button("OK", role: .cancel) { }
                        } message: {
-                           Text("Username is required and less than 20 characters long. Please confirm the password." )
+                           Text(LocalizedStringKey(self.errorMessage))
                        }
                 }
             }
-            .onAppear(perform: {
-                if user.username.count >= 20 {
-                    // this is a temp account.
-                    user.username = ""
-                    user.password = ""
-                }
-                print(UserManager.shared.currentUser as Any)
-            })
-            .alert(isPresented: $userManager.showAlert) {
-                Alert(title: userManager.alertItem?.title ?? Text("Alert"),
-                      message: userManager.alertItem?.message,
-                      dismissButton: userManager.alertItem?.dismissButton)
-            }
+//            .alert(isPresented: $userManager.showAlert) {
+//                Alert(title: userManager.alertItem?.title ?? Text("Alert"),
+//                      message: userManager.alertItem?.message,
+//                      dismissButton: userManager.alertItem?.dismissButton)
+//            }
+
             Button {
                 userManager.loginStatus = .signedOut
             } label: {
@@ -97,10 +99,10 @@ struct RegistrationView: View {
                     Text("Sign in")
                         .fontWeight(.bold)
                         .opacity(0.9)
+                    Image(systemName: "arrow.right.circle.fill")
                 })
                 .font(.system(size: 16))
             }
-
         }
     }
 }

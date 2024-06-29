@@ -8,7 +8,7 @@
 import Foundation
 import SwiftUI
 
-//@MainActor
+@MainActor
 class UserManager: ObservableObject, Observable {
     @Published var currentUser: User?
     @Published var showAlert: Bool = false
@@ -18,18 +18,20 @@ class UserManager: ObservableObject, Observable {
     private let keychainManager = KeychainManager.shared
     private let userDefaultsManager = UserDefaultsManager.shared
     private let websocket = Websocket.shared
-//    private let entitlementManager = EntitlementManager()
     
     var userToken: String? {
         didSet {
-            _ = keychainManager.save(data: userToken, for: "userToken")
-            if userToken != nil, userToken != "" {
-                loginStatus = .signedIn
-            } else {
-                loginStatus = .signedOut
-                if let count=currentUser?.username.count, count > 20 {
-                    // in case of annoymous user, with device identifier as temp username.
-                    loginStatus = .unregistered
+            Task { @MainActor in
+                if keychainManager.save(data: userToken, for: "userToken") {
+                    if userToken != nil, userToken != "" {
+                        loginStatus = .signedIn
+                    } else {
+                        loginStatus = .signedOut
+                        if let count=currentUser?.username.count, count > 20 {
+                            // in case of annoymous user, with device identifier as temp username.
+                            loginStatus = .unregistered
+                        }
+                    }
                 }
             }
         }
@@ -37,7 +39,7 @@ class UserManager: ObservableObject, Observable {
     static let shared = UserManager()
     private init() {
         // There is the core code of initialization. Setup user and retrieve user data.
-                
+        
         if let user = userDefaultsManager.get(for: "currentUser", type: User.self) {
             // local user infor will be updated with each fetchToken() call
             self.currentUser = user
@@ -65,7 +67,7 @@ class UserManager: ObservableObject, Observable {
             do {
                 self.currentUser = User(id: id, username: id, password: "zaq1^WSX")
                 if let json = try await websocket.createTempUser( self.currentUser! ) {
-
+                    
                     // json from server should be {token, user}
                     if let token = json["token"] as? [String: Any] {
                         self.userToken = token["access_token"] as? String
@@ -84,27 +86,24 @@ class UserManager: ObservableObject, Observable {
         }
     }
     
-    func register(_ user: User) {
-        // register a user at sever when subscribe.
-        websocket.registerUser(user) { dict, statusCode in
-            Task { @MainActor in
-                guard let dict = dict, self.currentUser != nil, let code=statusCode, code < .failure  else {
-                    print("Failed to register.", dict as Any)
-                    if let dict = dict as? [String: String] {
-                        self.alertItem = AlertContext.unableToComplete
-                        self.alertItem?.message = Text(dict["detail"] ?? "Failed to register.")
-                        self.showAlert = true
-                    }
-                    return
-                }
-                // update account with token usage data from WS server
+    @MainActor func register(_ user: User) async -> Bool {
+        do {
+            if let dict = try await websocket.registerUser(user) {
                 self.currentUser = Utility.updateUserFromServerDict(from: dict, user: self.currentUser!)
+                self.currentUser?.username = user.username
                 self.persistCurrentUser()
 
                 // After registration, the currentUser still use temp account, until user login.
                 self.loginStatus = .signedOut
+            } else {
+                return false
             }
+        } catch {
+            self.alertItem = AlertContext.unableToComplete
+            self.alertItem?.message = Text("Failed to register.")
+            self.showAlert = true
         }
+        return true
     }
     
     @MainActor func updateUser(_ user: User) async {
@@ -125,5 +124,25 @@ class UserManager: ObservableObject, Observable {
             self.alertItem?.message = Text("Update failure")
             self.showAlert = true
         }
-    }    
+    }
+    
+    @MainActor func deleteAccount() async {
+        do {
+            if let json = try await websocket.deleteUser(), let id=json["id"] {
+                // edit balance on local record too.
+                print("User deleted.", json)      // do not use it for now.
+                self.currentUser?.username = id
+                self.currentUser?.email = ""
+                self.currentUser?.family_name = ""
+                self.currentUser?.given_name = ""
+                self.persistCurrentUser()
+                self.loginStatus = .signedOut
+            }
+        } catch {
+            print("User delete error.")
+            self.alertItem = AlertContext.unableToComplete
+            self.alertItem?.message = Text("Delete failure")
+            self.showAlert = true
+        }
+    }
 }

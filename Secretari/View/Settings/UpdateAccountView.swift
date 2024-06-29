@@ -9,53 +9,60 @@ import SwiftUI
 
 struct UpdateAccountView: View {
     @Environment(\.presentationMode) var presentationMode
-
-    @State private var userManager: UserManager
-    @State private var user: User
+    @EnvironmentObject private var userManager: UserManager
+    @State private var username: String = ""
+    @State private var password: String = ""
+    @State private var email: String = ""
+    @State private var fname: String = ""
+    @State private var gname: String = ""
     @State private var passwd: String = ""
+    @State private var id: String = ""
+
     @State private var showAlert = false
     @State private var submitted = false
 
-    init(userManager: UserManager) {
-        self.userManager = userManager
-        self.user = userManager.currentUser!
-    }
+//    init(userManager: UserManager) {
+//        self.userManager = userManager
+//        self.user = userManager.currentUser!
+//    }
 
     var body: some View {
         NavigationStack {
             Form {
                 Section(header: Text("Information")) {
-
-                    InputView(text: $user.username, title: "Username", placeHolder: user.username, isSecureField: false, required: true)
+                    InputView(text: $username, title: "Username", placeHolder: "", isSecureField: false, required: true)
                         .padding(.top, 10)
                         .textInputAutocapitalization(.never)
-                        .disabled(true)
-                    
                     HStack {
-                        InputView(text: $user.password, title: "Password", placeHolder: "", isSecureField: true, required: true)
+                        InputView(text: $password, title: "Password", placeHolder: "", isSecureField: true, required: true)
                         InputView(text: $passwd, title: "Confirm", placeHolder: "", isSecureField: true, required: true)
                     }
-                    
-                    InputView(text: Binding<String> (get: {user.family_name ?? ""}, set: {user.family_name=$0}), title: "Family name", placeHolder: user.family_name ?? "")
-                    
-
-                    InputView(text: Binding<String> (get: {user.given_name ?? ""}, set: { user.given_name = $0}), title: "Given name", placeHolder: user.given_name ?? "")
-
-                    InputView(text: Binding<String> (get: {user.email ?? ""}, set: { user.email = $0}), title: "Email", placeHolder: user.email ?? "")
+                    InputView(text: $fname, title: "Family name", placeHolder: "")
+                    InputView(text: $gname, title: "Given name", placeHolder: "")
+                    InputView(text: $email, title: "Email", placeHolder: "")
                     .textInputAutocapitalization(.never)
                 }
+                .onAppear(perform: {
+                    if let user = userManager.currentUser {
+                        username = user.username
+                        email = user.email ?? ""
+                        fname = user.family_name ?? ""
+                        gname = user.given_name ?? ""
+                        id = user.id
+                    }
+                })
 
                 Section(header: Text("")) {
                     Button(action: {
                         // register
-                        if user.password==passwd {
+                        if password == passwd {
                             Task {
                                 self.submitted = true
-                                await userManager.updateUser(user)
+                                await userManager.updateUser(User(id: id, username: username, password: password, family_name: fname, given_name: gname, email: email))
                                 presentationMode.wrappedValue.dismiss()
                             }
                         } else {
-                            print(user.username, user.password, passwd)
+                            print(username, password, passwd)
                             showAlert = true
                         }
                     }, label: {
@@ -87,5 +94,6 @@ struct UpdateAccountView: View {
     }
 }
 #Preview {
-    UpdateAccountView(userManager: UserManager.shared)
+    UpdateAccountView()
+        .environmentObject(UserManager.shared)
 }

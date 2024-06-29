@@ -8,6 +8,7 @@
 import Foundation
 import SwiftUI
 
+@MainActor
 class Websocket: NSObject, ObservableObject, URLSessionWebSocketDelegate {
     @Published var isStreaming: Bool = false
     @Published var streamedText: String = ""
@@ -261,7 +262,7 @@ enum EndPoint: String {
 // MARK: - HTTP Calls for User Account Management
 
 extension Websocket {
-    func registerUser(_ user: User, completion: @escaping ([String: Any]?, HTTPStatusCode?) -> Void) {
+    func registerUser(_ user: User) async throws -> [String: Any]? {
         self.webURL.path = EndPoint.register.rawValue
         var request = URLRequest(url: self.webURL.url!)
         request.httpMethod = "POST"
@@ -276,20 +277,13 @@ extension Websocket {
             "id": user.id
         ]
         request.httpBody = try? JSONSerialization.data(withJSONObject: body)
-        
-        let task = URLSession.shared.dataTask(with: request) { data, response, error in
-            guard let data = data, error == nil else {
-                completion(nil, nil)
-                return
-            }
-            let json = try? JSONSerialization.jsonObject(with: data) as? [String: Any]
-            if let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode >= 400 {
-                completion(json, .failure)
-            } else {
-                completion(json, .created)
-            }
+
+        let (data, response) = try await URLSession.shared.data(for: request)
+        if let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 {
+            return try? JSONSerialization.jsonObject(with: data) as? [String: Any]
+        } else {
+            return nil
         }
-        task.resume()
     }
     
     func updateUser(_ user: User) async throws -> [String: Any]? {
@@ -309,7 +303,6 @@ extension Websocket {
             "family_name": user.family_name ?? "",
             "given_name": user.given_name ?? ""
         ]
-
         request.httpBody = try? JSONSerialization.data(withJSONObject: body)
         
         guard let accessToken = UserManager.shared.userToken else {
@@ -321,6 +314,31 @@ extension Websocket {
         let (data, response) = try await URLSession.shared.data(for: request)
         if let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 {
             return try? JSONSerialization.jsonObject(with: data) as? [String: Any]
+        } else {
+            return nil
+        }
+    }
+    
+    func deleteUser() async throws -> [String: String]? {
+        self.webURL.path = EndPoint.updateUser.rawValue
+        guard let url = self.webURL.url else {
+            print("Invalid URL")
+            return nil
+        }
+        var request = URLRequest(url: url)
+        request.httpMethod = "DELETE"
+        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+//        request.httpBody = try? JSONSerialization.data(withJSONObject: body)
+        
+        guard let accessToken = UserManager.shared.userToken else {
+            print("Access token is missing")
+            return nil
+        }
+        request.addValue("Bearer \(accessToken)", forHTTPHeaderField: "Authorization")
+        
+        let (data, response) = try await URLSession.shared.data(for: request)
+        if let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 {
+            return try? JSONSerialization.jsonObject(with: data) as? [String: String]
         } else {
             return nil
         }

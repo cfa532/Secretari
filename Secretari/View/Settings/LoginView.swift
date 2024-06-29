@@ -101,7 +101,7 @@ struct LoginView: View {
         }
         .alert("Login error", isPresented: $showAlert, presenting: alertMessage) { _ in
         } message: { alert in
-            Text(alert)
+            Text(LocalizedStringKey(alert))
         }
     }
 }

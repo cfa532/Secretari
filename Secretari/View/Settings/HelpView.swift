@@ -8,7 +8,6 @@
 import SwiftUI
 
 struct HelpView: View {
-    private let websocket = Websocket.shared
     @State private var notice: String = "Thank you for using our services."
     
     var body: some View {
@@ -33,7 +32,7 @@ struct HelpView: View {
     
     private func loadNotice() {
         Task { @MainActor in
-            if let fetchedNotice = try await websocket.getNotice() {
+            if let fetchedNotice = try await Websocket.shared.getNotice() {
                 print(fetchedNotice as Any)
                 notice = fetchedNotice
             }

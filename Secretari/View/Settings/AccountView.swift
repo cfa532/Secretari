@@ -26,11 +26,16 @@ struct AccountView: View {
     }
 }
 
+#Preview {
+    AccountView()
+        .environmentObject(UserManager.shared)
+        .environmentObject(EntitlementManager())
+}
+
 struct AccountDetailView: View {
-    @State private var showAlert = false
-    @State private var user = UserManager.shared.currentUser
     @EnvironmentObject var userManager: UserManager
-//    @EnvironmentObject var entitlementManager: EntitlementManager
+    @State private var showAlert = false
+    @State private var showDelete = false
     @State var isSubscriber: Bool
 
     var body: some View {
@@ -52,7 +57,7 @@ struct AccountDetailView: View {
                                 .fontWeight(.semibold)
                                 .padding(.top, 4)
                             
-                            Text(user?.email ?? "email@account")
+                            Text(userManager.currentUser?.email ?? "email@account")
                                 .font(.footnote)
                                 .foregroundStyle(.secondary)
                         })
@@ -65,7 +70,7 @@ struct AccountDetailView: View {
                             .foregroundStyle(.secondary)
                         SettingsRowView(title: title, tintColor: .secondary)
                         Spacer()
-                        if let username = user?.diaplayUsername {
+                        if let username = userManager.currentUser?.diaplayUsername {
                             Text(username)
                         } else {
                             Button("Signup now") {
@@ -78,7 +83,7 @@ struct AccountDetailView: View {
                             .font(.subheadline)
                             .foregroundStyle(.gray)
                         Spacer()
-                        if let count = user?.token_count {
+                        if let count = userManager.currentUser?.token_count {
                             Text(formatterInt().string(from: NSNumber(value: count))!)
                         }
                     }
@@ -99,7 +104,7 @@ struct AccountDetailView: View {
                             }
                         }
                     } else {
-                        if let balance = user?.dollar_balance {
+                        if let balance = userManager.currentUser?.dollar_balance {
                             HStack {
                                 Text("Account balance in USD:")
                                     .font(.subheadline)
@@ -124,15 +129,35 @@ struct AccountDetailView: View {
                     }
                 }
                 Section(" ") {
-                    Button(action: {
-                        self.showAlert = true
-                    }, label: {
-                        SettingsRowView(imageName: "arrow.left.circle.fill", title:Text("Sign out"), tintColor: .accentColor)
-                    })
-                    if let count=user?.username.count, count <= 20 {
+                    if let user = userManager.currentUser, user.username.count > 20 {
+                        // this is a temp account, created for user by system
+                        Button {
+                            userManager.loginStatus = .signedOut
+                        } label: {
+                            HStack(spacing: 5, content: {
+                                Text("Have an account?")
+                                Text("Sign in")
+                                    .fontWeight(.bold)
+                                    .opacity(0.9)
+                                Image(systemName: "arrow.right.circle.fill")
+                            })
+                            .font(.system(size: 16))
+                        }
+                    } else {
+                        // a real account registered by user
+                        Button(action: {
+                            self.showAlert = true
+                        }, label: {
+                            SettingsRowView(imageName: "arrow.left.circle.fill", title:Text("Sign out"), tintColor: .accentColor)
+                        })
                         // Do NOT show update option to temp user
-                        NavigationLink(destination: UpdateAccountView(userManager: userManager), label: {
+                        NavigationLink(destination: UpdateAccountView(), label: {
                             SettingsRowView(imageName: "wand.and.stars", title:Text("Update account"), tintColor: .accentColor)
+                        })
+                        Button(action: {
+                            self.showDelete = true
+                        }, label: {
+                            SettingsRowView(imageName: "trash", title:Text("Delete account"), tintColor: .accentColor)
                         })
                     }
                 }
@@ -142,10 +167,15 @@ struct AccountDetailView: View {
                 } message: {
                     Text("Are you sure to logout?")
                 }
-                .onAppear(perform: {
-                    user = UserManager.shared.currentUser
-                })
-
+                .alert("Delete account", isPresented: $showDelete) {
+                    Button("OK", action: {
+                        Task {
+                            await userManager.deleteAccount()}
+                    })
+                    Button("Cancel", role: .cancel, action: { print("cancelled")})
+                } message: {
+                    Text("Are you sure to delete account?")
+                }
             }
             // display version at bottom
             Spacer()
@@ -155,15 +185,6 @@ struct AccountDetailView: View {
         }
     }
     
-    private let formatterUSD = {
-        let formatter = NumberFormatter()
-        formatter.numberStyle = .currency
-        formatter.currencyCode = "USD" // Sets the currency symbol to USD
-        formatter.currencySymbol = "$" // Explicitly sets the currency symbol to $
-        formatter.minimumFractionDigits = 2
-        formatter.maximumFractionDigits = 2
-        return formatter
-    }
     private let formatterInt = {
         let formatter = NumberFormatter()
         formatter.numberStyle = .decimal // Use the decimal style
@@ -175,7 +196,7 @@ struct AccountDetailView: View {
         return Int(dollar*4*1000000/30)
     }
     func fullName() -> String {
-        return (user?.family_name ?? "No") + " " + (user?.given_name ?? "one")
+        return (userManager.currentUser?.family_name ?? "No") + " " + (userManager.currentUser?.given_name ?? "one")
     }
     
     func appVersion() -> String {

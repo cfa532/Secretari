@@ -201,6 +201,34 @@
         }
       }
     },
+    "Are you sure to delete account?" : {
+      "localizations" : {
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "¿Estás segura de eliminar la cuenta?"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "アカウントを削除してもよろしいですか?"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "계정을 삭제하시겠습니까?"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "您確定要刪除帳戶嗎？"
+          }
+        }
+      }
+    },
     "Are you sure to logout?" : {
       "localizations" : {
         "es-419" : {
@@ -333,6 +361,37 @@
         }
       }
     },
+    "Delete account" : {
+      "localizations" : {
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Borrar cuenta"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "アカウント削除"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "계정 삭제"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "刪除帳戶"
+          }
+        }
+      }
+    },
+    "Delete failure" : {
+
+    },
     "Dismiss" : {
       "localizations" : {
         "es-419" : {
@@ -413,6 +472,9 @@
     "Error" : {
 
     },
+    "Failed to register." : {
+
+    },
     "Family name" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -489,12 +551,6 @@
       }
     },
     "General" : {
-
-    },
-    "Get access to all of our features" : {
-
-    },
-    "Get full access for just %@" : {
 
     },
     "Given name" : {
@@ -636,6 +692,35 @@
     },
     "How-to" : {
 
+    },
+    "Incorrect username or password" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nombre de usuario o contraseña incorrecta"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ユーザーネームまたはパスワードが違います"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "잘못된 사용자 이름 또는 비밀번호"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "使用者名稱或密碼錯誤"
+          }
+        }
+      }
     },
     "Indonesia" : {
       "localizations" : {
@@ -1072,6 +1157,35 @@
         }
       }
     },
+    "Monthly plan" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Plan mensual"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "月額プラン"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "월간 요금제"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "每月計劃"
+          }
+        }
+      }
+    },
     "No" : {
 
     },
@@ -1202,6 +1316,64 @@
     "OK" : {
 
     },
+    "One full year, auto-renewable service. User enjoys a 20% discount compared with monthly plan." : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Un año completo de servicio autorenovable. El usuario disfruta de un 20% de descuento en comparación con el plan mensual."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "1 年間の自動更新サービス。月額プランに比べて 20% の割引が受けられます。"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "1년 자동 갱신 서비스입니다. 사용자는 월별 요금제에 비해 20% 할인을 받을 수 있습니다."
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "一整年，自動續訂服務。與包月套餐相比，用戶可享 20% 的折扣。"
+          }
+        }
+      }
+    },
+    "One month, auto-renewable service. User gets an AI assistant powered by OpenAI's most advanced GPT model, it meticulously records all your speeches, lectures, and instructions to create comprehensive summaries. Empower your business and simplify your life." : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "por un mes, servicio auto renovable. El usuario obtiene un asistente de IA impulsado por el modelo GPT más avanzado de OpenAI, que registra meticulosamente todos sus discursos, conferencias e instrucciones para crear resúmenes completos. Potencia tu negocio y simplifica tu vida."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "1 か月間、自動更新可能なサービスです。ユーザーは OpenAI の最先端の GPT モデルを搭載した AI アシスタントを利用でき、すべてのスピーチ、講義、指示を綿密に記録して包括的な要約を作成します。ビジネスを強化し、生活を簡素化します。"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "한 달 동안 자동 갱신되는 서비스입니다. 사용자는 OpenAI의 가장 발전된 GPT 모델로 구동되는 AI 도우미를 사용하게 되며 모든 연설, 강의 및 지침을 꼼꼼하게 녹음하여 포괄적인 요약을 작성합니다. 귀하의 비즈니스에 힘을 실어주고 삶을 단순화하십시오."
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "為期一個月，自動續訂服務。使用者獲得由 OpenAI 最先進的 GPT 模型提供支援的 AI 助手，它將精心記錄您的所有演講、講座和指示，以創建全面的摘要。增強您的業務能力並簡化您的生活。"
+          }
+        }
+      }
+    },
     "Parameters" : {
       "localizations" : {
         "es-419" : {
@@ -1277,6 +1449,34 @@
     },
     "Policy" : {
 
+    },
+    "Privacy policies" : {
+      "localizations" : {
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Políticas de privacidad"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "プライバシーポリシー"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "개인 정보 보호 정책"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "隱私權"
+          }
+        }
+      }
     },
     "Profile Error" : {
 
@@ -1354,6 +1554,64 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "購買"
+          }
+        }
+      }
+    },
+    "Purchase consumable tokens that cover approximately a quarter million words. Users receive uninterrupted AI assistant service on an as-needed basis, making it ideal for occasional users." : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Compre tokens consumibles que cubran aproximadamente un cuarto de millón de palabras. Los usuarios reciben un servicio de asistente de IA ininterrumpido según sea necesario, lo que lo hace ideal para usuarios ocasionales."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "約 25 万語をカバーする消耗トークンを購入します。ユーザーは必要に応じて中断のない AI アシスタント サービスを受けることができるため、たまにしか使用しないユーザーに最適です。"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "약 25만 단어를 포괄하는 소모성 토큰을 구매하세요. 사용자는 필요에 따라 중단 없이 AI 비서 서비스를 받을 수 있어 가끔 사용자에게 이상적입니다."
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "購買涵蓋約 25 萬字的消耗性代幣。用戶根據需要獲得不間斷的人工智慧助理服務，非常適合偶爾使用的用戶。"
+          }
+        }
+      }
+    },
+    "Purchase tokens as needed" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Comprar fichas"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "トークンを購入する"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "필요에 따라 토큰 구매"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "根據需要購買tokens"
           }
         }
       }
@@ -1674,34 +1932,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "重置"
-          }
-        }
-      }
-    },
-    "Restore Purchases" : {
-      "localizations" : {
-        "es-419" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Restaurar las compras"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "購入を復元"
-          }
-        },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "구매를 복원"
-          }
-        },
-        "zh-Hant" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "恢復購買"
           }
         }
       }
@@ -2084,14 +2314,14 @@
         },
         "zh-Hans" : {
           "stringUnit" : {
-            "state" : "needs_review",
-            "value" : "静音等待"
+            "state" : "translated",
+            "value" : "静音待机"
           }
         },
         "zh-Hant" : {
           "stringUnit" : {
-            "state" : "needs_review",
-            "value" : "靜音等待"
+            "state" : "translated",
+            "value" : "靜音待機"
           }
         }
       }
@@ -2490,9 +2720,6 @@
         }
       }
     },
-    "Unlock Pro Access" : {
-
-    },
     "Update" : {
 
     },
@@ -2574,6 +2801,7 @@
       }
     },
     "Username is required and less than 20 characters long. Please confirm the password." : {
+      "extractionState" : "stale",
       "localizations" : {
         "es-419" : {
           "stringUnit" : {
@@ -2607,6 +2835,63 @@
         }
       }
     },
+    "Username is taken" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Se toma el nombre de usuario"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ユーザー名は使用されています"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "사용자 명이 이미 사용중입니다"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "使用者名稱已存在"
+          }
+        }
+      }
+    },
+    "We do NOT collect any user information or track user behaviour." : {
+      "localizations" : {
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "NO recopilamos ninguna información del usuario ni rastreamos su comportamiento."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "当社はユーザー情報を収集したり、ユーザーの行動を追跡したりすることはありません。"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "우리는 사용자 정보를 수집하거나 사용자 행동을 추적하지 않습니다."
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "我們不收集任何用戶資訊或追蹤用戶行為。"
+          }
+        }
+      }
+    },
     "Websocket Error" : {
       "localizations" : {
         "en" : {
@@ -2625,6 +2910,35 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Error"
+          }
+        }
+      }
+    },
+    "Yearly plan" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "plan anual"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "年間計画"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "연간 계획"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "年度計劃"
           }
         }
       }

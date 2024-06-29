@@ -68,7 +68,7 @@ struct ContentView: View {
                             )
                         }
                         NavigationLink {
-                            PurchaseView()
+                            StoreFrontView()
                         } label: {
                             Label("Purchase", systemImage: "lightbulb.max")
                         }

@@ -13,14 +13,14 @@ class SubscriptionsManager: NSObject, ObservableObject {
     var productIDs: [String] = []
     var purchasedProductIDs: Set<String> = []       // if empty, not purchase
 
-    @Published var purchasedSubscriptions = Set<Product>()
-    @Published var purchasedConsumables = [Product]()      // consumables can be repeatedly buy.
+//    @Published var purchasedSubscriptions = Set<Product>()
+//    @Published var purchasedConsumables = [Product]()     //  consumables can be repeatedly buy.
     // @Published var entitlements = [Transaction]()
     @Published var products: [Product] = []
     @Published var showAlert = false
     @Published var alertItem: AlertItem?
     
-    private var appProducts: [String: Double] = [String: Double]()
+    private var appProducts: [String: Double] = [String: Double]()  // [ productId: price in $ ]
     private var entitlementManager: EntitlementManager?
     private var updates: Task<Void, Never>?
     private var userManager = UserManager.shared

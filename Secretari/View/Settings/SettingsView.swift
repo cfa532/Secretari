@@ -9,6 +9,7 @@ import SwiftUI
 import SwiftData
 
 struct SettingsView: View {
+    @EnvironmentObject private var userManager: UserManager
     @State private var settings = SettingsManager.shared.getSettings()
     @State private var selectedPrompt =  SettingsManager.shared.getSettings().prompt[SettingsManager.shared.getSettings().promptType]![SettingsManager.shared.getSettings().selectedLocale]
     @State private var countDown = 0
@@ -145,4 +146,5 @@ struct SettingsView: View {
 
 #Preview {
     SettingsView()
+        .environmentObject(UserManager.shared)
 }
