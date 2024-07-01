@@ -1804,31 +1804,31 @@
       "localizations" : {
         "es-419" : {
           "stringUnit" : {
-            "state" : "translated",
+            "state" : "needs_review",
             "value" : "En cuanto a cancelaciones y reembolsos, esta aplicación se adhiere a las políticas de Apple Store. Además, existe un límite de uso para los suscriptores, lo que limita sus gastos mensuales a aproximadamente el doble de la cantidad que pagamos a OpenAI por usar su API. Si un suscriptor excede este límite, puede realizar una compra única de tokens para continuar usando la aplicación."
           }
         },
         "ja" : {
           "stringUnit" : {
-            "state" : "translated",
+            "state" : "needs_review",
             "value" : "キャンセルと返金に関しては、このアプリは Apple Store のポリシーに準拠しています。また、加入者には使用上限があり、毎月の費用は OpenAI に API の使用料として支払う金額の約 2 倍に制限されます。加入者がこの上限を超えた場合、アプリの使用を継続するにはトークンを 1 回購入する必要があります。"
           }
         },
         "ko" : {
           "stringUnit" : {
-            "state" : "translated",
+            "state" : "needs_review",
             "value" : "취소 및 환불에 관한 이 앱은 Apple Store의 정책을 준수합니다. 또한 구독자에게는 사용량 한도가 있어 API 사용에 대해 OpenAI에 지불하는 금액의 약 2배로 월별 비용이 제한됩니다. 구독자가 이 한도를 초과하는 경우 일회성 토큰 구매를 통해 앱을 계속 사용할 수 있습니다."
           }
         },
         "zh-Hans" : {
           "stringUnit" : {
-            "state" : "translated",
+            "state" : "needs_review",
             "value" : "关于取消和退款，此应用遵守 Apple Store 的政策。此外，订阅者有使用上限，限制其每月费用约为我们向 OpenAI 支付的使用其 API 费用的两倍。如果订阅者超出此限制，他们可以一次性购买代币以继续使用该应用。"
           }
         },
         "zh-Hant" : {
           "stringUnit" : {
-            "state" : "translated",
+            "state" : "needs_review",
             "value" : "關於取消和退款，本應用程式遵守 Apple Store 的政策。此外，訂閱者還有使用上限，每月費用限制大約是OpenAI API 使用費用的兩倍。如果訂閱者超過此限制，可以一次性購買代幣以繼續使用該應用程式。"
           }
         }
@@ -2888,6 +2888,35 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "我們不收集任何用戶資訊或追蹤用戶行為。"
+          }
+        }
+      }
+    },
+    "We follow the same Terms of Use (EULA) as Apple." : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Seguimos los mismos Términos de uso (EULA) que Apple."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "当社は Apple と同じ利用規約 (EULA) に従います。"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "우리는 Apple과 동일한 사용 약관(EULA)을 따릅니다."
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "我們遵循與 Apple 相同的使用條款 (EULA)。"
           }
         }
       }
