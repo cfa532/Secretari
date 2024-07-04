@@ -1,0 +1,9 @@
+/* 
+  InfoPlist.strings
+  Secretari
+
+  Created by 超方 on 2024/7/4.
+  
+*/
+NSSpeechRecognitionUsageDescription = "ユーザーの音声のトランスクリプトを生成し、OpenAI を使用して要約を作成します。";
+NSMicrophoneUsageDescription = "マイクを使用してユーザーの音声を認識します。アプリは何も録音しません。";

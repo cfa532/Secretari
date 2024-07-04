@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		460012402C36DAC900C59661 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 4600123E2C36DAC900C59661 /* InfoPlist.strings */; };
 		4603DD152C13ED02006CBAB4 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 46FAC60D2BE7C8AB0013B9B5 /* StoreKit.framework */; };
 		461797D62C07707B0034B213 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 461797D52C07707B0034B213 /* User.swift */; };
 		461ADD5B2BD2A0AC00C0DD94 /* SecretariApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 461ADD5A2BD2A0AC00C0DD94 /* SecretariApp.swift */; };
@@ -75,6 +76,19 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		460012342C36CFC500C59661 /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = Base; path = Base.lproj/Info.plist; sourceTree = "<group>"; };
+		460012362C36CFC800C59661 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = en; path = en.lproj/Info.plist; sourceTree = "<group>"; };
+		460012372C36CFC900C59661 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "zh-Hans"; path = "zh-Hans.lproj/Info.plist"; sourceTree = "<group>"; };
+		460012382C36CFCA00C59661 /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "zh-Hant"; path = "zh-Hant.lproj/Info.plist"; sourceTree = "<group>"; };
+		460012392C36CFCB00C59661 /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = ja; path = ja.lproj/Info.plist; sourceTree = "<group>"; };
+		4600123A2C36CFCB00C59661 /* ko */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = ko; path = ko.lproj/Info.plist; sourceTree = "<group>"; };
+		4600123B2C36CFCC00C59661 /* es-419 */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "es-419"; path = "es-419.lproj/Info.plist"; sourceTree = "<group>"; };
+		4600123F2C36DAC900C59661 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		460012412C36DAF300C59661 /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		460012422C36DAF600C59661 /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
+		460012432C36EC7700C59661 /* ko */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ko; path = ko.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		460012442C36EC7A00C59661 /* es-419 */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "es-419"; path = "es-419.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
+		460012452C36EC7B00C59661 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
 		461797D52C07707B0034B213 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		461797D72C0771620034B213 /* Secretai.storekit */ = {isa = PBXFileReference; lastKnownFileType = text; path = Secretai.storekit; sourceTree = "<group>"; };
 		461ADD572BD2A0AC00C0DD94 /* Secretari.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Secretari.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -97,7 +111,6 @@
 		461ADD9C2BD2B5F400C0DD94 /* RecorderTimer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RecorderTimer.swift; sourceTree = "<group>"; };
 		461ADD9E2BD2B63C00C0DD94 /* RecorderButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RecorderButton.swift; sourceTree = "<group>"; };
 		461ADDA62BD2B6EB00C0DD94 /* DetailView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DetailView.swift; sourceTree = "<group>"; };
-		461ADDA82BD2B96000C0DD94 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		4623C6E52C00F396006CB3D1 /* KeychainManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeychainManager.swift; sourceTree = "<group>"; };
 		4623C6E72C018F67006CB3D1 /* SettingsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsManager.swift; sourceTree = "<group>"; };
 		4623C6E92C023378006CB3D1 /* UserDefaultsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaultsManager.swift; sourceTree = "<group>"; };
@@ -200,7 +213,9 @@
 				46FAC5FC2BDF6C2F0013B9B5 /* Components */,
 				46DA71352BD7FB26001A3685 /* Utilities */,
 				461ADD8E2BD2A49900C0DD94 /* Launch Screen.storyboard */,
-				461ADDA82BD2B96000C0DD94 /* Info.plist */,
+				46DA71402BD8C95C001A3685 /* Localizable.xcstrings */,
+				460012352C36CFC500C59661 /* Info.plist */,
+				4600123E2C36DAC900C59661 /* InfoPlist.strings */,
 				461ADD872BD2A0D600C0DD94 /* View */,
 				461ADD862BD2A0CE00C0DD94 /* Model */,
 				461ADD5A2BD2A0AC00C0DD94 /* SecretariApp.swift */,
@@ -279,7 +294,6 @@
 			isa = PBXGroup;
 			children = (
 				46DA71362BD7FB32001A3685 /* Alerts */,
-				46DA71402BD8C95C001A3685 /* Localizable.xcstrings */,
 				46DA71422BD8D724001A3685 /* Utilities.swift */,
 				46FAC60A2BE36A8C0013B9B5 /* UserManager.swift */,
 				468B0B652BEDB83900C6D2FF /* TappablePadding.swift */,
@@ -443,6 +457,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				461ADD8F2BD2A49900C0DD94 /* Launch Screen.storyboard in Resources */,
+				460012402C36DAC900C59661 /* InfoPlist.strings in Resources */,
 				461ADD642BD2A0AD00C0DD94 /* Preview Assets.xcassets in Resources */,
 				46DA71412BD8C95C001A3685 /* Localizable.xcstrings in Resources */,
 				461ADD612BD2A0AD00C0DD94 /* Assets.xcassets in Resources */,
@@ -544,6 +559,36 @@
 			targetProxy = 461ADD742BD2A0AE00C0DD94 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		460012352C36CFC500C59661 /* Info.plist */ = {
+			isa = PBXVariantGroup;
+			children = (
+				460012342C36CFC500C59661 /* Base */,
+				460012362C36CFC800C59661 /* en */,
+				460012372C36CFC900C59661 /* zh-Hans */,
+				460012382C36CFCA00C59661 /* zh-Hant */,
+				460012392C36CFCB00C59661 /* ja */,
+				4600123A2C36CFCB00C59661 /* ko */,
+				4600123B2C36CFCC00C59661 /* es-419 */,
+			);
+			name = Info.plist;
+			sourceTree = "<group>";
+		};
+		4600123E2C36DAC900C59661 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				4600123F2C36DAC900C59661 /* en */,
+				460012412C36DAF300C59661 /* ja */,
+				460012422C36DAF600C59661 /* zh-Hant */,
+				460012432C36EC7700C59661 /* ko */,
+				460012442C36EC7A00C59661 /* es-419 */,
+				460012452C36EC7B00C59661 /* zh-Hans */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
 		461ADD7B2BD2A0AE00C0DD94 /* Debug */ = {
@@ -674,7 +719,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = Secretari/SecretariDebug.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 23;
+				CURRENT_PROJECT_VERSION = 24;
 				DEVELOPMENT_ASSET_PATHS = "\"Secretari/Preview Content\"";
 				DEVELOPMENT_TEAM = 96LBXG78A7;
 				ENABLE_PREVIEWS = YES;
@@ -710,7 +755,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 23;
+				CURRENT_PROJECT_VERSION = 24;
 				DEVELOPMENT_ASSET_PATHS = "\"Secretari/Preview Content\"";
 				DEVELOPMENT_TEAM = 96LBXG78A7;
 				ENABLE_PREVIEWS = YES;

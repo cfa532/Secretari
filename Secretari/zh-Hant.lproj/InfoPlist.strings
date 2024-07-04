@@ -1,0 +1,9 @@
+/* 
+  InfoPlist.strings
+  Secretari
+
+  Created by 超方 on 2024/7/4.
+  
+*/
+NSSpeechRecognitionUsageDescription = "產生用戶語音記錄並使用人工智慧OpenAI建立摘要。";
+NSMicrophoneUsageDescription = "使用麥克風辨識用戶語音。該應用程式不記錄任何內容。";

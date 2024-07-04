@@ -1,0 +1,9 @@
+/* 
+  InfoPlist.strings
+  Secretari
+
+  Created by 超方 on 2024/7/4.
+  
+*/
+NSSpeechRecognitionUsageDescription = "Genere una transcripción del discurso del usuario y cree un resumen del mismo con IA.";
+NSMicrophoneUsageDescription = "Utilice el micrófono para reconocer el habla del usuario. La aplicación no registra nada.";

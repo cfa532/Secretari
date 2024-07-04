@@ -1,0 +1,9 @@
+/* 
+  InfoPlist.strings
+  Secretari
+
+  Created by 超方 on 2024/7/4.
+  
+*/
+NSSpeechRecognitionUsageDescription = "Generate transcript of user speech and create summary of it with OpenAI.";
+NSMicrophoneUsageDescription = "Generate transcript of user speech and create summary of it with OpenAI.";
