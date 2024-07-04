@@ -682,8 +682,8 @@
 				INFOPLIST_FILE = Secretari/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = Bounny;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.productivity";
-				INFOPLIST_KEY_NSMicrophoneUsageDescription = "Need Microphone to record user speech";
-				INFOPLIST_KEY_NSSpeechRecognitionUsageDescription = "Need to create transcript of user speech";
+				INFOPLIST_KEY_NSMicrophoneUsageDescription = "$(NSMicrophoneUsageDescription)";
+				INFOPLIST_KEY_NSSpeechRecognitionUsageDescription = "$(NSSpeechRecognitionUsageDescription)";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -718,8 +718,8 @@
 				INFOPLIST_FILE = Secretari/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = Bounny;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.productivity";
-				INFOPLIST_KEY_NSMicrophoneUsageDescription = "Need Microphone to record user speech";
-				INFOPLIST_KEY_NSSpeechRecognitionUsageDescription = "Need to create transcript of user speech";
+				INFOPLIST_KEY_NSMicrophoneUsageDescription = "$(NSMicrophoneUsageDescription)";
+				INFOPLIST_KEY_NSSpeechRecognitionUsageDescription = "$(NSSpeechRecognitionUsageDescription)";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
