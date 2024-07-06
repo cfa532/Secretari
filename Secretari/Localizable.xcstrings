@@ -513,6 +513,9 @@
         }
       }
     },
+    "Filipino🇵🇭" : {
+
+    },
     "First make sure to select the right language for recognition in setting ⚙️ Otherwise the built-in speech recognizer cannot work properly." : {
       "localizations" : {
         "en" : {
@@ -727,33 +730,39 @@
     },
     "Indonesia" : {
       "localizations" : {
-        "es-419" : {
+        "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Indonesia🇮🇩"
           }
         },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Indonesia🇮🇩"
+          }
+        },
         "ja" : {
           "stringUnit" : {
-            "state" : "translated",
+            "state" : "needs_review",
             "value" : "インドネシア🇮🇩"
           }
         },
         "ko" : {
           "stringUnit" : {
-            "state" : "translated",
+            "state" : "needs_review",
             "value" : "인도네시아🇮🇩"
           }
         },
         "zh-Hans" : {
           "stringUnit" : {
-            "state" : "translated",
+            "state" : "needs_review",
             "value" : "印尼🇮🇩"
           }
         },
         "zh-Hant" : {
           "stringUnit" : {
-            "state" : "translated",
+            "state" : "needs_review",
             "value" : "印尼🇮🇩"
           }
         }
@@ -2895,6 +2904,9 @@
         }
       }
     },
+    "Việt Nam🇻🇳" : {
+
+    },
     "We do NOT collect any user information or track user behaviour." : {
       "localizations" : {
         "es-419" : {
@@ -3049,6 +3061,9 @@
       }
     },
     "Your profile information was successfully saved." : {
+
+    },
+    "日本語🇯🇵" : {
 
     }
   },

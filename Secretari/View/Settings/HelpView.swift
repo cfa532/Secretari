@@ -29,7 +29,7 @@ struct HelpView: View {
                             .foregroundStyle(.blue)
                             .underline()
                             .onTapGesture {
-                                if let url = URL(string: "https://www.apple.com") {
+                                if let url = URL(string: "https://www.apple.com/legal/macapps/stdeula/") {
                                     UIApplication.shared.open(url)
                                 }
                             }

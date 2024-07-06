@@ -36,25 +36,27 @@ struct DetailView: View {
                                 Label {
                                     DotAnimationView(title: "recognizing")
                                 } icon: {
-                                    Image(systemName: "hearingdevice.ear")
+                                    HStack {
+                                        Picker("Language:", selection: $settings.selectedLocale) {
+                                            ForEach(RecognizerLocale.allCases, id: \.self) { option in
+                                                Text(String(describing: option))
+                                            }
+                                        }
+                                        .onChange(of: settings.selectedLocale) {
+                                            SettingsManager.shared.updateSettings(settings)
+                                            speechRecognizer.stopTranscribing()
+                                            Task {
+                                                await self.speechRecognizer.setup(locale: settings.selectedLocale.rawValue)
+                                                await self.speechRecognizer.startTranscribing()
+                                            }
+                                        }
+                                        Image(systemName: "hearingdevice.ear")
+                                    }
                                 }
                                 .foregroundStyle(Color.accentColor)
                                 .padding(.leading, 20)
                                 .frame(maxWidth: .infinity, alignment: .leading) // Aligns the content to the rightmost side
                                 
-                                Picker("Language:", selection: $settings.selectedLocale) {
-                                    ForEach(RecognizerLocale.allCases, id: \.self) { option in
-                                        Text(String(describing: option))
-                                    }
-                                }
-                                .onChange(of: settings.selectedLocale) {
-                                    SettingsManager.shared.updateSettings(settings)
-                                    speechRecognizer.stopTranscribing()
-                                    Task {
-                                        await self.speechRecognizer.setup(locale: settings.selectedLocale.rawValue)
-                                        await self.speechRecognizer.startTranscribing()
-                                    }
-                                }
                             }
                             .padding(.bottom, 10)
                             
@@ -194,7 +196,6 @@ struct DetailView: View {
                     }
                 }, label: {
                     Image(systemName: "ellipsis")
-//                        .resizable()
                         .frame(width: 23, height: 23)
                         .padding(7)
                         .contentShape(Rectangle())      // increase tappable area

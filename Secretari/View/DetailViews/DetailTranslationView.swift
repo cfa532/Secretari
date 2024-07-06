@@ -44,7 +44,7 @@ struct DetailTranslationView: View {
                             if settings.promptType == .checklist {
                                 translateMemo(locale: .English, record: record, prompt: "The following text is a valid JSON string. Translate the title of each JSON object into English. Only return a pure JSON string in the same format. ")
                             } else {
-                                translateSummary(locale: .English, record: record, prompt: "Translate the following text into English. Export with plain text.")
+                                translateSummary(locale: .English, record: record, prompt: "Translate the following text into English. Export with plain text. ")
                             }
                         }
                         Button("Indonesia") {
@@ -52,6 +52,27 @@ struct DetailTranslationView: View {
                                 translateMemo(locale: .Indonesia, record: record, prompt: "Teks berikut adalah string JSON yang valid. Terjemahkan judul setiap objek JSON ke dalam bahasa Indonesia. Hanya kembalikan string JSON murni dalam format yang sama. ")
                             } else {
                                 translateSummary(locale: .Indonesia, record: record, prompt: "Terjemahkan teks berikut ke dalam bahasa Indonesia. Ekspor dengan teks biasa.")
+                            }
+                        }
+                        Button("日本語🇯🇵") {
+                            if settings.promptType == .checklist {
+                                translateMemo(locale: .日本語, record: record, prompt: "次のテキストは有効な JSON 文字列です。各 JSON オブジェクトのタイトルを日本語に翻訳します。同じ形式の純粋な JSON 文字列のみを返します。 ")
+                            } else {
+                                translateSummary(locale: .日本語, record: record, prompt: "次のテキストを日本語に翻訳し、プレーンテキストでエクスポートします。 ")
+                            }
+                        }
+                        Button("Việt Nam🇻🇳") {
+                            if settings.promptType == .checklist {
+                                translateMemo(locale: .ViệtNam, record: record, prompt: "Văn bản sau đây là một chuỗi JSON hợp lệ. Dịch tiêu đề của từng đối tượng JSON sang tiếng việt. Chỉ trả về một chuỗi JSON thuần túy có cùng định dạng. ")
+                            } else {
+                                translateSummary(locale: .ViệtNam, record: record, prompt: "Dịch đoạn văn sau sang tiếng Việt. Xuất với văn bản thuần túy. ")
+                            }
+                        }
+                        Button("Filipino🇵🇭") {
+                            if settings.promptType == .checklist {
+                                translateMemo(locale: .Filipino, record: record, prompt: "Ang sumusunod na text ay isang wastong JSON string. Isalin ang pamagat ng bawat JSON object sa Filipino. Magbalik lang ng purong JSON string sa parehong format. ")
+                            } else {
+                                translateSummary(locale: .Filipino, record: record, prompt: "Isalin sa Filipino ang sumusunod na teksto. I-export gamit ang plain text. ")
                             }
                         }
                     })
