@@ -7,6 +7,9 @@
     " " : {
 
     },
+    "(EULA)" : {
+
+    },
     "*" : {
 
     },
@@ -2537,6 +2540,34 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "摘要缺失"
+          }
+        }
+      }
+    },
+    "Terms of Use (EULA)" : {
+      "localizations" : {
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Condiciones de uso (EULA)"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "利用規約 (EULA)"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "이용약관 (EULA)"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "使用條款(EULA)"
           }
         }
       }

@@ -110,8 +110,8 @@
             filePath = "Secretari/View/Settings/HelpView.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "45"
-            endingLineNumber = "45"
+            startingLineNumber = "57"
+            endingLineNumber = "57"
             landmarkName = "loadNotice()"
             landmarkType = "7">
          </BreakpointContent>
