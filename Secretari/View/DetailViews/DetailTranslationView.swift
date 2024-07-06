@@ -42,7 +42,7 @@ struct DetailTranslationView: View {
                         Text("Select one of the following languages to translate the Summary. If summary exists, it will be overwritten.")
                         Button("English") {
                             if settings.promptType == .checklist {
-                                translateMemo(locale: .English, record: record, prompt: "The following text is a valid JSON string. Translate the title of each JSON object into English. Only return a pure JSON string in the same format. ")
+                                translateMemo(locale: .English, record: record, prompt: "The following text is a valid JSON string. Translate the content of title attribute of the JSON object into English. Only return a pure JSON string in the same format. ")
                             } else {
                                 translateSummary(locale: .English, record: record, prompt: "Translate the following text into English. Export with plain text. ")
                             }
@@ -56,23 +56,30 @@ struct DetailTranslationView: View {
                         }
                         Button("日本語🇯🇵") {
                             if settings.promptType == .checklist {
-                                translateMemo(locale: .日本語, record: record, prompt: "次のテキストは有効な JSON 文字列です。各 JSON オブジェクトのタイトルを日本語に翻訳します。同じ形式の純粋な JSON 文字列のみを返します。 ")
+                                translateMemo(locale: .日本語, record: record, prompt: "次のテキストは有効な JSON 文字列です。JSON オブジェクトの title 属性の内容を日本語に翻訳します。同じ形式の純粋な JSON 文字列のみを返します。 ")
                             } else {
                                 translateSummary(locale: .日本語, record: record, prompt: "次のテキストを日本語に翻訳し、プレーンテキストでエクスポートします。 ")
                             }
                         }
                         Button("Việt Nam🇻🇳") {
                             if settings.promptType == .checklist {
-                                translateMemo(locale: .ViệtNam, record: record, prompt: "Văn bản sau đây là một chuỗi JSON hợp lệ. Dịch tiêu đề của từng đối tượng JSON sang tiếng việt. Chỉ trả về một chuỗi JSON thuần túy có cùng định dạng. ")
+                                translateMemo(locale: .ViệtNam, record: record, prompt: "Văn bản sau đây là một chuỗi JSON hợp lệ. Dịch nội dung thuộc tính title của đối tượng JSON sang tiếng việt. Chỉ trả về một chuỗi JSON thuần túy có cùng định dạng. ")
                             } else {
                                 translateSummary(locale: .ViệtNam, record: record, prompt: "Dịch đoạn văn sau sang tiếng Việt. Xuất với văn bản thuần túy. ")
                             }
                         }
                         Button("Filipino🇵🇭") {
                             if settings.promptType == .checklist {
-                                translateMemo(locale: .Filipino, record: record, prompt: "Ang sumusunod na text ay isang wastong JSON string. Isalin ang pamagat ng bawat JSON object sa Filipino. Magbalik lang ng purong JSON string sa parehong format. ")
+                                translateMemo(locale: .Filipino, record: record, prompt: "Ang sumusunod na text ay isang wastong JSON string. Isalin sa Filipino ang nilalaman ng katangian ng pamagat ng object ng JSON. Magbalik lang ng purong JSON string sa parehong format. ")
                             } else {
                                 translateSummary(locale: .Filipino, record: record, prompt: "Isalin sa Filipino ang sumusunod na teksto. I-export gamit ang plain text. ")
+                            }
+                        }
+                        Button("แบบไทย🇹🇭") {
+                            if settings.promptType == .checklist {
+                                translateMemo(locale: .แบบไทย, record: record, prompt: "ข้อความต่อไปนี้เป็นสตริง JSON ที่ถูกต้อง แปลเนื้อหาของแอตทริบิวต์ title ของออบเจ็กต์ JSON เป็นภาษาไทย ส่งคืนสตริง JSON แท้ในรูปแบบเดียวกันเท่านั้น ")
+                            } else {
+                                translateSummary(locale: .แบบไทย, record: record, prompt: "แปลข้อความต่อไปนี้เป็นภาษาไทย ส่งออกด้วยข้อความธรรมดา ")
                             }
                         }
                     })
@@ -130,11 +137,12 @@ struct DetailTranslationView: View {
             var arr:[Any] = [Any]()
             if !record.memo.isEmpty {
                 for m in record.memo {
-                    arr.append(["id":m.id, "title": String(describing: m.title[record.locale]!), "isChecked":m.isChecked])
+                    if let title = m.title[record.locale] {
+                        arr.append(["id":m.id, "title": String(describing: title), "isChecked":m.isChecked])
+                    }
                 }
             } else {
                 // no memo for the record, create one from its summary
-//                arr.append(["id":1, "title": record.summary[record.locale]!, "isChecked": false])
                 print("No memo to print")
                 self.alertItem = AlertContext.emptyMemo
                 
@@ -144,12 +152,6 @@ struct DetailTranslationView: View {
                 
                 websocket.sendToAI(jsonString, prompt: prompt) { result in
                     do {
-                        // extract valie JSON string from AI reply. Get text between [ ]
-//                        let regex = try NSRegularExpression(pattern: "\\[(.*?)\\]", options: [])
-//                        let nsString = translation as NSString
-//                        let results = regex.matches(in: translation, options: [], range: NSRange(location: 0, length: nsString.length))
-//                        let r = results.map{ nsString.substring(with: $0.range(at: 1)) }
-                        
                         record.locale = locale
                         record.resultFromAI(taskType: .translate, summary: try Utility.getAIJson(aiJson: result))
                         try? modelContext.save()
