@@ -79,12 +79,16 @@ enum RecognizerLocale: String, CaseIterable, Codable {
     case Español = "es"     // Latin Spanish
     case Indonesia = "id"
     case 한국인 = "ko"
-    case Filipino = "fil"
+    case Filipino = "phi"
     case ViệtNam = "vi"
     case แบบไทย = "th"
     
     // fr, sp,
     var id: Self { self }
+    
+    static func availables() -> Array<RecognizerLocale> {
+        return [.English, .日本語, .中文, .한국인, .Español, .Indonesia, .ViệtNam, .แบบไทย]
+    }
 }
 enum LLM: String, Codable, CaseIterable {
     case OpenAI = "openai"

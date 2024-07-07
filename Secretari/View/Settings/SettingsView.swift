@@ -52,7 +52,7 @@ struct SettingsView: View {
                     }
                     
                     Picker("Language:", selection: $settings.selectedLocale) {
-                        ForEach(RecognizerLocale.allCases, id:\.self) { option in
+                        ForEach(RecognizerLocale.availables(), id:\.self) { option in
                             Text(String(describing: option))
                         }
                     }
