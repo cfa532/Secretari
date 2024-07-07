@@ -86,9 +86,7 @@ enum RecognizerLocale: String, CaseIterable, Codable {
     // fr, sp,
     var id: Self { self }
     
-    static func availables() -> Array<RecognizerLocale> {
-        return [.English, .日本語, .中文, .한국인, .Español, .Indonesia, .ViệtNam, .แบบไทย]
-    }
+    static let availables: Array<RecognizerLocale> = [.English, .日本語, .中文, .한국인, .Español, .Indonesia, .ViệtNam, .แบบไทย]
 }
 enum LLM: String, Codable, CaseIterable {
     case OpenAI = "openai"
@@ -127,6 +125,8 @@ final class AppConstants {
             RecognizerLocale.Español: "Eres un secretario inteligente. Extrae el contenido importante del siguiente texto y haz un resumen completo. Divide el texto en secciones apropiadas. El formato de salida debe ser texto plano. ",
             RecognizerLocale.Indonesia: "Anda adalah sekretaris cerdas. Ekstrak konten penting dari teks berikut dan buat ringkasan yang komprehensif. Silakan bagi menjadi beberapa bagian yang sesuai. Format keluaran harus dalam teks biasa. ",
             RecognizerLocale.한국인: "당신은 똑똑한 비서입니다. 다음 텍스트에서 중요한 내용을 추출하여 포괄적인 요약을 작성하세요. 적절한 섹션으로 나누세요. ",
+            RecognizerLocale.ViệtNam: "Bạn là một thư ký thông minh. Trích xuất nội dung quan trọng từ văn bản sau và tạo thành một bản tóm tắt toàn diện. Chia nó thành các phần thích hợp. Định dạng đầu ra phải là văn bản thuần túy. ",
+            RecognizerLocale.แบบไทย: "คุณเป็นเลขาที่ชาญฉลาด แยกเนื้อหาที่สำคัญออกจากข้อความต่อไปนี้และสรุปให้ครอบคลุม แบ่งออกเป็นส่วนๆ ตามความเหมาะสม รูปแบบผลลัพธ์ควรเป็นข้อความธรรมดา ",
         ],
         Settings.PromptType.checklist: [
             RecognizerLocale.English: """
@@ -266,7 +266,53 @@ final class AppConstants {
 
               rawtext:
 
-            """
+            """,
+            RecognizerLocale.ViệtNam: """
+            Bạn là một trợ lý thông minh. Trích xuất nội dung quan trọng từ văn bản thô bên dưới và tạo một bản ghi nhớ toàn diện. Định dạng đầu ra sử dụng chuỗi JSON sau, trong đó tiêu đề là nội dung mục của bản ghi nhớ.
+              [
+                {
+                  "id": 1,
+                  "title": "Item 1",
+                  "isChecked": false
+                },
+                {
+                  "id": 2,
+                  "title": "Item 2",
+                  "isChecked": false
+                },
+                {
+                  "id": 3,
+                  "title": "Item 3",
+                  "isChecked": false
+                }
+              ]
+
+              rawtext:
+
+            """,
+            RecognizerLocale.แบบไทย: """
+            คุณเป็นผู้ช่วยที่ชาญฉลาด แยกเนื้อหาที่สำคัญออกจากข้อความดิบด้านล่างและจัดทำบันทึกที่ครอบคลุม รูปแบบเอาต์พุตใช้ลำดับ JSON ต่อไปนี้ โดยที่ title คือเนื้อหารายการในบันทึกช่วยจำ
+              [
+                {
+                  "id": 1,
+                  "title": "Item 1",
+                  "isChecked": false
+                },
+                {
+                  "id": 2,
+                  "title": "Item 2",
+                  "isChecked": false
+                },
+                {
+                  "id": 3,
+                  "title": "Item 3",
+                  "isChecked": false
+                }
+              ]
+
+              rawtext:
+
+            """,
         ]
     ]
 }

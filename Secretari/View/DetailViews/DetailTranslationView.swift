@@ -47,6 +47,13 @@ struct DetailTranslationView: View {
                                 translateSummary(locale: .English, record: record, prompt: "Translate the following text into English. Export with plain text. ")
                             }
                         }
+                        Button("中文") {
+                            if settings.promptType == .checklist {
+                                translateMemo(locale: .中文, record: record, prompt: "以下文字是有效的 JSON 字串。將 JSON 物件的 title 屬性內容翻譯成繁體中文。只傳回相同格式的純JSON字串。 ")
+                            } else {
+                                translateSummary(locale: .中文, record: record, prompt: "將下面的文字翻譯成繁體中文。以純文字導出。 ")
+                            }
+                        }
                         Button("Indonesia") {
                             if settings.promptType == .checklist {
                                 translateMemo(locale: .Indonesia, record: record, prompt: "Teks berikut adalah string JSON yang valid. Terjemahkan judul setiap objek JSON ke dalam bahasa Indonesia. Hanya kembalikan string JSON murni dalam format yang sama. ")
