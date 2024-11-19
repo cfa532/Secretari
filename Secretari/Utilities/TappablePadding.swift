@@ -35,9 +35,3 @@ extension EdgeInsets {
     .init(top: -top, leading: -leading, bottom: -bottom, trailing: -trailing)
   }
 }
-
-#Preview {
-    TappablePadding(insets: EdgeInsets(top: 10, leading: 10, bottom: 10, trailing: 10)) {
-        return Void()
-    } as! any View
-}

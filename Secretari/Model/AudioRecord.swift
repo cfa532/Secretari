@@ -83,7 +83,7 @@ extension AudioRecord {
     ]
     
     struct MemoJsonData: Codable, Identifiable {
-        @Attribute(.unique) let id: Int
+        let id: Int
         var title: [RecognizerLocale: String]
         var isChecked: Bool
     }

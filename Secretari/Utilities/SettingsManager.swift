@@ -110,10 +110,10 @@ final class AppConstants {
     static let SignupBonus = 0.2                // the initial dollar balance to give user for free trial.
     static let DefaultPassword = "zaq12WSX"
     static let defaultSettings = Settings(prompt: defaultPrompt,
-                                          serverURL: "leither.uk/secretari",
+                                          serverURL: "bunny.leither.uk/secretari",
                                           audioSilentDB: "-40",
                                           selectedLocale: Utility.systemLanguage(),
-                                          promptType: Settings.PromptType.checklist,
+                                          promptType: Settings.PromptType.summary,
                                           llmParams: ["llm":"openai", "temperature":"0.0"]
     )
     

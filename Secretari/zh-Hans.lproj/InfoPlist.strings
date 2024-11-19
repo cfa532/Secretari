@@ -5,5 +5,5 @@
   Created by 超方 on 2024/7/4.
   
 */
-NSSpeechRecognitionUsageDescription = "Generate transcript of user speech and create summary of it with OpenAI.";
-NSMicrophoneUsageDescription = "Generate transcript of user speech and create summary of it with OpenAI.";
+NSSpeechRecognitionUsageDescription = "录制用户发言并使用 AI 生成摘要";
+NSMicrophoneUsageDescription = "识别并生成用户语音的摘要，该程序不会录制任何语音。";
