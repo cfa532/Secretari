@@ -2,6 +2,8 @@
 //  DotAnimationView.swift
 //  Secretari
 //
+//  Animate continuously moving dots.
+//
 //  Created by 超方 on 2024/6/13.
 //
 
