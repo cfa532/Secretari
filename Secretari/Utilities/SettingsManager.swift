@@ -47,7 +47,7 @@ struct Settings :Codable {
     var serverURL: String
     var audioSilentDB: String
     var selectedLocale: RecognizerLocale
-    var promptType: PromptType       // Two type: Summary and Memo. Memo is a list of bulletins.
+    var promptType: PromptType       // Summary, Memo and subscript. Memo is a list of bulletins.
     //    var llmModel: LLMModel
     var llmParams: [String: String]  // llm parameters
     
@@ -58,6 +58,7 @@ struct Settings :Codable {
     enum PromptType: String, CaseIterable, Codable {
         case summary = "summary"
         case checklist = "checklist"
+        case subscription = "subscript"
         var id: Self { self }
         
         // when non-subscriber get low balance, only summary type is allowed.
@@ -127,6 +128,16 @@ final class AppConstants {
             RecognizerLocale.한국인: "당신은 똑똑한 비서입니다. 다음 텍스트에서 중요한 내용을 추출하여 포괄적인 요약을 작성하세요. 적절한 섹션으로 나누세요. ",
             RecognizerLocale.ViệtNam: "Bạn là một thư ký thông minh. Trích xuất nội dung quan trọng từ văn bản sau và tạo thành một bản tóm tắt toàn diện. Chia nó thành các phần thích hợp. Định dạng đầu ra phải là văn bản thuần túy. ",
             RecognizerLocale.แบบไทย: "คุณเป็นเลขาที่ชาญฉลาด แยกเนื้อหาที่สำคัญออกจากข้อความต่อไปนี้และสรุปให้ครอบคลุม แบ่งออกเป็นส่วนๆ ตามความเหมาะสม รูปแบบผลลัพธ์ควรเป็นข้อความธรรมดา ",
+        ],
+        Settings.PromptType.subscription: [
+            RecognizerLocale.English: "The following text is a voice recording. Organize the text, remove meaningless clichés, repeated content, etc., and divide it into appropriate paragraphs. ",
+            RecognizerLocale.中文: "下述文字是一段語音錄音。整理該段文字，去除無意義的口頭禪、重複內容等，並適當分段。 ",
+            RecognizerLocale.日本語: "以下のテキストは音声録音です。テキストを整理し、意味のない決まり文句や繰り返しの内容などを削除し、適切な段落に分割します。 ",
+            RecognizerLocale.Español: "El siguiente texto es una grabación de voz. Organiza el texto, elimina clichés sin sentido, contenido repetido, etc. y divídelo en párrafos apropiados. ",
+            RecognizerLocale.Indonesia: "Teks berikut adalah rekaman suara. Atur teks, hilangkan klise yang tidak berarti, konten yang berulang, dsb., dan bagi ke dalam paragraf yang sesuai. ",
+            RecognizerLocale.한국인: "다음 텍스트는 음성 녹음입니다. 텍스트를 구성하고, 무의미한 상투적인 표현, 반복되는 내용 등을 제거한 후 적절한 문단으로 나눕니다. ",
+            RecognizerLocale.ViệtNam: "Đoạn văn sau đây là bản ghi âm giọng nói. Sắp xếp văn bản, loại bỏ những câu sáo rỗng vô nghĩa, nội dung lặp lại, v.v. và chia thành các đoạn văn phù hợp. ",
+            RecognizerLocale.แบบไทย: "ข้อความต่อไปนี้เป็นการบันทึกเสียง จัดระเบียบข้อความ ลบคำซ้ำที่ไม่มีความหมาย เนื้อหาที่ซ้ำกัน ฯลฯ และแบ่งออกเป็นย่อหน้าที่เหมาะสม ",
         ],
         Settings.PromptType.checklist: [
             RecognizerLocale.English: """

@@ -28,14 +28,16 @@ final class AudioRecord {
     
     func resultFromAI(taskType: TaskType, summary: String) {
         let settings = SettingsManager.shared.getSettings()
-        if settings.promptType == .summary {
+        
+        if settings.promptType == .summary || settings.promptType == .subscription {
+            // the result from AI is a string.
             if let s = self.summary[self.locale] {
                 self.summary[self.locale] = s + summary + "\n"
             } else {
                 self.summary[self.locale] = summary + "\n"
             }
         } else {
-            // memo type
+            // memo type. The result from AI is a Json object.
             do {
                 let jsonString = try Utility.getAIJson(aiJson: summary)
                 guard let data = jsonString.data(using: .utf8) else {
@@ -53,7 +55,6 @@ final class AudioRecord {
                         } else {
                             if let id = item["id"] as? Int, let title = item["title"] as? String {
                                 if let i = self.memo.firstIndex(where: { $0.id == id }) {
-                                    //  print("ID: \(t?.id), Title: \(t?.title), isChecked: \(t?.isChecked)")
                                     // update the language of current record's tilte, actually its content.
                                     // this part is merging translated content with the original one.
                                     self.memo[i].title[self.locale] = title

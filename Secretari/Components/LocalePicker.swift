@@ -13,7 +13,7 @@ struct LocalePicker: View {
     @Binding var record: AudioRecord
     
     var body: some View {
-        if promptType == .summary {
+        if promptType == .summary || promptType == .subscription {
             if !record.summary.isEmpty {
                 Picker(" ", selection: $record.locale) {
                     ForEach(record.summary.keys.sorted(by: { a, b in
@@ -63,5 +63,5 @@ struct LocalePicker: View {
 }
 
 #Preview {
-    LocalePicker(promptType: .checklist, record: .constant(AudioRecord.sampleData[0]))
+    LocalePicker(promptType: .summary, record: .constant(AudioRecord.sampleData[0]))
 }

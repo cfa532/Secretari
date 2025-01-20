@@ -2379,6 +2379,23 @@
         }
       }
     },
+    "subscript" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "文本"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "文本"
+          }
+        }
+      }
+    },
     "Subscription status" : {
       "localizations" : {
         "es-419" : {
