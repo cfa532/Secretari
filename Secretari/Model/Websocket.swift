@@ -50,7 +50,7 @@ class Websocket: NSObject, ObservableObject, URLSessionWebSocketDelegate {
     }
     
     // MARK: - WebSocket Methods
-    
+    /// Sends a JSON string message to the WebSocket server.
     func send(_ jsonString: String, errorWrapper: @escaping (_: Error) -> Void) {
         wsTask?.send(.string(jsonString)) { error in
             Task { @MainActor in
@@ -62,7 +62,7 @@ class Websocket: NSObject, ObservableObject, URLSessionWebSocketDelegate {
             }
         }
     }
-    
+    /// Receives messages from the WebSocket server.
     func receive(action: @escaping (_: String) -> Void) {
         wsTask?.receive { result in
             Task { @MainActor in
@@ -83,7 +83,7 @@ class Websocket: NSObject, ObservableObject, URLSessionWebSocketDelegate {
         self.showAlert = true
         self.cancel()
     }
-    
+    /// Handles incoming WebSocket messages.
     private func handleWebSocketMessage(_ message: URLSessionWebSocketTask.Message, action: @escaping (_: String) -> Void) {
         switch message {
         case .string(let text):
@@ -97,7 +97,7 @@ class Websocket: NSObject, ObservableObject, URLSessionWebSocketDelegate {
             self.showAlert = true
         }
     }
-    
+    /// Processes text messages received from the WebSocket.
     private func processWebSocketText(_ text: String, action: @escaping (_: String) -> Void) {
         if let data = text.data(using: .utf8) {
             do {
@@ -111,7 +111,9 @@ class Websocket: NSObject, ObservableObject, URLSessionWebSocketDelegate {
             }
         }
     }
-    
+    /// Handles different types of WebSocket responses.
+    /// STREAM to give user instant response
+    /// RESULT is the final result from AI
     private func handleWebSocketResponseType(_ type: String, dict: [String: Any], action: @escaping (_: String) -> Void) {
         switch type {
         case "result":
@@ -126,12 +128,12 @@ class Websocket: NSObject, ObservableObject, URLSessionWebSocketDelegate {
             self.showAlert = true
         }
     }
-    
+    /// Handles the "result" type response from the WebSocket.
     private func handleResultType(_ dict: [String: Any], action: @escaping (_: String) -> Void) {
         if let answer = dict["answer"] as? String {
             print("Result from AI: ", dict)
             action(answer)
-            updateUserManager(dict)
+            updateUserAccount(dict)
             if let eof = dict["eof"] as? Bool, eof == true {
                 self.cancel()
             } else {
@@ -139,7 +141,7 @@ class Websocket: NSObject, ObservableObject, URLSessionWebSocketDelegate {
             }
         }
     }
-    
+    /// Handles the "stream" type response from the WebSocket.
     private func handleStreamType(_ dict: [String: Any], action: @escaping (_: String) -> Void) {
         if let s = dict["data"] as? String {
             self.streamedText += s
@@ -156,8 +158,8 @@ class Websocket: NSObject, ObservableObject, URLSessionWebSocketDelegate {
         }
         self.cancel()
     }
-    
-    private func updateUserManager(_ dict: [String: Any]) {
+    /// Updates the user's balance and token count based on the response.
+    private func updateUserAccount(_ dict: [String: Any]) {
         if let cost = dict["cost"] as? Double, let tokens = dict["tokens"] as? UInt {
             let userManager = UserManager.shared
             userManager.currentUser?.dollar_balance -= cost
@@ -165,14 +167,14 @@ class Websocket: NSObject, ObservableObject, URLSessionWebSocketDelegate {
             userManager.persistCurrentUser()
         }
     }
-    
+    /// Resumes the WebSocket task and sets the streaming flag.
     func resume() {
         Task { @MainActor in
             self.isStreaming = true
         }
         wsTask?.resume()
     }
-    
+    /// Cancels the WebSocket task and resets streaming state.
     func cancel() {
         wsTask?.cancel(with: .normalClosure, reason: nil)
         Task { @MainActor in
@@ -182,7 +184,7 @@ class Websocket: NSObject, ObservableObject, URLSessionWebSocketDelegate {
     }
     
     // MARK: - Send to AI
-    
+    /// Sends text to the AI for processing.
     @MainActor func sendToAI(_ rawText: String, prompt: String, action: @escaping (_ summary: String) -> Void) {
         let settings = SettingsManager.shared.getSettings()
         if let sprompt = settings.prompt[settings.promptType], let str = sprompt[settings.selectedLocale] ?? sprompt[RecognizerLocale.English] {
@@ -190,7 +192,7 @@ class Websocket: NSObject, ObservableObject, URLSessionWebSocketDelegate {
             sendMessageToWebSocket(msg, action: action)
         }
     }
-    
+    /// Creates the message payload for sending to the AI.
     private func createMessage(rawText: String, prompt: String, defaultPrompt: String, settings: Settings) -> [String: Any] {
         return [
             "input": [
@@ -205,7 +207,7 @@ class Websocket: NSObject, ObservableObject, URLSessionWebSocketDelegate {
             ]
         ]
     }
-    
+    /// Sends the message to the WebSocket server.
     private func sendMessageToWebSocket(_ msg: [String: Any], action: @escaping (_ summary: String) -> Void) {
         if let jsonString = try? JSONSerialization.data(withJSONObject: msg).string {
             print("Websocket sending: ", jsonString)
@@ -328,7 +330,6 @@ extension Websocket {
         var request = URLRequest(url: url)
         request.httpMethod = "DELETE"
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")
-//        request.httpBody = try? JSONSerialization.data(withJSONObject: body)
         
         guard let accessToken = UserManager.shared.userToken else {
             print("Access token is missing")
@@ -343,7 +344,8 @@ extension Websocket {
             return nil
         }
     }
-    
+    /// Creates a temporary user account.
+    /// Use the temp account for unregistered users, until they run out of bonus balance.
     func createTempUser(_ user: User) async throws -> [String: Any]? {
         self.webURL.path = EndPoint.temporaryUser.rawValue
         var request = URLRequest(url: self.webURL.url!)
@@ -351,7 +353,7 @@ extension Websocket {
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")
         
         let body: [String: String] = [
-            "username": user.username,
+            "username": user.username,      // use DeviceId as temp user name
             "password": user.password,
             "id": user.id
         ]
@@ -364,7 +366,8 @@ extension Websocket {
             return nil
         }
     }
-    
+    /// Get Id of a paid product, one-time purchase, or monthly subscription.
+    /// productIDs ["Yearly.bunny0": 89.99, "monthly.bunny0": 8.99, "890842": 8.99]
     func getProductIDs(_ completion: @escaping ([String: Any]?, HTTPStatusCode?) -> Void) {
         self.webURL.path = EndPoint.productIDs.rawValue
         var request = URLRequest(url: self.webURL.url!)
@@ -383,9 +386,9 @@ extension Websocket {
                 completion(json, .failure)
             }
         }
-        task.resume()
+        task.resume()   // execute the task
     }
-    
+    /// Get system notice to all users from server. It will be displayed on Settings screen.
     func getNotice() async throws -> String? {
         self.webURL.path = EndPoint.notice.rawValue
         var request = URLRequest(url: self.webURL.url!)
@@ -399,7 +402,7 @@ extension Websocket {
             return nil
         }
     }
-    
+    /// Fetches an access token for a user.
     func fetchToken(username: String, password: String, completion: @escaping ([String: Any]?, HTTPStatusCode?) -> Void) {
         self.webURL.path = EndPoint.accessToken.rawValue
         var request = URLRequest(url: self.webURL.url!)

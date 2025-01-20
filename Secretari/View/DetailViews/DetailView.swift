@@ -8,6 +8,8 @@
 import SwiftUI
 import SwiftData
 
+// This view displays the details of an audio recording, including transcription, summary,
+// and options to share, translate, and regenerate the summary.
 struct DetailView: View {
     @Environment(\.scenePhase) var scenePhase
     @Environment(\.modelContext) private var modelContext
@@ -24,11 +26,12 @@ struct DetailView: View {
     @StateObject private var websocket = Websocket.shared
     @StateObject private var recorderTimer = RecorderTimer()
     
-    private let suffixLength = 1000
+    private let suffixLength = 1000     // Constant to limit the length of displayed text.
     
     var body: some View {
         NavigationStack {
             if self.isRecording {
+                // Display the transcription view while recording.
                 ScrollView {
                     ScrollViewReader { proxy in
                         VStack {

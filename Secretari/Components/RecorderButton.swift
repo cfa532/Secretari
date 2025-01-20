@@ -7,6 +7,7 @@
 
 import SwiftUI
 
+/// A button that toggles recording state and displays a timer when recording.
 struct RecorderButton: View {
     @Binding var isRecording: Bool
     let action: () -> Void
@@ -14,7 +15,9 @@ struct RecorderButton: View {
     var body: some View {
         HStack {
             Button(action: {
+                // Binding to control the recording state.
                 isRecording.toggle()
+                // Start/Stop recording.
                 action()
             }, label: {
                 Text(self.isRecording ? "Stop" : "Start")
@@ -30,6 +33,7 @@ struct RecorderButton: View {
                     )
             })
             if isRecording {
+                // Display the timer when recording
                 TimeCounter()
             }
         }
@@ -37,7 +41,6 @@ struct RecorderButton: View {
 }
 
 #Preview {
-    //    RoundButton(image: Image(systemName: "stop.circle"))
     RecorderButton(isRecording: .constant(false), action: {})
 }
 

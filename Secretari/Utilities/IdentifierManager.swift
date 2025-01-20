@@ -9,25 +9,25 @@ import SwiftUI
 import Security
 
 class IdentifierManager: ObservableObject {
-//    private let firstLaunchKey = "HasLaunchedBefore"
-//    static let userDefaults = UserDefaults(suiteName: "secretari.leither.uk")!
     
+    // Using AppStorage to persist the first launch status. Initialize some data on first launch.
     @AppStorage("HasLaunchedBefore") var isFirstLaunch: Bool = true
     
+    /// Sets up the device identifier.
+    /// - Returns: A boolean indicating if it's the first launch.
     func setupIdentifier() -> Bool {
-//        let isFirstLaunch = !UserDefaults.standard.bool(forKey: firstLaunchKey)
         if isFirstLaunch {
             print("Launch for the first time.")
             let identifier = getDeviceIdentifier()      // make sure the identiifier is more than 20 chars long, to distinguish fromm real username.
             storeIdentifierInKeychain(identifier)
-//            UserDefaults.standard.set(true, forKey: firstLaunchKey)
-//            UserDefaults.standard.synchronize()
             isFirstLaunch = false
             print("Device identifier", identifier)
         }
         return isFirstLaunch
     }
     
+    /// Retrieves the device identifier from the keychain or generates a new one.
+    /// - Returns: The device identifier string.
     func getDeviceIdentifier() -> String {
         if let id = retrieveIdentifierFromKeychain() {
             return id
@@ -39,6 +39,8 @@ class IdentifierManager: ObservableObject {
         }
     }
     
+    /// Stores the identifier in the keychain.
+    /// - Parameter identifier: The identifier string to store.
     private func storeIdentifierInKeychain(_ identifier: String) {
         let query: [String: Any] = [
             kSecClass as String: kSecClassGenericPassword,
@@ -48,6 +50,8 @@ class IdentifierManager: ObservableObject {
         SecItemAdd(query as CFDictionary, nil)
     }
     
+    /// Retrieves the identifier from the keychain.
+    /// - Returns: The identifier string if found, otherwise nil.
     private func retrieveIdentifierFromKeychain() -> String? {
         let query: [String: Any] = [
             kSecClass as String: kSecClassGenericPassword,
@@ -70,8 +74,12 @@ class AppVersionManager {
     static let shared = AppVersionManager()
     private let versionKey = "appVersion"
 
+    /// Checks if the app has been updated since the last launch.
+    /// - Returns: A boolean indicating if the app has been updated.
     func checkIfAppUpdated() -> Bool {
+        // Get the current app version from the bundle.
         let currentVersion = Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String ?? ""
+        // Get the previously stored app version from UserDefaults.
         let previousVersion = UserDefaults.standard.string(forKey: versionKey) ?? ""
 
         if currentVersion != previousVersion {

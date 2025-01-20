@@ -10,11 +10,13 @@ import SwiftData
 
 @main
 struct SecretariApp: App {
+    // Tracks the current phase of the app's scene (e.g., active, inactive, background).
     @Environment(\.scenePhase) var scenePhase
+    // Provides access to the app's data model context.
     @Environment(\.modelContext) private var modelContext
     
     @StateObject private var userManager = UserManager.shared
-    @StateObject private var entitlementManager: EntitlementManager
+    @StateObject private var entitlementManager: EntitlementManager     // Manages user entitlements (e.g., feature access).
     @StateObject private var subscriptionsManager: SubscriptionsManager
     @StateObject private var speechRecognizer = SpeechRecognizer()
 
@@ -25,8 +27,12 @@ struct SecretariApp: App {
         self._subscriptionsManager = StateObject(wrappedValue: subscriptionsManager)
     }
     
+    // Defines the app's shared data model container.
     var sharedModelContainer: ModelContainer = {
+        // Defines the schema for the data model, including AudioRecord and Item entities.
         let schema = Schema([AudioRecord.self, /*Settings.self,*/ Item.self])
+        
+        // Configures the model container to store data persistently.
         let modelConfiguration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: false)
         do {
             return try ModelContainer(for: schema, configurations: [modelConfiguration])
@@ -37,14 +43,13 @@ struct SecretariApp: App {
     
     var body: some Scene {
         WindowGroup {
+            // The main content view of the app.
             ContentView()
                 .task {
-                    guard let appSupportDir = FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask).last else { return }
-                    print(appSupportDir)
                     print("App lang:", UserDefaults.standard.stringArray(forKey: "AppleLanguages")!)
                     print("Locale identifier: ", NSLocale.current.identifier)
                     
-                    // clear user data from UserDefaults and Keychain. For TEST only
+                    // clear user data from UserDefaults and Keychain. Keep it for TEST only
 //                    if let bundleID = Bundle.main.bundleIdentifier {
 //                        let keychainManager = KeychainManager.shared
 //                        UserDefaults.standard.removePersistentDomain(forName: bundleID)
@@ -64,7 +69,7 @@ struct SecretariApp: App {
                     subscriptionsManager.loadDefaultsFromServer()       // preload products. Hope it show up faster.
                 }
                 .alert("Error", isPresented: $userManager.showAlert, presenting: userManager.alertItem) { _ in
-                } message: { alertItem in
+                } message: { _ in
                     userManager.alertItem?.message
                 }
                 .environmentObject(userManager)
@@ -74,6 +79,8 @@ struct SecretariApp: App {
 
         }
         .modelContainer(sharedModelContainer)
+        
+        // when app goes to background, issue a notice. Seems not working now.
         .onChange(of: scenePhase, { oldPhase, newPhase in
             print("scene phase \(newPhase)")
             if newPhase == .background {
