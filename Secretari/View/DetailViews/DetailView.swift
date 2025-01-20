@@ -37,15 +37,18 @@ struct DetailView: View {
                         VStack {
                             HStack {
                                 Label {
+                                    // Display a dot animation to indicate recognition is in progress.
                                     DotAnimationView(title: "recognizing")
                                 } icon: {
                                     HStack {
+                                        // Picker to select the language for speech recognition.
                                         Picker("Language:", selection: $settings.selectedLocale) {
                                             ForEach(RecognizerLocale.availables, id: \.self) { option in
                                                 Text(String(describing: option))
                                             }
                                         }
                                         .onChange(of: settings.selectedLocale) {
+                                            // Update settings and restart speech recognition when the locale changes.
                                             SettingsManager.shared.updateSettings(settings)
                                             speechRecognizer.stopTranscribing()
                                             Task {
@@ -62,7 +65,7 @@ struct DetailView: View {
                                 
                             }
                             .padding(.bottom, 10)
-                            
+                            // Display the transcribed text in realtime, line by line.
                             LazyVStack {
                                 ForEach(speechRecognizer.transcript.suffix(suffixLength).split(separator: "\n"), id: \.self) { message in
                                     Text(message)
@@ -79,15 +82,17 @@ struct DetailView: View {
                 .onAppear(perform: {
                     print("Start timer. Audio db=\(String(describing: self.settings.audioSilentDB))")
                     
-                    recorderTimer.delegate = self   // register with recordTimer. It calls delegate when timer stops.
+                    // Register with the recorder timer to receive timer stop events.
+                    recorderTimer.delegate = self
                     recorderTimer.startTimer() {
-                        // body of isSilent(), updated by frequency per 10s
+                        // body of isSilent(), updated at frequency of 10s
                         print("audio level=", SpeechRecognizer.currentLevel)
                         // SwiftData of record updated periodically.
                         self.record.transcript = speechRecognizer.transcript
                         return SpeechRecognizer.currentLevel < Float(self.settings.audioSilentDB)! ? true : false
                     }
                 })
+                // Display the record button.
                 RecorderButton(isRecording: $isRecording) {
                     if !self.isRecording {
                         speechRecognizer.stopTranscribing()
@@ -98,6 +103,7 @@ struct DetailView: View {
                 .frame(alignment: .bottom)
                 
             } else if websocket.isStreaming {
+                // Display the streaming view while the AI is processing.
                 ScrollView {
                     ScrollViewReader { proxy in
                         VStack(alignment: .leading) {
@@ -111,10 +117,12 @@ struct DetailView: View {
                             .padding(.bottom, 10)
                             .frame(maxWidth: .infinity, alignment: .leading) // Aligns the content to the rightmost side
                             
+                            // Display the streamed text.
                             let message = websocket.streamedText.suffix(suffixLength)
                             Text(message)
                                 .id(message)
                                 .onChange(of: message, {
+                                    // Scroll to the bottom when new text is streamed.
                                     proxy.scrollTo(message, anchor: .bottom)
                                 })
                         }
@@ -123,6 +131,7 @@ struct DetailView: View {
                 .padding()
                 Spacer()
             } else {
+                // Display the summary view when work is done.
                 ScrollView {
                     HStack {
                         Text(AudioRecord.dateLongFormat.string(from: record.recordDate))
@@ -130,7 +139,7 @@ struct DetailView: View {
                         LocalePicker(promptType: settings.promptType, record: $record)
                     }
                     .padding(3)
-                    
+                    // Conditional rendering based on the prompt type.
                     if (settings.promptType == .checklist) {
                         if !record.memo.isEmpty {
                             DetailBulletinView(record: $record)
@@ -138,6 +147,7 @@ struct DetailView: View {
                             Text(record.summary[record.locale] ?? "No summary. Try to regenerate summary")
                         }
                     } else {
+                        // Display the summary text field.
                         if !record.summary.isEmpty {
                             TextField(record.summary[record.locale] ?? "No summary. Try to regenerate summary",
                                       text: Binding(
@@ -160,6 +170,7 @@ struct DetailView: View {
         .navigationTitle("Summary")
         .navigationBarTitleDisplayMode(.inline)
         .toolbar(content: {
+            // Toolbar item for the back button.
             ToolbarItem(placement: .topBarLeading) {
                 Button(action: {
                     // Dismiss the view
@@ -172,25 +183,26 @@ struct DetailView: View {
                 })
                 .disabled(isRecording)
             }
-            
+            // Toolbar item for the options menu.
             ToolbarItem(placement: .topBarTrailing) {
                 Menu(content: {
+                    // Button to share the summary.
                     Button {
                         showShareSheet = true
                     } label: {
                         Label("Share", systemImage: "square.and.arrow.up")
                     }
-                    
+                    // Navigation link to the transcript view.
                     NavigationLink(destination: DetailTranscriptView(record: record)) {
                         Label("Transcript", systemImage: "text.word.spacing")
                     }
-                    
+                    // Navigation link to the translation view.
                     NavigationLink(destination:
                                     DetailTranslationView(record: $record)
                     ) {
                         Label("Translation", systemImage: "textformat.abc.dottedunderline")
                     }
-                    
+                    // Button to regenerate the summary.
                     Button {
                         // regenerate summary of recording
                         self.showRedoAlert = true
@@ -224,6 +236,7 @@ struct DetailView: View {
                         .font(.title)
                 })
                 .sheet(isPresented: $showShareSheet) {
+                    // Display the share sheet.
                     ShareSheet(activityItems: [textToShare()])
                 }
                 .disabled(isRecording)
@@ -231,10 +244,12 @@ struct DetailView: View {
         })
         .alert("Websocket Error", isPresented: $websocket.showAlert, presenting: websocket.alertItem) { _ in
         } message: { alertItem in
+            // Display websocket error messages.
             alertItem.message
         }
         .onAppear(perform: {
-            settings = SettingsManager.shared.getSettings()     // update settings which may changed somewhere else.
+            // Update settings when the view appears, which may be changed somewhere else.
+            settings = SettingsManager.shared.getSettings()
         })
     }
     
@@ -267,6 +282,7 @@ struct DetailView: View {
     }
 }
 
+// Extension to conform to the TimerDelegate protocol.
 extension DetailView: TimerDelegate {
     func timerStopped() {
         // body of action() closure
@@ -288,7 +304,7 @@ extension DetailView: TimerDelegate {
             }
         }
     }
-    
+    // Function to segment text into smaller chunks.
     func segmentText(_ text: String, segmentLength: Int, overlapLength: Int = 50) -> [String] {
         var segments: [String] = []
         var startIndex = text.startIndex

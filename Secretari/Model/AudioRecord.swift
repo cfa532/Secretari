@@ -8,16 +8,26 @@
 import Foundation
 import SwiftData
 
+/// Represents an audio recording with its transcript, summaries, and memos.
 @Model
 final class AudioRecord {
     @Attribute(.unique) var recordDate: Date
     
+    /// The transcribed text from the audio recording.
     var transcript: String
-    var locale: RecognizerLocale    // language of the original transcript
+    /// The language of the original transcript.
+    var locale: RecognizerLocale
+    /// The language of the translated transcript, if applicable.
     var translatedLocale: RecognizerLocale?
+    /// A dictionary of summaries, keyed by the language of the summary.
     var summary: [RecognizerLocale: String]
+    /// An array of memo data associated with the audio record.
     var memo: [MemoJsonData]               // array of Json data
     
+    /// Initializes a new AudioRecord.
+    /// - Parameters:
+    ///   - transcript: The initial transcript of the audio record. Defaults to an empty string.
+    ///   - summary: The initial summaries of the audio record. Defaults to an empty dictionary.
     init(transcript:String="", summary: [RecognizerLocale:String]=[RecognizerLocale:String]() ) {
         self.recordDate = Date()
         self.transcript = transcript
@@ -26,14 +36,20 @@ final class AudioRecord {
         self.memo = [MemoJsonData]()
     }
     
+    /// Processes the result from an AI task (either summarization or translation).
+    /// - Parameters:
+    ///   - taskType: The type of AI task performed.
+    ///   - summary: The result from the AI task, either a summary string or a JSON string.
     func resultFromAI(taskType: TaskType, summary: String) {
         let settings = SettingsManager.shared.getSettings()
         
         if settings.promptType == .summary || settings.promptType == .subscription {
             // the result from AI is a string.
             if let s = self.summary[self.locale] {
+                // Append the new summary to the existing summary for the current locale.
                 self.summary[self.locale] = s + summary + "\n"
             } else {
+                // Create a new summary for the current locale.
                 self.summary[self.locale] = summary + "\n"
             }
         } else {
@@ -48,15 +64,17 @@ final class AudioRecord {
                 if let jsonArray = try JSONSerialization.jsonObject(with: data, options: []) as? [[String: Any]] {
                     for item in jsonArray {
                         if taskType == .summarize {
+                            // Handle the case when the AI task is summarization. Summary, memo or transcript
                             if let title = item["title"] as? String {
                                 // happens only when creating check list memo record type. Won't happen during translation.
                                 self.memo.append(AudioRecord.MemoJsonData(id: self.memo.count+1, title: [self.locale :title], isChecked: false))
                             }
                         } else {
+                            // Handle the case when the AI task is translation (updating existing memo).
                             if let id = item["id"] as? Int, let title = item["title"] as? String {
                                 if let i = self.memo.firstIndex(where: { $0.id == id }) {
                                     // update the language of current record's tilte, actually its content.
-                                    // this part is merging translated content with the original one.
+                                    // this code is merging translated content with the original one.
                                     self.memo[i].title[self.locale] = title
                                 }
                             }
