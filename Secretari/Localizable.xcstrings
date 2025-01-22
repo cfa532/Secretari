@@ -1847,6 +1847,7 @@
       }
     },
     "Regenerate summary from the transcript. Existing content will be overwritten." : {
+      "extractionState" : "stale",
       "localizations" : {
         "es-419" : {
           "stringUnit" : {

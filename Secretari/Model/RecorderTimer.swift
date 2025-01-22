@@ -7,68 +7,68 @@
 
 import Foundation
 
+// Defines a delegate protocol for handling timer stop events.
 protocol TimerDelegate {
     func timerStopped() -> Void
 }
 
-//@MainActor
 final class RecorderTimer: ObservableObject {
     @Published var secondsElapsed = 0   // total num of seconds after timer started
     var delegate: TimerDelegate?
     
-    // time stopped means recording is stopped.
+    // timer stopped means recording is stopped.
     var timerStopped = true {
         didSet {
             if timerStopped {
                 timer?.invalidate()
-                delegate?.timerStopped()    // send query to Ai from delegate, which is TranscriptView here.
+                // Notify the delegate that the timer has stopped.
+                delegate?.timerStopped()
                 startDate = nil
                 print("Timer stopped")
             }
         }
     }
 
-    private weak var timer: Timer?
-    private var frequency: TimeInterval { AppConstants.RecorderTimerFrequency }
-    private var startDate: Date?
-    private var silenctTimer: TimeInterval = 0     // num of seconds of no audio input
+    private weak var timer: Timer?      // Weak reference to the timer to avoid retain cycles.
+    private var frequency: TimeInterval { AppConstants.RecorderTimerFrequency }     // Timer update frequency.
+    private var startDate: Date?        // The date when the timer started.
+    private var silenctTimer: TimeInterval = 0     // Time in seconds since the last audio input.
     
     func startTimer(isSilent: @escaping ()->Bool) {
         timerStopped = false
         startDate = Date()
         silenctTimer = startDate!.timeIntervalSince1970
         
+        // Create a timer that fires repeatedly based on the frequency.
         timer = Timer.scheduledTimer(withTimeInterval: frequency, repeats: true) { [weak self] _ in
-            self?.update() { isSilent() }
+            self?.update() {       // Call the update method on each timer fire.
+                isSilent()
+            }
         }
-        timer?.tolerance = 0.1
+        timer?.tolerance = 0.1      // Set a tolerance for the timer to improve performance.
     }
-    
+    // Updates the timer state.
     nonisolated private func update(isSilent: @escaping ()->Bool) {
-//        Task { @MainActor in
-            guard let startDate, !timerStopped else { return }
-            let curSeconds = Date().timeIntervalSince1970
-            self.secondsElapsed = Int(curSeconds - startDate.timeIntervalSince1970)
+        guard let startDate, !timerStopped else { return }      // Ensure the timer is running and has a start date.
+        let curSeconds = Date().timeIntervalSince1970
+        self.secondsElapsed = Int(curSeconds - startDate.timeIntervalSince1970)
 
-            if secondsElapsed > 28800 {
-                // worked more than 8hrs, turn off
+        if secondsElapsed > 28800 {
+            // worked more than 8hrs, turn off
+            self.timerStopped = true
+        }
+
+        if isSilent() {
+            if curSeconds - self.silenctTimer > 1800 {
+                // silent for 30mins, turn off
                 self.timerStopped = true
             }
-
-            if isSilent() {
-                if curSeconds - self.silenctTimer > 1800 {
-                    // silent for 30mins, turn off
-                    self.timerStopped = true
-                }
-            } else {
-                self.silenctTimer = curSeconds  // reset silence timer if there is input audio
-            }
-//        }
+        } else {
+            self.silenctTimer = curSeconds  // reset silence timer if there is input audio
+        }
     }
     
     func stopTimer() {
         timerStopped = true
-//        timer?.invalidate()
-//        startDate = nil
     }
 }

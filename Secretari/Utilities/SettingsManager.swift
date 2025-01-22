@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import SwiftData
 
 class SettingsManager {
     static let shared = SettingsManager()
@@ -25,30 +26,26 @@ class SettingsManager {
     func getSettings() -> Settings {
         return settings
     }
-    
+    /// Updates the current settings with new settings.
     func updateSettings(_ newSettings: Settings) {
         settings = newSettings
     }
-    
+    /// Saves the current settings to UserDefaults.
     private func saveSettings() {
         UserDefaultsManager.shared.set(settings, for: "appSettings")
     }
-    
+    /// Loads settings from UserDefaults.
     private func loadSettings() -> Settings? {
         UserDefaultsManager.shared.get(for: "appSettings", type: Settings.self)
     }
 }
 
-import SwiftData
-
-//@Model
 struct Settings :Codable {
     var prompt: [PromptType: [RecognizerLocale : String]]
     var serverURL: String
     var audioSilentDB: String
     var selectedLocale: RecognizerLocale
     var promptType: PromptType       // Summary, Memo and subscript. Memo is a list of bulletins.
-    //    var llmModel: LLMModel
     var llmParams: [String: String]  // llm parameters
     
     enum CodingKeys: String, CodingKey {
