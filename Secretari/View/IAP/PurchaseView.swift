@@ -43,19 +43,19 @@ struct PurchaseView: View {
             .storeButton(.hidden, for: .cancellation)       // hide the top right close button
         }
         HStack {
-            Button("How to cancel") {
+            Button(LocalizedStringKey("How to cancel")) {
                 showCancelSheet = true
             }
             .padding(.horizontal, 30)
             .font(.subheadline)
-            Button("Privacy policies") {
+            Button(LocalizedStringKey("Privacy policies")) {
                 showPolicy = true
             }
             .font(.subheadline)
         }
         .sheet(isPresented: $showCancelSheet, content: {
             VStack {
-                Text("1. Open the Settings app.\n2. Tap your name.\n3. Tap Subscriptions.")
+                Text(LocalizedStringKey("1. Open the Settings app.\n2. Tap your name.\n3. Tap Subscriptions."))
                     .padding(.top, 20)
                 Image("Cancel")
                     .resizable()
@@ -65,11 +65,11 @@ struct PurchaseView: View {
             .presentationDetents([.medium])
             .cornerRadius(20)
         })
-        .alert("Privacy policies", isPresented: $showPolicy) {
-            Button("OK") {
+        .alert(LocalizedStringKey("Privacy policies"), isPresented: $showPolicy) {
+            Button(LocalizedStringKey("OK")) {
             }
         } message: {
-            Text("We do NOT collect any user information or track user behaviour.")
+            Text(LocalizedStringKey("We do NOT collect any user information or track user behaviour."))
         }
 
     }

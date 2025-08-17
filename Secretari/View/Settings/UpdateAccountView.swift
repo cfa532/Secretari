@@ -29,7 +29,7 @@ struct UpdateAccountView: View {
     var body: some View {
         NavigationStack {
             Form {
-                Section(header: Text("Information")) {
+                Section(header: Text(LocalizedStringKey("Information"))) {
                     InputView(text: $username, title: "Username", placeHolder: "", isSecureField: false, required: true)
                         .padding(.top, 10)
                         .textInputAutocapitalization(.never)
@@ -68,7 +68,7 @@ struct UpdateAccountView: View {
                     }, label: {
                         ZStack {
                             HStack {
-                                Text("Update")
+                                Text(LocalizedStringKey("Update"))
                                     .fontWeight(.semibold)
                                 Image(systemName: "arrow.right")
                             }

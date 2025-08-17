@@ -47,7 +47,7 @@ struct ContentView: View {
                     }
                 }
             }
-            .navigationTitle("Records")
+            .navigationTitle(LocalizedStringKey("Records"))
             .navigationBarTitleDisplayMode(.inline)
             .navigationDestination(isPresented: $showDetailView, destination: {
                 DetailView(isRecording: $isRecording, record: AudioRecord())
@@ -98,8 +98,8 @@ struct ContentView: View {
                     ContentUnavailableView(label: {
                         Label("No records", systemImage: "list.bullet.rectangle.portrait")
                     }, description: {
-                        Text("Push the START button to record your own speech. A summary will be generated automatically after STOP button is pushed.")
-                        Text("First make sure to select the right language for recognition in setting ⚙️ Otherwise the built-in speech recognizer cannot work properly.")
+                        Text(LocalizedStringKey("Push the START button to record your own speech. A summary will be generated automatically after STOP button is pushed."))
+                        Text(LocalizedStringKey("First make sure to select the right language for recognition in setting ⚙️ Otherwise the built-in speech recognizer cannot work properly."))
                             .foregroundColor(.accentColor)
                             .fontWeight(.bold)
                     })
@@ -117,7 +117,7 @@ struct ContentView: View {
                     await self.speechRecognizer.startTranscribing()
                 }
             }, label: {
-                Text("Start")
+                Text(LocalizedStringKey("Start"))
                     .padding(24)
                     .font(.title)
                     .background(Color.white)

@@ -132,7 +132,7 @@ extension SubscriptionsManager {
             }
         }
         self.entitlementManager?.hasPro = !self.purchasedProductIDs.isEmpty
-        print("Subscriber,", self.entitlementManager?.hasPro as Any)
+        // Debug print removed to avoid spam in logs
 //        self.userManager.currentUser?.subscription = !self.purchasedProductIDs.isEmpty
 //        userManager.persistCurrentUser()
     }

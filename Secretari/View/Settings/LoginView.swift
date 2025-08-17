@@ -69,7 +69,7 @@ struct LoginView: View {
             } label: {
                 ZStack {
                     HStack {
-                        Text("SIGN IN")
+                        Text(LocalizedStringKey("SIGN IN"))
                             .fontWeight(.semibold)
                         Image(systemName: "arrow.right")
                     }
@@ -90,8 +90,8 @@ struct LoginView: View {
                     userManager.loginStatus = .unregistered
                 } label: {
                     HStack(spacing: 3, content: {
-                        Text("Don't have an account?")
-                        Text("Sign up")
+                        Text(LocalizedStringKey("Don't have an account?"))
+                        Text(LocalizedStringKey("Sign up"))
                             .fontWeight(.bold)
                             .opacity(0.9)
                     })

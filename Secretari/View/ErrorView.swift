@@ -14,7 +14,7 @@ struct ErrorView: View {
     var body: some View {
         NavigationStack {
             VStack {
-                Text("An error has occured")
+                Text(LocalizedStringKey("An error has occured"))
                     .font(.title)
                     .padding(.bottom)
                 Text(errorWrapper.error.localizedDescription)
@@ -29,7 +29,7 @@ struct ErrorView: View {
             .cornerRadius(16)
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
-                    Button("Dismiss") {
+                    Button(LocalizedStringKey("Dismiss")) {
                         dismiss()
                     }
                 }

@@ -100,7 +100,7 @@ class UserManager: ObservableObject, Observable {
             }
         } catch {
             self.alertItem = AlertContext.unableToComplete
-            self.alertItem?.message = Text("Failed to register.")
+            self.alertItem?.message = Text(LocalizedStringKey("Failed to register."))
             self.showAlert = true
         }
         return true
@@ -121,7 +121,7 @@ class UserManager: ObservableObject, Observable {
         } catch {
             print("Error update user")
             self.alertItem = AlertContext.unableToComplete
-            self.alertItem?.message = Text("Update failure")
+            self.alertItem?.message = Text(LocalizedStringKey("Update failure"))
             self.showAlert = true
         }
     }
@@ -141,7 +141,7 @@ class UserManager: ObservableObject, Observable {
         } catch {
             print("User delete error.")
             self.alertItem = AlertContext.unableToComplete
-            self.alertItem?.message = Text("Delete failure")
+            self.alertItem?.message = Text(LocalizedStringKey("Delete failure"))
             self.showAlert = true
         }
     }

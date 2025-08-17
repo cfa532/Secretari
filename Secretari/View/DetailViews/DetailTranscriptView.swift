@@ -20,7 +20,7 @@ struct DetailTranscriptView: View {
             }
         }
         .padding()
-        .navigationTitle("Transcript")
+        .navigationTitle(LocalizedStringKey("Transcript"))
         .toolbar(content: {
             ToolbarItem(placement: .topBarTrailing) {
                 Menu(content: {

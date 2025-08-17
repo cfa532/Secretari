@@ -27,7 +27,7 @@ struct SettingsRowView: View {
 
 struct SettingsRowView_Previews: PreviewProvider {
     static var previews: some View {
-        SettingsRowView(imageName: "gear", title: Text("Settings"), tintColor: .blue)
+        SettingsRowView(imageName: "gear", title: Text(LocalizedStringKey("Settings")), tintColor: .blue)
             .previewLayout(.sizeThatFits)
     }
 }

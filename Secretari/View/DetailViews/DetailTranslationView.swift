@@ -39,8 +39,8 @@ struct DetailTranslationView: View {
                     ContentUnavailableView(label: {
                         Label("", systemImage: "list.bullet.rectangle.portrait")
                     }, description: {
-                        Text("Select one of the following languages to translate the Summary. If summary exists, it will be overwritten.")
-                        Button("English") {
+                        Text(LocalizedStringKey("Select one of the following languages to translate the Summary. If summary exists, it will be overwritten."))
+                        Button(LocalizedStringKey("English")) {
                             if settings.promptType == .checklist {
                                 translateMemo(locale: .English, record: record, prompt: "The following text is a valid JSON string. Translate the content of title attribute of the JSON object into English. Only return a pure JSON string in the same format. ")
                             } else {
@@ -54,7 +54,7 @@ struct DetailTranslationView: View {
                                 translateSummary(locale: .中文, record: record, prompt: "將下面的文字翻譯成繁體中文。以純文字導出。 ")
                             }
                         }
-                        Button("Indonesia") {
+                        Button(LocalizedStringKey("Indonesia")) {
                             if settings.promptType == .checklist {
                                 translateMemo(locale: .Indonesia, record: record, prompt: "Teks berikut adalah string JSON yang valid. Terjemahkan judul setiap objek JSON ke dalam bahasa Indonesia. Hanya kembalikan string JSON murni dalam format yang sama. ")
                             } else {
@@ -68,14 +68,14 @@ struct DetailTranslationView: View {
                                 translateSummary(locale: .日本語, record: record, prompt: "次のテキストを日本語に翻訳し、プレーンテキストでエクスポートします。 ")
                             }
                         }
-                        Button("Việt Nam🇻🇳") {
+                        Button(LocalizedStringKey("Việt Nam🇻🇳")) {
                             if settings.promptType == .checklist {
                                 translateMemo(locale: .ViệtNam, record: record, prompt: "Văn bản sau đây là một chuỗi JSON hợp lệ. Dịch nội dung thuộc tính title của đối tượng JSON sang tiếng việt. Chỉ trả về một chuỗi JSON thuần túy có cùng định dạng. ")
                             } else {
                                 translateSummary(locale: .ViệtNam, record: record, prompt: "Dịch đoạn văn sau sang tiếng Việt. Xuất với văn bản thuần túy. ")
                             }
                         }
-                        Button("Filipino🇵🇭") {
+                        Button(LocalizedStringKey("Filipino🇵🇭")) {
                             if settings.promptType == .checklist {
                                 translateMemo(locale: .Filipino, record: record, prompt: "Ang sumusunod na text ay isang wastong JSON string. Isalin sa Filipino ang nilalaman ng katangian ng pamagat ng object ng JSON. Magbalik lang ng purong JSON string sa parehong format. ")
                             } else {
@@ -94,7 +94,7 @@ struct DetailTranslationView: View {
             }
             .padding()
         }
-        .navigationTitle("Translation")
+        .navigationTitle(LocalizedStringKey("Translation"))
         .toolbar(content: {
             ToolbarItem(placement: .topBarTrailing) {
                 Menu(content: {

@@ -24,7 +24,7 @@ struct RegistrationView: View {
     var body: some View {
         NavigationStack {
             Form {
-                Section(header: Text("Information")) {
+                Section(header: Text(LocalizedStringKey("Information"))) {
                     InputView(text: $username, title: "Username", placeHolder: "", isSecureField: false, required: true)
                         .padding(.top, 10)
                         .textInputAutocapitalization(.never)
@@ -64,7 +64,7 @@ struct RegistrationView: View {
                     }, label: {
                         ZStack {
                             HStack {
-                                Text("SIGN UP")
+                                Text(LocalizedStringKey("SIGN UP"))
                                     .fontWeight(.semibold)
                                 Image(systemName: "arrow.right")
                             }
@@ -95,8 +95,8 @@ struct RegistrationView: View {
                 userManager.loginStatus = .signedOut
             } label: {
                 HStack(spacing: 5, content: {
-                    Text("Have an account?")
-                    Text("Sign in")
+                    Text(LocalizedStringKey("Have an account?"))
+                    Text(LocalizedStringKey("Sign in"))
                         .fontWeight(.bold)
                         .opacity(0.9)
                     Image(systemName: "arrow.right.circle.fill")

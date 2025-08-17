@@ -228,7 +228,7 @@ class Websocket: NSObject, ObservableObject, URLSessionWebSocketDelegate {
                 self.resume()
             } else {
                 self.alertItem = AlertContext.invalidUserData
-                self.alertItem?.message = Text("Invalid access token")
+                self.alertItem?.message = Text(LocalizedStringKey("Invalid access token"))
                 self.showAlert = true
             }
         }

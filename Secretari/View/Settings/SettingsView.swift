@@ -21,9 +21,9 @@ struct SettingsView: View {
     var body: some View {
         NavigationStack {
             Form {
-                Section(header: Text("Parameters")) {
+                Section(header: Text(LocalizedStringKey("Parameters"))) {
                     HStack {
-                        Text("Min Audible (dB)")
+                        Text(LocalizedStringKey("Min Audible (dB)"))
                         Spacer()
                         TextField(settings.audioSilentDB, text: Binding<String>(
                             get: {settings.audioSilentDB}, set: { changed=true;
@@ -61,17 +61,17 @@ struct SettingsView: View {
                         changed = true
                     }
                 }
-                Section(header: Text("advanced")) {
+                Section(header: Text(LocalizedStringKey("advanced"))) {
                     HStack {
-                        Text("Silence time")
+                        Text(LocalizedStringKey("Silence time"))
                         Spacer()
-                        Text("\(AppConstants.MaxSilentSeconds / 60) " + "min")
+                        Text("\(AppConstants.MaxSilentSeconds / 60) \(LocalizedStringKey("min"))")
                             .foregroundColor(.secondary)
                     }
                     HStack {
-                        Text("Max work time")
+                        Text(LocalizedStringKey("Max work time"))
                         Spacer()
-                        Text("\(AppConstants.MaxRecordSeconds / 3600) " + "hr")
+                        Text("\(AppConstants.MaxRecordSeconds / 3600) \(LocalizedStringKey("hr"))")
                             .foregroundColor(.secondary)
                     }
                     TextField(selectedPrompt ?? "", text: Binding<String> (
@@ -110,7 +110,7 @@ struct SettingsView: View {
                     }
                 }
             }
-            .navigationTitle("Settings")
+            .navigationTitle(LocalizedStringKey("Settings"))
             .navigationBarTitleDisplayMode(.inline)
         }
         .toolbar {
@@ -118,12 +118,12 @@ struct SettingsView: View {
                 Button(action: {
                     showAlert = true
                 }) {
-                    Text("Reset")
+                    Text(LocalizedStringKey("Reset"))
                 }
             }
         }
         .alert(isPresented: $showAlert, content: {
-            Alert(title: Text("Alert"), message: Text("All settings will be reset."), primaryButton: .cancel(), secondaryButton: .destructive(Text("Yes"), action: {
+            Alert(title: Text(LocalizedStringKey("Alert")), message: Text(LocalizedStringKey("All settings will be reset.")), primaryButton: .cancel(), secondaryButton: .destructive(Text(LocalizedStringKey("Yes")), action: {
                 
                 settings.prompt = AppConstants.defaultSettings.prompt
                 settings.selectedLocale = AppConstants.defaultSettings.selectedLocale

@@ -35,7 +35,7 @@ struct StoreFrontView: View {
                 }, label: {
                     RoundedRectangle(cornerRadius: 12.5)
                         .overlay {
-                            Text("Purchase")
+                            Text(LocalizedStringKey("Purchase"))
                                 .foregroundStyle(.white)
                                 .font(.system(size: 16.5, weight: .semibold, design: .rounded))
                         }

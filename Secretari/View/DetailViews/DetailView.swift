@@ -167,7 +167,7 @@ struct DetailView: View {
         }
         
         .navigationBarBackButtonHidden(true)
-        .navigationTitle("Summary")
+        .navigationTitle(LocalizedStringKey("Summary"))
         .navigationBarTitleDisplayMode(.inline)
         .toolbar(content: {
             // Toolbar item for the back button.
@@ -215,9 +215,9 @@ struct DetailView: View {
                         .padding(7)
                         .contentShape(Rectangle())      // increase tappable area
                 })
-                .alert("Alert", isPresented: $showRedoAlert, actions: {
-                    Button("No", role: .cancel) { }
-                    Button("Yes") {
+                .alert(LocalizedStringKey("Alert"), isPresented: $showRedoAlert, actions: {
+                    Button(LocalizedStringKey("No"), role: .cancel) { }
+                    Button(LocalizedStringKey("Yes")) {
                         // get updated settings
                         self.settings = SettingsManager.shared.getSettings()
                         // clear old summary,
