@@ -1,4 +1,56 @@
 
+# macOS
 .DS_Store
-.DS_Store
-.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Xcode
+*.xcodeproj/xcuserdata/
+*.xcworkspace/xcuserdata/
+*.xcuserstate
+build/
+DerivedData/
+*.ipa
+*.dSYM.zip
+*.dSYM
+
+# iOS Simulator
+*.hmap
+*.ipa
+*.dSYM.zip
+*.dSYM
+
+# CocoaPods
+Pods/
+Podfile.lock
+
+# Swift Package Manager
+.swiftpm/
+Package.resolved
+
+# Server Environment Variables
+server/.env
+server/.env.local
+server/.env.production
+
+# Python (Server)
+server/__pycache__/
+server/*.py[cod]
+server/*$py.class
+server/venv/
+server/env/
+server/*.log
+server/*.db
+server/*.sqlite
+server/*.sqlite3
+
+# Logs
+*.log
+
+# Temporary files
+*.tmp
+*.temp

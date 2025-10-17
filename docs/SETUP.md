@@ -223,6 +223,35 @@ Product → Archive in Xcode
 - Tag releases in Git
 - Maintain release notes
 
+## Testing Configuration
+
+### Temporarily Disable Balance Checks
+For development and testing purposes, you may need to disable account balance checks:
+
+#### Client-Side Balance Check Disabled
+- **File**: `Secretari/View/Settings/SettingsView.swift`
+- **Function**: `allowedPromptType()` - Always returns `false` to allow all prompt types
+- **Purpose**: Removes client-side restrictions for users with low balance
+
+#### High Balance Testing Function
+- **File**: `Secretari/Utilities/UserManager.swift`
+- **Function**: `setHighBalanceForTesting()` - Sets user balance to $1000.00
+- **Usage**: Call this method to give test users sufficient balance
+
+#### Debug UI Controls
+- **Location**: Settings → "DEBUG - Testing Only" section
+- **Features**:
+  - "Set High Balance for Testing" button
+  - Current balance display
+- **Purpose**: Easy access to testing controls from within the app
+
+#### To Re-enable Balance Checks
+1. Uncomment the balance check code in `allowedPromptType()` function
+2. Remove the debug section from SettingsView
+3. Remove the `setHighBalanceForTesting()` method from UserManager
+
+**Note**: These are temporary changes marked with "TEMPORARY" or "DEBUG" comments.
+
 ## Troubleshooting
 
 ### Common Build Issues

@@ -37,6 +37,7 @@ Located in `Components/` directory:
   - Account balance tracking
   - User data persistence
   - Login status management
+  - **Testing Support**: `setHighBalanceForTesting()` method for development
 
 - **`SubscriptionsManager`**: 
   - StoreKit 2 integration
@@ -197,6 +198,37 @@ Located in `Components/` directory:
 - Backend AI service at `secretari.leither.uk`
 - WebSocket communication for real-time AI processing
 - HTTP APIs for user management and product information
+
+## Testing Features
+
+### Development Testing Support
+The app includes temporary testing features for development:
+
+#### Balance Check Bypass
+- **Location**: `SettingsView.swift` → `allowedPromptType()` function
+- **Purpose**: Temporarily disables client-side balance restrictions
+- **Implementation**: Always returns `false` to allow all AI features
+- **Status**: Marked with "TEMPORARY" comments for easy identification
+
+#### High Balance Testing
+- **Location**: `UserManager.swift` → `setHighBalanceForTesting()` method
+- **Purpose**: Sets user balance to $1000 for testing AI features
+- **Usage**: Call method to give test users sufficient balance
+- **Persistence**: Updates are saved to local storage
+
+#### Debug UI Controls
+- **Location**: Settings → "DEBUG - Testing Only" section
+- **Features**:
+  - Button to set high balance for testing
+  - Real-time balance display
+  - Clear visual indication (red color) that it's for testing
+- **Access**: Available in Settings screen for easy testing
+
+#### Reverting Testing Changes
+To restore production behavior:
+1. Uncomment balance check code in `allowedPromptType()`
+2. Remove debug section from SettingsView
+3. Remove `setHighBalanceForTesting()` method from UserManager
 
 ## Future Considerations
 

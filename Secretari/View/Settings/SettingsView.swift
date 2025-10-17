@@ -109,6 +109,35 @@ struct SettingsView: View {
                         })
                     }
                 }
+                
+                // DEBUG SECTION - TEMPORARY FOR TESTING
+                Section(header: Text("DEBUG - Testing Only")) {
+                    Button("Set High Balance for Testing") {
+                        userManager.setHighBalanceForTesting()
+                    }
+                    .foregroundColor(.red)
+                    
+                    Button("Toggle Testing Mode") {
+                        userManager.toggleTestingMode()
+                    }
+                    .foregroundColor(userManager.isTestingMode ? .green : .orange)
+                    
+                    HStack {
+                        Text("Testing Mode:")
+                        Spacer()
+                        Text(userManager.isTestingMode ? "ON" : "OFF")
+                            .foregroundColor(userManager.isTestingMode ? .green : .secondary)
+                    }
+                    
+                    if let balance = userManager.currentUser?.dollar_balance {
+                        HStack {
+                            Text("Current Balance:")
+                            Spacer()
+                            Text("$\(String(format: "%.2f", balance))")
+                                .foregroundColor(.secondary)
+                        }
+                    }
+                }
             }
             .navigationTitle(LocalizedStringKey("Settings"))
             .navigationBarTitleDisplayMode(.inline)
@@ -136,11 +165,12 @@ struct SettingsView: View {
     }
     
     private func allowedPromptType() -> Bool {
-        if let user = UserManager.shared.currentUser, user.dollar_balance <= 0.1 {
-            // non-subscriber has not enough balance for gpt-4
-            return true
-        }
-        return false
+        // TEMPORARILY DISABLED FOR TESTING - Balance check disabled
+        // if let user = UserManager.shared.currentUser, user.dollar_balance <= 0.1 {
+        //     // non-subscriber has not enough balance for gpt-4
+        //     return true
+        // }
+        return false  // Always allow prompt types for testing
     }
 }
 
