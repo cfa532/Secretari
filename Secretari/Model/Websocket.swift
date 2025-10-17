@@ -152,13 +152,6 @@ class Websocket: NSObject, ObservableObject, URLSessionWebSocketDelegate {
     private func handleErrorType(_ dict: [String: Any]) {
         if let message = dict["message"] as? String {
             print("Message from ws: ", dict)
-            
-            // TEMPORARILY DISABLE BALANCE ERRORS FOR TESTING
-            if UserManager.shared.isTestingMode && (message.lowercased().contains("balance") || message.lowercased().contains("saldo") || message.lowercased().contains("残高") || message.lowercased().contains("余额")) {
-                print("DEBUG: Ignoring balance error for testing: \(message)")
-                return  // Skip showing the error alert
-            }
-            
             self.alertItem = AlertContext.invalidData
             self.alertItem?.message = Text(LocalizedStringKey(message))
             self.showAlert = true
@@ -206,9 +199,7 @@ class Websocket: NSObject, ObservableObject, URLSessionWebSocketDelegate {
                 "prompt": prompt.isEmpty ? defaultPrompt : prompt,
                 "prompt_type": settings.promptType.rawValue,
                 "rawtext": rawText,
-                "subscription": entitlementManager.hasPro,
-                // TEMPORARY FOR TESTING: Force high balance to bypass backend checks
-                "dollar_balance": UserManager.shared.isTestingMode ? 1000.0 : (UserManager.shared.currentUser?.dollar_balance ?? 0.0)
+                "subscription": entitlementManager.hasPro
             ],
             "parameters": [
                 "llm": settings.llmParams["llm"] as Any,

@@ -78,16 +78,6 @@ The app requires:
 3. **Start Recording**: Tap the "Start" button to begin speech recognition
 4. **Stop Recording**: Tap "Stop" to end the session and generate AI summaries
 
-## Development & Testing
-
-The app includes temporary testing features for development:
-
-- **Balance Check Bypass**: Disables client-side balance restrictions for testing
-- **High Balance Testing**: Function to set $1000 balance for test users
-- **Debug Controls**: UI controls in Settings for easy testing access
-- **Documentation**: Comprehensive testing setup guide in `docs/SETUP.md`
-
-All testing features are clearly marked and can be easily removed for production builds.
 
 ## Support
 

@@ -145,29 +145,4 @@ class UserManager: ObservableObject, Observable {
             self.showAlert = true
         }
     }
-    
-    // TEMPORARY: Set high balance for testing purposes
-    func setHighBalanceForTesting() {
-        if currentUser != nil {
-            currentUser?.dollar_balance = 1000.0  // Set high balance for testing
-            persistCurrentUser()
-            print("DEBUG: Set high balance for testing - $\(currentUser?.dollar_balance ?? 0)")
-        }
-    }
-    
-    // TEMPORARY: Enable/disable testing mode
-    var isTestingMode: Bool {
-        get {
-            UserDefaults.standard.bool(forKey: "isTestingMode")
-        }
-        set {
-            UserDefaults.standard.set(newValue, forKey: "isTestingMode")
-            print("DEBUG: Testing mode \(newValue ? "enabled" : "disabled")")
-        }
-    }
-    
-    // TEMPORARY: Toggle testing mode
-    func toggleTestingMode() {
-        isTestingMode.toggle()
-    }
 }

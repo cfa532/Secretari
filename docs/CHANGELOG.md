@@ -15,11 +15,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - User guide
 - Changelog
 
-### Development Features
-- Temporary balance check bypass for testing
-- High balance testing function in UserManager
-- Debug UI controls in Settings for testing
-- Testing configuration documentation
 
 ## [1.0.4] - Current Version
 
