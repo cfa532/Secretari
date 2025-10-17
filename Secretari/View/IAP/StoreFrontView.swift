@@ -17,7 +17,7 @@ struct StoreFrontView: View {
             if let i = subscriptionsManager.products.firstIndex(where: {$0.id == "monthly.bunny0"}) {
                 let product = subscriptionsManager.products[i]
                 ProductView(iconName: "Monthly", title: product.displayName, price: product.displayPrice,
-                            description: "One month, auto-renewable service. User gets an AI assistant powered by OpenAI's most advanced GPT model, it meticulously records all your speeches, lectures, and instructions to create comprehensive summaries. Empower your business and simplify your life.")
+                            description: "One month, auto-renewable service. User gets an AI assistant powered by AI's most advanced GPT model, it meticulously records all your speeches, lectures, and instructions to create comprehensive summaries. Empower your business and simplify your life.")
             }
             if let i = subscriptionsManager.products.firstIndex(where: {$0.id == "Yearly.bunny0"}) {
                 let product = subscriptionsManager.products[i]

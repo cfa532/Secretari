@@ -53,14 +53,14 @@ final class RecorderTimer: ObservableObject {
         let curSeconds = Date().timeIntervalSince1970
         self.secondsElapsed = Int(curSeconds - startDate.timeIntervalSince1970)
 
-        if secondsElapsed > 28800 {
-            // worked more than 8hrs, turn off
+        if secondsElapsed > AppConstants.MaxRecordSeconds {
+            // worked more than max record time, turn off
             self.timerStopped = true
         }
 
         if isSilent() {
-            if curSeconds - self.silenctTimer > 1800 {
-                // silent for 30mins, turn off
+            if curSeconds - self.silenctTimer > Double(AppConstants.MaxSilentSeconds) {
+                // silent for max silent time, turn off
                 self.timerStopped = true
             }
         } else {

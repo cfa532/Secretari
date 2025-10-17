@@ -65,13 +65,13 @@ struct SettingsView: View {
                     HStack {
                         Text(LocalizedStringKey("Silence time"))
                         Spacer()
-                        Text("\(AppConstants.MaxSilentSeconds / 60) \(LocalizedStringKey("min"))")
+                        Text(LocalizedStringKey("\(AppConstants.MaxSilentSeconds / 60) min"))
                             .foregroundColor(.secondary)
                     }
                     HStack {
                         Text(LocalizedStringKey("Max work time"))
                         Spacer()
-                        Text("\(AppConstants.MaxRecordSeconds / 3600) \(LocalizedStringKey("hr"))")
+                        Text(LocalizedStringKey("\(AppConstants.MaxRecordSeconds / 3600) hr"))
                             .foregroundColor(.secondary)
                     }
                     TextField(selectedPrompt ?? "", text: Binding<String> (

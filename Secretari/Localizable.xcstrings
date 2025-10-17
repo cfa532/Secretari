@@ -13,15 +13,11 @@
     "*" : {
 
     },
-    "%lld %@" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "%1$lld %2$@"
-          }
-        }
-      }
+    "%lld hr" : {
+
+    },
+    "%lld min" : {
+
     },
     "✔︎" : {
 
@@ -59,6 +55,76 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "1. 開啟「設定」應用程式。\n2. 點擊您的名字。\n3. 點選訂閱。"
+          }
+        }
+      }
+    },
+    "8 hr" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "8 hr"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "8時間"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "8시간"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "8小时"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "8小時"
+          }
+        }
+      }
+    },
+    "30 min" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "30 min"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "30分"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "30분"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "30分钟"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "30分鐘"
           }
         }
       }
@@ -1437,31 +1503,31 @@
         }
       }
     },
-    "One month, auto-renewable service. User gets an AI assistant powered by OpenAI's most advanced GPT model, it meticulously records all your speeches, lectures, and instructions to create comprehensive summaries. Empower your business and simplify your life." : {
+    "One month, auto-renewable service. User gets an AI assistant powered by AI's most advanced GPT model, it meticulously records all your speeches, lectures, and instructions to create comprehensive summaries. Empower your business and simplify your life." : {
       "extractionState" : "manual",
       "localizations" : {
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "por un mes, servicio auto renovable. El usuario obtiene un asistente de IA impulsado por el modelo GPT más avanzado de OpenAI, que registra meticulosamente todos sus discursos, conferencias e instrucciones para crear resúmenes completos. Potencia tu negocio y simplifica tu vida."
+            "value" : "por un mes, servicio auto renovable. El usuario obtiene un asistente de IA impulsado por el modelo GPT más avanzado de IA, que registra meticulosamente todos sus discursos, conferencias e instrucciones para crear resúmenes completos. Potencia tu negocio y simplifica tu vida."
           }
         },
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "1 か月間、自動更新可能なサービスです。ユーザーは OpenAI の最先端の GPT モデルを搭載した AI アシスタントを利用でき、すべてのスピーチ、講義、指示を綿密に記録して包括的な要約を作成します。ビジネスを強化し、生活を簡素化します。"
+            "value" : "1 か月間、自動更新可能なサービスです。ユーザーは IA の最先端の GPT モデルを搭載した AI アシスタントを利用でき、すべてのスピーチ、講義、指示を綿密に記録して包括的な要約を作成します。ビジネスを強化し、生活を簡素化します。"
           }
         },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "한 달 동안 자동 갱신되는 서비스입니다. 사용자는 OpenAI의 가장 발전된 GPT 모델로 구동되는 AI 도우미를 사용하게 되며 모든 연설, 강의 및 지침을 꼼꼼하게 녹음하여 포괄적인 요약을 작성합니다. 귀하의 비즈니스에 힘을 실어주고 삶을 단순화하십시오."
+            "value" : "한 달 동안 자동 갱신되는 서비스입니다. 사용자는 IA의 가장 발전된 GPT 모델로 구동되는 AI 도우미를 사용하게 되며 모든 연설, 강의 및 지침을 꼼꼼하게 녹음하여 포괄적인 요약을 작성합니다. 귀하의 비즈니스에 힘을 실어주고 삶을 단순화하십시오."
           }
         },
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "為期一個月，自動續訂服務。使用者獲得由 OpenAI 最先進的 GPT 模型提供支援的 AI 助手，它將精心記錄您的所有演講、講座和指示，以創建全面的摘要。增強您的業務能力並簡化您的生活。"
+            "value" : "為期一個月，自動續訂服務。使用者獲得由 IA 最先進的 GPT 模型提供支援的 AI 助手，它將精心記錄您的所有演講、講座和指示，以創建全面的摘要。增強您的業務能力並簡化您的生活。"
           }
         }
       }
@@ -1713,7 +1779,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Press the START button to begin recording your speech. Once you press the STOP button, a summary will be generated automatically by OpenAI."
+            "value" : "Press the START button to begin recording your speech. Once you press the STOP button, a summary will be generated automatically by AI."
           }
         },
         "es-419" : {
