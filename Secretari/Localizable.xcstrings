@@ -29,9 +29,6 @@
     "✖︎" : {
 
     },
-    "$%@" : {
-
-    },
     "1. Open the Settings app.\n2. Tap your name.\n3. Tap Subscriptions." : {
       "localizations" : {
         "es-419" : {
@@ -376,12 +373,6 @@
           }
         }
       }
-    },
-    "Current Balance:" : {
-
-    },
-    "DEBUG - Testing Only" : {
-
     },
     "Delete account" : {
       "localizations" : {
@@ -2114,9 +2105,6 @@
           }
         }
       }
-    },
-    "Set High Balance for Testing" : {
-
     },
     "Settings" : {
       "localizations" : {
