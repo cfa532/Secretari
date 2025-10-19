@@ -26,7 +26,7 @@ SECRET_KEY = "ebf79dbbdcf6a3c860650661b3ca5dc99b7d44c269316c2bd9fe7c7c5e746274"
 ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE = 480   # expires in 480 weeks
 BASE_ROUTE = "/secretari"
-MIN_BALANCE = 0.1
+MIN_BALANCE = 0.0 # 0.1
 MAX_EXPENSE = 15.0
 MAX_TOKEN = {
     "gpt-4o": 8192,
@@ -377,13 +377,13 @@ async def websocket_endpoint(websocket: WebSocket, token: str = Query()):
 
             # when dollar balance is lower than $0.1, user gpt-3.5-turbo
             if not query["subscription"]:
-                if user.dollar_balance <= MIN_BALANCE:
+                if user.dollar_balance < MIN_BALANCE:
                     await websocket.send_text(json.dumps({
                         "type": "error",
                         "message": "Low balance. Please purchase consumable product or subscribe.", 
                         }))
                     continue
-                elif user.dollar_balance <= MIN_BALANCE:
+                elif user.dollar_balance < MIN_BALANCE:
                     llm_model = "gpt-3.5-turbo"
                     token_splitter._chunk_size = MAX_TOKEN["gpt-3.5-turbo"]
             else:
