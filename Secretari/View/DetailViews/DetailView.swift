@@ -250,6 +250,9 @@ struct DetailView: View {
         .onAppear(perform: {
             // Update settings when the view appears, which may be changed somewhere else.
             settings = SettingsManager.shared.getSettings()
+            
+            // Check if record has appropriate content for current prompt type and auto-generate if needed
+            checkAndGenerateContentIfNeeded()
         })
     }
     
@@ -259,6 +262,38 @@ struct DetailView: View {
             return UIActivityViewController(activityItems: activityItems, applicationActivities: nil)
         }
         func updateUIViewController(_ uiViewController: UIActivityViewController, context: Context) {}
+    }
+    
+    /// Checks if the record has appropriate content for the current prompt type and auto-generates if needed
+    private func checkAndGenerateContentIfNeeded() {
+        // Only proceed if not recording and not already streaming
+        guard !isRecording && !websocket.isStreaming else { return }
+        
+        // Check if record has appropriate content for current prompt type
+        let hasAppropriateContent: Bool
+        if settings.promptType == .checklist {
+            // For checklist type, check if memo is not empty
+            hasAppropriateContent = !record.memo.isEmpty
+        } else {
+            // For summary type, check if summary is not empty for current locale
+            hasAppropriateContent = !record.summary.isEmpty && !(record.summary[record.locale]?.isEmpty ?? true)
+        }
+        
+        // If no appropriate content exists, auto-generate it
+        if !hasAppropriateContent && !record.transcript.isEmpty {
+            // Clear existing content of the wrong type
+            if settings.promptType == .checklist {
+                record.summary.removeAll()
+            } else {
+                record.memo.removeAll()
+            }
+            
+            // Generate content using sendToAI
+            websocket.sendToAI(record.transcript, prompt: "") { result in
+                record.locale = settings.selectedLocale
+                record.resultFromAI(taskType: .summarize, summary: result)
+            }
+        }
     }
     
     private func textToShare()->String {
