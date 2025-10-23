@@ -38,7 +38,7 @@ struct DetailView: View {
                             HStack {
                                 Label {
                                     // Display a dot animation to indicate recognition is in progress.
-                                    DotAnimationView(title: "recognizing")
+                                    DotAnimationView(title: "recognizing_status")
                                 } icon: {
                                     HStack {
                                         // Picker to select the language for speech recognition.

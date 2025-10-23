@@ -52,13 +52,13 @@ struct RegistrationView: View {
                             Task {
                                 if !(await userManager.register(user)) {
                                     self.submitted = false
-                                    self.errorMessage = "Username is taken"
+                                    self.errorMessage = NSLocalizedString("Username is taken", comment: "")
                                     self.showAlert = true
                                 }
                             }
                         } else {
                             print(username, password, passwd)
-                            self.errorMessage = "Username is required and less than 20 characters long. Please confirm the password."
+                            self.errorMessage = NSLocalizedString("Username is required and less than 20 characters long. Please confirm the password.", comment: "")
                             showAlert = true
                         }
                     }, label: {
