@@ -67,7 +67,7 @@ actor SpeechRecognizer: ObservableObject {
     
     func startTranscribing() {
         Task {
-            transcribe()
+            await transcribe()
         }
     }
     
@@ -89,14 +89,14 @@ actor SpeechRecognizer: ObservableObject {
      Creates a `SFSpeechRecognitionTask` that transcribes speech to text until you call `stopTranscribing()`.
      The resulting transcription is continuously written to the published `transcript` property.
      */
-    private func transcribe() {
+    private func transcribe() async {
         guard let recognizer, recognizer.isAvailable else {
             self.transcribe(RecognizerError.recognizerIsUnavailable)
             return
         }
         
         do {
-            let (audioEngine, request) = try Self.prepareEngine()
+            let (audioEngine, request) = try await Self.prepareEngine()
             self.audioEngine = audioEngine
             self.request = request
             self.task = recognizer.recognitionTask(with: request, resultHandler: { [weak self] result, error in
@@ -117,7 +117,7 @@ actor SpeechRecognizer: ObservableObject {
         task = nil
     }
     
-    private static func prepareEngine() throws -> (AVAudioEngine, SFSpeechAudioBufferRecognitionRequest) {
+    private static func prepareEngine() async throws -> (AVAudioEngine, SFSpeechAudioBufferRecognitionRequest) {
         let audioEngine = AVAudioEngine()
         
         let request = SFSpeechAudioBufferRecognitionRequest()
@@ -125,15 +125,30 @@ actor SpeechRecognizer: ObservableObject {
         
         let audioSession = AVAudioSession.sharedInstance()
 //        audioSession.inputOrientation = .none
-        try audioSession.setCategory(.record, mode: .measurement, options: [.allowBluetooth, .duckOthers])
+        try audioSession.setCategory(.record, mode: .measurement, options: [.allowBluetoothHFP, .duckOthers])
 //        try audioSession.setCategory(.playAndRecord, mode: .measurement, options: .duckOthers)
         try audioSession.setActive(true, options: .notifyOthersOnDeactivation)
+        
+        // Ensure audio engine is not already running
+        if audioEngine.isRunning {
+            audioEngine.stop()
+        }
+        
+        // Small delay to ensure audio session is properly configured
+        try await Task.sleep(nanoseconds: 100_000_000) // 0.1 seconds
+        
         let inputNode = audioEngine.inputNode
         
         let recordingFormat = inputNode.outputFormat(forBus: 0)
         
         // if audioEngine is occupied, IsFormatSampleRateAndChannelCountValid exception is thrown
         // shall check it.
+        
+        // Remove any existing tap before installing a new one
+        if inputNode.numberOfInputs > 0 {
+            inputNode.removeTap(onBus: 0)
+        }
+        
         inputNode.installTap(onBus: 0, bufferSize: 1024, format: recordingFormat) { (buffer: AVAudioPCMBuffer, when: AVAudioTime) in
             request.append(buffer)
             

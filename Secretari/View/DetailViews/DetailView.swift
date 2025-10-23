@@ -281,6 +281,13 @@ struct DetailView: View {
         
         // If no appropriate content exists, auto-generate it
         if !hasAppropriateContent && !record.transcript.isEmpty {
+            // Check if transcript has minimum length before sending to AI
+            let trimmedTranscript = record.transcript.trimmingCharacters(in: .whitespacesAndNewlines)
+            guard trimmedTranscript.count >= 20 else {
+                print("Transcript too short, skipping AI generation")
+                return
+            }
+            
             // Clear existing content of the wrong type
             if settings.promptType == .checklist {
                 record.summary.removeAll()
@@ -288,7 +295,7 @@ struct DetailView: View {
                 record.memo.removeAll()
             }
             
-            // Generate content using sendToAI
+            // Generate content using sendToAI (which now has its own validation)
             websocket.sendToAI(record.transcript, prompt: "") { result in
                 record.locale = settings.selectedLocale
                 record.resultFromAI(taskType: .summarize, summary: result)

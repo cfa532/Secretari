@@ -186,12 +186,28 @@ class Websocket: NSObject, ObservableObject, URLSessionWebSocketDelegate {
     // MARK: - Send to AI
     /// Sends text to the AI for processing.
     @MainActor func sendToAI(_ rawText: String, prompt: String, action: @escaping (_ summary: String) -> Void) {
+        // Validate that the content is meaningful before sending to AI
+        guard isContentMeaningful(rawText) else {
+            print("Content is not meaningful enough to send to AI: '\(rawText)'")
+            action("No meaningful content detected. Please try recording again.")
+            return
+        }
+        
         let settings = SettingsManager.shared.getSettings()
         if let sprompt = settings.prompt[settings.promptType], let str = sprompt[settings.selectedLocale] ?? sprompt[RecognizerLocale.English] {
             let msg = createMessage(rawText: rawText, prompt: prompt, defaultPrompt: str, settings: settings)
             sendMessageToWebSocket(msg, action: action)
         }
     }
+    
+    /// Validates if the content has minimum length to send to AI
+    private func isContentMeaningful(_ text: String) -> Bool {
+        let trimmedText = text.trimmingCharacters(in: .whitespacesAndNewlines)
+        
+        // Check minimum length (at least 20 characters)
+        return trimmedText.count >= 20
+    }
+    
     /// Creates the message payload for sending to the AI.
     private func createMessage(rawText: String, prompt: String, defaultPrompt: String, settings: Settings) -> [String: Any] {
         return [
