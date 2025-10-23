@@ -1803,13 +1803,13 @@
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "按下「Start」录制您自己的演讲。按「Stop」按钮后，将自动生成摘要。"
+            "value" : "按下「Start」录制您自己的讲话。按「Stop」按钮后，将自动生成摘要。"
           }
         },
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "按下「Start」按鈕錄製您自己的演講。按「Stop」按鈕後，將自動產生摘要。"
+            "value" : "按下「Start」按鈕錄製您自己的講話。按「Stop」按鈕後，將自動產生摘要。"
           }
         }
       }

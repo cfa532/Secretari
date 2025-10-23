@@ -6,7 +6,7 @@
 //
 
 import Foundation
-import AVFoundation
+@preconcurrency import AVFoundation
 import Speech
 import SwiftUI
 
@@ -122,6 +122,8 @@ actor SpeechRecognizer: ObservableObject {
         
         let request = SFSpeechAudioBufferRecognitionRequest()
         request.shouldReportPartialResults = true
+        request.requiresOnDeviceRecognition = false  // Use server-based recognition for better accuracy
+        request.addsPunctuation = true  // Add punctuation to help with word boundaries
         
         let audioSession = AVAudioSession.sharedInstance()
 //        audioSession.inputOrientation = .none
@@ -195,14 +197,18 @@ actor SpeechRecognizer: ObservableObject {
         let receivedFinalResult = result?.isFinal ?? false
         let receivedError = error != nil
         
-        if receivedFinalResult || receivedError {
-            audioEngine.stop()
-            audioEngine.inputNode.removeTap(onBus: 0)
-        }
-        
         if let result {
             let ret = result.bestTranscription.formattedString
             transcribe(ret)
+        }
+        
+        if receivedFinalResult || receivedError {
+            // Add a delay before stopping to capture the last word
+            // This gives the speech recognizer time to process the final audio
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) { [weak audioEngine] in
+                audioEngine?.stop()
+                audioEngine?.inputNode.removeTap(onBus: 0)
+            }
         }
     }
     
