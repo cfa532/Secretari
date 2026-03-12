@@ -134,6 +134,9 @@
         }
       }
     },
+    "Account is still initializing. Please try again in a moment." : {
+
+    },
     "advanced" : {
       "localizations" : {
         "es-419" : {
@@ -816,6 +819,7 @@
 
     },
     "Invalid access token" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
