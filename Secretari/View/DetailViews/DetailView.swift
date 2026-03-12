@@ -89,7 +89,7 @@ struct DetailView: View {
                         print("audio level=", SpeechRecognizer.currentLevel)
                         // SwiftData of record updated periodically.
                         self.record.transcript = speechRecognizer.transcript
-                        return SpeechRecognizer.currentLevel < Float(self.settings.audioSilentDB)! ? true : false
+                        return SpeechRecognizer.currentLevel < (Float(self.settings.audioSilentDB) ?? -40.0)
                     }
                 })
                 // Display the record button.

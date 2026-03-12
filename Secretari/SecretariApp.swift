@@ -37,7 +37,13 @@ struct SecretariApp: App {
         do {
             return try ModelContainer(for: schema, configurations: [modelConfiguration])
         } catch {
-            fatalError("Could not create ModelContainer: \(error)")
+            print("Failed to create persistent ModelContainer:", error.logDescription, "- falling back to in-memory storage.")
+            do {
+                let fallbackConfig = ModelConfiguration(schema: schema, isStoredInMemoryOnly: true)
+                return try ModelContainer(for: schema, configurations: [fallbackConfig])
+            } catch {
+                fatalError("Could not create ModelContainer even in-memory: \(error)")
+            }
         }
     }()
     
@@ -46,7 +52,7 @@ struct SecretariApp: App {
             // The main content view of the app.
             ContentView()
                 .task {
-                    print("App lang:", UserDefaults.standard.stringArray(forKey: "AppleLanguages")!)
+                    print("App lang:", UserDefaults.standard.stringArray(forKey: "AppleLanguages") ?? [])
                     print("Locale identifier: ", NSLocale.current.identifier)
                     
                     // clear user data from UserDefaults and Keychain. Keep it for TEST only
@@ -95,9 +101,9 @@ struct SecretariApp: App {
                 let request = UNNotificationRequest(identifier: uuidString, content: content, trigger: trigger)
                 
                 let center = UNUserNotificationCenter.current()
-                center.add(request) { (error) in
-                    if error != nil {
-                        print("Error adding to notification center \(String(describing: error))")
+                center.add(request) { error in
+                    if let error {
+                        print("Error adding to notification center:", error.logDescription)
                     }
                 }
             }

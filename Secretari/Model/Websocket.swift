@@ -32,11 +32,26 @@ class Websocket: NSObject, ObservableObject, URLSessionWebSocketDelegate {
         configureURLs()
     }
     
+    /// Applies the current settings.serverURL to webURL and wsURL.
+    /// Supports bare host ("secretari.leither.uk"), host:port ("localhost:8000"),
+    /// or full URL ("http://localhost:8000"). HTTP→ws, HTTPS→wss.
     private func configureURLs() {
-        webURL.scheme = "https"
-        webURL.host = "secretari.leither.uk"
-        wsURL.scheme = "wss"
-        wsURL.host = "secretari.leither.uk"
+        let raw = SettingsManager.shared.getSettings().serverURL
+        let urlString = raw.hasPrefix("http") ? raw : "https://\(raw)"
+        guard let components = URLComponents(string: urlString),
+              let host = components.host else {
+            // fallback to production
+            webURL.scheme = "https"; webURL.host = "secretari.leither.uk"
+            wsURL.scheme  = "wss";  wsURL.host  = "secretari.leither.uk"
+            return
+        }
+        let isSecure = components.scheme != "http"
+        webURL.scheme = isSecure ? "https" : "http"
+        webURL.host   = host
+        webURL.port   = components.port
+        wsURL.scheme  = isSecure ? "wss" : "ws"
+        wsURL.host    = host
+        wsURL.port    = components.port
     }
     
     // MARK: - URLSessionWebSocketDelegate Methods
@@ -55,7 +70,7 @@ class Websocket: NSObject, ObservableObject, URLSessionWebSocketDelegate {
         wsTask?.send(.string(jsonString)) { error in
             Task { @MainActor in
                 if let error = error {
-                    print("Websocket.send() failed", error)
+                    print("Websocket.send() failed:", error.logDescription)
                     self.alertItem = AlertContext.unableToComplete
                     self.showAlert = true
                 }
@@ -77,7 +92,7 @@ class Websocket: NSObject, ObservableObject, URLSessionWebSocketDelegate {
     }
     
     private func handleWebSocketError(_ error: Error) {
-        print("WebSocket failure: \(error)")
+        print("WebSocket failure:", error.logDescription)
         self.alertItem = AlertContext.invalidResponse
         self.alertItem?.message = Text(error.localizedDescription)
         self.showAlert = true
@@ -225,6 +240,7 @@ class Websocket: NSObject, ObservableObject, URLSessionWebSocketDelegate {
     }
     /// Sends the message to the WebSocket server.
     private func sendMessageToWebSocket(_ msg: [String: Any], action: @escaping (_ summary: String) -> Void) {
+        configureURLs()
         if let jsonString = try? JSONSerialization.data(withJSONObject: msg).string {
             print("Websocket sending: ", jsonString)
             if let activeTask = self.wsTask, activeTask.state != .running {
@@ -233,7 +249,13 @@ class Websocket: NSObject, ObservableObject, URLSessionWebSocketDelegate {
             if let accessToken = UserManager.shared.userToken {
                 self.wsURL.path = EndPoint.websocket.rawValue
                 self.wsURL.query = "token=" + accessToken
-                self.wsTask = urlSession?.webSocketTask(with: self.wsURL.url!)
+                guard let wsURL = self.wsURL.url else {
+                    self.alertItem = AlertContext.invalidData
+                    self.showAlert = true
+                    return
+                }
+                self.wsTask = urlSession?.webSocketTask(with: wsURL)
+                self.resume()                // resume (handshake) must happen before send/receive
                 self.send(jsonString) { error in
                     Task { @MainActor in
                         self.alertItem = AlertContext.unableToComplete
@@ -241,7 +263,6 @@ class Websocket: NSObject, ObservableObject, URLSessionWebSocketDelegate {
                     }
                 }
                 self.receive(action: action)
-                self.resume()
             } else {
                 self.alertItem = AlertContext.invalidUserData
                 self.alertItem?.message = Text(LocalizedStringKey("Invalid access token"))
@@ -281,8 +302,10 @@ enum EndPoint: String {
 
 extension Websocket {
     func registerUser(_ user: User) async throws -> [String: Any]? {
+        configureURLs()
         self.webURL.path = EndPoint.register.rawValue
-        var request = URLRequest(url: self.webURL.url!)
+        guard let url = self.webURL.url else { return nil }
+        var request = URLRequest(url: url)
         request.httpMethod = "POST"
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")
         
@@ -305,6 +328,7 @@ extension Websocket {
     }
     
     func updateUser(_ user: User) async throws -> [String: Any]? {
+        configureURLs()
         self.webURL.path = EndPoint.updateUser.rawValue
         guard let url = self.webURL.url else {
             print("Invalid URL")
@@ -338,6 +362,7 @@ extension Websocket {
     }
     
     func deleteUser() async throws -> [String: String]? {
+        configureURLs()
         self.webURL.path = EndPoint.updateUser.rawValue
         guard let url = self.webURL.url else {
             print("Invalid URL")
@@ -363,8 +388,10 @@ extension Websocket {
     /// Creates a temporary user account.
     /// Use the temp account for unregistered users, until they run out of bonus balance.
     func createTempUser(_ user: User) async throws -> [String: Any]? {
+        configureURLs()
         self.webURL.path = EndPoint.temporaryUser.rawValue
-        var request = URLRequest(url: self.webURL.url!)
+        guard let url = self.webURL.url else { return nil }
+        var request = URLRequest(url: url)
         request.httpMethod = "POST"
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")
         
@@ -385,29 +412,41 @@ extension Websocket {
     /// Get Id of a paid product, one-time purchase, or monthly subscription.
     /// productIDs ["Yearly.bunny0": 89.99, "monthly.bunny0": 8.99, "890842": 8.99]
     func getProductIDs(_ completion: @escaping ([String: Any]?, HTTPStatusCode?) -> Void) {
+        configureURLs()
         self.webURL.path = EndPoint.productIDs.rawValue
-        var request = URLRequest(url: self.webURL.url!)
+        guard let url = self.webURL.url else { completion(nil, nil); return }
+        var request = URLRequest(url: url)
         request.httpMethod = "GET"
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")
 
         let task = URLSession.shared.dataTask(with: request) { data, response, error in
-            guard let data = data, error == nil else {
+            if let error {
+                print("getProductIDs network error:", error.logDescription)
                 completion(nil, nil)
                 return
             }
+            guard let data else {
+                print("getProductIDs: no data received")
+                completion(nil, nil)
+                return
+            }
+            let httpStatus = (response as? HTTPURLResponse)?.statusCode ?? -1
             let json = try? JSONSerialization.jsonObject(with: data) as? [String: Any]
-            if let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 {
+            if httpStatus == 200 {
                 completion(json, .success)
             } else {
+                print("getProductIDs: HTTP \(httpStatus), body:", String(data: data, encoding: .utf8) ?? "<binary>")
                 completion(json, .failure)
             }
         }
-        task.resume()   // execute the task
+        task.resume()
     }
     /// Get system notice to all users from server. It will be displayed on Settings screen.
     func getNotice() async throws -> String? {
+        configureURLs()
         self.webURL.path = EndPoint.notice.rawValue
-        var request = URLRequest(url: self.webURL.url!)
+        guard let url = self.webURL.url else { return nil }
+        var request = URLRequest(url: url)
         request.httpMethod = "GET"
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")
 
@@ -420,12 +459,19 @@ extension Websocket {
     }
     /// Fetches an access token for a user.
     func fetchToken(username: String, password: String, completion: @escaping ([String: Any]?, HTTPStatusCode?) -> Void) {
+        configureURLs()
         self.webURL.path = EndPoint.accessToken.rawValue
-        var request = URLRequest(url: self.webURL.url!)
+        guard let url = self.webURL.url else { completion(nil, nil); return }
+        var request = URLRequest(url: url)
         request.httpMethod = "POST"
         request.addValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
-        
-        let formData = "username=\(username)&password=\(password)"
+
+        var components = URLComponents()
+        components.queryItems = [
+            URLQueryItem(name: "username", value: username),
+            URLQueryItem(name: "password", value: password)
+        ]
+        let formData = components.percentEncodedQuery ?? ""
         request.httpBody = formData.data(using: .utf8)
         
         let task = URLSession.shared.dataTask(with: request) { data, response, error in

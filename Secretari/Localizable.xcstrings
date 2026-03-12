@@ -481,6 +481,9 @@
     "Error" : {
 
     },
+    "Failed to create temporary user. Please check your network connection." : {
+
+    },
     "Failed to register." : {
 
     },

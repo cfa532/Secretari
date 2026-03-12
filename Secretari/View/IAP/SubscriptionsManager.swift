@@ -50,7 +50,7 @@ class SubscriptionsManager: NSObject, ObservableObject {
         do {
             products = try await Product.products(for: productIDs)
         } catch {
-            print(error)
+            print("requestProducts failed:", error.logDescription)
         }
     }
 }
@@ -101,7 +101,7 @@ extension SubscriptionsManager {
             case let .success(.unverified(_, error)):
                 // Successful purchase but transaction/receipt can't be verified
                 // Could be a jailbroken phone
-                print("Unverified purchase. Might be jailbroken. Error: \(error)")
+                print("Unverified purchase. Might be jailbroken. Error:", error.logDescription)
                 break
             case .pending:
                 // Transaction waiting on SCA (Strong Customer Authentication) or
@@ -115,7 +115,7 @@ extension SubscriptionsManager {
                 break
             }
         case .failure(let error):
-            print(error)
+            print("buyProduct failed:", error.logDescription)
         }
     }
     
@@ -141,7 +141,7 @@ extension SubscriptionsManager {
         do {
             try await AppStore.sync()
         } catch {
-            print(error)
+            print("restorePurchases failed:", error.logDescription)
         }
     }
 }

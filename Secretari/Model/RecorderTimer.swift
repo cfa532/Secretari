@@ -32,12 +32,13 @@ final class RecorderTimer: ObservableObject {
     private weak var timer: Timer?      // Weak reference to the timer to avoid retain cycles.
     private var frequency: TimeInterval { AppConstants.RecorderTimerFrequency }     // Timer update frequency.
     private var startDate: Date?        // The date when the timer started.
-    private var silenctTimer: TimeInterval = 0     // Time in seconds since the last audio input.
+    private var silentTimer: TimeInterval = 0      // Time in seconds since the last audio input.
     
     func startTimer(isSilent: @escaping ()->Bool) {
         timerStopped = false
-        startDate = Date()
-        silenctTimer = startDate!.timeIntervalSince1970
+        let now = Date()
+        startDate = now
+        silentTimer = now.timeIntervalSince1970
         
         // Create a timer that fires repeatedly based on the frequency.
         timer = Timer.scheduledTimer(withTimeInterval: frequency, repeats: true) { [weak self] _ in
@@ -59,12 +60,12 @@ final class RecorderTimer: ObservableObject {
         }
 
         if isSilent() {
-            if curSeconds - self.silenctTimer > Double(AppConstants.MaxSilentSeconds) {
+            if curSeconds - self.silentTimer > Double(AppConstants.MaxSilentSeconds) {
                 // silent for max silent time, turn off
                 self.timerStopped = true
             }
         } else {
-            self.silenctTimer = curSeconds  // reset silence timer if there is input audio
+            self.silentTimer = curSeconds  // reset silence timer if there is input audio
         }
     }
     

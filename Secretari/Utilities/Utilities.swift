@@ -7,6 +7,19 @@
 
 import Foundation
 
+extension Error {
+    /// Non-localized description for use in log/print statements.
+    var logDescription: String {
+        let ns = self as NSError
+        let extras = ns.userInfo.filter {
+            $0.key != NSLocalizedDescriptionKey &&
+            $0.key != NSLocalizedFailureReasonErrorKey &&
+            $0.key != NSLocalizedRecoverySuggestionErrorKey
+        }
+        return "\(ns.domain) code=\(ns.code)\(extras.isEmpty ? "" : " \(extras)")"
+    }
+}
+
 struct Utility {
     /// - Parameters:
     ///   - identifier: The language identifier (e.g., "zh_CN", "en").
@@ -51,7 +64,8 @@ struct Utility {
         if let str = r.first {
             return "[" + str + "]"
         }
-        return "[Invalid JSON data]"
+        throw NSError(domain: "Utility.getAIJson", code: 1,
+                      userInfo: [NSLocalizedDescriptionKey: "No valid JSON array found in AI output"])
     }
     
     /// Converts a dictionary with String keys to a dictionary with `LLMModel` enum keys.

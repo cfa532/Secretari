@@ -29,20 +29,12 @@ actor SpeechRecognizer: ObservableObject {
     }
 
     @MainActor @Published var transcript: String = ""
-    static var currentLevel: Float = 0.0
+    nonisolated(unsafe) static var currentLevel: Float = 0.0
 
     private var audioEngine: AVAudioEngine?
     private var request: SFSpeechAudioBufferRecognitionRequest?
     private var task: SFSpeechRecognitionTask?
     private var recognizer: SFSpeechRecognizer?
-    
-    /**
-     Initializes a new speech recognizer. If this is the first time you've used the class, it
-     requests access to the speech recognizer and the microphone.
-     */
-//    init(locale: String) {
-//        
-//    }
     
     func setup(locale: String) {
         recognizer = SFSpeechRecognizer(locale: Locale.init(identifier: locale))
@@ -126,9 +118,7 @@ actor SpeechRecognizer: ObservableObject {
         request.addsPunctuation = true  // Add punctuation to help with word boundaries
         
         let audioSession = AVAudioSession.sharedInstance()
-//        audioSession.inputOrientation = .none
         try audioSession.setCategory(.record, mode: .measurement, options: [.allowBluetoothHFP, .duckOthers])
-//        try audioSession.setCategory(.playAndRecord, mode: .measurement, options: .duckOthers)
         try audioSession.setActive(true, options: .notifyOthersOnDeactivation)
         
         // Ensure audio engine is not already running
@@ -156,17 +146,6 @@ actor SpeechRecognizer: ObservableObject {
             
             // calculate the root mean square (RMS) of the audio samples
             var rms: Float = 0.0
-//            let channels = buffer.floatChannelData!
-//            let numFrames = buffer.frameLength
-//            let numChannels = Int(buffer.format.channelCount)
-//            for i in 0..<Int(numFrames) {
-//                for j in 0..<numChannels {
-//                    let sample = channels[j][i]
-//                    rms += sample * sample
-//                }
-//            }
-//            rms = sqrt(rms / Float(Int(numFrames) * numChannels))
-            
             guard let channelData = buffer.floatChannelData else {
               return
             }

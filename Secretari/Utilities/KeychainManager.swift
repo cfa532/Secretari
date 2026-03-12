@@ -24,7 +24,10 @@ class KeychainManager {
             kSecValueData as String: encodedData
         ] as [String: Any]
 
-        SecItemDelete(query as CFDictionary) // Remove any existing item with the same key
+        let deleteStatus = SecItemDelete(query as CFDictionary)
+        if deleteStatus != errSecSuccess && deleteStatus != errSecItemNotFound {
+            print("KeychainManager: unexpected delete status \(deleteStatus) for key '\(key)'")
+        }
         let status = SecItemAdd(query as CFDictionary, nil)
         return status == errSecSuccess
     }

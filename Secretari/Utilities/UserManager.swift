@@ -44,7 +44,7 @@ class UserManager: ObservableObject, Observable {
             // local user infor will be updated with each fetchToken() call
             self.currentUser = user
             self.userToken = keychainManager.retrieve(for: "userToken", type: String.self)
-            print("CurrentUser retrieved:", self.currentUser! as User, "Token=", self.userToken as Any)
+            print("CurrentUser retrieved:", user, "Token=", self.userToken as Any)
         } else {
             print("First time run.")
             let identifierManager = IdentifierManager()
@@ -65,23 +65,27 @@ class UserManager: ObservableObject, Observable {
         // When someone starts to use the app without registration. Give it an identify.
         Task { @MainActor in
             do {
-                self.currentUser = User(id: id, username: id, password: "zaq1^WSX")
-                if let json = try await websocket.createTempUser( self.currentUser! ) {
-                    
+                let tempUser = User(id: id, username: id, password: "zaq1^WSX")
+                self.currentUser = tempUser
+                if let json = try await websocket.createTempUser(tempUser) {
                     // json from server should be {token, user}
                     if let token = json["token"] as? [String: Any] {
                         self.userToken = token["access_token"] as? String
                     }
-                    if let serverUser = json["user"] as? [String: Any] {
+                    if let serverUser = json["user"] as? [String: Any],
+                       let current = self.currentUser {
                         // update temp user with account data recieved from server.
-                        self.currentUser = Utility.updateUserFromServerDict(from: serverUser, user: self.currentUser!)
+                        self.currentUser = Utility.updateUserFromServerDict(from: serverUser, user: current)
                         self.currentUser?.password = ""
                         self.persistCurrentUser()
                         print("temprory user created", self.currentUser as Any)
                     }
                 }
             } catch {
-                fatalError("Failed to create temporary user.")
+                print("Failed to create temporary user:", error.logDescription)
+                self.alertItem = AlertContext.unableToComplete
+                self.alertItem?.message = Text("Failed to create temporary user. Please check your network connection.")
+                self.showAlert = true
             }
         }
     }

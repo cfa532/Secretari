@@ -166,7 +166,7 @@ struct DetailTranslationView: View {
                             dismiss()
                         }
                     } catch let error {
-                        print("Invalid regex: \(error.localizedDescription)")
+                        print("Invalid regex:", error.logDescription)
                         self.alertItem = AlertContext.invalidJSON
                     }
                 }
@@ -175,7 +175,7 @@ struct DetailTranslationView: View {
                 self.alertItem = AlertContext.invalidJSON
             }
         } catch {
-            print("Error converting JSON object to Data:", error)
+            print("Error converting JSON object to Data:", error.logDescription)
             self.alertItem = AlertContext.invalidJSON
         }
     }

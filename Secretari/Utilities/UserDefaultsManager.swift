@@ -13,8 +13,11 @@ class UserDefaultsManager {
 
     // Save data
     func set<T: Encodable>(_ value: T, for key: String) {
-        if let encoded = try? JSONEncoder().encode(value) {
+        do {
+            let encoded = try JSONEncoder().encode(value)
             defaults.set(encoded, forKey: key)
+        } catch {
+            print("UserDefaultsManager: failed to encode value for key '\(key)':", error.logDescription)
         }
     }
 

@@ -84,7 +84,7 @@ final class AudioRecord {
                     print("Error decoding JSON")
                 }
             } catch {
-                print("Error parsing JSON: \(error)")
+                print("Error parsing JSON:", error.logDescription)
             }
         }
     }

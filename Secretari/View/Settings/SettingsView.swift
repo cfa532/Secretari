@@ -11,7 +11,10 @@ import SwiftData
 struct SettingsView: View {
     @EnvironmentObject private var userManager: UserManager
     @State private var settings = SettingsManager.shared.getSettings()
-    @State private var selectedPrompt =  SettingsManager.shared.getSettings().prompt[SettingsManager.shared.getSettings().promptType]![SettingsManager.shared.getSettings().selectedLocale]
+    @State private var selectedPrompt: String? = {
+        let s = SettingsManager.shared.getSettings()
+        return s.prompt[s.promptType]?[s.selectedLocale]
+    }()
     @State private var countDown = 0
     @State private var opacity = 1.0
     @State private var timer: Timer?
@@ -47,7 +50,7 @@ struct SettingsView: View {
                         }
                     }
                     .onChange(of: settings.promptType) { oldValue, newValue in
-                        selectedPrompt = settings.prompt[settings.promptType]![settings.selectedLocale]!
+                        selectedPrompt = settings.prompt[settings.promptType]?[settings.selectedLocale]
                         changed = true
                     }
                     
@@ -57,7 +60,7 @@ struct SettingsView: View {
                         }
                     }
                     .onChange(of: settings.selectedLocale) { oldValue, newValue in
-                        selectedPrompt = settings.prompt[settings.promptType]![settings.selectedLocale]!
+                        selectedPrompt = settings.prompt[settings.promptType]?[settings.selectedLocale]
                         changed = true
                     }
                 }
@@ -75,8 +78,8 @@ struct SettingsView: View {
                             .foregroundColor(.secondary)
                     }
                     TextField(selectedPrompt ?? "", text: Binding<String> (
-                        get: {settings.prompt[settings.promptType]![settings.selectedLocale]!},
-                        set: {settings.prompt[settings.promptType]![settings.selectedLocale] = $0; changed=true}), axis: .vertical)
+                        get: {settings.prompt[settings.promptType]?[settings.selectedLocale] ?? ""},
+                        set: {settings.prompt[settings.promptType]?[settings.selectedLocale] = $0; changed=true}), axis: .vertical)
                         .lineLimit(20)
                     TextField(settings.serverURL, text: $settings.serverURL)
                         .onChange(of: settings.serverURL) { oldValue, newValue in

@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct UpdateAccountView: View {
-    @Environment(\.presentationMode) var presentationMode
+    @Environment(\.dismiss) var dismiss
     @EnvironmentObject private var userManager: UserManager
     @State private var username: String = ""
     @State private var password: String = ""
@@ -20,11 +20,6 @@ struct UpdateAccountView: View {
 
     @State private var showAlert = false
     @State private var submitted = false
-
-//    init(userManager: UserManager) {
-//        self.userManager = userManager
-//        self.user = userManager.currentUser!
-//    }
 
     var body: some View {
         NavigationStack {
@@ -59,7 +54,7 @@ struct UpdateAccountView: View {
                             Task {
                                 self.submitted = true
                                 await userManager.updateUser(User(id: id, username: username, password: password, family_name: fname, given_name: gname, email: email))
-                                presentationMode.wrappedValue.dismiss()
+                                dismiss()
                             }
                         } else {
                             print(username, password, passwd)

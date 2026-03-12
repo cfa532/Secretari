@@ -44,13 +44,6 @@ struct HelpView: View {
         }
     }
     
-    private var getEula: AttributedString {
-        var text = AttributedString("We follow the same Terms of Use (EULA) as Apple.")
-        text[text.range(of: "Terms of Use (EULA)")!].underlineStyle = .single
-        text[text.range(of: "Terms of Use (EULA)")!].link = URL(string: "https://www.apple.com/legal/macapps/stdeula/")!
-        return text
-    }
-    
     private func loadNotice() {
         Task { @MainActor in
             if let fetchedNotice = try await Websocket.shared.getNotice() {
