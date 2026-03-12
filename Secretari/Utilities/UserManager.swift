@@ -78,7 +78,22 @@ class UserManager: ObservableObject, Observable {
                         self.currentUser = Utility.updateUserFromServerDict(from: serverUser, user: current)
                         self.currentUser?.password = ""
                         self.persistCurrentUser()
-                        print("temprory user created", self.currentUser as Any)
+                        print("Temporary user created:", self.currentUser as Any)
+                    }
+                } else {
+                    // Server returned non-200 (temp user likely already exists). Fetch a new token.
+                    print("createTempUser: user may already exist, attempting fetchToken")
+                    websocket.fetchToken(username: id, password: tempUser.password) { [weak self] dict, statusCode in
+                        Task { @MainActor in
+                            guard let self else { return }
+                            if let dict, let code = statusCode, code < .failure,
+                               let token = dict["token"] as? [String: Any] {
+                                self.userToken = token["access_token"] as? String
+                                print("Temporary user token refreshed")
+                            } else {
+                                print("fetchToken fallback failed for temp user")
+                            }
+                        }
                     }
                 }
             } catch {

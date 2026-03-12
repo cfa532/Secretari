@@ -41,17 +41,21 @@ class Websocket: NSObject, ObservableObject, URLSessionWebSocketDelegate {
         guard let components = URLComponents(string: urlString),
               let host = components.host else {
             // fallback to production
-            webURL.scheme = "https"; webURL.host = "secretari.leither.uk"
-            wsURL.scheme  = "wss";  wsURL.host  = "secretari.leither.uk"
+            webURL.scheme = "https"; webURL.host = "secretari.leither.uk"; webURL.port = nil; webURL.path = ""; webURL.query = nil
+            wsURL.scheme  = "wss";  wsURL.host  = "secretari.leither.uk"; wsURL.port  = nil; wsURL.path  = ""; wsURL.query  = nil
             return
         }
         let isSecure = components.scheme != "http"
         webURL.scheme = isSecure ? "https" : "http"
         webURL.host   = host
         webURL.port   = components.port
+        webURL.path   = ""
+        webURL.query  = nil
         wsURL.scheme  = isSecure ? "wss" : "ws"
         wsURL.host    = host
         wsURL.port    = components.port
+        wsURL.path    = ""
+        wsURL.query   = nil
     }
     
     // MARK: - URLSessionWebSocketDelegate Methods
@@ -241,34 +245,33 @@ class Websocket: NSObject, ObservableObject, URLSessionWebSocketDelegate {
     /// Sends the message to the WebSocket server.
     private func sendMessageToWebSocket(_ msg: [String: Any], action: @escaping (_ summary: String) -> Void) {
         configureURLs()
-        if let jsonString = try? JSONSerialization.data(withJSONObject: msg).string {
-            print("Websocket sending: ", jsonString)
-            if let activeTask = self.wsTask, activeTask.state != .running {
-                self.wsTask?.cancel()
-            }
-            if let accessToken = UserManager.shared.userToken {
-                self.wsURL.path = EndPoint.websocket.rawValue
-                self.wsURL.query = "token=" + accessToken
-                guard let wsURL = self.wsURL.url else {
-                    self.alertItem = AlertContext.invalidData
-                    self.showAlert = true
-                    return
-                }
-                self.wsTask = urlSession?.webSocketTask(with: wsURL)
-                self.resume()                // resume (handshake) must happen before send/receive
-                self.send(jsonString) { error in
-                    Task { @MainActor in
-                        self.alertItem = AlertContext.unableToComplete
-                        self.showAlert = true
-                    }
-                }
-                self.receive(action: action)
-            } else {
-                self.alertItem = AlertContext.invalidUserData
-                self.alertItem?.message = Text(LocalizedStringKey("Invalid access token"))
+        guard let jsonString = try? JSONSerialization.data(withJSONObject: msg).string else { return }
+        guard let accessToken = UserManager.shared.userToken else {
+            self.alertItem = AlertContext.unableToComplete
+            self.alertItem?.message = Text("Account is still initializing. Please try again in a moment.")
+            self.showAlert = true
+            return
+        }
+        print("Websocket sending: ", jsonString)
+        if let activeTask = self.wsTask, activeTask.state != .running {
+            self.wsTask?.cancel()
+        }
+        self.wsURL.path = EndPoint.websocket.rawValue
+        self.wsURL.query = "token=" + accessToken
+        guard let wsURL = self.wsURL.url else {
+            self.alertItem = AlertContext.invalidData
+            self.showAlert = true
+            return
+        }
+        self.wsTask = urlSession?.webSocketTask(with: wsURL)
+        self.resume()
+        self.send(jsonString) { error in
+            Task { @MainActor in
+                self.alertItem = AlertContext.unableToComplete
                 self.showAlert = true
             }
         }
+        self.receive(action: action)
     }
 }
 

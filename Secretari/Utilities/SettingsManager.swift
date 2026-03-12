@@ -21,6 +21,8 @@ class SettingsManager {
     
     init() {
         settings = UserDefaultsManager.shared.get(for: "appSettings", type: Settings.self) ?? AppConstants.defaultSettings
+        // serverURL is a compile-time constant; never persist a stale value from UserDefaults.
+        settings.serverURL = AppConstants.defaultSettings.serverURL
     }
     
     func getSettings() -> Settings {
@@ -108,7 +110,7 @@ final class AppConstants {
     static let SignupBonus = 0.2                // the initial dollar balance to give user for free trial.
     static let DefaultPassword = "zaq12WSX"
     static let defaultSettings = Settings(prompt: defaultPrompt,
-                                          serverURL: "http://192.168.5.4:8057",
+                                          serverURL: "secretari.leither.uk",  // local testing: "http://192.168.5.4:8057"
                                           audioSilentDB: "-40",
                                           selectedLocale: Utility.systemLanguage(),
                                           promptType: Settings.PromptType.summary,
