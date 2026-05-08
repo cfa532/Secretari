@@ -118,7 +118,7 @@ actor SpeechRecognizer: ObservableObject {
         request.addsPunctuation = true  // Add punctuation to help with word boundaries
         
         let audioSession = AVAudioSession.sharedInstance()
-        try audioSession.setCategory(.record, mode: .measurement, options: [.allowBluetoothHFP, .duckOthers])
+        try audioSession.setCategory(.playAndRecord, mode: .default, options: [.allowBluetoothHFP, .duckOthers, .defaultToSpeaker])
         try audioSession.setActive(true, options: .notifyOthersOnDeactivation)
         
         // Ensure audio engine is not already running
@@ -130,7 +130,8 @@ actor SpeechRecognizer: ObservableObject {
         try await Task.sleep(nanoseconds: 100_000_000) // 0.1 seconds
         
         let inputNode = audioEngine.inputNode
-        
+        try? inputNode.setVoiceProcessingEnabled(true)
+
         let recordingFormat = inputNode.outputFormat(forBus: 0)
         
         // if audioEngine is occupied, IsFormatSampleRateAndChannelCountValid exception is thrown
