@@ -54,3 +54,4 @@ server/*.sqlite3
 # Temporary files
 *.tmp
 *.temp
+/.claude
